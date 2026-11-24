@@ -29,8 +29,8 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaModelsClient {
 
     @Generated
@@ -51,16 +51,10 @@ public final class BetaModelsClient {
      *
      * List all versions of the given ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -118,16 +112,10 @@ public final class BetaModelsClient {
      *
      * List the latest version of each ModelVersion.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -184,16 +172,10 @@ public final class BetaModelsClient {
      *
      * Retrieves the specified model version, returning 404 if it does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -253,8 +235,7 @@ public final class BetaModelsClient {
     /**
      * Delete a model version
      *
-     * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
-     * successfully or if the ModelVersion does not exist.
+     * Removes the specified model version. Returns 200 whether the version existed or not.
      *
      * @param name The name of the resource.
      * @param version The version of the ModelVersion to delete.
@@ -274,9 +255,9 @@ public final class BetaModelsClient {
     /**
      * Update a model version
      *
-     * Update an existing ModelVersion with the given version id.
+     * Updates an existing model version identified by its version ID.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -287,18 +268,12 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -360,16 +335,10 @@ public final class BetaModelsClient {
      * Creates a model version asynchronously with blob content validation. Returns 202 Accepted with a location header
      * for polling the operation status.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
-     *     systemData (Optional): {
-     *         createdAt: Long (Optional)
-     *         createdBy: String (Optional)
-     *         createdByType: String (Optional)
-     *         lastModifiedAt: Long (Optional)
-     *     }
      *     blobUri: String (Required)
      *     weightType: String(FullWeight/LoRA/DraftModel) (Optional)
      *     baseModel: String (Optional)
@@ -407,9 +376,9 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -418,6 +387,13 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Location</td><td>String</td><td>URL to poll for operation status.</td></tr>
+     * </table>
      *
      * @param name Name of the model.
      * @param version Version of the model.
@@ -441,7 +417,7 @@ public final class BetaModelsClient {
      *
      * Initiates a new pending upload or retrieves an existing one for the specified model version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -451,9 +427,9 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -474,7 +450,7 @@ public final class BetaModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param pendingUploadRequest The pendingUploadRequest parameter.
+     * @param pendingUploadRequest The pending upload request request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -495,7 +471,7 @@ public final class BetaModelsClient {
      *
      * Retrieves temporary credentials for accessing the storage backing the specified model version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -503,9 +479,9 @@ public final class BetaModelsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -523,7 +499,7 @@ public final class BetaModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param credentialRequest The credentialRequest parameter.
+     * @param credentialRequest The credential request request body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -613,8 +589,7 @@ public final class BetaModelsClient {
     /**
      * Delete a model version
      *
-     * Delete the specific version of the ModelVersion. The service returns 200 OK if the ModelVersion was deleted
-     * successfully or if the ModelVersion does not exist.
+     * Removes the specified model version. Returns 200 whether the version existed or not.
      *
      * @param name The name of the resource.
      * @param version The version of the ModelVersion to delete.
@@ -636,7 +611,7 @@ public final class BetaModelsClient {
     /**
      * Update a model version
      *
-     * Update an existing ModelVersion with the given version id.
+     * Updates an existing model version identified by its version ID.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the UpdateModelVersionRequest to create or update.
@@ -699,7 +674,7 @@ public final class BetaModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param pendingUploadRequest The pendingUploadRequest parameter.
+     * @param pendingUploadRequest The pending upload request request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -725,7 +700,7 @@ public final class BetaModelsClient {
      *
      * @param name Name of the model.
      * @param version Version of the model.
-     * @param credentialRequest The credentialRequest parameter.
+     * @param credentialRequest The credential request request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

@@ -27,8 +27,7 @@ public final class SharedLimitsDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.sharedLimits()
-            .deleteByResourceGroupWithResponse("ynpwlbj", "pgacftadehxnlty", com.azure.core.util.Context.NONE);
+        manager.sharedLimits().deleteByResourceGroupWithResponse("jh", "mdajv", com.azure.core.util.Context.NONE);
 
     }
 }

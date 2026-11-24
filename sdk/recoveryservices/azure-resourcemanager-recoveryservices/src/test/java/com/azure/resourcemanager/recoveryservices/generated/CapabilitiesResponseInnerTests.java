@@ -13,11 +13,11 @@ public final class CapabilitiesResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapabilitiesResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"sxqu\"],\"subResource\":\"AzureBackup_secondary\"},{\"requiredZoneNames\":[\"gmgsxnkjzkde\"],\"subResource\":\"AzureBackup_secondary\"},{\"requiredZoneNames\":[\"opwi\",\"ighxpk\"],\"subResource\":\"AzureBackup_secondary\"}]},\"type\":\"baiuebbaumny\"}")
+            "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"wjue\"],\"subResource\":\"AzureSiteRecovery\"},{\"requiredZoneNames\":[\"cdytdxw\",\"txnrjaw\",\"qwgxhniskx\",\"bkpyc\"],\"subResource\":\"AzureBackup\"},{\"requiredZoneNames\":[\"dnhjdauwhvylw\",\"btdhxujznbm\"],\"subResource\":\"AzureSiteRecovery\"},{\"requiredZoneNames\":[\"przqlveu\"],\"subResource\":\"AzureBackup_secondary\"}]},\"type\":\"pjmkhfxobbc\"}")
             .toObject(CapabilitiesResponseInner.class);
-        Assertions.assertEquals("baiuebbaumny", model.type());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY,
+        Assertions.assertEquals("pjmkhfxobbc", model.type());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY,
             model.properties().dnsZones().get(0).subResource());
-        Assertions.assertEquals("sxqu", model.properties().dnsZones().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("wjue", model.properties().dnsZones().get(0).requiredZoneNames().get(0));
     }
 }

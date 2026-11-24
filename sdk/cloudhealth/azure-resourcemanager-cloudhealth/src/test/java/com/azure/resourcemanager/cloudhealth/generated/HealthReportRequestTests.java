@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportEvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
 import com.azure.resourcemanager.cloudhealth.models.HealthState;
@@ -16,44 +17,48 @@ public final class HealthReportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthReportRequest model = BinaryData.fromString(
-            "{\"signalName\":\"zhonnxkrlgnyhmo\",\"healthState\":\"Degraded\",\"value\":32.143655005418495,\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":99.30510722271345},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":61.33080447591852}},\"expiresInMinutes\":270818491,\"additionalContext\":\"hqxvcxgfrpdsofbs\"}")
+            "{\"signalName\":\"vhmxtdrjfu\",\"healthState\":\"Degraded\",\"value\":8.029576619540357,\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":86.45937853448686,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":2.2461130053014755,\"sensitivity\":\"Medium\"}},\"expiresInMinutes\":2030279992,\"additionalContext\":\"aadraufactkahz\"}")
             .toObject(HealthReportRequest.class);
-        Assertions.assertEquals("zhonnxkrlgnyhmo", model.signalName());
+        Assertions.assertEquals("vhmxtdrjfu", model.signalName());
         Assertions.assertEquals(HealthState.DEGRADED, model.healthState());
-        Assertions.assertEquals(32.143655005418495D, model.value());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
-            model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(99.30510722271345, model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
-            model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(61.33080447591852, model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(270818491, model.expiresInMinutes());
-        Assertions.assertEquals("hqxvcxgfrpdsofbs", model.additionalContext());
+        Assertions.assertEquals(8.029576619540357D, model.value());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(86.45937853448686D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(2.2461130053014755D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            model.evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(2030279992, model.expiresInMinutes());
+        Assertions.assertEquals("aadraufactkahz", model.additionalContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthReportRequest model = new HealthReportRequest().withSignalName("zhonnxkrlgnyhmo")
+        HealthReportRequest model = new HealthReportRequest().withSignalName("vhmxtdrjfu")
             .withHealthState(HealthState.DEGRADED)
-            .withValue(32.143655005418495D)
+            .withValue(8.029576619540357D)
             .withEvaluationRules(new HealthReportEvaluationRule()
-                .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
-                    .withThreshold(99.30510722271345))
-                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
-                    .withThreshold(61.33080447591852)))
-            .withExpiresInMinutes(270818491)
-            .withAdditionalContext("hqxvcxgfrpdsofbs");
+                .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
+                    .withThreshold(86.45937853448686D)
+                    .withSensitivity(DynamicThresholdSensitivity.LOW))
+                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
+                    .withThreshold(2.2461130053014755D)
+                    .withSensitivity(DynamicThresholdSensitivity.MEDIUM)))
+            .withExpiresInMinutes(2030279992)
+            .withAdditionalContext("aadraufactkahz");
         model = BinaryData.fromObject(model).toObject(HealthReportRequest.class);
-        Assertions.assertEquals("zhonnxkrlgnyhmo", model.signalName());
+        Assertions.assertEquals("vhmxtdrjfu", model.signalName());
         Assertions.assertEquals(HealthState.DEGRADED, model.healthState());
-        Assertions.assertEquals(32.143655005418495D, model.value());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
-            model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(99.30510722271345, model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
-            model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(61.33080447591852, model.evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(270818491, model.expiresInMinutes());
-        Assertions.assertEquals("hqxvcxgfrpdsofbs", model.additionalContext());
+        Assertions.assertEquals(8.029576619540357D, model.value());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(86.45937853448686D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(2.2461130053014755D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            model.evaluationRules().unhealthyRule().sensitivity());
+        Assertions.assertEquals(2030279992, model.expiresInMinutes());
+        Assertions.assertEquals("aadraufactkahz", model.additionalContext());
     }
 }

@@ -142,8 +142,6 @@ public class SessionClientEvent implements JsonSerializable<SessionClientEvent> 
                     return ClientEventConversationItemRetrieve.fromJson(readerToUse.reset());
                 } else if ("output_audio_buffer.clear".equals(discriminatorValue)) {
                     return ClientEventOutputAudioBufferClear.fromJson(readerToUse.reset());
-                } else if ("rtc.call.sdp.create".equals(discriminatorValue)) {
-                    return ClientEventRtcCallSdpCreate.fromJson(readerToUse.reset());
                 } else if ("session.update".equals(discriminatorValue)) {
                     return ClientEventSessionUpdate.fromJson(readerToUse.reset());
                 } else {

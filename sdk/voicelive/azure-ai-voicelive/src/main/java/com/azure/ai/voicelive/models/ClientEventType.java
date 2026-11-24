@@ -152,12 +152,6 @@ public final class ClientEventType extends ExpandableStringEnum<ClientEventType>
     public static final ClientEventType OUTPUT_AUDIO_BUFFER_CLEAR = fromString("output_audio_buffer.clear");
 
     /**
-     * Sent by the client to initiate a WebRTC session with an SDP offer.
-     */
-    @Generated
-    public static final ClientEventType RTC_CALL_SDP_CREATE = fromString("rtc.call.sdp.create");
-
-    /**
      * Streamed delta of input text content being appended to an item.
      */
     @Generated

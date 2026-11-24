@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportEvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
 import com.azure.resourcemanager.cloudhealth.models.HealthState;
@@ -33,17 +34,19 @@ public final class EntitiesIngestHealthReportWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.entities()
-            .ingestHealthReportWithResponse("egprhptil", "ucb", "qtgdqohmcwsl",
-                new HealthReportRequest().withSignalName("riz")
-                    .withHealthState(HealthState.UNHEALTHY)
-                    .withValue(90.17120772850518D)
+            .ingestHealthReportWithResponse("ljfp", "picrmnzhrgmqgjsx", "pqcbfrmbodthsq",
+                new HealthReportRequest().withSignalName("gvriibakclac")
+                    .withHealthState(HealthState.HEALTHY)
+                    .withValue(17.040125358959525D)
                     .withEvaluationRules(new HealthReportEvaluationRule()
-                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN_OR_EQUAL)
-                            .withThreshold(87.17075924415907))
-                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
-                            .withThreshold(96.48258129221558)))
-                    .withExpiresInMinutes(246965203)
-                    .withAdditionalContext("zmizakakan"),
+                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                            .withThreshold(7.994147397942275D)
+                            .withSensitivity(DynamicThresholdSensitivity.HIGH))
+                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
+                            .withThreshold(34.26032922017384D)
+                            .withSensitivity(DynamicThresholdSensitivity.MEDIUM)))
+                    .withExpiresInMinutes(800283877)
+                    .withAdditionalContext("fz"),
                 com.azure.core.util.Context.NONE);
 
     }

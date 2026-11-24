@@ -4,6 +4,6 @@
 
 /**
  * Package containing the service clients for Network.
- * APIs to manage web application firewall rules.
+ * APIs to manage Microsoft Azure network resources.
  */
 package com.azure.resourcemanager.network.fluent;

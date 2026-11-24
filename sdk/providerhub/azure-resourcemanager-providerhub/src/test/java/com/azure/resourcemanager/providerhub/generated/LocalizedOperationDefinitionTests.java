@@ -21,6 +21,7 @@ import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDef
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionPl;
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionPt;
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionPtBR;
+import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionQpsPloc;
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionRu;
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionSv;
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDisplayDefinitionZhHans;
@@ -33,241 +34,254 @@ public final class LocalizedOperationDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocalizedOperationDefinition model = BinaryData.fromString(
-            "{\"name\":\"ccelve\",\"isDataAction\":false,\"origin\":\"User\",\"display\":{\"default\":{\"provider\":\"lmfeokerq\",\"resource\":\"kyhkobopg\",\"operation\":\"edkowepbqpcrfk\",\"description\":\"wccsnjvcdwxlpqek\"},\"en\":{\"provider\":\"nkhtjsyingw\",\"resource\":\"qatmtdhtmdvy\",\"operation\":\"gikdgsz\",\"description\":\"w\"},\"cs\":{\"provider\":\"irryuzhlh\",\"resource\":\"joqrvqqaatj\",\"operation\":\"nrvgoupmfiibfgg\",\"description\":\"ioolvrwxkvtkkgll\"},\"de\":{\"provider\":\"jygvjayvbl\",\"resource\":\"hvkzuh\",\"operation\":\"xvvy\",\"description\":\"gsopbyrqufegxu\"},\"es\":{\"provider\":\"zfbn\",\"resource\":\"lmctlpd\",\"operation\":\"gitvg\",\"description\":\"mhrixkwmyijejve\"},\"fr\":{\"provider\":\"hbpnaixexccbd\",\"resource\":\"eaxhcexdrrvqahqk\",\"operation\":\"htpwij\",\"description\":\"hyjsvfycx\"},\"hu\":{\"provider\":\"fvoow\",\"resource\":\"rvmtgjq\",\"operation\":\"pyostronzmyhgfi\",\"description\":\"nsxkmcwaekrrjr\"},\"it\":{\"provider\":\"fxtsgum\",\"resource\":\"jglikkxwslolb\",\"operation\":\"pvuzlmv\",\"description\":\"elfk\"},\"ja\":{\"provider\":\"plcrpwjxeznoig\",\"resource\":\"rnjwmw\",\"operation\":\"pn\",\"description\":\"saz\"},\"ko\":{\"provider\":\"joqkagfhsxt\",\"resource\":\"augzxnfaazpxdtn\",\"operation\":\"dm\",\"description\":\"qjjlwuen\"},\"nl\":{\"provider\":\"kpyouaibrebqaay\",\"resource\":\"j\",\"operation\":\"ixqtn\",\"description\":\"ttezlw\"},\"pl\":{\"provider\":\"fiakpjpqqm\",\"resource\":\"edltmmjihyeozp\",\"operation\":\"vwau\",\"description\":\"qncygupkvi\"},\"ptBR\":{\"provider\":\"dscwxqupevzhf\",\"resource\":\"totxhojujb\",\"operation\":\"pelmcuvhixbjxyf\",\"description\":\"n\"},\"ptPT\":{\"provider\":\"r\",\"resource\":\"ool\",\"operation\":\"ttpkiwkkbnujrywv\",\"description\":\"y\"},\"ru\":{\"provider\":\"fpncurdo\",\"resource\":\"wiithtywub\",\"operation\":\"cbihwqk\",\"description\":\"fdntwjchrdgoih\"},\"sv\":{\"provider\":\"mwctondzjluudfd\",\"resource\":\"wggytsbwtovvt\",\"operation\":\"seinqfiuf\",\"description\":\"qknp\"},\"zhHans\":{\"provider\":\"gnepttwqmsni\",\"resource\":\"fcdmqnrojlpijn\",\"operation\":\"rxfrddhc\",\"description\":\"atiz\"},\"zhHant\":{\"provider\":\"onasxifto\",\"resource\":\"qyzhf\",\"operation\":\"wesgogczh\",\"description\":\"nnxk\"}},\"actionType\":\"Internal\"}")
+            "{\"name\":\"drd\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"default\":{\"provider\":\"qqtch\",\"resource\":\"alm\",\"operation\":\"mtdaa\",\"description\":\"gdv\"},\"en\":{\"provider\":\"gpiohgwxrtfudxe\",\"resource\":\"xg\",\"operation\":\"qagvrvm\",\"description\":\"pkukghi\"},\"cs\":{\"provider\":\"blxgwimf\",\"resource\":\"jhfjxwm\",\"operation\":\"zk\",\"description\":\"foqreyfkzik\"},\"de\":{\"provider\":\"aw\",\"resource\":\"eaivxwczel\",\"operation\":\"c\",\"description\":\"r\"},\"es\":{\"provider\":\"sfeaenwabfat\",\"resource\":\"lddxbjhwua\",\"operation\":\"nozj\",\"description\":\"sphyoulpjrvxa\"},\"fr\":{\"provider\":\"rvimjwosytxitcsk\",\"resource\":\"cktqumiekkezzi\",\"operation\":\"hlyfjhdgqgg\",\"description\":\"bdunygaeqid\"},\"hu\":{\"provider\":\"fatpxllrxcyjmoa\",\"resource\":\"su\",\"operation\":\"arm\",\"description\":\"wdmjsjqbjhhyx\"},\"it\":{\"provider\":\"wlycoduhpkxkg\",\"resource\":\"mareqnajxqugj\",\"operation\":\"ky\",\"description\":\"ubeddg\"},\"ja\":{\"provider\":\"ofwq\",\"resource\":\"zqalkrmnjijpx\",\"operation\":\"cqqudf\",\"description\":\"byxbaaabjy\"},\"ko\":{\"provider\":\"yffimrzrtuzqogs\",\"resource\":\"xnevfdnwn\",\"operation\":\"mewzsyyc\",\"description\":\"uzsoi\"},\"nl\":{\"provider\":\"ud\",\"resource\":\"frxtrthzvaytdwk\",\"operation\":\"brqubp\",\"description\":\"xhexiilivpdti\"},\"pl\":{\"provider\":\"q\",\"resource\":\"d\",\"operation\":\"oaxoruzfgsqu\",\"description\":\"fxrxxle\"},\"ptBR\":{\"provider\":\"ramxjezwlwnw\",\"resource\":\"uqlcvydy\",\"operation\":\"atdooaojkniod\",\"description\":\"oo\"},\"ptPT\":{\"provider\":\"wnujhemmsbvdk\",\"resource\":\"rodtjinfwjlfl\",\"operation\":\"kacjvefkdlfo\",\"description\":\"kggkfpa\"},\"ru\":{\"provider\":\"owpulpq\",\"resource\":\"lyls\",\"operation\":\"xkqjnsjervt\",\"description\":\"agxsdszuemps\"},\"sv\":{\"provider\":\"kfzbeyvpnqicvi\",\"resource\":\"v\",\"operation\":\"jjxd\",\"description\":\"rbuukzclewyhmlwp\"},\"zhHans\":{\"provider\":\"tzpofncckwyfzq\",\"resource\":\"hxx\",\"operation\":\"uyqaxzfeqztppr\",\"description\":\"o\"},\"zhHant\":{\"provider\":\"or\",\"resource\":\"altol\",\"operation\":\"ncwsob\",\"description\":\"wcsdbnwdcfhucq\"},\"qpsPloc\":{\"provider\":\"fuvglsbjjca\",\"resource\":\"vxb\",\"operation\":\"t\",\"description\":\"udutnco\"}},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"dataxqtvcofu\\\"\"}")
             .toObject(LocalizedOperationDefinition.class);
-        Assertions.assertEquals("ccelve", model.name());
-        Assertions.assertFalse(model.isDataAction());
+        Assertions.assertEquals("drd", model.name());
+        Assertions.assertTrue(model.isDataAction());
         Assertions.assertEquals(OperationOrigins.USER, model.origin());
-        Assertions.assertEquals("lmfeokerq", model.display().defaultProperty().provider());
-        Assertions.assertEquals("kyhkobopg", model.display().defaultProperty().resource());
-        Assertions.assertEquals("edkowepbqpcrfk", model.display().defaultProperty().operation());
-        Assertions.assertEquals("wccsnjvcdwxlpqek", model.display().defaultProperty().description());
-        Assertions.assertEquals("nkhtjsyingw", model.display().en().provider());
-        Assertions.assertEquals("qatmtdhtmdvy", model.display().en().resource());
-        Assertions.assertEquals("gikdgsz", model.display().en().operation());
-        Assertions.assertEquals("w", model.display().en().description());
-        Assertions.assertEquals("irryuzhlh", model.display().cs().provider());
-        Assertions.assertEquals("joqrvqqaatj", model.display().cs().resource());
-        Assertions.assertEquals("nrvgoupmfiibfgg", model.display().cs().operation());
-        Assertions.assertEquals("ioolvrwxkvtkkgll", model.display().cs().description());
-        Assertions.assertEquals("jygvjayvbl", model.display().de().provider());
-        Assertions.assertEquals("hvkzuh", model.display().de().resource());
-        Assertions.assertEquals("xvvy", model.display().de().operation());
-        Assertions.assertEquals("gsopbyrqufegxu", model.display().de().description());
-        Assertions.assertEquals("zfbn", model.display().es().provider());
-        Assertions.assertEquals("lmctlpd", model.display().es().resource());
-        Assertions.assertEquals("gitvg", model.display().es().operation());
-        Assertions.assertEquals("mhrixkwmyijejve", model.display().es().description());
-        Assertions.assertEquals("hbpnaixexccbd", model.display().fr().provider());
-        Assertions.assertEquals("eaxhcexdrrvqahqk", model.display().fr().resource());
-        Assertions.assertEquals("htpwij", model.display().fr().operation());
-        Assertions.assertEquals("hyjsvfycx", model.display().fr().description());
-        Assertions.assertEquals("fvoow", model.display().hu().provider());
-        Assertions.assertEquals("rvmtgjq", model.display().hu().resource());
-        Assertions.assertEquals("pyostronzmyhgfi", model.display().hu().operation());
-        Assertions.assertEquals("nsxkmcwaekrrjr", model.display().hu().description());
-        Assertions.assertEquals("fxtsgum", model.display().it().provider());
-        Assertions.assertEquals("jglikkxwslolb", model.display().it().resource());
-        Assertions.assertEquals("pvuzlmv", model.display().it().operation());
-        Assertions.assertEquals("elfk", model.display().it().description());
-        Assertions.assertEquals("plcrpwjxeznoig", model.display().ja().provider());
-        Assertions.assertEquals("rnjwmw", model.display().ja().resource());
-        Assertions.assertEquals("pn", model.display().ja().operation());
-        Assertions.assertEquals("saz", model.display().ja().description());
-        Assertions.assertEquals("joqkagfhsxt", model.display().ko().provider());
-        Assertions.assertEquals("augzxnfaazpxdtn", model.display().ko().resource());
-        Assertions.assertEquals("dm", model.display().ko().operation());
-        Assertions.assertEquals("qjjlwuen", model.display().ko().description());
-        Assertions.assertEquals("kpyouaibrebqaay", model.display().nl().provider());
-        Assertions.assertEquals("j", model.display().nl().resource());
-        Assertions.assertEquals("ixqtn", model.display().nl().operation());
-        Assertions.assertEquals("ttezlw", model.display().nl().description());
-        Assertions.assertEquals("fiakpjpqqm", model.display().pl().provider());
-        Assertions.assertEquals("edltmmjihyeozp", model.display().pl().resource());
-        Assertions.assertEquals("vwau", model.display().pl().operation());
-        Assertions.assertEquals("qncygupkvi", model.display().pl().description());
-        Assertions.assertEquals("dscwxqupevzhf", model.display().ptBR().provider());
-        Assertions.assertEquals("totxhojujb", model.display().ptBR().resource());
-        Assertions.assertEquals("pelmcuvhixbjxyf", model.display().ptBR().operation());
-        Assertions.assertEquals("n", model.display().ptBR().description());
-        Assertions.assertEquals("r", model.display().pt().provider());
-        Assertions.assertEquals("ool", model.display().pt().resource());
-        Assertions.assertEquals("ttpkiwkkbnujrywv", model.display().pt().operation());
-        Assertions.assertEquals("y", model.display().pt().description());
-        Assertions.assertEquals("fpncurdo", model.display().ru().provider());
-        Assertions.assertEquals("wiithtywub", model.display().ru().resource());
-        Assertions.assertEquals("cbihwqk", model.display().ru().operation());
-        Assertions.assertEquals("fdntwjchrdgoih", model.display().ru().description());
-        Assertions.assertEquals("mwctondzjluudfd", model.display().sv().provider());
-        Assertions.assertEquals("wggytsbwtovvt", model.display().sv().resource());
-        Assertions.assertEquals("seinqfiuf", model.display().sv().operation());
-        Assertions.assertEquals("qknp", model.display().sv().description());
-        Assertions.assertEquals("gnepttwqmsni", model.display().zhHans().provider());
-        Assertions.assertEquals("fcdmqnrojlpijn", model.display().zhHans().resource());
-        Assertions.assertEquals("rxfrddhc", model.display().zhHans().operation());
-        Assertions.assertEquals("atiz", model.display().zhHans().description());
-        Assertions.assertEquals("onasxifto", model.display().zhHant().provider());
-        Assertions.assertEquals("qyzhf", model.display().zhHant().resource());
-        Assertions.assertEquals("wesgogczh", model.display().zhHant().operation());
-        Assertions.assertEquals("nnxk", model.display().zhHant().description());
-        Assertions.assertEquals(OperationActionType.INTERNAL, model.actionType());
+        Assertions.assertEquals("qqtch", model.display().defaultProperty().provider());
+        Assertions.assertEquals("alm", model.display().defaultProperty().resource());
+        Assertions.assertEquals("mtdaa", model.display().defaultProperty().operation());
+        Assertions.assertEquals("gdv", model.display().defaultProperty().description());
+        Assertions.assertEquals("gpiohgwxrtfudxe", model.display().en().provider());
+        Assertions.assertEquals("xg", model.display().en().resource());
+        Assertions.assertEquals("qagvrvm", model.display().en().operation());
+        Assertions.assertEquals("pkukghi", model.display().en().description());
+        Assertions.assertEquals("blxgwimf", model.display().cs().provider());
+        Assertions.assertEquals("jhfjxwm", model.display().cs().resource());
+        Assertions.assertEquals("zk", model.display().cs().operation());
+        Assertions.assertEquals("foqreyfkzik", model.display().cs().description());
+        Assertions.assertEquals("aw", model.display().de().provider());
+        Assertions.assertEquals("eaivxwczel", model.display().de().resource());
+        Assertions.assertEquals("c", model.display().de().operation());
+        Assertions.assertEquals("r", model.display().de().description());
+        Assertions.assertEquals("sfeaenwabfat", model.display().es().provider());
+        Assertions.assertEquals("lddxbjhwua", model.display().es().resource());
+        Assertions.assertEquals("nozj", model.display().es().operation());
+        Assertions.assertEquals("sphyoulpjrvxa", model.display().es().description());
+        Assertions.assertEquals("rvimjwosytxitcsk", model.display().fr().provider());
+        Assertions.assertEquals("cktqumiekkezzi", model.display().fr().resource());
+        Assertions.assertEquals("hlyfjhdgqgg", model.display().fr().operation());
+        Assertions.assertEquals("bdunygaeqid", model.display().fr().description());
+        Assertions.assertEquals("fatpxllrxcyjmoa", model.display().hu().provider());
+        Assertions.assertEquals("su", model.display().hu().resource());
+        Assertions.assertEquals("arm", model.display().hu().operation());
+        Assertions.assertEquals("wdmjsjqbjhhyx", model.display().hu().description());
+        Assertions.assertEquals("wlycoduhpkxkg", model.display().it().provider());
+        Assertions.assertEquals("mareqnajxqugj", model.display().it().resource());
+        Assertions.assertEquals("ky", model.display().it().operation());
+        Assertions.assertEquals("ubeddg", model.display().it().description());
+        Assertions.assertEquals("ofwq", model.display().ja().provider());
+        Assertions.assertEquals("zqalkrmnjijpx", model.display().ja().resource());
+        Assertions.assertEquals("cqqudf", model.display().ja().operation());
+        Assertions.assertEquals("byxbaaabjy", model.display().ja().description());
+        Assertions.assertEquals("yffimrzrtuzqogs", model.display().ko().provider());
+        Assertions.assertEquals("xnevfdnwn", model.display().ko().resource());
+        Assertions.assertEquals("mewzsyyc", model.display().ko().operation());
+        Assertions.assertEquals("uzsoi", model.display().ko().description());
+        Assertions.assertEquals("ud", model.display().nl().provider());
+        Assertions.assertEquals("frxtrthzvaytdwk", model.display().nl().resource());
+        Assertions.assertEquals("brqubp", model.display().nl().operation());
+        Assertions.assertEquals("xhexiilivpdti", model.display().nl().description());
+        Assertions.assertEquals("q", model.display().pl().provider());
+        Assertions.assertEquals("d", model.display().pl().resource());
+        Assertions.assertEquals("oaxoruzfgsqu", model.display().pl().operation());
+        Assertions.assertEquals("fxrxxle", model.display().pl().description());
+        Assertions.assertEquals("ramxjezwlwnw", model.display().ptBR().provider());
+        Assertions.assertEquals("uqlcvydy", model.display().ptBR().resource());
+        Assertions.assertEquals("atdooaojkniod", model.display().ptBR().operation());
+        Assertions.assertEquals("oo", model.display().ptBR().description());
+        Assertions.assertEquals("wnujhemmsbvdk", model.display().pt().provider());
+        Assertions.assertEquals("rodtjinfwjlfl", model.display().pt().resource());
+        Assertions.assertEquals("kacjvefkdlfo", model.display().pt().operation());
+        Assertions.assertEquals("kggkfpa", model.display().pt().description());
+        Assertions.assertEquals("owpulpq", model.display().ru().provider());
+        Assertions.assertEquals("lyls", model.display().ru().resource());
+        Assertions.assertEquals("xkqjnsjervt", model.display().ru().operation());
+        Assertions.assertEquals("agxsdszuemps", model.display().ru().description());
+        Assertions.assertEquals("kfzbeyvpnqicvi", model.display().sv().provider());
+        Assertions.assertEquals("v", model.display().sv().resource());
+        Assertions.assertEquals("jjxd", model.display().sv().operation());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.display().sv().description());
+        Assertions.assertEquals("tzpofncckwyfzq", model.display().zhHans().provider());
+        Assertions.assertEquals("hxx", model.display().zhHans().resource());
+        Assertions.assertEquals("uyqaxzfeqztppr", model.display().zhHans().operation());
+        Assertions.assertEquals("o", model.display().zhHans().description());
+        Assertions.assertEquals("or", model.display().zhHant().provider());
+        Assertions.assertEquals("altol", model.display().zhHant().resource());
+        Assertions.assertEquals("ncwsob", model.display().zhHant().operation());
+        Assertions.assertEquals("wcsdbnwdcfhucq", model.display().zhHant().description());
+        Assertions.assertEquals("fuvglsbjjca", model.display().qpsPloc().provider());
+        Assertions.assertEquals("vxb", model.display().qpsPloc().resource());
+        Assertions.assertEquals("t", model.display().qpsPloc().operation());
+        Assertions.assertEquals("udutnco", model.display().qpsPloc().description());
+        Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, model.actionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalizedOperationDefinition model = new LocalizedOperationDefinition().withName("ccelve")
-            .withIsDataAction(false)
+        LocalizedOperationDefinition model = new LocalizedOperationDefinition().withName("drd")
+            .withIsDataAction(true)
             .withOrigin(OperationOrigins.USER)
             .withDisplay(new LocalizedOperationDefinitionDisplay()
-                .withDefaultProperty(new LocalizedOperationDisplayDefinitionDefault().withProvider("lmfeokerq")
-                    .withResource("kyhkobopg")
-                    .withOperation("edkowepbqpcrfk")
-                    .withDescription("wccsnjvcdwxlpqek"))
-                .withEn(new LocalizedOperationDisplayDefinitionEn().withProvider("nkhtjsyingw")
-                    .withResource("qatmtdhtmdvy")
-                    .withOperation("gikdgsz")
-                    .withDescription("w"))
-                .withCs(new LocalizedOperationDisplayDefinitionCs().withProvider("irryuzhlh")
-                    .withResource("joqrvqqaatj")
-                    .withOperation("nrvgoupmfiibfgg")
-                    .withDescription("ioolvrwxkvtkkgll"))
-                .withDe(new LocalizedOperationDisplayDefinitionDe().withProvider("jygvjayvbl")
-                    .withResource("hvkzuh")
-                    .withOperation("xvvy")
-                    .withDescription("gsopbyrqufegxu"))
-                .withEs(new LocalizedOperationDisplayDefinitionEs().withProvider("zfbn")
-                    .withResource("lmctlpd")
-                    .withOperation("gitvg")
-                    .withDescription("mhrixkwmyijejve"))
-                .withFr(new LocalizedOperationDisplayDefinitionFr().withProvider("hbpnaixexccbd")
-                    .withResource("eaxhcexdrrvqahqk")
-                    .withOperation("htpwij")
-                    .withDescription("hyjsvfycx"))
-                .withHu(new LocalizedOperationDisplayDefinitionHu().withProvider("fvoow")
-                    .withResource("rvmtgjq")
-                    .withOperation("pyostronzmyhgfi")
-                    .withDescription("nsxkmcwaekrrjr"))
-                .withIt(new LocalizedOperationDisplayDefinitionIt().withProvider("fxtsgum")
-                    .withResource("jglikkxwslolb")
-                    .withOperation("pvuzlmv")
-                    .withDescription("elfk"))
-                .withJa(new LocalizedOperationDisplayDefinitionJa().withProvider("plcrpwjxeznoig")
-                    .withResource("rnjwmw")
-                    .withOperation("pn")
-                    .withDescription("saz"))
-                .withKo(new LocalizedOperationDisplayDefinitionKo().withProvider("joqkagfhsxt")
-                    .withResource("augzxnfaazpxdtn")
-                    .withOperation("dm")
-                    .withDescription("qjjlwuen"))
-                .withNl(new LocalizedOperationDisplayDefinitionNl().withProvider("kpyouaibrebqaay")
-                    .withResource("j")
-                    .withOperation("ixqtn")
-                    .withDescription("ttezlw"))
-                .withPl(new LocalizedOperationDisplayDefinitionPl().withProvider("fiakpjpqqm")
-                    .withResource("edltmmjihyeozp")
-                    .withOperation("vwau")
-                    .withDescription("qncygupkvi"))
-                .withPtBR(new LocalizedOperationDisplayDefinitionPtBR().withProvider("dscwxqupevzhf")
-                    .withResource("totxhojujb")
-                    .withOperation("pelmcuvhixbjxyf")
-                    .withDescription("n"))
-                .withPt(new LocalizedOperationDisplayDefinitionPt().withProvider("r")
-                    .withResource("ool")
-                    .withOperation("ttpkiwkkbnujrywv")
-                    .withDescription("y"))
-                .withRu(new LocalizedOperationDisplayDefinitionRu().withProvider("fpncurdo")
-                    .withResource("wiithtywub")
-                    .withOperation("cbihwqk")
-                    .withDescription("fdntwjchrdgoih"))
-                .withSv(new LocalizedOperationDisplayDefinitionSv().withProvider("mwctondzjluudfd")
-                    .withResource("wggytsbwtovvt")
-                    .withOperation("seinqfiuf")
-                    .withDescription("qknp"))
-                .withZhHans(new LocalizedOperationDisplayDefinitionZhHans().withProvider("gnepttwqmsni")
-                    .withResource("fcdmqnrojlpijn")
-                    .withOperation("rxfrddhc")
-                    .withDescription("atiz"))
-                .withZhHant(new LocalizedOperationDisplayDefinitionZhHant().withProvider("onasxifto")
-                    .withResource("qyzhf")
-                    .withOperation("wesgogczh")
-                    .withDescription("nnxk")))
-            .withActionType(OperationActionType.INTERNAL);
+                .withDefaultProperty(new LocalizedOperationDisplayDefinitionDefault().withProvider("qqtch")
+                    .withResource("alm")
+                    .withOperation("mtdaa")
+                    .withDescription("gdv"))
+                .withEn(new LocalizedOperationDisplayDefinitionEn().withProvider("gpiohgwxrtfudxe")
+                    .withResource("xg")
+                    .withOperation("qagvrvm")
+                    .withDescription("pkukghi"))
+                .withCs(new LocalizedOperationDisplayDefinitionCs().withProvider("blxgwimf")
+                    .withResource("jhfjxwm")
+                    .withOperation("zk")
+                    .withDescription("foqreyfkzik"))
+                .withDe(new LocalizedOperationDisplayDefinitionDe().withProvider("aw")
+                    .withResource("eaivxwczel")
+                    .withOperation("c")
+                    .withDescription("r"))
+                .withEs(new LocalizedOperationDisplayDefinitionEs().withProvider("sfeaenwabfat")
+                    .withResource("lddxbjhwua")
+                    .withOperation("nozj")
+                    .withDescription("sphyoulpjrvxa"))
+                .withFr(new LocalizedOperationDisplayDefinitionFr().withProvider("rvimjwosytxitcsk")
+                    .withResource("cktqumiekkezzi")
+                    .withOperation("hlyfjhdgqgg")
+                    .withDescription("bdunygaeqid"))
+                .withHu(new LocalizedOperationDisplayDefinitionHu().withProvider("fatpxllrxcyjmoa")
+                    .withResource("su")
+                    .withOperation("arm")
+                    .withDescription("wdmjsjqbjhhyx"))
+                .withIt(new LocalizedOperationDisplayDefinitionIt().withProvider("wlycoduhpkxkg")
+                    .withResource("mareqnajxqugj")
+                    .withOperation("ky")
+                    .withDescription("ubeddg"))
+                .withJa(new LocalizedOperationDisplayDefinitionJa().withProvider("ofwq")
+                    .withResource("zqalkrmnjijpx")
+                    .withOperation("cqqudf")
+                    .withDescription("byxbaaabjy"))
+                .withKo(new LocalizedOperationDisplayDefinitionKo().withProvider("yffimrzrtuzqogs")
+                    .withResource("xnevfdnwn")
+                    .withOperation("mewzsyyc")
+                    .withDescription("uzsoi"))
+                .withNl(new LocalizedOperationDisplayDefinitionNl().withProvider("ud")
+                    .withResource("frxtrthzvaytdwk")
+                    .withOperation("brqubp")
+                    .withDescription("xhexiilivpdti"))
+                .withPl(new LocalizedOperationDisplayDefinitionPl().withProvider("q")
+                    .withResource("d")
+                    .withOperation("oaxoruzfgsqu")
+                    .withDescription("fxrxxle"))
+                .withPtBR(new LocalizedOperationDisplayDefinitionPtBR().withProvider("ramxjezwlwnw")
+                    .withResource("uqlcvydy")
+                    .withOperation("atdooaojkniod")
+                    .withDescription("oo"))
+                .withPt(new LocalizedOperationDisplayDefinitionPt().withProvider("wnujhemmsbvdk")
+                    .withResource("rodtjinfwjlfl")
+                    .withOperation("kacjvefkdlfo")
+                    .withDescription("kggkfpa"))
+                .withRu(new LocalizedOperationDisplayDefinitionRu().withProvider("owpulpq")
+                    .withResource("lyls")
+                    .withOperation("xkqjnsjervt")
+                    .withDescription("agxsdszuemps"))
+                .withSv(new LocalizedOperationDisplayDefinitionSv().withProvider("kfzbeyvpnqicvi")
+                    .withResource("v")
+                    .withOperation("jjxd")
+                    .withDescription("rbuukzclewyhmlwp"))
+                .withZhHans(new LocalizedOperationDisplayDefinitionZhHans().withProvider("tzpofncckwyfzq")
+                    .withResource("hxx")
+                    .withOperation("uyqaxzfeqztppr")
+                    .withDescription("o"))
+                .withZhHant(new LocalizedOperationDisplayDefinitionZhHant().withProvider("or")
+                    .withResource("altol")
+                    .withOperation("ncwsob")
+                    .withDescription("wcsdbnwdcfhucq"))
+                .withQpsPloc(new LocalizedOperationDisplayDefinitionQpsPloc().withProvider("fuvglsbjjca")
+                    .withResource("vxb")
+                    .withOperation("t")
+                    .withDescription("udutnco")))
+            .withActionType(OperationActionType.NOT_SPECIFIED)
+            .withProperties("\"dataxqtvcofu\"");
         model = BinaryData.fromObject(model).toObject(LocalizedOperationDefinition.class);
-        Assertions.assertEquals("ccelve", model.name());
-        Assertions.assertFalse(model.isDataAction());
+        Assertions.assertEquals("drd", model.name());
+        Assertions.assertTrue(model.isDataAction());
         Assertions.assertEquals(OperationOrigins.USER, model.origin());
-        Assertions.assertEquals("lmfeokerq", model.display().defaultProperty().provider());
-        Assertions.assertEquals("kyhkobopg", model.display().defaultProperty().resource());
-        Assertions.assertEquals("edkowepbqpcrfk", model.display().defaultProperty().operation());
-        Assertions.assertEquals("wccsnjvcdwxlpqek", model.display().defaultProperty().description());
-        Assertions.assertEquals("nkhtjsyingw", model.display().en().provider());
-        Assertions.assertEquals("qatmtdhtmdvy", model.display().en().resource());
-        Assertions.assertEquals("gikdgsz", model.display().en().operation());
-        Assertions.assertEquals("w", model.display().en().description());
-        Assertions.assertEquals("irryuzhlh", model.display().cs().provider());
-        Assertions.assertEquals("joqrvqqaatj", model.display().cs().resource());
-        Assertions.assertEquals("nrvgoupmfiibfgg", model.display().cs().operation());
-        Assertions.assertEquals("ioolvrwxkvtkkgll", model.display().cs().description());
-        Assertions.assertEquals("jygvjayvbl", model.display().de().provider());
-        Assertions.assertEquals("hvkzuh", model.display().de().resource());
-        Assertions.assertEquals("xvvy", model.display().de().operation());
-        Assertions.assertEquals("gsopbyrqufegxu", model.display().de().description());
-        Assertions.assertEquals("zfbn", model.display().es().provider());
-        Assertions.assertEquals("lmctlpd", model.display().es().resource());
-        Assertions.assertEquals("gitvg", model.display().es().operation());
-        Assertions.assertEquals("mhrixkwmyijejve", model.display().es().description());
-        Assertions.assertEquals("hbpnaixexccbd", model.display().fr().provider());
-        Assertions.assertEquals("eaxhcexdrrvqahqk", model.display().fr().resource());
-        Assertions.assertEquals("htpwij", model.display().fr().operation());
-        Assertions.assertEquals("hyjsvfycx", model.display().fr().description());
-        Assertions.assertEquals("fvoow", model.display().hu().provider());
-        Assertions.assertEquals("rvmtgjq", model.display().hu().resource());
-        Assertions.assertEquals("pyostronzmyhgfi", model.display().hu().operation());
-        Assertions.assertEquals("nsxkmcwaekrrjr", model.display().hu().description());
-        Assertions.assertEquals("fxtsgum", model.display().it().provider());
-        Assertions.assertEquals("jglikkxwslolb", model.display().it().resource());
-        Assertions.assertEquals("pvuzlmv", model.display().it().operation());
-        Assertions.assertEquals("elfk", model.display().it().description());
-        Assertions.assertEquals("plcrpwjxeznoig", model.display().ja().provider());
-        Assertions.assertEquals("rnjwmw", model.display().ja().resource());
-        Assertions.assertEquals("pn", model.display().ja().operation());
-        Assertions.assertEquals("saz", model.display().ja().description());
-        Assertions.assertEquals("joqkagfhsxt", model.display().ko().provider());
-        Assertions.assertEquals("augzxnfaazpxdtn", model.display().ko().resource());
-        Assertions.assertEquals("dm", model.display().ko().operation());
-        Assertions.assertEquals("qjjlwuen", model.display().ko().description());
-        Assertions.assertEquals("kpyouaibrebqaay", model.display().nl().provider());
-        Assertions.assertEquals("j", model.display().nl().resource());
-        Assertions.assertEquals("ixqtn", model.display().nl().operation());
-        Assertions.assertEquals("ttezlw", model.display().nl().description());
-        Assertions.assertEquals("fiakpjpqqm", model.display().pl().provider());
-        Assertions.assertEquals("edltmmjihyeozp", model.display().pl().resource());
-        Assertions.assertEquals("vwau", model.display().pl().operation());
-        Assertions.assertEquals("qncygupkvi", model.display().pl().description());
-        Assertions.assertEquals("dscwxqupevzhf", model.display().ptBR().provider());
-        Assertions.assertEquals("totxhojujb", model.display().ptBR().resource());
-        Assertions.assertEquals("pelmcuvhixbjxyf", model.display().ptBR().operation());
-        Assertions.assertEquals("n", model.display().ptBR().description());
-        Assertions.assertEquals("r", model.display().pt().provider());
-        Assertions.assertEquals("ool", model.display().pt().resource());
-        Assertions.assertEquals("ttpkiwkkbnujrywv", model.display().pt().operation());
-        Assertions.assertEquals("y", model.display().pt().description());
-        Assertions.assertEquals("fpncurdo", model.display().ru().provider());
-        Assertions.assertEquals("wiithtywub", model.display().ru().resource());
-        Assertions.assertEquals("cbihwqk", model.display().ru().operation());
-        Assertions.assertEquals("fdntwjchrdgoih", model.display().ru().description());
-        Assertions.assertEquals("mwctondzjluudfd", model.display().sv().provider());
-        Assertions.assertEquals("wggytsbwtovvt", model.display().sv().resource());
-        Assertions.assertEquals("seinqfiuf", model.display().sv().operation());
-        Assertions.assertEquals("qknp", model.display().sv().description());
-        Assertions.assertEquals("gnepttwqmsni", model.display().zhHans().provider());
-        Assertions.assertEquals("fcdmqnrojlpijn", model.display().zhHans().resource());
-        Assertions.assertEquals("rxfrddhc", model.display().zhHans().operation());
-        Assertions.assertEquals("atiz", model.display().zhHans().description());
-        Assertions.assertEquals("onasxifto", model.display().zhHant().provider());
-        Assertions.assertEquals("qyzhf", model.display().zhHant().resource());
-        Assertions.assertEquals("wesgogczh", model.display().zhHant().operation());
-        Assertions.assertEquals("nnxk", model.display().zhHant().description());
-        Assertions.assertEquals(OperationActionType.INTERNAL, model.actionType());
+        Assertions.assertEquals("qqtch", model.display().defaultProperty().provider());
+        Assertions.assertEquals("alm", model.display().defaultProperty().resource());
+        Assertions.assertEquals("mtdaa", model.display().defaultProperty().operation());
+        Assertions.assertEquals("gdv", model.display().defaultProperty().description());
+        Assertions.assertEquals("gpiohgwxrtfudxe", model.display().en().provider());
+        Assertions.assertEquals("xg", model.display().en().resource());
+        Assertions.assertEquals("qagvrvm", model.display().en().operation());
+        Assertions.assertEquals("pkukghi", model.display().en().description());
+        Assertions.assertEquals("blxgwimf", model.display().cs().provider());
+        Assertions.assertEquals("jhfjxwm", model.display().cs().resource());
+        Assertions.assertEquals("zk", model.display().cs().operation());
+        Assertions.assertEquals("foqreyfkzik", model.display().cs().description());
+        Assertions.assertEquals("aw", model.display().de().provider());
+        Assertions.assertEquals("eaivxwczel", model.display().de().resource());
+        Assertions.assertEquals("c", model.display().de().operation());
+        Assertions.assertEquals("r", model.display().de().description());
+        Assertions.assertEquals("sfeaenwabfat", model.display().es().provider());
+        Assertions.assertEquals("lddxbjhwua", model.display().es().resource());
+        Assertions.assertEquals("nozj", model.display().es().operation());
+        Assertions.assertEquals("sphyoulpjrvxa", model.display().es().description());
+        Assertions.assertEquals("rvimjwosytxitcsk", model.display().fr().provider());
+        Assertions.assertEquals("cktqumiekkezzi", model.display().fr().resource());
+        Assertions.assertEquals("hlyfjhdgqgg", model.display().fr().operation());
+        Assertions.assertEquals("bdunygaeqid", model.display().fr().description());
+        Assertions.assertEquals("fatpxllrxcyjmoa", model.display().hu().provider());
+        Assertions.assertEquals("su", model.display().hu().resource());
+        Assertions.assertEquals("arm", model.display().hu().operation());
+        Assertions.assertEquals("wdmjsjqbjhhyx", model.display().hu().description());
+        Assertions.assertEquals("wlycoduhpkxkg", model.display().it().provider());
+        Assertions.assertEquals("mareqnajxqugj", model.display().it().resource());
+        Assertions.assertEquals("ky", model.display().it().operation());
+        Assertions.assertEquals("ubeddg", model.display().it().description());
+        Assertions.assertEquals("ofwq", model.display().ja().provider());
+        Assertions.assertEquals("zqalkrmnjijpx", model.display().ja().resource());
+        Assertions.assertEquals("cqqudf", model.display().ja().operation());
+        Assertions.assertEquals("byxbaaabjy", model.display().ja().description());
+        Assertions.assertEquals("yffimrzrtuzqogs", model.display().ko().provider());
+        Assertions.assertEquals("xnevfdnwn", model.display().ko().resource());
+        Assertions.assertEquals("mewzsyyc", model.display().ko().operation());
+        Assertions.assertEquals("uzsoi", model.display().ko().description());
+        Assertions.assertEquals("ud", model.display().nl().provider());
+        Assertions.assertEquals("frxtrthzvaytdwk", model.display().nl().resource());
+        Assertions.assertEquals("brqubp", model.display().nl().operation());
+        Assertions.assertEquals("xhexiilivpdti", model.display().nl().description());
+        Assertions.assertEquals("q", model.display().pl().provider());
+        Assertions.assertEquals("d", model.display().pl().resource());
+        Assertions.assertEquals("oaxoruzfgsqu", model.display().pl().operation());
+        Assertions.assertEquals("fxrxxle", model.display().pl().description());
+        Assertions.assertEquals("ramxjezwlwnw", model.display().ptBR().provider());
+        Assertions.assertEquals("uqlcvydy", model.display().ptBR().resource());
+        Assertions.assertEquals("atdooaojkniod", model.display().ptBR().operation());
+        Assertions.assertEquals("oo", model.display().ptBR().description());
+        Assertions.assertEquals("wnujhemmsbvdk", model.display().pt().provider());
+        Assertions.assertEquals("rodtjinfwjlfl", model.display().pt().resource());
+        Assertions.assertEquals("kacjvefkdlfo", model.display().pt().operation());
+        Assertions.assertEquals("kggkfpa", model.display().pt().description());
+        Assertions.assertEquals("owpulpq", model.display().ru().provider());
+        Assertions.assertEquals("lyls", model.display().ru().resource());
+        Assertions.assertEquals("xkqjnsjervt", model.display().ru().operation());
+        Assertions.assertEquals("agxsdszuemps", model.display().ru().description());
+        Assertions.assertEquals("kfzbeyvpnqicvi", model.display().sv().provider());
+        Assertions.assertEquals("v", model.display().sv().resource());
+        Assertions.assertEquals("jjxd", model.display().sv().operation());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.display().sv().description());
+        Assertions.assertEquals("tzpofncckwyfzq", model.display().zhHans().provider());
+        Assertions.assertEquals("hxx", model.display().zhHans().resource());
+        Assertions.assertEquals("uyqaxzfeqztppr", model.display().zhHans().operation());
+        Assertions.assertEquals("o", model.display().zhHans().description());
+        Assertions.assertEquals("or", model.display().zhHant().provider());
+        Assertions.assertEquals("altol", model.display().zhHant().resource());
+        Assertions.assertEquals("ncwsob", model.display().zhHant().operation());
+        Assertions.assertEquals("wcsdbnwdcfhucq", model.display().zhHant().description());
+        Assertions.assertEquals("fuvglsbjjca", model.display().qpsPloc().provider());
+        Assertions.assertEquals("vxb", model.display().qpsPloc().resource());
+        Assertions.assertEquals("t", model.display().qpsPloc().operation());
+        Assertions.assertEquals("udutnco", model.display().qpsPloc().description());
+        Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, model.actionType());
     }
 }

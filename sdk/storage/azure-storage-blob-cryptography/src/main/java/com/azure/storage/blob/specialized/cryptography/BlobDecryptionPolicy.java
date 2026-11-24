@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
@@ -21,11 +22,15 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.COMP_QUERY_PARAMETER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_METADATA_HEADER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.LAYOUT_QUERY_PARAMETER_VALUE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.RANGE_HEADER;
 
 /**
@@ -75,6 +80,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (isGetLayoutRequest(context)) {
+            return next.process();
+        }
+
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
         String initialRangeHeader = requestHeaders.getValue(RANGE_HEADER);
 
@@ -109,8 +118,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
                     boolean padding = hasPadding(responseHeaders, encryptionData, encryptedRange);
 
+                    // Use the operation-scoped validator if one was installed (e.g. downloadContentWithResponse and
+                    // ranged downloads always set it up). Sharing it means a reliable-download ranged resume of this
+                    // same operation - which re-enters the pipeline through the range branch with the same context -
+                    // enforces one nonce scheme across the initial and resumed portions.
+                    CseV2NonceOrderValidator nonceValidator = CseV2NonceOrderValidator.fromContext(context);
+
                     Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
-                        encryptionData, httpResponse.getRequest().getUrl());
+                        encryptionData, httpResponse.getRequest().getUrl(), nonceValidator);
 
                     return Mono.just(new BlobDecryptionPolicy.DecryptedResponse(httpResponse, plainTextData));
                 } else {
@@ -125,6 +140,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             }
             EncryptionData encryptionData
                 = (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get();
+
+            // Shared across every chunk of this download so the CSEv2 nonce scheme is enforced consistently across the
+            // whole operation (partitioned downloadToFile / chunked openInputStream issue one ranged request per
+            // chunk). Set up once per operation alongside the encryption data.
+            CseV2NonceOrderValidator nonceValidator = CseV2NonceOrderValidator.fromContext(context);
 
             EncryptedBlobRange encryptedRange
                 = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(initialRangeHeader, encryptionData);
@@ -151,7 +171,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     boolean padding = hasPadding(httpResponse.getHeaders(), encryptionData, encryptedRange);
 
                     Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
-                        encryptionData, httpResponse.getRequest().getUrl());
+                        encryptionData, httpResponse.getRequest().getUrl(), nonceValidator);
 
                     return new DecryptedResponse(httpResponse, plainTextData);
                 } else {
@@ -163,6 +183,23 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private boolean isRangeRequest(String rangeHeader) {
         return rangeHeader != null;
+    }
+
+    private boolean isGetLayoutRequest(HttpPipelineCallContext context) {
+        if (context.getHttpRequest().getHttpMethod() != HttpMethod.GET) {
+            return false;
+        }
+
+        Iterator<Map.Entry<String, String>> queryParameters
+            = CoreUtils.parseQueryParameters(context.getHttpRequest().getUrl().getQuery());
+        while (queryParameters.hasNext()) {
+            Map.Entry<String, String> queryParameter = queryParameters.next();
+            if (COMP_QUERY_PARAMETER.equals(queryParameter.getKey())
+                && LAYOUT_QUERY_PARAMETER_VALUE.equals(queryParameter.getValue())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isEncryptedBlob(HttpPipelineCallContext context) {
@@ -195,8 +232,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     }
 
     private boolean isDownloadResponse(HttpResponse httpResponse) {
-        // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
-        // response
+        // Non-download GET operations such as getLayout bypass this policy before response processing.
         return httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null;
     }
 
@@ -207,10 +243,13 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param encryptedBlobRange A {@link EncryptedBlobRange} indicating the range to decrypt
      * @param padding Boolean indicating if the padding mode should be set or not.
      * @param encryptionData The {@link EncryptionData}
+     * @param nonceValidator The per-download-operation validator that enforces a single CSEv2 nonce scheme across all
+     * chunks. May be {@code null} (e.g. a full-blob single-shot download), in which case decryption uses a fresh
+     * per-call validator.
      * @return A Flux ByteBuffer that has been decrypted
      */
     Flux<ByteBuffer> decryptBlob(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange, boolean padding,
-        EncryptionData encryptionData, URL requestUri) {
+        EncryptionData encryptionData, URL requestUri, CseV2NonceOrderValidator nonceValidator) {
 
         String uriToLog = requestUri.getHost() + requestUri.getPath();
         // The number of bytes we have put into the Cipher so far.
@@ -218,7 +257,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         // The number of bytes that have been sent to the downstream so far.
         AtomicLong totalOutputBytes = new AtomicLong(0);
 
-        Decryptor decryptor = Decryptor.getDecryptor(keyResolver, keyWrapper, encryptionData);
+        Decryptor decryptor = Decryptor.getDecryptor(keyResolver, keyWrapper, encryptionData, nonceValidator);
         Flux<ByteBuffer> dataToTrim = decryptor.getKeyEncryptionKey()
             .flatMapMany(
                 key -> decryptor.decrypt(encryptedFlux, encryptedBlobRange, padding, uriToLog, totalInputBytes, key));

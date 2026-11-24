@@ -160,13 +160,14 @@ public interface FleetsClient
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
+     * @param body The parameters to provide for the current fleet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB FleetResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FleetResourceInner> updateAsync(String resourceGroupName, String fleetName);
+    Mono<FleetResourceInner> updateAsync(String resourceGroupName, String fleetName, FleetResourceUpdate body);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB Fleet.
@@ -189,13 +190,14 @@ public interface FleetsClient
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
+     * @param body The parameters to provide for the current fleet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB FleetResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FleetResourceInner update(String resourceGroupName, String fleetName);
+    FleetResourceInner update(String resourceGroupName, String fleetName, FleetResourceUpdate body);
 
     /**
      * Deletes an existing Azure Cosmos DB Fleet.

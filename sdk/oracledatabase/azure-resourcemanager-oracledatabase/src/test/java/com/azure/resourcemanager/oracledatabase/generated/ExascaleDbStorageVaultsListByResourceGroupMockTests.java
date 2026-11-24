@@ -22,7 +22,7 @@ public final class ExascaleDbStorageVaultsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":1465620035,\"description\":\"skkzpxvjnzdpvo\",\"displayName\":\"ojhpcnabxzfsn\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":983101769},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":104765582,\"totalSizeInGbs\":2107917494},\"timeZone\":\"ilmhivzkwwwnc\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"jlskzptjxulweu\",\"vmClusterCount\":585553981,\"ocid\":\"hxqlehmcgcjeinue\",\"ociUrl\":\"kamvfe\",\"exadataInfrastructureId\":\"qnttmbq\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"SMART_STORAGE\"]},\"zones\":[\"fokpysthhzagjfw\",\"yrl\",\"g\",\"nuzejgvkveb\"],\"location\":\"szllrzlsmmdqgmi\",\"tags\":{\"xtminklogxsvtzar\":\"imcqrh\",\"lpky\":\"zvqnsqktcmbjwzzo\"},\"id\":\"tglwkzpgajsqjc\",\"name\":\"mqbmfuvqarwz\",\"type\":\"uqrebluimmbwx\"}]}";
+            = "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":456584072,\"description\":\"pq\",\"displayName\":\"smjtgrqgdg\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":2101629033},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1763327979,\"totalSizeInGbs\":1364978166},\"timeZone\":\"csmknhwt\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"rvvmqfloygb\",\"vmClusterCount\":1086162181,\"ocid\":\"mgxdgdhpabgd\",\"ociUrl\":\"jddvjsaqw\",\"exadataInfrastructureId\":\"mmwllc\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"SMART_STORAGE\",\"BLOCK_STORAGE\"],\"isAutoscaleEnabled\":false,\"autoscaleLimitInGbs\":555638758},\"zones\":[\"excgjokjljnhvl\",\"jbekpeeksnbksdq\",\"jvyklxeslkhhust\"],\"location\":\"oqmavnwqjwgo\",\"tags\":{\"jbzten\":\"ejjjkxybwfdb\",\"us\":\"vkzykjtjknsxf\"},\"id\":\"cdp\",\"name\":\"upnqrmgjfb\",\"type\":\"kuwxeoiojfizfavk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,19 @@ public final class ExascaleDbStorageVaultsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ExascaleDbStorageVault> response
-            = manager.exascaleDbStorageVaults().listByResourceGroup("qvjcteoe", com.azure.core.util.Context.NONE);
+            = manager.exascaleDbStorageVaults().listByResourceGroup("vvruxwi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("szllrzlsmmdqgmi", response.iterator().next().location());
-        Assertions.assertEquals("imcqrh", response.iterator().next().tags().get("xtminklogxsvtzar"));
-        Assertions.assertEquals(1465620035, response.iterator().next().properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("skkzpxvjnzdpvo", response.iterator().next().properties().description());
-        Assertions.assertEquals("ojhpcnabxzfsn", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(983101769,
+        Assertions.assertEquals("oqmavnwqjwgo", response.iterator().next().location());
+        Assertions.assertEquals("ejjjkxybwfdb", response.iterator().next().tags().get("jbzten"));
+        Assertions.assertEquals(456584072, response.iterator().next().properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("pq", response.iterator().next().properties().description());
+        Assertions.assertEquals("smjtgrqgdg", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(2101629033,
             response.iterator().next().properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("ilmhivzkwwwnc", response.iterator().next().properties().timeZone());
-        Assertions.assertEquals("qnttmbq", response.iterator().next().properties().exadataInfrastructureId());
-        Assertions.assertEquals("fokpysthhzagjfw", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("csmknhwt", response.iterator().next().properties().timeZone());
+        Assertions.assertEquals("mmwllc", response.iterator().next().properties().exadataInfrastructureId());
+        Assertions.assertFalse(response.iterator().next().properties().isAutoscaleEnabled());
+        Assertions.assertEquals(555638758, response.iterator().next().properties().autoscaleLimitInGbs());
+        Assertions.assertEquals("excgjokjljnhvl", response.iterator().next().zones().get(0));
     }
 }

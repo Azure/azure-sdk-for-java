@@ -53,9 +53,9 @@ import com.azure.compute.batch.models.BatchNodeUserCreateParameters;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
-import com.azure.compute.batch.models.BatchPoolInfo;
+import com.azure.compute.batch.models.BatchPoolDetails;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
 import com.azure.compute.batch.models.BatchPoolUpdateParameters;
 import com.azure.compute.batch.models.BatchStartTask;
@@ -122,12 +122,12 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.create-job.creates-a-basic-job
         batchClient.createJob(
-            new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0), null);
+            new BatchJobCreateParameters("jobId", new BatchPoolDetails().setPoolId("poolId")).setPriority(0), null);
         // END: com.azure.compute.batch.create-job.creates-a-basic-job
 
         // BEGIN: com.azure.compute.batch.create-job.creates-a-basic-job-async
         batchAsyncClient.createJob(
-            new BatchJobCreateParameters("jobId", new BatchPoolInfo().setPoolId("poolId")).setPriority(0))
+            new BatchJobCreateParameters("jobId", new BatchPoolDetails().setPoolId("poolId")).setPriority(0))
             .subscribe(unused -> System.out.println("Job created successfully"));
         // END: com.azure.compute.batch.create-job.creates-a-basic-job-async
 
@@ -176,11 +176,11 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.list-pools.pool-list
 
         // BEGIN: com.azure.compute.batch.pool.delete-pool-simple
-        SyncPoller<BatchPool, Void> deletePoolPoller = batchClient.beginDeletePool("poolId");
+        SyncPoller<BatchPool, BatchPool> deletePoolPoller = batchClient.beginDeletePool("poolId");
         // END: com.azure.compute.batch.pool.delete-pool-simple
 
         // BEGIN: com.azure.compute.batch.pool.delete-pool-complex
-        SyncPoller<BatchPool, Void> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
+        SyncPoller<BatchPool, BatchPool> complexDeletePoolPoller = batchClient.beginDeletePool("poolId");
         PollResponse<BatchPool> finalDeletePoolResponse = complexDeletePoolPoller.waitForCompletion();
         // END: com.azure.compute.batch.pool.delete-pool-complex
 
@@ -235,7 +235,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.stop-resize-pool.stop-pool-resize
 
         // BEGIN: com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
-        BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
+        BatchPoolAutoScaleEnableParameters autoScaleParameters = new BatchPoolAutoScaleEnableParameters()
             .setAutoScaleEvaluationInterval(Duration.ofMinutes(6))
             .setAutoScaleFormula("$TargetDedicated = 1;");
 
@@ -272,7 +272,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.list-jobs.job-list
 
         // BEGIN: com.azure.compute.batch.delete-job.job-delete
-        SyncPoller<BatchJob, Void> deleteJobPoller = batchClient.beginDeleteJob("jobId");
+        SyncPoller<BatchJob, BatchJob> deleteJobPoller = batchClient.beginDeleteJob("jobId");
 
         PollResponse<BatchJob> initialDeleteJobResponse = deleteJobPoller.poll();
         if (initialDeleteJobResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
@@ -286,7 +286,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.replace-job.job-patch
         batchClient.replaceJob("jobId",
-            new BatchJob(new BatchPoolInfo().setPoolId("poolId")).setPriority(100)
+            new BatchJob(new BatchPoolDetails().setPoolId("poolId")).setPriority(100)
                 .setConstraints(
                     new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1)),
             null, null);
@@ -297,7 +297,7 @@ public final class ReadmeSamples {
             new BatchJobUpdateParameters().setPriority(100)
                 .setConstraints(
                     new BatchJobConstraints().setMaxWallClockTime(Duration.parse("PT1H")).setMaxTaskRetryCount(-1))
-                .setPoolInfo(new BatchPoolInfo().setPoolId("poolId")),
+                .setPoolInfo(new BatchPoolDetails().setPoolId("poolId")),
             null, null);
         // END: com.azure.compute.batch.update-job.job-update
 
@@ -395,7 +395,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
         batchClient.createJobSchedule(new BatchJobScheduleCreateParameters("jobScheduleId",
             new BatchJobScheduleConfiguration().setRecurrenceInterval(Duration.parse("PT5M")),
-            new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId"))), null);
+            new BatchJobSpecification(new BatchPoolDetails().setPoolId("poolId"))), null);
         // END: com.azure.compute.batch.create-job-schedule.creates-a-basic-job-schedule
 
         // BEGIN: com.azure.compute.batch.job-schedule.get-job-schedule
@@ -409,7 +409,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.job-schedule.list-job-schedules
 
         // BEGIN: com.azure.compute.batch.job-schedule.delete-job-schedule
-        SyncPoller<BatchJobSchedule, Void> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
+        SyncPoller<BatchJobSchedule, BatchJobSchedule> jobScheduleDeletePoller = batchClient.beginDeleteJobSchedule("jobScheduleId");
 
         PollResponse<BatchJobSchedule> initialJobScheduleDeleteResponse = jobScheduleDeletePoller.poll();
         if (initialJobScheduleDeleteResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
@@ -423,7 +423,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.replace-job-schedule.job-schedule-patch
         batchClient.replaceJobSchedule("jobScheduleId",
-            new BatchJobSchedule(new BatchJobSpecification(new BatchPoolInfo().setPoolId("poolId")).setPriority(0)
+            new BatchJobSchedule(new BatchJobSpecification(new BatchPoolDetails().setPoolId("poolId")).setPriority(0)
                 .setUsesTaskDependencies(false)
                 .setConstraints(
                     new BatchJobConstraints().setMaxWallClockTime(Duration.parse("P10675199DT2H48M5.4775807S"))
@@ -541,7 +541,7 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.compute.batch.create-node-user.node-create-user
         batchClient.createNodeUser("poolId", "tvm-1695681911_1-20161121t182739z",
-            new BatchNodeUserCreateParameters("userName").setIsAdmin(false)
+            new BatchNodeUserCreateParameters("userName").setAdmin(false)
                 .setExpiryTime(OffsetDateTime.parse("2017-08-01T00:00:00Z"))
                 .setPassword("fakeTokenPlaceholder"),
             null);
@@ -601,7 +601,7 @@ public final class ReadmeSamples {
             = new BatchNodeDeallocateParameters().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
 
         BatchNodeDeallocateOptions deallocateOptions
-            = new BatchNodeDeallocateOptions().setTimeOutInSeconds(Duration.ofSeconds(30))
+            = new BatchNodeDeallocateOptions().setTimeout(Duration.ofSeconds(30))
                 .setParameters(deallocateParams);
         SyncPoller<BatchNode, BatchNode> deallocatePoller = batchClient.beginDeallocateNode("poolId", "nodeId", deallocateOptions);
 

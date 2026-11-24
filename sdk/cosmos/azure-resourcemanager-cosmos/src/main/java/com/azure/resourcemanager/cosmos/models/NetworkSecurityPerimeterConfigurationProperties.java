@@ -19,7 +19,7 @@ import java.util.List;
 public final class NetworkSecurityPerimeterConfigurationProperties
     implements JsonSerializable<NetworkSecurityPerimeterConfigurationProperties> {
     /*
-     * The provisioningState property.
+     * Provisioning state of the network security perimeter configuration
      */
     private NetworkSecurityPerimeterConfigurationProvisioningState provisioningState;
 
@@ -29,17 +29,17 @@ public final class NetworkSecurityPerimeterConfigurationProperties
     private List<ProvisioningIssue> provisioningIssues;
 
     /*
-     * The networkSecurityPerimeter property.
+     * Information about the network security perimeter (NSP)
      */
     private NetworkSecurityPerimeter networkSecurityPerimeter;
 
     /*
-     * The resourceAssociation property.
+     * Information about the resource association
      */
     private ResourceAssociation resourceAssociation;
 
     /*
-     * The profile property.
+     * Network security perimeter configuration profile
      */
     private NetworkSecurityProfile profile;
 
@@ -50,7 +50,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: Provisioning state of the network security perimeter configuration.
      * 
      * @return the provisioningState value.
      */
@@ -68,7 +68,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties
     }
 
     /**
-     * Get the networkSecurityPerimeter property: The networkSecurityPerimeter property.
+     * Get the networkSecurityPerimeter property: Information about the network security perimeter (NSP).
      * 
      * @return the networkSecurityPerimeter value.
      */
@@ -77,7 +77,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties
     }
 
     /**
-     * Get the resourceAssociation property: The resourceAssociation property.
+     * Get the resourceAssociation property: Information about the resource association.
      * 
      * @return the resourceAssociation value.
      */
@@ -86,7 +86,7 @@ public final class NetworkSecurityPerimeterConfigurationProperties
     }
 
     /**
-     * Get the profile property: The profile property.
+     * Get the profile property: Network security perimeter configuration profile.
      * 
      * @return the profile value.
      */

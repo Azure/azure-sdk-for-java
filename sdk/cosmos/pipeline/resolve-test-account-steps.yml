@@ -1,0 +1,28 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+#
+# Reusable pre-test step that resolves one fixed Cosmos live-test account from the single
+# JSON secret and exports ACCOUNT_HOST / ACCOUNT_KEY (+ optional SECONDARY_ACCOUNT_KEY)
+# for the test run. Drop this into a stage's PreTestRunSteps.
+#
+# The account JSON lives in the ADO variable group secret referenced by AccountsJsonVar
+# (default: the Cosmos user-administered variable sub-config-cosmos-azure-cloud-test-resources).
+#
+# AccountSelector selects which logical account to use. It may be a literal (for
+# single-account stages) or a macro like $(AccountSelector) sourced from the matrix leg
+# (for the main multi-account stage).
+parameters:
+  - name: AccountSelector
+    type: string
+  - name: AccountsJsonVar
+    type: string
+    default: 'sub-config-cosmos-azure-cloud-test-resources'
+
+steps:
+  - task: Bash@3
+    displayName: 'Resolve fixed Cosmos test account (${{ parameters.AccountSelector }})'
+    inputs:
+      filePath: $(Build.SourcesDirectory)/sdk/cosmos/pipeline/resolve-cosmos-test-account.sh
+    env:
+      COSMOS_TEST_ACCOUNTS_JSON: $(${{ parameters.AccountsJsonVar }})
+      COSMOS_ACCOUNT_SELECTOR: ${{ parameters.AccountSelector }}

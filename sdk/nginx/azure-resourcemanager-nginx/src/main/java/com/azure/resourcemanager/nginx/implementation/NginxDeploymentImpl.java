@@ -136,8 +136,12 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
     NginxDeploymentImpl(NginxDeploymentInner innerObject, com.azure.resourcemanager.nginx.NginxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "nginxDeployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}",
+            "resourceGroupName");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}",
+            "deploymentName");
     }
 
     public NginxDeployment refresh() {

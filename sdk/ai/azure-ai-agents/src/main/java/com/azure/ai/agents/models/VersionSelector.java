@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.JsonMergePatchHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -12,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +20,6 @@ import java.util.Set;
  * The VersionSelector model.
  */
 @Fluent
-@Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
 public final class VersionSelector implements JsonSerializable<VersionSelector> {
 
     /*
@@ -88,6 +87,19 @@ public final class VersionSelector implements JsonSerializable<VersionSelector> 
         this.versionSelectionRules = versionSelectionRules;
         this.updatedProperties.add("versionSelectionRules");
         return this;
+    }
+
+    /**
+     * Set a single version selection rule.
+     *
+     * <p>This is a convenience method equivalent to calling {@link #setVersionSelectionRules(List)} with a singleton
+     * list.</p>
+     *
+     * @param versionSelectionRule the version selection rule to set.
+     * @return the VersionSelector object itself.
+     */
+    public VersionSelector setVersionSelectionRule(VersionSelectionRule versionSelectionRule) {
+        return setVersionSelectionRules(Collections.singletonList(versionSelectionRule));
     }
 
     /**

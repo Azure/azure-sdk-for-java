@@ -16,7 +16,7 @@ import java.io.IOException;
  * Base model for a routine action.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public class RoutineAction implements JsonSerializable<RoutineAction> {
 
     /*
@@ -29,7 +29,7 @@ public class RoutineAction implements JsonSerializable<RoutineAction> {
      * Creates an instance of RoutineAction class.
      */
     @Generated
-    public RoutineAction() {
+    protected RoutineAction() {
     }
 
     /**

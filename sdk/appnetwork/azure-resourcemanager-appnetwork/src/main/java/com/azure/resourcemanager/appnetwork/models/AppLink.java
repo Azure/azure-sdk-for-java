@@ -221,7 +221,7 @@ public interface AppLink {
     /**
      * The template for AppLink update.
      */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          * 
@@ -253,6 +253,19 @@ public interface AppLink {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the AppLink update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identities assigned to this resource..
+             * 
+             * @param identity The managed service identities assigned to this resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentityUpdate identity);
         }
     }
 

@@ -93,15 +93,14 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") FleetResourceInner body, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FleetResourceInner>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") FleetResourceUpdate body,
-            Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FleetResourceUpdate body, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}")
@@ -427,13 +426,16 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
         if (fleetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
-        if (body != null) {
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
             body.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, body, context))
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, contentType, accept, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -467,13 +469,16 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
         if (fleetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
         }
-        if (body != null) {
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
             body.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, fleetName, accept, body, context);
+            resourceGroupName, fleetName, contentType, accept, body, context);
     }
 
     /**
@@ -481,14 +486,14 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
+     * @param body The parameters to provide for the current fleet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB FleetResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FleetResourceInner> updateAsync(String resourceGroupName, String fleetName) {
-        final FleetResourceUpdate body = null;
+    public Mono<FleetResourceInner> updateAsync(String resourceGroupName, String fleetName, FleetResourceUpdate body) {
         return updateWithResponseAsync(resourceGroupName, fleetName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -516,14 +521,14 @@ public final class FleetsClientImpl implements InnerSupportsGet<FleetResourceInn
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName Cosmos DB fleet name. Needs to be unique under a subscription.
+     * @param body The parameters to provide for the current fleet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB FleetResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FleetResourceInner update(String resourceGroupName, String fleetName) {
-        final FleetResourceUpdate body = null;
+    public FleetResourceInner update(String resourceGroupName, String fleetName, FleetResourceUpdate body) {
         return updateWithResponse(resourceGroupName, fleetName, body, Context.NONE).getValue();
     }
 

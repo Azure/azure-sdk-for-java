@@ -17,6 +17,11 @@ public final class BaseDbSystemShapes extends ExpandableStringEnum<BaseDbSystemS
     public static final BaseDbSystemShapes VMSTANDARD_X86 = fromString("VM.Standard.x86");
 
     /**
+     * Vm Standard X86.
+     */
+    public static final BaseDbSystemShapes VMBASE_DBX86 = fromString("VM.BaseDB.x86");
+
+    /**
      * Creates a new instance of BaseDbSystemShapes value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -10,13 +10,21 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cloudhealth.fluent.EntitiesClient;
+import com.azure.resourcemanager.cloudhealth.fluent.models.DataAnnotationInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityHistoryResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.EntityInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetDataAnnotationsResponseInner;
+import com.azure.resourcemanager.cloudhealth.fluent.models.GetSignalRecommendationsResponseInner;
 import com.azure.resourcemanager.cloudhealth.fluent.models.SignalHistoryResponseInner;
+import com.azure.resourcemanager.cloudhealth.models.AddDataAnnotationRequest;
+import com.azure.resourcemanager.cloudhealth.models.DataAnnotation;
 import com.azure.resourcemanager.cloudhealth.models.Entities;
 import com.azure.resourcemanager.cloudhealth.models.Entity;
 import com.azure.resourcemanager.cloudhealth.models.EntityHistoryRequest;
 import com.azure.resourcemanager.cloudhealth.models.EntityHistoryResponse;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsRequest;
+import com.azure.resourcemanager.cloudhealth.models.GetDataAnnotationsResponse;
+import com.azure.resourcemanager.cloudhealth.models.GetSignalRecommendationsResponse;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
 import com.azure.resourcemanager.cloudhealth.models.SignalHistoryRequest;
 import com.azure.resourcemanager.cloudhealth.models.SignalHistoryResponse;
@@ -121,18 +129,81 @@ public final class EntitiesImpl implements Entities {
         this.serviceClient().ingestHealthReport(resourceGroupName, healthModelName, entityName, body);
     }
 
+    public Response<DataAnnotation> addDataAnnotationWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, AddDataAnnotationRequest body, Context context) {
+        Response<DataAnnotationInner> inner = this.serviceClient()
+            .addDataAnnotationWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DataAnnotationImpl(inner.getValue(), this.manager()));
+    }
+
+    public DataAnnotation addDataAnnotation(String resourceGroupName, String healthModelName, String entityName,
+        AddDataAnnotationRequest body) {
+        DataAnnotationInner inner
+            = this.serviceClient().addDataAnnotation(resourceGroupName, healthModelName, entityName, body);
+        if (inner != null) {
+            return new DataAnnotationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<GetDataAnnotationsResponse> getDataAnnotationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, GetDataAnnotationsRequest body, Context context) {
+        Response<GetDataAnnotationsResponseInner> inner = this.serviceClient()
+            .getDataAnnotationsWithResponse(resourceGroupName, healthModelName, entityName, body, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetDataAnnotationsResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public GetDataAnnotationsResponse getDataAnnotations(String resourceGroupName, String healthModelName,
+        String entityName, GetDataAnnotationsRequest body) {
+        GetDataAnnotationsResponseInner inner
+            = this.serviceClient().getDataAnnotations(resourceGroupName, healthModelName, entityName, body);
+        if (inner != null) {
+            return new GetDataAnnotationsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<GetSignalRecommendationsResponse> getSignalRecommendationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, Context context) {
+        Response<GetSignalRecommendationsResponseInner> inner = this.serviceClient()
+            .getSignalRecommendationsWithResponse(resourceGroupName, healthModelName, entityName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetSignalRecommendationsResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public GetSignalRecommendationsResponse getSignalRecommendations(String resourceGroupName, String healthModelName,
+        String entityName) {
+        GetSignalRecommendationsResponseInner inner
+            = this.serviceClient().getSignalRecommendations(resourceGroupName, healthModelName, entityName);
+        if (inner != null) {
+            return new GetSignalRecommendationsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Entity getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
+        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "healthModelName");
         if (healthModelName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
         }
-        String entityName = ResourceManagerUtils.getValueFromIdByName(id, "entities");
+        String entityName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "entityName");
         if (entityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'entities'.", id)));
@@ -141,17 +212,23 @@ public final class EntitiesImpl implements Entities {
     }
 
     public Response<Entity> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
+        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "healthModelName");
         if (healthModelName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
         }
-        String entityName = ResourceManagerUtils.getValueFromIdByName(id, "entities");
+        String entityName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "entityName");
         if (entityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'entities'.", id)));
@@ -160,17 +237,23 @@ public final class EntitiesImpl implements Entities {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
+        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "healthModelName");
         if (healthModelName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
         }
-        String entityName = ResourceManagerUtils.getValueFromIdByName(id, "entities");
+        String entityName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "entityName");
         if (entityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'entities'.", id)));
@@ -179,17 +262,23 @@ public final class EntitiesImpl implements Entities {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
+        String healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "healthModelName");
         if (healthModelName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
         }
-        String entityName = ResourceManagerUtils.getValueFromIdByName(id, "entities");
+        String entityName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "entityName");
         if (entityName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'entities'.", id)));

@@ -62,7 +62,7 @@ function Write-OutputJson {
     )
     $result = [ordered]@{
         hasBreakingChange = $HasBreakingChange
-        changelogMD       = $ChangelogMD
+        changes       = $ChangelogMD
     }
     $json = $result | ConvertTo-Json
     $outputDir = Split-Path $OutputJsonFile -Parent

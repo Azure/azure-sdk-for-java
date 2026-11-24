@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskEncryptionSetsListSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_ListBySubscription.json
+     * x-ms-original-file: 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_ListBySubscription.json
      */
     /**
      * Sample code: list all disk encryption sets in a subscription.

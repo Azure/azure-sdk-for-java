@@ -12,8 +12,8 @@ public final class QuotaUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"name\":{\"value\":\"anashc\",\"localizedValue\":\"pmjerbdkelvidiz\"},\"limit\":8950212108583362641,\"unit\":\"ccxjm\",\"currentValue\":7281631473511160743,\"id\":\"nwncypuuw\"}],\"nextLink\":\"tvuqjctzenkeifzz\"}")
+            "{\"value\":[{\"name\":{\"value\":\"nmmaxrizkzob\",\"localizedValue\":\"pxl\"},\"limit\":3557811767170936371,\"unit\":\"lxieixynllxecwcr\",\"currentValue\":7901820677225280471,\"id\":\"lhc\"},{\"name\":{\"value\":\"u\",\"localizedValue\":\"fdwfmvigorqj\"},\"limit\":3198803383031032547,\"unit\":\"raglk\",\"currentValue\":5023526867462227147,\"id\":\"qjujeickpzvcp\"},{\"name\":{\"value\":\"xelnwc\",\"localizedValue\":\"yjede\"},\"limit\":6984855935225199348,\"unit\":\"mkqscaz\",\"currentValue\":3494695317807035352,\"id\":\"z\"}],\"nextLink\":\"uamwabzxrvxc\"}")
             .toObject(QuotaUsageList.class);
-        Assertions.assertEquals("tvuqjctzenkeifzz", model.nextLink());
+        Assertions.assertEquals("uamwabzxrvxc", model.nextLink());
     }
 }

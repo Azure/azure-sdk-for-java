@@ -110,4 +110,6 @@ public interface IDocumentQueryClient {
     GlobalEndpointManager getGlobalEndpointManager();
 
     GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+
+    boolean useThinClient(RxDocumentServiceRequest request);
 }

@@ -1,14 +1,24 @@
 ## Release History
 
-### 2.12.0-beta.1 (Unreleased)
+### 2.13.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `azure.cosmos.source.changeFeed.poll.delay.ms` to space polls after no change-feed changes are found. - See [PR 51149](https://github.com/Azure/azure-sdk-for-java/pull/51149)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
+* Fixed `ItemPatch` writes to skip items excluded by `azure.cosmos.sink.write.patch.filter` instead of failing with `412 Precondition Failed`. - See [PR 50053](https://github.com/Azure/azure-sdk-for-java/pull/50053)
+* Disposed source metadata monitoring subscriptions during connector shutdown. - See [PR 50593](https://github.com/Azure/azure-sdk-for-java/pull/50593)
+* Prevented blocked source change-feed polls from retaining task and Cosmos client generations during connector restarts. - See [PR 50560](https://github.com/Azure/azure-sdk-for-java/pull/50560)
+
 #### Other Changes
+
+### 2.12.0 (2026-09-22)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.83.0`.
 
 ### 2.11.0 (2026-06-08)
 
@@ -58,7 +68,7 @@
 * Fixed warning logs for `java.lang.NoClassDefFoundError: io/micrometer/observation/ObservationHandler` - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 #### Other Changes
-* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregrated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
+* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 ### 2.5.0 (2025-07-31)
 
@@ -132,4 +142,3 @@
 * Added `ServicePrincipal` support - See [PR 39490](https://github.com/Azure/azure-sdk-for-java/pull/39490)
 * Added `ItemPatch support` in sink connector - See [PR 39558](https://github.com/Azure/azure-sdk-for-java/pull/39558)
 * Added support to use CosmosDB container for tracking metadata - See [PR 39634](https://github.com/Azure/azure-sdk-for-java/pull/39634)
-

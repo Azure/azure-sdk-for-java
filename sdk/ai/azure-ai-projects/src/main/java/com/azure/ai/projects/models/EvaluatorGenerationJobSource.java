@@ -28,7 +28,7 @@ public class EvaluatorGenerationJobSource implements JsonSerializable<EvaluatorG
      * Creates an instance of EvaluatorGenerationJobSource class.
      */
     @Generated
-    public EvaluatorGenerationJobSource() {
+    protected EvaluatorGenerationJobSource() {
     }
 
     /**

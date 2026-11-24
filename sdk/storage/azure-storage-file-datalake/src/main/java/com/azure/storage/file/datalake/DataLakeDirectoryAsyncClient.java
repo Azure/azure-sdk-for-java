@@ -21,7 +21,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsHeaders;
@@ -91,10 +90,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
         super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getAccountUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
-            PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient(),
-            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo(),
-            dataLakePathAsyncClient.isTokenCredentialAuthenticated());
+            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.pathName, PathResourceType.DIRECTORY,
+            dataLakePathAsyncClient.getBlockBlobAsyncClient(), dataLakePathAsyncClient.getSasToken(),
+            dataLakePathAsyncClient.getCpkInfo(), dataLakePathAsyncClient.isTokenCredentialAuthenticated());
     }
 
     /**
@@ -529,6 +527,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileIfNotExists#String -->
@@ -549,6 +551,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * Creates a new file within a directory if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -916,6 +922,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * Creates a new subdirectory within a directory if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryIfNotExists#String -->
@@ -937,6 +947,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     /**
      * Creates a new sub-directory within a directory if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -979,7 +993,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         try {
             return createSubdirectoryWithResponse(subdirectoryName, options.getPermissions(), options.getUmask(),
                 options.getPathHttpHeaders(), options.getMetadata(), options.getRequestConditions()).onErrorResume(
-                    t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+                    t -> DataLakeImplUtils.isConflictWithErrorCode(t, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE),
                     t -> {
                         HttpResponse response = ((DataLakeStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),

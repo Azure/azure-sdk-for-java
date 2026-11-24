@@ -129,8 +129,12 @@ public final class ManagedDashboardImpl
         com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dashboardName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dashboards");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/dashboards/{dashboardName}",
+            "resourceGroupName");
+        this.dashboardName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/dashboards/{dashboardName}",
+            "dashboardName");
     }
 
     public ManagedDashboard refresh() {

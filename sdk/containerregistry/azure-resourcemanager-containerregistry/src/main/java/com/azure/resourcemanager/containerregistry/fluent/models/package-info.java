@@ -4,8 +4,5 @@
 
 /**
  * Package containing the inner data models for ContainerRegistry.
- * The Microsoft Azure Container Registry management API provides create, read, update, and delete functionality for
- * Azure Container Registry resources including registries, replications, webhooks, tasks, runs, and other registry
- * components.
  */
 package com.azure.resourcemanager.containerregistry.fluent.models;

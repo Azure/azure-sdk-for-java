@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -56,6 +57,26 @@ public final class DeploymentStep implements JsonSerializable<DeploymentStep> {
      * List of exceptions in AzureStackHCI Cluster Deployment.
      */
     private List<String> exception;
+
+    /*
+     * error details.
+     */
+    private ManagementError error;
+
+    /*
+     * The progress percentage of the step.
+     */
+    private Integer percentComplete;
+
+    /*
+     * Additional metadata associated with the step.
+     */
+    private List<Metadata> additionalData;
+
+    /*
+     * Recommended steps to resolve failures in this step.
+     */
+    private List<String> recommendedSteps;
 
     /**
      * Creates an instance of DeploymentStep class.
@@ -136,6 +157,42 @@ public final class DeploymentStep implements JsonSerializable<DeploymentStep> {
     }
 
     /**
+     * Get the error property: error details.
+     * 
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.error;
+    }
+
+    /**
+     * Get the percentComplete property: The progress percentage of the step.
+     * 
+     * @return the percentComplete value.
+     */
+    public Integer percentComplete() {
+        return this.percentComplete;
+    }
+
+    /**
+     * Get the additionalData property: Additional metadata associated with the step.
+     * 
+     * @return the additionalData value.
+     */
+    public List<Metadata> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
+     * Get the recommendedSteps property: Recommended steps to resolve failures in this step.
+     * 
+     * @return the recommendedSteps value.
+     */
+    public List<String> recommendedSteps() {
+        return this.recommendedSteps;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -177,6 +234,16 @@ public final class DeploymentStep implements JsonSerializable<DeploymentStep> {
                 } else if ("exception".equals(fieldName)) {
                     List<String> exception = reader.readArray(reader1 -> reader1.getString());
                     deserializedDeploymentStep.exception = exception;
+                } else if ("error".equals(fieldName)) {
+                    deserializedDeploymentStep.error = ManagementError.fromJson(reader);
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedDeploymentStep.percentComplete = reader.getNullable(JsonReader::getInt);
+                } else if ("additionalData".equals(fieldName)) {
+                    List<Metadata> additionalData = reader.readArray(reader1 -> Metadata.fromJson(reader1));
+                    deserializedDeploymentStep.additionalData = additionalData;
+                } else if ("recommendedSteps".equals(fieldName)) {
+                    List<String> recommendedSteps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDeploymentStep.recommendedSteps = recommendedSteps;
                 } else {
                     reader.skipChildren();
                 }

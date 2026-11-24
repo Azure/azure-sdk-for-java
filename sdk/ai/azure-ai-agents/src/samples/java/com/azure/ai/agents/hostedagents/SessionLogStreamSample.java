@@ -5,14 +5,8 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentEndpointProtocol;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -23,7 +17,6 @@ import com.openai.core.JsonValue;
 import com.openai.models.responses.ResponseCreateParams;
 
 import java.io.IOException;
-import java.util.Collections;
 
 /**
  * This sample demonstrates streaming hosted-agent session logs.
@@ -46,22 +39,11 @@ public class SessionLogStreamSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsClient agentsClient = builder.allowPreview(true).buildAgentsClient();
-        BetaAgentsClient betaAgentsClient = builder.beta().buildBetaAgentsClient();
+        AgentsClient agentsClient = builder.buildAgentsClient();
 
         HostedAgentSessionResources resources = null;
         try {
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, betaAgentsClient, agentName, image);
-
-            AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                    new FixedRatioVersionSelectionRule(100)
-                        .setAgentVersion(resources.getAgent().getVersion()))))
-                .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
-
-            betaAgentsClient.updateAgentDetails(agentName,
-                new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
-            System.out.printf("Agent endpoint configured for agent: %s%n", agentName);
+            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
 
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
             com.openai.models.responses.Response openAIResponse = openAIClient.responses().create(
@@ -73,11 +55,11 @@ public class SessionLogStreamSample {
             HostedAgentsSampleUtils.printResponseOutput(openAIResponse);
 
             System.out.println("Streaming session logs...");
-            Response<BinaryData> rawStream = betaAgentsClient.getSessionLogStreamWithResponse(agentName,
+            Response<BinaryData> rawStream = agentsClient.getSessionLogStreamWithResponse(agentName,
                 resources.getAgent().getVersion(), resources.getSession().getAgentSessionId(), new RequestOptions());
             HostedAgentsSampleUtils.printSseFrames(rawStream.getValue(), 30);
         } finally {
-            HostedAgentsSampleUtils.cleanup(agentsClient, betaAgentsClient, agentName, resources);
+            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
         }
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.implementation.models.SignalDefinitionListResult;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import org.junit.jupiter.api.Assertions;
@@ -14,20 +15,24 @@ public final class SignalDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalDefinitionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"hfuiuaodsfc\",\"refreshInterval\":\"PT1M\",\"tags\":{\"dagfuaxbezyiuok\":\"dpuozmyz\",\"surex\":\"twhrdxwzywqsm\",\"dystkiiuxhqyud\":\"moryocfsfksym\",\"rq\":\"o\"},\"dataUnit\":\"poczvyifqrvkdvjs\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":22.170228969530147},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":2.6920885355402824}}},\"id\":\"atkpnp\",\"name\":\"lexxbczwtru\",\"type\":\"iqzbq\"}],\"nextLink\":\"sovmyokacspkwl\"}")
+            "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"unqecanoae\",\"refreshInterval\":\"PT1H\",\"tags\":{\"thfuiuaodsfcpkvx\":\"hltrpmopjmcmatuo\",\"dagfuaxbezyiuok\":\"dpuozmyz\",\"surex\":\"twhrdxwzywqsm\",\"dystkiiuxhqyud\":\"moryocfsfksym\"},\"dataUnit\":\"rrqnbpoczvyifqrv\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":24.351583668041055,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":50.73262308079136,\"sensitivity\":\"Low\"}}},\"id\":\"t\",\"name\":\"pnpulexxbczwtru\",\"type\":\"iqzbq\"}],\"nextLink\":\"sovmyokacspkwl\"}")
             .toObject(SignalDefinitionListResult.class);
-        Assertions.assertEquals("hfuiuaodsfc", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT1M, model.value().get(0).properties().refreshInterval());
-        Assertions.assertEquals("dpuozmyz", model.value().get(0).properties().tags().get("dagfuaxbezyiuok"));
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.value().get(0).properties().dataUnit());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals("unqecanoae", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT1H, model.value().get(0).properties().refreshInterval());
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.value().get(0).properties().tags().get("thfuiuaodsfcpkvx"));
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.value().get(0).properties().dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.value().get(0).properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(22.170228969530147,
+        Assertions.assertEquals(24.351583668041055D,
             model.value().get(0).properties().evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.NOT_EQUAL,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+            model.value().get(0).properties().evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.value().get(0).properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(2.6920885355402824,
+        Assertions.assertEquals(50.73262308079136D,
             model.value().get(0).properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+            model.value().get(0).properties().evaluationRules().unhealthyRule().sensitivity());
         Assertions.assertEquals("sovmyokacspkwl", model.nextLink());
     }
 }

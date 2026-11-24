@@ -13,9 +13,14 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMetricTagName;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ConnectTimeoutException;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -28,10 +33,12 @@ import reactor.test.StepVerifier;
 import java.lang.reflect.Method;
 import java.net.SocketException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,6 +85,87 @@ public class RxGatewayStoreModelTest {
             {ConsistencyLevel.SESSION, ConsistencyLevel.SESSION, OperationType.Query, ResourceType.Document, false, SessionTokenType.SDK},
             {ConsistencyLevel.STRONG, ConsistencyLevel.SESSION, OperationType.ExecuteJavaScript, ResourceType.StoredProcedure, false, SessionTokenType.SDK}
         };
+    }
+
+    @DataProvider(name = "gatewayResponseStatuses")
+    public Object[][] gatewayResponseStatuses() {
+        return new Object[][] {{200, true}, {503, true}, {200, false}, {503, false}};
+    }
+
+    @Test(groups = "unit", dataProvider = "gatewayResponseStatuses")
+    public void gatewayDiagnosticsCaptureAttemptRequestUri(int statusCode, boolean endpointTagEnabled) throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        HttpResponse httpResponse = new HttpResponse() {
+            @Override public int statusCode() { return statusCode; }
+            @Override public String headerValue(String name) { return null; }
+            @Override public HttpHeaders headers() { return new HttpHeaders(); }
+            @Override public Mono<ByteBuf> body() { return Mono.just(Unpooled.EMPTY_BUFFER); }
+            @Override public Mono<String> bodyAsString() { return Mono.just(""); }
+            @Override public void close() {}
+        };
+        AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.doAnswer(invocation -> {
+            HttpRequest request = invocation.getArgument(0);
+            sentRequest.set(request);
+            httpResponse.withRequest(request);
+            return Mono.just(httpResponse);
+        }).when(httpClient).send(any(HttpRequest.class), any(Duration.class));
+
+        GatewayServiceConfigurationReader configurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+        Mockito.doReturn(ConsistencyLevel.SESSION).when(configurationReader).getDefaultConsistencyLevel();
+        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig().metricsOptions(
+            new CosmosMicrometerMetricsOptions()
+                .configureDefaultTagNames(
+                    endpointTagEnabled ? CosmosMetricTagName.SERVICE_ENDPOINT : CosmosMetricTagName.DEFAULT)
+                .setEnabled(true));
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext, Mockito.mock(ISessionContainer.class), ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default, new UserAgentContainer(), Mockito.mock(GlobalEndpointManager.class),
+            httpClient, null, null, telemetryConfig);
+        storeModel.setGatewayServiceConfigurationReader(configurationReader);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            clientContext, OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+        request.setResponseTimeout(Duration.ofMillis(TIMEOUT));
+        request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+        URI requestUri = URI.create("https://account.documents.azure.com:10250/dbs/db/colls/col/docs/docId");
+        AtomicReference<CosmosException> exception = new AtomicReference<>();
+        Mono<RxDocumentServiceResponse> result = storeModel.performRequestInternal(request, requestUri);
+        if (statusCode == 200) {
+            StepVerifier.create(result).expectNextCount(1).verifyComplete();
+        } else {
+            StepVerifier.create(result)
+                .expectErrorSatisfies(error -> {
+                    assertThat(error).isInstanceOf(CosmosException.class);
+                    exception.set((CosmosException) error);
+                    assertThat(exception.get().getStatusCode()).isEqualTo(statusCode);
+                })
+                .verify(Duration.ofMillis(TIMEOUT));
+        }
+
+        ClientSideRequestStatistics statistics = ImplementationBridgeHelpers.CosmosDiagnosticsHelper
+            .getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatistics(request.requestContext.cosmosDiagnostics)
+            .iterator().next();
+        assertThat(statistics.getGatewayStatisticsList()).hasSize(1);
+        ClientSideRequestStatistics.GatewayStatistics gatewayStatistics = statistics.getGatewayStatisticsList().get(0);
+        assertThat(gatewayStatistics.getRequestUri()).isEqualTo(sentRequest.get().uri());
+        assertThat(gatewayStatistics.getEndpoint()).isEqualTo(sentRequest.get().uri().toString());
+        if (endpointTagEnabled) {
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag())
+                .isSameAs(storeModel.getServiceEndpointMetricTag(sentRequest.get().uri()));
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag().getValue())
+                .isEqualTo("account.documents.azure.com_10250");
+        } else {
+            assertThat(gatewayStatistics.getServiceEndpointMetricTag()).isNull();
+        }
+        if (statusCode == 200) {
+            assertThat(gatewayStatistics.getRequestUri()).isSameAs(sentRequest.get().uri());
+        } else {
+            assertThat(gatewayStatistics.getRequestUri()).isSameAs(ImplementationBridgeHelpers.CosmosExceptionHelper
+                .getCosmosExceptionAccessor().getRequestUri(exception.get()).getURI());
+        }
     }
 
     @Test(groups = "unit")
@@ -1039,6 +1127,94 @@ public class RxGatewayStoreModelTest {
         getGatewayRetryWithTimeoutInSeconds.setAccessible(true);
 
         return (int) getGatewayRetryWithTimeoutInSeconds.invoke(storeModel);
+    }
+
+    /**
+     * Error bodies that {@code validateOrThrow} must turn into a CosmosException carrying the
+     * real HTTP status (400 here) rather than leaking the parse failure as statusCode 0.
+     *
+     * Columns: description, rawBody, expectMessageContains (null = don't assert message content).
+     * The Gateway V2 / thin-client proxy can return a non-JSON body (optionally NUL-padded) or a
+     * valid-but-non-object JSON value (scalar / array) for query-plan failures; both must fall back
+     * cleanly. A valid CosmosError JSON body must still parse and preserve its message.
+     */
+    @DataProvider(name = "validateOrThrowErrorBodyProvider")
+    public Object[][] validateOrThrowErrorBodyProvider() {
+        return new Object[][]{
+            {"NUL-padded plain text", "Query plan generation failed\u0000\u0000\u0000\u0000", "Query plan generation failed"},
+            {"JSON scalar string", "\"BadRequest\"", null},
+            {"JSON array", "[1,2,3]", null},
+            {"JSON number", "42", null},
+            {"valid CosmosError JSON", "{\"code\":\"BadRequest\",\"message\":\"bad query syntax\"}", "bad query syntax"},
+            {"empty body", "", null},
+        };
+    }
+
+    /**
+     * Locks the contract of the {@code validateOrThrow} fallback: regardless of the shape of the
+     * error body the proxy returns, the thrown {@link CosmosException} must carry the real HTTP
+     * status code (400) and never the leaked statusCode 0. The non-object-JSON rows (scalar/array/
+     * number) specifically guard the ClassCastException path that previously escaped the catch.
+     */
+    @Test(groups = "unit", dataProvider = "validateOrThrowErrorBodyProvider")
+    public void validateOrThrowPreservesStatusCodeForMalformedBodies(
+        String description,
+        String rawBody,
+        String expectMessageContains) throws Exception {
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            mockDiagnosticsClientContext(),
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            Mockito.mock(GlobalEndpointManager.class),
+            Mockito.mock(HttpClient.class),
+            null,
+            null);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(),
+            OperationType.QueryPlan,
+            "/dbs/db/colls/col",
+            ResourceType.Document);
+        dsr.requestContext = new DocumentServiceRequestContext();
+
+        ByteBuf bodyBuf = Unpooled.wrappedBuffer(rawBody.getBytes(StandardCharsets.UTF_8));
+
+        try {
+            invokeValidateOrThrow(storeModel, dsr, HttpResponseStatus.BAD_REQUEST, new HttpHeaders(), bodyBuf);
+            fail("validateOrThrow should have thrown a CosmosException for: " + description);
+        } catch (java.lang.reflect.InvocationTargetException invocationTargetException) {
+            Throwable cause = invocationTargetException.getCause();
+            assertThat(cause)
+                .as("validateOrThrow should throw CosmosException for: " + description)
+                .isInstanceOf(CosmosException.class);
+            CosmosException cosmosException = (CosmosException) cause;
+            assertThat(cosmosException.getStatusCode())
+                .as("status code must be preserved (never statusCode 0) for: " + description)
+                .isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+            if (expectMessageContains != null) {
+                assertThat(cosmosException.getMessage())
+                    .as("error message should be preserved for: " + description)
+                    .contains(expectMessageContains);
+            }
+        }
+    }
+
+    private static void invokeValidateOrThrow(RxGatewayStoreModel storeModel,
+                                              RxDocumentServiceRequest request,
+                                              HttpResponseStatus status,
+                                              HttpHeaders headers,
+                                              ByteBuf retainedBodyAsByteBuf) throws Exception {
+        Method validateOrThrow = RxGatewayStoreModel.class.getDeclaredMethod(
+            "validateOrThrow",
+            RxDocumentServiceRequest.class,
+            HttpResponseStatus.class,
+            HttpHeaders.class,
+            ByteBuf.class);
+        validateOrThrow.setAccessible(true);
+        validateOrThrow.invoke(storeModel, request, status, headers, retainedBodyAsByteBuf);
     }
 
     enum SessionTokenType {

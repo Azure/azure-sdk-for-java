@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -39,6 +40,8 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
@@ -250,14 +253,16 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             }
 
             String faultInjectedRegion = preferredRegions.get(0);
-            String dbId = UUID.randomUUID().toString();
+            String dbId = CosmosDatabaseForTest.generateId("metadataRetryPolicy");
             String containerId = UUID.randomUUID().toString();
 
             client.createDatabase(dbId).block();
             database = client.getDatabase(dbId);
 
-            database.createContainer(containerId, "/mypk").block();
-            container = database.getContainer(containerId);
+            container = createCollection(
+                database,
+                new CosmosContainerProperties(containerId, "/mypk"),
+                new CosmosContainerRequestOptions());
 
             // fault injection setup to inject a connection delay
             // this connection delay injection will trigger connectTimeoutExceptions

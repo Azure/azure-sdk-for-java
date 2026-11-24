@@ -14,19 +14,19 @@ public final class VaultPropertiesRedundancySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultPropertiesRedundancySettings model = BinaryData
-            .fromString("{\"standardTierStorageRedundancy\":\"ZoneRedundant\",\"crossRegionRestore\":\"Disabled\"}")
+            .fromString("{\"standardTierStorageRedundancy\":\"GeoRedundant\",\"crossRegionRestore\":\"Enabled\"}")
             .toObject(VaultPropertiesRedundancySettings.class);
-        Assertions.assertEquals(StandardTierStorageRedundancy.ZONE_REDUNDANT, model.standardTierStorageRedundancy());
-        Assertions.assertEquals(CrossRegionRestore.DISABLED, model.crossRegionRestore());
+        Assertions.assertEquals(StandardTierStorageRedundancy.GEO_REDUNDANT, model.standardTierStorageRedundancy());
+        Assertions.assertEquals(CrossRegionRestore.ENABLED, model.crossRegionRestore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VaultPropertiesRedundancySettings model = new VaultPropertiesRedundancySettings()
-            .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.ZONE_REDUNDANT)
-            .withCrossRegionRestore(CrossRegionRestore.DISABLED);
+            .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
+            .withCrossRegionRestore(CrossRegionRestore.ENABLED);
         model = BinaryData.fromObject(model).toObject(VaultPropertiesRedundancySettings.class);
-        Assertions.assertEquals(StandardTierStorageRedundancy.ZONE_REDUNDANT, model.standardTierStorageRedundancy());
-        Assertions.assertEquals(CrossRegionRestore.DISABLED, model.crossRegionRestore());
+        Assertions.assertEquals(StandardTierStorageRedundancy.GEO_REDUNDANT, model.standardTierStorageRedundancy());
+        Assertions.assertEquals(CrossRegionRestore.ENABLED, model.crossRegionRestore());
     }
 }

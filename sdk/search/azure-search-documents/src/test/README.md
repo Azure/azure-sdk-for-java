@@ -1,74 +1,92 @@
-# Test Framework
+# Azure AI Search tests
 
-This SDK uses the TestBase core class to record and playback http sessions, to perform integration tests with Search service in Azure.
+Integration tests extend
+[SearchTestBase](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchTestBase.java).
 
-## Usage
+| Mode | Behavior |
+| --- | --- |
+| `PLAYBACK` (default) | Replays published recordings through the local test proxy; no Azure credentials or resources are required. |
+| `RECORD` | Calls real Azure resources and records HTTP traffic. |
+| `LIVE` | Calls real Azure resources without recording. |
 
-The class: **SearchIndexClientTestBase** is the base test class which other test classes, that need to perform integration tests, must extend it.
+Mock-based tests use fake HTTP responses and need no Azure resources.
+Disabled tests remain skipped in every mode; live-only tests are skipped in playback.
 
-These test classes then can use the base client builder, and run the relevant build method.
+## Run existing tests in playback
 
-### Code example
+From the repository root, with a working JDK/Maven:
 
-```java
-public class SyncTests extends SearchIndexClientTestBase {
-
-    private SearchIndexClient asyncClient;
-
-    @Override
-    void beforeTest() {
-        super.beforeTest();
-
-        createHotelIndex();
-        asyncClient = getSearchIndexClientBuilder("hotels").buildAsyncClient();
-    }
-
-    @Test
-    public void uploadResultSucceeds() throws Exception {
-        Document doc = new Document();
-        doc.put("HotelId", "1");
-
-        List<Document> docs = new ArrayList<>();
-        docs.add(doc);
-
-        DocumentIndexResult result = asyncClient.uploadDocuments(docs).block();
-        assert result.results().get(0).statusCode() == 200;
-    }
-}
+```powershell
+$env:AZURE_TEST_MODE = 'PLAYBACK'
+mvn -B -ntp -f sdk\search\azure-search-documents\pom.xml test
 ```
 
-Before running the tests on PLAYBACK mode, you need to run them on RECORD mode to record the http sessions.
+The test framework restores recording assets using
+[assets.json](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/assets.json).
+You do not need to run RECORD first, supply client secrets, or copy recordings into the source tree.
+Initial test-proxy setup and asset restoration can require network access, but playback does not call Azure services.
 
-### Recording http sessions
+To run focused offline regressions:
 
-1. Add the following environment variables to your development SDK to be used in JUnit runs:
-    * AZURE_CLIENT_ID: *Client ID in Microsoft Entra ID*
-    [How to create a Client ID in Azure Portal](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app)
-    * AZURE_CLIENT_SECRET: *Client ID Secret*
-    * AZURE_TENANT_ID: *Tenant ID in Microsoft Entra ID*
-    * AZURE_SUBSCRIPTION_ID: *Azure subscription ID*
-    * AZURE_TEST_MODE: **RECORD** *for recording* (**PLAYBACK** *for playback mode*)
-    * AZURE_TEST_ENVIRONMENT (optional): **DOGFOOD** if performing internal testing. Defaults to public Azure if omitted or set to any other value  
+```powershell
+mvn -B -ntp -f sdk\search\azure-search-documents\pom.xml test `
+  '-Dtest=SearchAuthenticationTests,SearchGaTests,SearchGaSamplesTests,PreviewApiTests,PreviewFeatureContractTests,FileIngestionPollingTests,GetDocumentOptionsTests'
+```
 
-2. Run the tests.
+## Real-service testing requires an isolated service
 
-    > Please note: In RECORD mode, every test is creating a new testing environment in Azure before the test, and deleting it after the test. This process takes some time, so the tests in this mode (RECORD) are slower.
+**Never point integration tests at production or shared bug-bash resources.**
+RECORD and LIVE use the service configured in `SEARCH_SERVICE_ENDPOINT`; they do not create an isolated Search service.
+Tests create, update and delete resources. In particular, `KnowledgeBaseTests` and `KnowledgeSourceTests` cleanup
+enumerates knowledge bases and knowledge sources across that service and can delete resources the test did not create.
+Do not run separate test processes against the same service.
 
-3. After test runs finish, you can find the recorded sessions under the project's target folder:
+Before an authorized real-service run, configure an isolated test environment and its permissions.
+The [Search provisioning template](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/test-resources.bicep)
+and [live-testing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/live-testing.md)
+describe provisioning. Do not deploy, modify or clean up shared resources to satisfy a test prerequisite.
 
-    `target/test-classes/session-records`
+### Caller authentication
 
-    Every test will have its own session file.
+For both RECORD and LIVE,
+[TestHelpers](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/TestHelpers.java)
+uses `AzurePipelinesCredential` when `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID` is configured, and
+`AzureCliCredential` otherwise. Pipeline authentication also requires `AZURESUBSCRIPTION_CLIENT_ID`,
+`AZURESUBSCRIPTION_TENANT_ID`, `SYSTEM_ACCESSTOKEN`, and the Azure Pipelines OIDC request configuration.
+For local runs, authenticate with `az login` using the intended tenant/subscription.
+Unrelated `AZURE_CLIENT_*` settings do not replace the CLI identity. No client secret is needed for this path.
 
-4. Copy the records to the project's test resources folder:
+The caller needs Search Service Contributor and Search Index Data Contributor on the isolated Search service.
+Search separately authenticates to storage, OpenAI and AI Services; configure the identity and roles required by
+the selected test fixture. Some file-ingestion fixtures explicitly use `SEARCH_USER_ASSIGNED_IDENTITY`.
 
-    `test/resources/session-records`
+### Fixture settings
 
-> The session files should also be submitted to the project's repository, so the tests in the CI build will use them in playback mode.
+Configure only the settings needed by the selected tests, in the same terminal that starts Maven.
 
-### Running tests in PLAYBACK mode
+| Fixture | Variables |
+| --- | --- |
+| Search | `SEARCH_SERVICE_ENDPOINT` |
+| Azure OpenAI retrieval | `SEARCH_OPENAI_ENDPOINT`, `SEARCH_OPENAI_DEPLOYMENT_NAME`, `SEARCH_OPENAI_MODEL_NAME` |
+| Embeddings | `SEARCH_OPENAI_ENDPOINT`, `SEARCH_OPENAI_EMBEDDING_DEPLOYMENT_NAME`, `SEARCH_OPENAI_EMBEDDING_MODEL_NAME` |
+| Blob storage | `SEARCH_STORAGE_ACCOUNT_NAME`, `SEARCH_STORAGE_CONTAINER_NAME`, `SEARCH_SUBSCRIPTION_ID`, `SEARCH_RESOURCE_GROUP` |
+| AI Services / Content Understanding | `SEARCH_AI_SERVICES_ENDPOINT` |
+| User-assigned fixture identity | `SEARCH_USER_ASSIGNED_IDENTITY` |
 
-To run tests in Playback mode:
+Deployments must already exist, networking must permit access, and each identity must have the appropriate roles.
+For standard file extraction, use the AI Services endpoint (`https://<resource>.cognitiveservices.azure.com/`),
+not a Foundry project URL. Search needs access to a resource configured for Content Understanding.
 
-1. Set the value of the **AZURE_TEST_MODE** environment variable to *'PLAYBACK'* (or delete it). You can also delete all other environment variables.
-2. Run the tests.
+Model-activity tests send `messages` and request answer synthesis to exercise model-backed retrieval.
+An intent-only request can bypass model planning, so a successful retrieval need not include model activity.
+
+## Recording assets and validation limits
+
+Record only against an authorized isolated environment, with `AZURE_TEST_MODE=RECORD` in the Maven process.
+Use the repository's
+[test-proxy asset workflow](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.md)
+to review, sanitize and publish recordings, then update `assets.json`. Do not re-record to hide an SDK or test failure.
+
+Passing playback verifies the SDK against recorded responses, not current backend behavior or every preview feature.
+Track feature-specific live results, prerequisite skips, and backend failures in the feature's PR or release work item.
+Offline contract tests and successful compilation are not substitutes for live validation.

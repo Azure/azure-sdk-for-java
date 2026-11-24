@@ -25,15 +25,6 @@ mvn install
 java -jar .\target\azure-core-perf-1.0.0-beta.1-jar-with-dependencies.jar bytebufferreceive
 ```
 
-### Running with Wiremock
-
-Just run it with extra parameters.
-
-```shell
-mvn install
-java -jar .\target\azure-core-perf-1.0.0-beta.1-jar-with-dependencies.jar binarydatareceive --http-client netty --backend-type wiremock
-```
-
 ### Running with Blobs
 
 1. Create Storage account. Premium Blobs are recommended.

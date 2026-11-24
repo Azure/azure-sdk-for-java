@@ -21,7 +21,7 @@ public final class DeletedVaultsListBySubscriptionIdMockTests {
     @Test
     public void testListBySubscriptionId() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"vaultId\":\"w\",\"vaultDeletionTime\":\"2021-01-25T00:48:06Z\",\"purgeAt\":\"2021-06-01T18:34:35Z\"},\"id\":\"pvjzbe\",\"name\":\"ilzznfqqnvwp\",\"type\":\"qtaruoujmkcjhwq\"}]}";
+            = "{\"value\":[{\"properties\":{\"vaultId\":\"lrwdmhdlxyj\",\"vaultDeletionTime\":\"2021-11-16T13:40:23Z\",\"purgeAt\":\"2021-10-04T04:25:34Z\"},\"id\":\"fcnihgwq\",\"name\":\"pnedgf\",\"type\":\"cvkcvqvpkeqdcv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DeletedVaultsListBySubscriptionIdMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DeletedVault> response
-            = manager.deletedVaults().listBySubscriptionId("bsrfbj", com.azure.core.util.Context.NONE);
+            = manager.deletedVaults().listBySubscriptionId("vpnpp", com.azure.core.util.Context.NONE);
 
     }
 }

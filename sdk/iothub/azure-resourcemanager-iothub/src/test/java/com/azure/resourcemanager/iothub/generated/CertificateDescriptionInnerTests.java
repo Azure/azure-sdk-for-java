@@ -13,11 +13,11 @@ public final class CertificateDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateDescriptionInner model = BinaryData.fromString(
-            "{\"properties\":{\"subject\":\"wo\",\"expiry\":\"Sun, 28 Feb 2021 13:28:15 GMT\",\"thumbprint\":\"shrtdtkcnqxwb\",\"isVerified\":true,\"created\":\"Wed, 01 Sep 2021 09:08:06 GMT\",\"updated\":\"Wed, 21 Jul 2021 21:11:01 GMT\",\"certificate\":\"jwaa\",\"policyResourceId\":\"pqiiobyuqe\"},\"etag\":\"qlpqwcciuq\",\"id\":\"dbutauvfbtkuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"}")
+            "{\"properties\":{\"subject\":\"wo\",\"expiry\":\"Sun, 28 Feb 2021 13:28:15 GMT\",\"thumbprint\":\"shrtdtkcnqxwb\",\"isVerified\":true,\"created\":\"Wed, 01 Sep 2021 09:08:06 GMT\",\"updated\":\"Wed, 21 Jul 2021 21:11:01 GMT\",\"certificate\":\"jwaa\",\"certificateAuthorityResourceId\":\"pqiiobyuqe\"},\"etag\":\"qlpqwcciuq\",\"id\":\"dbutauvfbtkuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"}")
             .toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
         Assertions.assertEquals("jwaa", model.properties().certificate());
-        Assertions.assertEquals("pqiiobyuqe", model.properties().policyResourceId());
+        Assertions.assertEquals("pqiiobyuqe", model.properties().certificateAuthorityResourceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,10 +25,10 @@ public final class CertificateDescriptionInnerTests {
         CertificateDescriptionInner model
             = new CertificateDescriptionInner().withProperties(new CertificateProperties().withIsVerified(true)
                 .withCertificate("jwaa")
-                .withPolicyResourceId("pqiiobyuqe"));
+                .withCertificateAuthorityResourceId("pqiiobyuqe"));
         model = BinaryData.fromObject(model).toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
         Assertions.assertEquals("jwaa", model.properties().certificate());
-        Assertions.assertEquals("pqiiobyuqe", model.properties().policyResourceId());
+        Assertions.assertEquals("pqiiobyuqe", model.properties().certificateAuthorityResourceId());
     }
 }

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationType;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationUnit;
+import com.azure.resourcemanager.cloudhealth.models.AggregationType;
+import com.azure.resourcemanager.cloudhealth.models.AggregationUnit;
 import com.azure.resourcemanager.cloudhealth.models.DependenciesSignalGroupV2;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,28 +14,27 @@ public final class DependenciesSignalGroupV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DependenciesSignalGroupV2 model = BinaryData.fromString(
-            "{\"aggregationType\":\"MaxNotHealthy\",\"degradedThreshold\":74.0455958389497,\"unhealthyThreshold\":89.34519489007312,\"unit\":\"Percentage\",\"ignoreUnknown\":false}")
+            "{\"aggregationType\":\"WorstOf\",\"degradedThreshold\":14.281569484560308,\"unhealthyThreshold\":42.57483368871174,\"unit\":\"Absolute\",\"ignoreUnknown\":false}")
             .toObject(DependenciesSignalGroupV2.class);
-        Assertions.assertEquals(DependenciesAggregationType.MAX_NOT_HEALTHY, model.aggregationType());
-        Assertions.assertEquals(74.0455958389497D, model.degradedThreshold());
-        Assertions.assertEquals(89.34519489007312D, model.unhealthyThreshold());
-        Assertions.assertEquals(DependenciesAggregationUnit.PERCENTAGE, model.unit());
+        Assertions.assertEquals(AggregationType.WORST_OF, model.aggregationType());
+        Assertions.assertEquals(14.281569484560308D, model.degradedThreshold());
+        Assertions.assertEquals(42.57483368871174D, model.unhealthyThreshold());
+        Assertions.assertEquals(AggregationUnit.ABSOLUTE, model.unit());
         Assertions.assertFalse(model.ignoreUnknown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DependenciesSignalGroupV2 model
-            = new DependenciesSignalGroupV2().withAggregationType(DependenciesAggregationType.MAX_NOT_HEALTHY)
-                .withDegradedThreshold(74.0455958389497D)
-                .withUnhealthyThreshold(89.34519489007312D)
-                .withUnit(DependenciesAggregationUnit.PERCENTAGE)
-                .withIgnoreUnknown(false);
+        DependenciesSignalGroupV2 model = new DependenciesSignalGroupV2().withAggregationType(AggregationType.WORST_OF)
+            .withDegradedThreshold(14.281569484560308D)
+            .withUnhealthyThreshold(42.57483368871174D)
+            .withUnit(AggregationUnit.ABSOLUTE)
+            .withIgnoreUnknown(false);
         model = BinaryData.fromObject(model).toObject(DependenciesSignalGroupV2.class);
-        Assertions.assertEquals(DependenciesAggregationType.MAX_NOT_HEALTHY, model.aggregationType());
-        Assertions.assertEquals(74.0455958389497D, model.degradedThreshold());
-        Assertions.assertEquals(89.34519489007312D, model.unhealthyThreshold());
-        Assertions.assertEquals(DependenciesAggregationUnit.PERCENTAGE, model.unit());
+        Assertions.assertEquals(AggregationType.WORST_OF, model.aggregationType());
+        Assertions.assertEquals(14.281569484560308D, model.degradedThreshold());
+        Assertions.assertEquals(42.57483368871174D, model.unhealthyThreshold());
+        Assertions.assertEquals(AggregationUnit.ABSOLUTE, model.unit());
         Assertions.assertFalse(model.ignoreUnknown());
     }
 }

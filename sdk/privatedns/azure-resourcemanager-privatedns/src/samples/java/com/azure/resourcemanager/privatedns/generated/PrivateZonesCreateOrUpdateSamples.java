@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class PrivateZonesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-06-01/PrivateZonePut.json
+     * x-ms-original-file: 2026-06-01-preview/PrivateZonePut.json
      */
     /**
      * Sample code: PUT Private DNS Zone.

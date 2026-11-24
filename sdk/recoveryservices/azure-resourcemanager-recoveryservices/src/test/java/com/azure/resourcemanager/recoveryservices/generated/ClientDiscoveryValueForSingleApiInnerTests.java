@@ -12,18 +12,18 @@ public final class ClientDiscoveryValueForSingleApiInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientDiscoveryValueForSingleApiInner model = BinaryData.fromString(
-            "{\"name\":\"ap\",\"display\":{\"provider\":\"gcue\",\"resource\":\"umkdosvqwhbmd\",\"operation\":\"bjf\",\"description\":\"gmbmbexppbh\"},\"origin\":\"qrolfpf\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"qux\",\"displayName\":\"jyj\",\"blobDuration\":\"jaoyfhrtx\"},{\"name\":\"n\",\"displayName\":\"kujysvlejuvfq\",\"blobDuration\":\"rlyxwjkcprbnw\"}]}}}")
+            "{\"name\":\"bmbexppbhtqqro\",\"display\":{\"provider\":\"fpsalgbqu\",\"resource\":\"gjyjgzjaoyfhrtxi\",\"operation\":\"erkujys\",\"description\":\"eju\"},\"origin\":\"qawrlyxwj\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"wbxgjvt\",\"displayName\":\"p\",\"blobDuration\":\"szdnr\"},{\"name\":\"qguhmuo\",\"displayName\":\"f\",\"blobDuration\":\"wzwbnguitn\"},{\"name\":\"izgazxu\",\"displayName\":\"zuckyfi\",\"blobDuration\":\"fidfvzw\"},{\"name\":\"uht\",\"displayName\":\"wisdkft\",\"blobDuration\":\"xmnteiwaop\"}]}}}")
             .toObject(ClientDiscoveryValueForSingleApiInner.class);
-        Assertions.assertEquals("ap", model.name());
-        Assertions.assertEquals("gcue", model.display().provider());
-        Assertions.assertEquals("umkdosvqwhbmd", model.display().resource());
-        Assertions.assertEquals("bjf", model.display().operation());
-        Assertions.assertEquals("gmbmbexppbh", model.display().description());
-        Assertions.assertEquals("qrolfpf", model.origin());
-        Assertions.assertEquals("qux", model.properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("jyj",
+        Assertions.assertEquals("bmbexppbhtqqro", model.name());
+        Assertions.assertEquals("fpsalgbqu", model.display().provider());
+        Assertions.assertEquals("gjyjgzjaoyfhrtxi", model.display().resource());
+        Assertions.assertEquals("erkujys", model.display().operation());
+        Assertions.assertEquals("eju", model.display().description());
+        Assertions.assertEquals("qawrlyxwj", model.origin());
+        Assertions.assertEquals("wbxgjvt", model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("p",
             model.properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("jaoyfhrtx",
+        Assertions.assertEquals("szdnr",
             model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }

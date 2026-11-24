@@ -13,14 +13,14 @@ public final class AzureIaaSClassicComputeVMProtectableItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSClassicComputeVMProtectableItem model = BinaryData.fromString(
-            "{\"protectableItemType\":\"Microsoft.ClassicCompute/virtualMachines\",\"virtualMachineId\":\"mhjrm\",\"virtualMachineVersion\":\"hmaxljalfi\",\"resourceGroup\":\"jmobca\",\"backupManagementType\":\"de\",\"workloadType\":\"qcwgaxfgvaknokz\",\"friendlyName\":\"jzrltixldzy\",\"protectionState\":\"Invalid\"}")
+            "{\"protectableItemType\":\"Microsoft.ClassicCompute/virtualMachines\",\"virtualMachineId\":\"sugswhgsaod\",\"virtualMachineVersion\":\"wnbaf\",\"resourceGroup\":\"to\",\"backupManagementType\":\"haquvwsxbgnvk\",\"workloadType\":\"vqchoadhrs\",\"friendlyName\":\"vzvsp\",\"protectionState\":\"Invalid\"}")
             .toObject(AzureIaaSClassicComputeVMProtectableItem.class);
-        Assertions.assertEquals("de", model.backupManagementType());
-        Assertions.assertEquals("qcwgaxfgvaknokz", model.workloadType());
-        Assertions.assertEquals("jzrltixldzy", model.friendlyName());
+        Assertions.assertEquals("haquvwsxbgnvk", model.backupManagementType());
+        Assertions.assertEquals("vqchoadhrs", model.workloadType());
+        Assertions.assertEquals("vzvsp", model.friendlyName());
         Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
-        Assertions.assertEquals("mhjrm", model.virtualMachineId());
-        Assertions.assertEquals("hmaxljalfi", model.virtualMachineVersion());
-        Assertions.assertEquals("jmobca", model.resourceGroup());
+        Assertions.assertEquals("sugswhgsaod", model.virtualMachineId());
+        Assertions.assertEquals("wnbaf", model.virtualMachineVersion());
+        Assertions.assertEquals("to", model.resourceGroup());
     }
 }

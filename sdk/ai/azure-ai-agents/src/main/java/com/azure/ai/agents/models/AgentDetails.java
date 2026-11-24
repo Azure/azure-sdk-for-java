@@ -78,6 +78,8 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("versions", this.versions);
         jsonWriter.writeJsonField("agent_endpoint", this.agentEndpoint);
+        jsonWriter.writeStringField("digital_worker_type",
+            this.digitalWorkerType == null ? null : this.digitalWorkerType.toString());
         jsonWriter.writeJsonField("agent_card", this.agentCard);
         return jsonWriter.writeEndObject();
     }
@@ -96,8 +98,12 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
         return jsonReader.readObject(reader -> {
             String id = null;
             String name = null;
+            AgentState state = null;
+            AgentState configurationState = null;
             AgentDetailsVersions versions = null;
+            AgentStateSource stateSource = null;
             AgentEndpointConfig agentEndpoint = null;
+            DigitalWorkerType digitalWorkerType = null;
             AgentIdentity instanceIdentity = null;
             AgentIdentity blueprintIdentity = null;
             AgentBlueprintReference blueprintReference = null;
@@ -109,10 +115,18 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                     id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    state = AgentState.fromString(reader.getString());
+                } else if ("configuration_state".equals(fieldName)) {
+                    configurationState = AgentState.fromString(reader.getString());
                 } else if ("versions".equals(fieldName)) {
                     versions = AgentDetailsVersions.fromJson(reader);
+                } else if ("state_source".equals(fieldName)) {
+                    stateSource = AgentStateSource.fromString(reader.getString());
                 } else if ("agent_endpoint".equals(fieldName)) {
                     agentEndpoint = AgentEndpointConfig.fromJson(reader);
+                } else if ("digital_worker_type".equals(fieldName)) {
+                    digitalWorkerType = DigitalWorkerType.fromString(reader.getString());
                 } else if ("instance_identity".equals(fieldName)) {
                     instanceIdentity = AgentIdentity.fromJson(reader);
                 } else if ("blueprint".equals(fieldName)) {
@@ -126,7 +140,11 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                 }
             }
             AgentDetails deserializedAgentDetails = new AgentDetails(id, name, versions);
+            deserializedAgentDetails.state = state;
+            deserializedAgentDetails.configurationState = configurationState;
+            deserializedAgentDetails.stateSource = stateSource;
             deserializedAgentDetails.agentEndpoint = agentEndpoint;
+            deserializedAgentDetails.digitalWorkerType = digitalWorkerType;
             deserializedAgentDetails.instanceIdentity = instanceIdentity;
             deserializedAgentDetails.blueprintIdentity = blueprintIdentity;
             deserializedAgentDetails.blueprintReference = blueprintReference;
@@ -169,28 +187,24 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * The endpoint configuration for the agent
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentEndpointConfig agentEndpoint;
 
     /*
      * The instance identity of the agent
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentIdentity instanceIdentity;
 
     /*
      * The blueprint for the agent
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentBlueprintReference blueprintReference;
 
     /*
      * The agent_card property.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentCard agentCard;
 
     /**
@@ -199,7 +213,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the agentEndpoint value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentEndpointConfig getAgentEndpoint() {
         return this.agentEndpoint;
     }
@@ -210,7 +223,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the instanceIdentity value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentIdentity getInstanceIdentity() {
         return this.instanceIdentity;
     }
@@ -221,7 +233,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the blueprintReference value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentBlueprintReference getBlueprintReference() {
         return this.blueprintReference;
     }
@@ -232,7 +243,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the agentCard value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentCard getAgentCard() {
         return this.agentCard;
     }
@@ -241,7 +251,6 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * The blueprint for the agent
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentIdentity blueprintIdentity;
 
     /**
@@ -250,8 +259,79 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
      * @return the blueprintIdentity value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentIdentity getBlueprintIdentity() {
         return this.blueprintIdentity;
+    }
+
+    /*
+     * The operational state of the agent. Controls whether the agent endpoint accepts or rejects requests.
+     */
+    @Generated
+    private AgentState state;
+
+    /**
+     * Get the state property: The operational state of the agent. Controls whether the agent endpoint accepts or
+     * rejects requests.
+     *
+     * @return the state value.
+     */
+    @Generated
+    public AgentState getState() {
+        return this.state;
+    }
+
+    /*
+     * The source of the agent's operational state. When the agent is disabled, indicates where the disabled state
+     * originates from. Empty when not derived from a specific source.
+     */
+    @Generated
+    private AgentStateSource stateSource;
+
+    /**
+     * Get the stateSource property: The source of the agent's operational state. When the agent is disabled, indicates
+     * where the disabled state originates from. Empty when not derived from a specific source.
+     *
+     * @return the stateSource value.
+     */
+    @Generated
+    public AgentStateSource getStateSource() {
+        return this.stateSource;
+    }
+
+    /*
+     * (Preview) The type of digital worker (previously known as `autopilot`). If omitted, it is not a digital worker.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. DigitalWorker=V1Preview")
+    private DigitalWorkerType digitalWorkerType;
+
+    /**
+     * Get the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @return the digitalWorkerType value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. DigitalWorker=V1Preview")
+    public DigitalWorkerType getDigitalWorkerType() {
+        return this.digitalWorkerType;
+    }
+
+    /*
+     * The administrative configuration state of the agent. This reflects whether the agent was explicitly enabled or
+     * disabled, independently of identity-derived operational state.
+     */
+    @Generated
+    private AgentState configurationState;
+
+    /**
+     * Get the configurationState property: The administrative configuration state of the agent. This reflects whether
+     * the agent was explicitly enabled or disabled, independently of identity-derived operational state.
+     *
+     * @return the configurationState value.
+     */
+    @Generated
+    public AgentState getConfigurationState() {
+        return this.configurationState;
     }
 }

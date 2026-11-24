@@ -206,6 +206,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        safeDeleteDatabase(createdDatabase);
         safeClose(client);
     }
 

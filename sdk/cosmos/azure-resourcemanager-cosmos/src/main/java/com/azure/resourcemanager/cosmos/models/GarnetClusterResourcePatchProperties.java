@@ -28,6 +28,16 @@ public final class GarnetClusterResourcePatchProperties
      */
     private List<String> extensions;
 
+    /*
+     * The authentication method used for the Garnet cluster.
+     */
+    private GarnetAuthenticationType authenticationMethod;
+
+    /*
+     * Flag to indicate if persistence is enabled for the Garnet cluster.
+     */
+    private Boolean persistence;
+
     /**
      * Creates an instance of GarnetClusterResourcePatchProperties class.
      */
@@ -77,6 +87,47 @@ public final class GarnetClusterResourcePatchProperties
     }
 
     /**
+     * Get the authenticationMethod property: The authentication method used for the Garnet cluster.
+     * 
+     * @return the authenticationMethod value.
+     */
+    public GarnetAuthenticationType authenticationMethod() {
+        return this.authenticationMethod;
+    }
+
+    /**
+     * Set the authenticationMethod property: The authentication method used for the Garnet cluster.
+     * 
+     * @param authenticationMethod the authenticationMethod value to set.
+     * @return the GarnetClusterResourcePatchProperties object itself.
+     */
+    public GarnetClusterResourcePatchProperties
+        withAuthenticationMethod(GarnetAuthenticationType authenticationMethod) {
+        this.authenticationMethod = authenticationMethod;
+        return this;
+    }
+
+    /**
+     * Get the persistence property: Flag to indicate if persistence is enabled for the Garnet cluster.
+     * 
+     * @return the persistence value.
+     */
+    public Boolean persistence() {
+        return this.persistence;
+    }
+
+    /**
+     * Set the persistence property: Flag to indicate if persistence is enabled for the Garnet cluster.
+     * 
+     * @param persistence the persistence value to set.
+     * @return the GarnetClusterResourcePatchProperties object itself.
+     */
+    public GarnetClusterResourcePatchProperties withPersistence(Boolean persistence) {
+        this.persistence = persistence;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -92,6 +143,9 @@ public final class GarnetClusterResourcePatchProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("clusterType", this.clusterType == null ? null : this.clusterType.toString());
         jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("authenticationMethod",
+            this.authenticationMethod == null ? null : this.authenticationMethod.toString());
+        jsonWriter.writeBooleanField("persistence", this.persistence);
         return jsonWriter.writeEndObject();
     }
 
@@ -117,6 +171,12 @@ public final class GarnetClusterResourcePatchProperties
                 } else if ("extensions".equals(fieldName)) {
                     List<String> extensions = reader.readArray(reader1 -> reader1.getString());
                     deserializedGarnetClusterResourcePatchProperties.extensions = extensions;
+                } else if ("authenticationMethod".equals(fieldName)) {
+                    deserializedGarnetClusterResourcePatchProperties.authenticationMethod
+                        = GarnetAuthenticationType.fromString(reader.getString());
+                } else if ("persistence".equals(fieldName)) {
+                    deserializedGarnetClusterResourcePatchProperties.persistence
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

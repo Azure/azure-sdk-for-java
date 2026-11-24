@@ -260,7 +260,7 @@ class TranscriptionAndIncludeOptionsTest {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("key", "value");
 
-        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-4o-realtime-preview")
+        VoiceLiveSessionOptions options = new VoiceLiveSessionOptions().setModel("gpt-realtime")
             .setInclude(Arrays.asList(SessionIncludeOption.ITEM_INPUT_AUDIO_TRANSCRIPTION_PHRASES))
             .setMetadata(metadata);
 

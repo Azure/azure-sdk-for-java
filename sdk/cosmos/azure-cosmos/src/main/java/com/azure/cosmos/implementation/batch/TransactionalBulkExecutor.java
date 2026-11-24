@@ -13,11 +13,11 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.BridgeInternal;
@@ -363,7 +363,9 @@ public final class TransactionalBulkExecutor implements Disposable {
                                     PartitionScopeThresholds thresholds =
                                         this.partitionScopeThresholds.computeIfAbsent(
                                             pkRangeId,
-                                            newPkRangeId -> new PartitionScopeThresholds(pkRangeId, this.transactionalBulkExecutionOptionsImpl));
+                                            newPkRangeId -> new PartitionScopeThresholds(
+                                                newPkRangeId,
+                                                this.transactionalBulkExecutionOptionsImpl));
 
                                     logTraceOrWarning("Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
                                         pkRangeId,
@@ -830,7 +832,7 @@ public final class TransactionalBulkExecutor implements Disposable {
             docClientWrapper,
             container,
             cosmosBatchBulkOperation.getPartitionKeyValue(),
-            null);
+            PartitionKeyHelper::requireFullPartitionKey);
     }
 
     private CosmosBatchRequestOptions getBatchRequestOptions() {

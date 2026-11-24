@@ -22,7 +22,7 @@ public final class ProvisioningIssue implements JsonSerializable<ProvisioningIss
     private String name;
 
     /*
-     * The properties property.
+     * Details of the provisioning issue
      */
     private ProvisioningIssueProperties properties;
 
@@ -42,7 +42,7 @@ public final class ProvisioningIssue implements JsonSerializable<ProvisioningIss
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: Details of the provisioning issue.
      * 
      * @return the properties value.
      */

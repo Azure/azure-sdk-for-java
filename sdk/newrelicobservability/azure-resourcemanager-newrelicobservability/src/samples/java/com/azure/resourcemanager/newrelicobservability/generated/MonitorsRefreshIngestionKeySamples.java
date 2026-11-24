@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class MonitorsRefreshIngestionKeySamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_RefreshIngestionKey.json
+     * x-ms-original-file: 2026-06-01/Monitors_RefreshIngestionKey.json
      */
     /**
      * Sample code: Monitors_RefreshIngestionKey.

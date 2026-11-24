@@ -166,6 +166,34 @@ public interface StorageManagementClient {
     DataSharesClient getDataShares();
 
     /**
+     * Gets the ContextCachesClient object to access its operations.
+     * 
+     * @return the ContextCachesClient object.
+     */
+    ContextCachesClient getContextCaches();
+
+    /**
+     * Gets the ContextCacheContainersClient object to access its operations.
+     * 
+     * @return the ContextCacheContainersClient object.
+     */
+    ContextCacheContainersClient getContextCacheContainers();
+
+    /**
+     * Gets the BlobAccessPointConfigurationsClient object to access its operations.
+     * 
+     * @return the BlobAccessPointConfigurationsClient object.
+     */
+    BlobAccessPointConfigurationsClient getBlobAccessPointConfigurations();
+
+    /**
+     * Gets the BlobAccessPointConnectionTestsClient object to access its operations.
+     * 
+     * @return the BlobAccessPointConnectionTestsClient object.
+     */
+    BlobAccessPointConnectionTestsClient getBlobAccessPointConnectionTests();
+
+    /**
      * Gets the AdvancedPlatformMetricsClient object to access its operations.
      * 
      * @return the AdvancedPlatformMetricsClient object.

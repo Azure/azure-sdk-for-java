@@ -373,29 +373,6 @@ public final class RegistryUpdateParameters implements JsonSerializable<Registry
     }
 
     /**
-     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @return the metadataSearch value.
-     */
-    public MetadataSearch metadataSearch() {
-        return this.innerProperties() == null ? null : this.innerProperties().metadataSearch();
-    }
-
-    /**
-     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @param metadataSearch the metadataSearch value to set.
-     * @return the RegistryUpdateParameters object itself.
-     */
-    public RegistryUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RegistryPropertiesUpdateParameters();
-        }
-        this.innerProperties().withMetadataSearch(metadataSearch);
-        return this;
-    }
-
-    /**
      * Get the roleAssignmentMode property: Determines registry role assignment mode.
      * 
      * @return the roleAssignmentMode value.

@@ -1,6 +1,35 @@
 # Release History
-## 7.4.0-beta.1 (Unreleased)
-- Upgrade Spring Boot dependencies to `4.1.0` and Spring Cloud dependencies to `2025.1.2`.
+
+## 7.5.0 (2026-11-24)
+- This release is compatible with Spring Boot 4.0.0-4.1.2. (Note: 4.1.x (x>2) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0-2025.1.3. (Note: 2025.1.x (x>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.10.
+
+### Spring Cloud Azure App Configuration Config
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Features Added
+
+- Added support for Snapshot References in App Configuration stores. Snapshot reference settings are now automatically resolved, loading the referenced snapshot's configuration settings as properties.
+
+#### Bugs Fixed
+
+- Fixed configuration refresh blocking the calling thread by running refresh checks asynchronously on subscription.
+- Fixed an issue where startup retries could report success without loading configuration when all clients were in backoff. Startup now waits for client availability until the startup timeout and preserves the last load failure. Refresh also reports failure when no clients are available.
+- Fixed an issue where a refresh, when using multiple stores, could result in a partially loaded store failed to load across retries and all available replicas.
+
+### Spring Cloud Azure App Configuration Config Web
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config-web` module.
+
+#### Bugs Fixed
+
+- Fixed request-triggered configuration refresh blocking servlet request threads and ensured asynchronous refresh failures are logged.
 
 ### Spring Cloud Azure Autoconfigure
 
@@ -8,6 +37,109 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.certificate-alias-filter-patterns` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.certificate-alias-filter-patterns` configuration. The patterns are passed to the Key Vault JCA provider to limit which certificate aliases are loaded. ([#50013](https://github.com/Azure/azure-sdk-for-java/issues/50013))
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.disable-aia-download` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.disable-aia-download` configuration to disable automatic Authority Information Access (AIA) certificate downloads. The default is `false`. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
+
+#### Breaking Changes
+
+- Azure AD B2C resource servers now reject missing or invalid policy claims when `spring.cloud.azure.active-directory.b2c.user-flows` is configured, even for policy-specific issuers. ([#51030](https://github.com/Azure/azure-sdk-for-java/pull/51030))
+
+#### Bugs Fixed
+
+- Fixed native-image binding of global Azure and Key Vault property-source settings, credential initialization, and secret response deserialization. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed missing global Azure properties in AOT-generated application contexts, including Service Bus binder child contexts, while retaining runtime configuration binding. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed missing native-image binding metadata for JDBC passwordless settings and for Cosmos, Event Hubs, Service Bus, Blob, and Queue settings when using ConnectionDetails. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed AOT processing of Service Bus JMS connection factories by replacing instance suppliers with factory-method bean definitions. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed missing reflection metadata for Service Bus JMS URI prefetch options and Standard-tier AMQP customization in native images. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed Qpid factory discovery for Service Bus JMS native connections by retaining provider, SSL transport, SASL, and default tracing descriptors and factory metadata. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed missing native proxy metadata for cached Service Bus JMS connections and sessions. ([#51271](https://github.com/Azure/azure-sdk-for-java/pull/51271))
+- Fixed the default Microsoft Entra ID resource server filter chain to require authentication for every request. ([#51191](https://github.com/Azure/azure-sdk-for-java/issues/51191))
+- Fixed Spring Boot 4.1.2 compatibility test compilation for the default Microsoft Entra ID security configuration. ([#51106](https://github.com/Azure/azure-sdk-for-java/pull/51106))
+- Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
+- Fixed missing user flow validation in Azure AD B2C resource servers by checking `tfp` or fallback `acr` against configured names. ([#51030](https://github.com/Azure/azure-sdk-for-java/pull/51030))
+
+#### Other Changes
+
+- Aligned Reactor version resolution and test HTTP transport dependencies with Netty 4.2, and added offline transport compatibility tests.
+
+### Spring Cloud Azure Starter Monitor
+This section includes changes in `spring-cloud-azure-starter-monitor` module.
+
+#### Dependency Updates
+
+- Upgraded OpenTelemetry SDK dependencies from `1.58.0` to `1.65.0` and `opentelemetry-spring-boot-starter` from `2.24.0` to `2.31.1`. ([#50543](https://github.com/Azure/azure-sdk-for-java/pull/50543))
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#750-2026-11-24) for more details.
+
+## 6.5.0 (2026-07-29)
+- This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0-2025.0.2. (Note: 2025.0.x (x>2) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.8.
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+
+- Added `AzureServiceBusJmsConnectionFactoryFactory` to allow applications to customize how `ServiceBusJmsConnectionFactory` instances are created, including support for custom subclasses ([#49676](https://github.com/Azure/azure-sdk-for-java/pull/49676)).
+- Added support for constructing `AadB2cAuthorizationRequestResolver` with a custom `authorizationRequestBaseUri`, aligning Azure AD B2C authorization request resolution with the configurability already available for AAD. ([#49674](https://github.com/Azure/azure-sdk-for-java/pull/49674))
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+- Fixed the AAD authentication filter (`AadAuthenticationFilter` and `AadAppRoleStatelessAuthenticationFilter`) not validating the `tid` (tenant ID) claim in JWT tokens against the configured tenant, allowing tokens from other tenants to be accepted. The JWT token validator now validates that the token's `tid` claim matches the configured tenant ID, preventing cross-tenant authentication bypass. This hardening is only enforced when a specific tenant ID is configured. ([#49631](https://github.com/Azure/azure-sdk-for-java/pull/49631))
+- Fixed the AAD and B2C OpenID Connect login (`oauth2Login`) ID token decoders not validating the `iss` (issuer) and `aud` (audience) claims. `AadOidcIdTokenDecoderFactory` and `AadB2cOidcIdTokenDecoderFactory` now validate the standard OIDC ID token claims (audience, expiry, issued-at and subject) and the issuer. For single tenant applications the issuer must belong to the configured tenant, and for multi-tenant applications (the `common`, `organizations` or `consumers` endpoints) the issuer must be a trusted Microsoft identity platform issuer consistent with the token's own `tid` claim. This prevents users from unauthorized tenants from signing in to multi-tenant applications that rely on the issuer/tenant claim for tenant restriction ([#49423](https://github.com/Azure/azure-sdk-for-java/pull/49423)).
+- Fixed the missing bean name in `@ConditionalOnMissingBean` for `LettuceClientConfigurationBuilderCustomizer` ([#49290](https://github.com/Azure/azure-sdk-for-java/issues/49290)).
+- Fixed the AAD and B2C resource server JWT decoder not honoring the `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, and `spring.cloud.azure.active-directory.b2c.jwt-read-timeout` configuration properties ([#49329](https://github.com/Azure/azure-sdk-for-java/pull/49329)).
+- Fixed AAD resource server JWK retrieval not honoring the `spring.cloud.azure.active-directory.jwk-set-cache-lifespan` and `spring.cloud.azure.active-directory.jwk-set-cache-refresh-time` configuration properties ([#42159](https://github.com/Azure/azure-sdk-for-java/issues/42159)).
+
+#### Other Changes
+
+### Spring Cloud Azure Service
+
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Bugs Fixed
+
+- Fixed the Service Bus producer, consumer and processor sub-client builders overwriting configuration already set on the underlying `ServiceBusClientBuilder` through an `AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>` (for example the `ClientOptions` carrying `TracingOptions`). The customizers are now applied to the underlying builder as the last step, so their configuration is preserved ([#49742](https://github.com/Azure/azure-sdk-for-java/issues/49742)).
+
+### Spring Cloud Azure Stream Binder Service Bus
+
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Bugs Fixed
+
+- Fixed a regression where dead-letter reason and error description were not transmitted because a no-arg `deadLetter()` call settled the message before `deadLetter(options)` was invoked ([#41883](https://github.com/Azure/azure-sdk-for-java/issues/41883)).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#650-2026-07-29) for more details.
+
+## 7.4.0 (2026-07-24)
+- This release is compatible with Spring Boot 4.0.0-4.1.0. (Note: 4.1.x (x>0) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0-2025.1.2. (Note: 2025.1.2 (x>2) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+- Upgrade `azure-sdk-bom` to 1.3.8.
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+
+- Added `AzureServiceBusJmsConnectionFactoryFactory` to allow applications to customize how `ServiceBusJmsConnectionFactory` instances are created, including support for custom subclasses ([#49676](https://github.com/Azure/azure-sdk-for-java/pull/49676)).
 - Added support for constructing `AadB2cAuthorizationRequestResolver` with a custom `authorizationRequestBaseUri`, aligning Azure AD B2C authorization request resolution with the configurability already available for AAD. ([#49674](https://github.com/Azure/azure-sdk-for-java/pull/49674))
 
 #### Breaking Changes
@@ -23,6 +155,14 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Other Changes
 
 - Upgrade to Jackson 3 to align with Spring Boot 4 ([#49538](https://github.com/Azure/azure-sdk-for-java/issues/49538)).
+
+### Spring Cloud Azure Service
+
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Bugs Fixed
+
+- Fixed the Service Bus producer, consumer and processor sub-client builders overwriting configuration already set on the underlying `ServiceBusClientBuilder` through an `AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>` (for example the `ClientOptions` carrying `TracingOptions`). The customizers are now applied to the underlying builder as the last step, so their configuration is preserved ([#49742](https://github.com/Azure/azure-sdk-for-java/issues/49742)).
 
 ### Spring Messaging Azure
 
@@ -103,6 +243,10 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 #### Bugs Fixed
 
 - Fixed a regression where dead-letter reason and error description were not transmitted because a no-arg `deadLetter()` call settled the message before `deadLetter(options)` was invoked ([#41883](https://github.com/Azure/azure-sdk-for-java/issues/41883)).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#740-2026-07-24) for more details.
 
 ## 6.4.0 (2026-06-01)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)

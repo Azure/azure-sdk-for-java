@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class CloudServicesNetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CloudServicesNetworks_Delete.json
+     * x-ms-original-file: 2026-07-01/CloudServicesNetworks_Delete.json
      */
     /**
      * Sample code: Delete cloud services network.

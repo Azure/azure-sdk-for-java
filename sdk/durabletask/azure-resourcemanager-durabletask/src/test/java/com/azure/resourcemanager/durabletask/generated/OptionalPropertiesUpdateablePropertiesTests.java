@@ -15,12 +15,12 @@ public final class OptionalPropertiesUpdateablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OptionalPropertiesUpdateableProperties model = BinaryData.fromString(
-            "{\"privateEndpoint\":{\"id\":\"hjq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"icxm\",\"actionsRequired\":\"iwqvhkh\"}}")
+            "{\"privateEndpoint\":{\"id\":\"ytjrybnwjewgdr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"aen\",\"actionsRequired\":\"eh\"}}")
             .toObject(OptionalPropertiesUpdateableProperties.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("icxm", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("iwqvhkh", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("aen", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("eh", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +29,12 @@ public final class OptionalPropertiesUpdateablePropertiesTests {
             = new OptionalPropertiesUpdateableProperties().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("icxm")
-                        .withActionsRequired("iwqvhkh"));
+                        .withDescription("aen")
+                        .withActionsRequired("eh"));
         model = BinaryData.fromObject(model).toObject(OptionalPropertiesUpdateableProperties.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("icxm", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("iwqvhkh", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("aen", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("eh", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

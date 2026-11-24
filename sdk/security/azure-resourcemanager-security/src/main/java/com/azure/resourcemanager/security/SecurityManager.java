@@ -99,6 +99,7 @@ import com.azure.resourcemanager.security.implementation.StandardsImpl;
 import com.azure.resourcemanager.security.implementation.SubAssessmentsImpl;
 import com.azure.resourcemanager.security.implementation.TasksImpl;
 import com.azure.resourcemanager.security.implementation.TopologiesImpl;
+import com.azure.resourcemanager.security.implementation.TopologyResourcesImpl;
 import com.azure.resourcemanager.security.implementation.WorkspaceSettingsImpl;
 import com.azure.resourcemanager.security.models.AdvancedThreatProtections;
 import com.azure.resourcemanager.security.models.Alerts;
@@ -173,6 +174,7 @@ import com.azure.resourcemanager.security.models.Standards;
 import com.azure.resourcemanager.security.models.SubAssessments;
 import com.azure.resourcemanager.security.models.Tasks;
 import com.azure.resourcemanager.security.models.Topologies;
+import com.azure.resourcemanager.security.models.TopologyResources;
 import com.azure.resourcemanager.security.models.WorkspaceSettings;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -259,6 +261,8 @@ public final class SecurityManager {
 
     private SecuritySolutions securitySolutions;
 
+    private TopologyResources topologyResources;
+
     private SecurityStandards securityStandards;
 
     private StandardAssignments standardAssignments;
@@ -323,9 +327,9 @@ public final class SecurityManager {
 
     private ServerVulnerabilityAssessments serverVulnerabilityAssessments;
 
-    private Topologies topologies;
-
     private SecuritySolutionsReferenceDatas securitySolutionsReferenceDatas;
+
+    private Topologies topologies;
 
     private SensitivitySettings sensitivitySettings;
 
@@ -993,6 +997,18 @@ public final class SecurityManager {
     }
 
     /**
+     * Gets the resource collection API of TopologyResources.
+     * 
+     * @return Resource collection API of TopologyResources.
+     */
+    public TopologyResources topologyResources() {
+        if (this.topologyResources == null) {
+            this.topologyResources = new TopologyResourcesImpl(clientObject.getTopologyResources(), this);
+        }
+        return topologyResources;
+    }
+
+    /**
      * Gets the resource collection API of SecurityStandards. It manages SecurityStandard.
      * 
      * @return Resource collection API of SecurityStandards.
@@ -1388,18 +1404,6 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of Topologies.
-     * 
-     * @return Resource collection API of Topologies.
-     */
-    public Topologies topologies() {
-        if (this.topologies == null) {
-            this.topologies = new TopologiesImpl(clientObject.getTopologies(), this);
-        }
-        return topologies;
-    }
-
-    /**
      * Gets the resource collection API of SecuritySolutionsReferenceDatas.
      * 
      * @return Resource collection API of SecuritySolutionsReferenceDatas.
@@ -1410,6 +1414,18 @@ public final class SecurityManager {
                 = new SecuritySolutionsReferenceDatasImpl(clientObject.getSecuritySolutionsReferenceDatas(), this);
         }
         return securitySolutionsReferenceDatas;
+    }
+
+    /**
+     * Gets the resource collection API of Topologies.
+     * 
+     * @return Resource collection API of Topologies.
+     */
+    public Topologies topologies() {
+        if (this.topologies == null) {
+            this.topologies = new TopologiesImpl(clientObject.getTopologies(), this);
+        }
+        return topologies;
     }
 
     /**

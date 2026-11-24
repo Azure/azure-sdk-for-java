@@ -22,6 +22,7 @@ public final class CustomRegistryCredentials implements JsonSerializable<CustomR
     private SecretObject userName;
 
     /*
+     * 
      * The password for logging into the custom registry. The password is a secret
      * object that allows multiple ways of providing the value for it.
      */
@@ -63,7 +64,8 @@ public final class CustomRegistryCredentials implements JsonSerializable<CustomR
     }
 
     /**
-     * Get the password property: The password for logging into the custom registry. The password is a secret
+     * Get the password property:
+     * The password for logging into the custom registry. The password is a secret
      * object that allows multiple ways of providing the value for it.
      * 
      * @return the password value.
@@ -73,7 +75,8 @@ public final class CustomRegistryCredentials implements JsonSerializable<CustomR
     }
 
     /**
-     * Set the password property: The password for logging into the custom registry. The password is a secret
+     * Set the password property:
+     * The password for logging into the custom registry. The password is a secret
      * object that allows multiple ways of providing the value for it.
      * 
      * @param password the password value to set.

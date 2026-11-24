@@ -12,6 +12,7 @@ import com.azure.core.util.Configuration;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStatus;
+import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -35,12 +36,12 @@ abstract class WorkIQSamplesTestBase extends ClientTestBase {
     }
 
     PromptAgentDefinition createAgentDefinition() {
-        WorkIqPreviewTool workIqTool
-            = new WorkIqPreviewTool(getRecordedConfig("WORK_IQ_PROJECT_CONNECTION_ID")).setName("work_iq_lookup")
-                .setDescription("Use Work IQ to answer questions grounded in enterprise data.");
+        WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(getRecordedConfig("WORK_IQ_PROJECT_CONNECTION_ID"));
 
         return new PromptAgentDefinition(getRecordedConfig("FOUNDRY_MODEL_NAME"))
-            .setInstructions("Use the available Work IQ tools to answer questions and perform tasks.")
+            .setInstructions("You are a helpful assistant that can access Microsoft 365 data through Work IQ. "
+                + "Use the Work IQ tool to search and retrieve information from emails, calendar events, "
+                + "Teams messages, and other Microsoft 365 content.")
             .setTools(Collections.singletonList(workIqTool));
     }
 
@@ -49,7 +50,7 @@ abstract class WorkIQSamplesTestBase extends ClientTestBase {
     }
 
     ResponseCreateParams.Builder createResponseParams() {
-        return ResponseCreateParams.builder().input(getUserInput());
+        return ResponseCreateParams.builder().toolChoice(ToolChoiceOptions.REQUIRED).input(getUserInput());
     }
 
     void assertCompletedResponse(Response response) {

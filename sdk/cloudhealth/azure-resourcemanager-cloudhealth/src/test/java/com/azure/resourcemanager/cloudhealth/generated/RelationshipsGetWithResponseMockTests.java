@@ -21,7 +21,7 @@ public final class RelationshipsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"fuxtyasiibmiybnn\",\"parentEntityName\":\"stgnl\",\"childEntityName\":\"hnmgixhcm\",\"tags\":{\"rotwypundmbxhugc\":\"qfoudorhcgyy\",\"or\":\"jkavl\",\"jltfvnzcyjtotpv\":\"mftpmdtz\"},\"discoveredBy\":\"vpbdbzqgq\"},\"id\":\"hedsvqwthmkyib\",\"name\":\"ysi\",\"type\":\"sgqcwdho\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"n\",\"parentEntityName\":\"z\",\"childEntityName\":\"rfkspzhz\",\"tags\":{\"gljplkeuachtomfl\":\"sjcitdigsxc\",\"mdgycxn\":\"ytswfp\",\"qjjyslurl\":\"skw\"},\"discoveredBy\":\"hhkvpedwqs\"},\"id\":\"rhmpqvwwsk\",\"name\":\"ndcbrwi\",\"type\":\"uvqejosovyrrle\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class RelationshipsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Relationship response = manager.relationships()
-            .getWithResponse("irpghriypoqeyh", "qhykprlpyzn", "ciqdsme", com.azure.core.util.Context.NONE)
+            .getWithResponse("gjekglklby", "lidwcwvmzegjon", "hj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fuxtyasiibmiybnn", response.properties().displayName());
-        Assertions.assertEquals("stgnl", response.properties().parentEntityName());
-        Assertions.assertEquals("hnmgixhcm", response.properties().childEntityName());
-        Assertions.assertEquals("qfoudorhcgyy", response.properties().tags().get("rotwypundmbxhugc"));
+        Assertions.assertEquals("n", response.properties().displayName());
+        Assertions.assertEquals("z", response.properties().parentEntityName());
+        Assertions.assertEquals("rfkspzhz", response.properties().childEntityName());
+        Assertions.assertEquals("sjcitdigsxc", response.properties().tags().get("gljplkeuachtomfl"));
     }
 }

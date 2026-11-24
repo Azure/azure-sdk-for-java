@@ -23,7 +23,7 @@ public final class TypeListEnumDefsTests extends DataMapClientTestBase {
     @Disabled
     public void testTypeListEnumDefsTests() {
         // method invocation
-        AtlasTypesDef response = typeDefinitionClient.get(null, TypeCategory.ENUM);
+        AtlasTypesDef response = typeDefinitionClient.get((Boolean) null, TypeCategory.ENUM);
 
         // response assertion
         Assertions.assertNotNull(response);

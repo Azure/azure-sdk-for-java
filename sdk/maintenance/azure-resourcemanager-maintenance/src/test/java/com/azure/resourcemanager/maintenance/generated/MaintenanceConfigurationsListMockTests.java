@@ -25,7 +25,7 @@ public final class MaintenanceConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"namespace\":\"qtayri\",\"extensionProperties\":{\"exrmcqibycnojvk\":\"oyq\"},\"maintenanceScope\":\"SQLManagedInstance\",\"maintenanceWindow\":{\"startDateTime\":\"sgzvahapjyzhpv\",\"expirationDateTime\":\"zcjrvxdjzlmwlx\",\"duration\":\"ug\",\"timeZone\":\"zovawjvz\",\"recurEvery\":\"luthn\"},\"visibility\":\"Custom\",\"installPatches\":{\"rebootSetting\":\"IfRequired\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"lpjzuaejxdu\",\"tskzbbtdzumveek\",\"pwo\",\"uh\"],\"kbNumbersToInclude\":[\"bsjyofdx\"],\"classificationsToInclude\":[\"sd\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"boekqvkel\",\"smv\"],\"packageNameMasksToInclude\":[\"yjsflhhcaalnji\",\"isxyawjoyaqcslyj\",\"kiidzyex\",\"nelixhnrztfo\"],\"classificationsToInclude\":[\"nxknalaulp\",\"ggdtpnapnyiro\",\"uhpigvp\",\"ylgqgitxmedjvcsl\"]}}},\"location\":\"qwwncw\",\"tags\":{\"rmgucnap\":\"xgk\"},\"id\":\"eoellwptfdygp\",\"name\":\"qbuaceopzfqr\",\"type\":\"huaoppp\"}]}";
+            = "{\"value\":[{\"properties\":{\"namespace\":\"slyjpkiid\",\"extensionProperties\":{\"lhbnxkna\":\"xznelixhnrztf\",\"pnapnyiropuh\":\"aulppggd\",\"git\":\"igvpgylg\"},\"maintenanceScope\":\"SQLDB\",\"maintenanceWindow\":{\"startDateTime\":\"v\",\"expirationDateTime\":\"lynqwwncwzzh\",\"duration\":\"ktrmgucnapkt\",\"timeZone\":\"ellwptfdy\",\"recurEvery\":\"fqbuaceopzf\"},\"visibility\":\"Custom\",\"installPatches\":{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"pcqeqx\",\"lzdahzxctobgbkdm\",\"izpost\"],\"kbNumbersToInclude\":[\"cfbu\",\"rmfqjhhkxbpvj\"],\"classificationsToInclude\":[\"hx\",\"j\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"vkr\",\"swbxqz\"],\"packageNameMasksToInclude\":[\"jfauvjfdxxi\"],\"classificationsToInclude\":[\"vtcqaqtdo\"]}}},\"location\":\"cbxvwvxyslqbh\",\"tags\":{\"tkblmpewww\":\"obl\",\"hxcr\":\"bkrvrnsvshqj\",\"sub\":\"bfovasrruvwbhsq\"},\"id\":\"jbi\",\"name\":\"xb\",\"type\":\"ybsrfbjfdtwss\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,31 +37,31 @@ public final class MaintenanceConfigurationsListMockTests {
         PagedIterable<MaintenanceConfiguration> response
             = manager.maintenanceConfigurations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qwwncw", response.iterator().next().location());
-        Assertions.assertEquals("xgk", response.iterator().next().tags().get("rmgucnap"));
-        Assertions.assertEquals("qtayri", response.iterator().next().namespace());
-        Assertions.assertEquals("oyq", response.iterator().next().extensionProperties().get("exrmcqibycnojvk"));
-        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals("cbxvwvxyslqbh", response.iterator().next().location());
+        Assertions.assertEquals("obl", response.iterator().next().tags().get("tkblmpewww"));
+        Assertions.assertEquals("slyjpkiid", response.iterator().next().namespace());
+        Assertions.assertEquals("xznelixhnrztf", response.iterator().next().extensionProperties().get("lhbnxkna"));
+        Assertions.assertEquals(MaintenanceScope.SQLDB, response.iterator().next().maintenanceScope());
         Assertions.assertEquals(Visibility.CUSTOM, response.iterator().next().visibility());
-        Assertions.assertEquals(RebootOptions.IF_REQUIRED, response.iterator().next().installPatches().rebootSetting());
-        Assertions.assertEquals("lpjzuaejxdu",
+        Assertions.assertEquals(RebootOptions.NEVER, response.iterator().next().installPatches().rebootSetting());
+        Assertions.assertEquals("pcqeqx",
             response.iterator().next().installPatches().windowsParameters().kbNumbersToExclude().get(0));
-        Assertions.assertEquals("bsjyofdx",
+        Assertions.assertEquals("cfbu",
             response.iterator().next().installPatches().windowsParameters().kbNumbersToInclude().get(0));
-        Assertions.assertEquals("sd",
+        Assertions.assertEquals("hx",
             response.iterator().next().installPatches().windowsParameters().classificationsToInclude().get(0));
         Assertions
             .assertTrue(response.iterator().next().installPatches().windowsParameters().excludeKbsRequiringReboot());
-        Assertions.assertEquals("boekqvkel",
+        Assertions.assertEquals("vkr",
             response.iterator().next().installPatches().linuxParameters().packageNameMasksToExclude().get(0));
-        Assertions.assertEquals("yjsflhhcaalnji",
+        Assertions.assertEquals("jfauvjfdxxi",
             response.iterator().next().installPatches().linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("nxknalaulp",
+        Assertions.assertEquals("vtcqaqtdo",
             response.iterator().next().installPatches().linuxParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("sgzvahapjyzhpv", response.iterator().next().startDateTime());
-        Assertions.assertEquals("zcjrvxdjzlmwlx", response.iterator().next().expirationDateTime());
-        Assertions.assertEquals("ug", response.iterator().next().duration());
-        Assertions.assertEquals("zovawjvz", response.iterator().next().timeZone());
-        Assertions.assertEquals("luthn", response.iterator().next().recurEvery());
+        Assertions.assertEquals("v", response.iterator().next().startDateTime());
+        Assertions.assertEquals("lynqwwncwzzh", response.iterator().next().expirationDateTime());
+        Assertions.assertEquals("ktrmgucnapkt", response.iterator().next().duration());
+        Assertions.assertEquals("ellwptfdy", response.iterator().next().timeZone());
+        Assertions.assertEquals("fqbuaceopzf", response.iterator().next().recurEvery());
     }
 }

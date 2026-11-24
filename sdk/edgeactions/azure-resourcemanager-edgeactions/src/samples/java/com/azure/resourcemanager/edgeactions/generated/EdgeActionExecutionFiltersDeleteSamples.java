@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgeactions.generated;
  */
 public final class EdgeActionExecutionFiltersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-12-01-preview/EdgeActionExecutionFilters_Delete.json
+     * x-ms-original-file: 2026-10-01/EdgeActionExecutionFilters_Delete.json
      */
     /**
      * Sample code: DeleteEdgeActionExecutionFilters.

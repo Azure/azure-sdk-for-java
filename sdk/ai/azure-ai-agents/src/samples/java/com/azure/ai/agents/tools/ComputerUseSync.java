@@ -6,18 +6,15 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.ComputerEnvironment;
-import com.azure.ai.agents.models.ComputerUsePreviewTool;
+import com.azure.ai.agents.models.ComputerTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.tools.ComputerUseUtil.HandleActionResult;
 import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
 import com.azure.ai.agents.tools.ComputerUseUtil.SearchState;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseComputerToolCall;
@@ -51,8 +48,8 @@ import java.util.stream.Collectors;
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint, as found in the Overview
  *       page of your Microsoft Foundry portal.</li>
  *   <li>(Optional) AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME - The deployment name of the
- *       computer-use-preview model, as found under the "Name" column in the "Models + endpoints"
- *       tab in your Microsoft Foundry project.</li>
+ *       computer-use model, as found under the "Name" column in the "Models + endpoints"
+ *       tab in your Microsoft Foundry project. If not set, defaults to "gpt-5.4".</li>
  * </ul>
  */
 public class ComputerUseSync {
@@ -60,7 +57,7 @@ public class ComputerUseSync {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "computer-use-preview");
+        String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "gpt-5.4");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -68,7 +65,6 @@ public class ComputerUseSync {
             .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // Initialize state machine
         SearchState currentState = SearchState.INITIAL;
@@ -88,11 +84,7 @@ public class ComputerUseSync {
 
         try {
             // BEGIN: com.azure.ai.agents.define_computer_use
-            ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
-                ComputerEnvironment.WINDOWS,
-                1026,
-                769
-            );
+            ComputerTool tool = new ComputerTool();
             // END: com.azure.ai.agents.define_computer_use
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
@@ -104,9 +96,7 @@ public class ComputerUseSync {
             System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
                 agent.getId(), agent.getName(), agent.getVersion());
 
-            // Create the AgentReference for the response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Initial request with screenshot - start with Bing search page
             System.out.println("Starting computer automation session (initial screenshot: cua_browser_search.png)...");
@@ -136,11 +126,11 @@ public class ComputerUseSync {
                         .build())
             );
 
-            Response response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                     ResponseCreateParams.builder()
                         .inputOfResponse(initialInput)
-                        .truncation(ResponseCreateParams.Truncation.AUTO));
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build());
 
             System.out.printf("Initial response received (ID: %s)%n", response.id());
 
@@ -193,12 +183,12 @@ public class ComputerUseSync {
                             .build())
                 );
 
-                response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                response = openAIClient.responses().create(
                     ResponseCreateParams.builder()
                         .previousResponseId(response.id())
                         .inputOfResponse(followUpInput)
-                        .truncation(ResponseCreateParams.Truncation.AUTO));
+                        .truncation(ResponseCreateParams.Truncation.AUTO)
+                        .build());
 
                 System.out.printf("Follow-up response received (ID: %s)%n", response.id());
             }

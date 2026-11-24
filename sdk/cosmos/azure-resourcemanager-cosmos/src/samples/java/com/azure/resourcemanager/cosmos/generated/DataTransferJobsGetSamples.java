@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DataTransferJobsGetSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobGet.json
+     * x-ms-original-file: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobGet.json
      */
     /**
      * Sample code: CosmosDBDataTransferJobGet.

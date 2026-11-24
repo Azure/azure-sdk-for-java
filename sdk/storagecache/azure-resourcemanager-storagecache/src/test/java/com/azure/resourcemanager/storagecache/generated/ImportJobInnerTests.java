@@ -17,31 +17,32 @@ public final class ImportJobInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"adminStatus\":\"Active\",\"importPrefixes\":[\"ysmocmbqfqvmkcxo\",\"apvhelxprgly\"],\"conflictResolutionMode\":\"Fail\",\"maximumErrors\":868372706,\"status\":{\"state\":\"Canceled\",\"statusMessage\":\"uejrjxgc\",\"totalBlobsWalked\":3371705957020271141,\"blobsWalkedPerSecond\":2792970654371570691,\"totalBlobsImported\":8083841694155689486,\"importedFiles\":7111560833429516673,\"importedDirectories\":7744101608598421858,\"importedSymlinks\":914510691804718564,\"preexistingFiles\":102542890126801084,\"preexistingDirectories\":3489685407173902017,\"preexistingSymlinks\":5884169234745688104,\"blobsImportedPerSecond\":8865186847409671007,\"lastCompletionTime\":\"2021-06-18T06:02:32Z\",\"lastStartedTime\":\"2021-01-14T17:23:07Z\",\"totalErrors\":1796967394,\"totalConflicts\":569809127}},\"location\":\"wofyyvoqacpiexp\",\"tags\":{\"nqxwbp\":\"iwbwoenwashrtdtk\",\"qiiobyuqer\":\"kulpiujwaasi\",\"bdbutauvf\":\"qlpqwcciuq\"},\"id\":\"tkuwhhmhykojo\",\"name\":\"afnn\",\"type\":\"lpichk\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"novvqfovljxy\"],\"conflictResolutionMode\":\"OverwriteAlways\",\"maximumErrors\":2009471016,\"status\":{\"state\":\"Cancelling\",\"statusMessage\":\"dsytgadgvr\",\"totalBlobsWalked\":3824304048247848993,\"blobsWalkedPerSecond\":387752028941383088,\"totalBlobsImported\":2560405099971295143,\"importedFiles\":5418047259495493586,\"importedDirectories\":1125965714665499028,\"importedSymlinks\":6720110805650369040,\"preexistingFiles\":8598185540275371348,\"preexistingDirectories\":1710903714386145180,\"preexistingSymlinks\":9086145037828754941,\"blobsImportedPerSecond\":1965197725763741075,\"lastCompletionTime\":\"2021-01-21T02:19:24Z\",\"lastStartedTime\":\"2021-07-10T15:46:03Z\",\"totalErrors\":1307066310,\"totalConflicts\":346562184}},\"location\":\"tohqkvpuvksgp\",\"tags\":{\"n\":\"kn\",\"iyntorzihle\":\"synljphuopxodl\",\"yzrpzbchckqqzq\":\"sjswsrms\",\"ysuiizynkedya\":\"ox\"},\"id\":\"rwyhqmibzyhwitsm\",\"name\":\"pyy\",\"type\":\"pcdpumnz\"}")
             .toObject(ImportJobInner.class);
-        Assertions.assertEquals("wofyyvoqacpiexp", model.location());
-        Assertions.assertEquals("iwbwoenwashrtdtk", model.tags().get("nqxwbp"));
-        Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, model.adminStatus());
-        Assertions.assertEquals("ysmocmbqfqvmkcxo", model.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.FAIL, model.conflictResolutionMode());
-        Assertions.assertEquals(868372706, model.maximumErrors());
+        Assertions.assertEquals("tohqkvpuvksgp", model.location());
+        Assertions.assertEquals("kn", model.tags().get("n"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
+        Assertions.assertEquals("novvqfovljxy", model.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_ALWAYS, model.conflictResolutionMode());
+        Assertions.assertEquals(2009471016, model.maximumErrors());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportJobInner model = new ImportJobInner().withLocation("wofyyvoqacpiexp")
-            .withTags(mapOf("nqxwbp", "iwbwoenwashrtdtk", "qiiobyuqer", "kulpiujwaasi", "bdbutauvf", "qlpqwcciuq"))
-            .withAdminStatus(ImportJobAdminStatus.ACTIVE)
-            .withImportPrefixes(Arrays.asList("ysmocmbqfqvmkcxo", "apvhelxprgly"))
-            .withConflictResolutionMode(ConflictResolutionMode.FAIL)
-            .withMaximumErrors(868372706);
+        ImportJobInner model = new ImportJobInner().withLocation("tohqkvpuvksgp")
+            .withTags(
+                mapOf("n", "kn", "iyntorzihle", "synljphuopxodl", "yzrpzbchckqqzq", "sjswsrms", "ysuiizynkedya", "ox"))
+            .withAdminStatus(ImportJobAdminStatus.CANCEL)
+            .withImportPrefixes(Arrays.asList("novvqfovljxy"))
+            .withConflictResolutionMode(ConflictResolutionMode.OVERWRITE_ALWAYS)
+            .withMaximumErrors(2009471016);
         model = BinaryData.fromObject(model).toObject(ImportJobInner.class);
-        Assertions.assertEquals("wofyyvoqacpiexp", model.location());
-        Assertions.assertEquals("iwbwoenwashrtdtk", model.tags().get("nqxwbp"));
-        Assertions.assertEquals(ImportJobAdminStatus.ACTIVE, model.adminStatus());
-        Assertions.assertEquals("ysmocmbqfqvmkcxo", model.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.FAIL, model.conflictResolutionMode());
-        Assertions.assertEquals(868372706, model.maximumErrors());
+        Assertions.assertEquals("tohqkvpuvksgp", model.location());
+        Assertions.assertEquals("kn", model.tags().get("n"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
+        Assertions.assertEquals("novvqfovljxy", model.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_ALWAYS, model.conflictResolutionMode());
+        Assertions.assertEquals(2009471016, model.maximumErrors());
     }
 
     // Use "Map.of" if available

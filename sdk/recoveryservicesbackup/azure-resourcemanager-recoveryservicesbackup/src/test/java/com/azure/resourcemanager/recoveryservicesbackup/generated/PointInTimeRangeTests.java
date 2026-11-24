@@ -13,9 +13,9 @@ public final class PointInTimeRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PointInTimeRange model
-            = BinaryData.fromString("{\"startTime\":\"2021-04-12T20:00:21Z\",\"endTime\":\"2021-10-31T18:45:45Z\"}")
+            = BinaryData.fromString("{\"startTime\":\"2021-09-14T08:28:18Z\",\"endTime\":\"2021-02-20T10:22:37Z\"}")
                 .toObject(PointInTimeRange.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T20:00:21Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T18:45:45Z"), model.endTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-14T08:28:18Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T10:22:37Z"), model.endTime());
     }
 }

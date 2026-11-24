@@ -47,6 +47,12 @@ public final class IngestionDefinition implements JsonSerializable<IngestionDefi
     private String sourceCatalogUrl;
 
     /*
+     * Parquet catalog URL. Required for StacGeoparquet ingestion type
+     */
+    @Generated
+    private String stacGeoparquetUrl;
+
+    /*
      * Skip processing existing items in the catalog
      */
     @Generated
@@ -188,6 +194,29 @@ public final class IngestionDefinition implements JsonSerializable<IngestionDefi
     }
 
     /**
+     * Get the stacGeoparquetUrl property: Parquet catalog URL. Required for StacGeoparquet ingestion type.
+     * 
+     * @return the stacGeoparquetUrl value.
+     */
+    @Generated
+    public String getStacGeoparquetUrl() {
+        return this.stacGeoparquetUrl;
+    }
+
+    /**
+     * Set the stacGeoparquetUrl property: Parquet catalog URL. Required for StacGeoparquet ingestion type.
+     * 
+     * @param stacGeoparquetUrl the stacGeoparquetUrl value to set.
+     * @return the IngestionDefinition object itself.
+     */
+    @Generated
+    public IngestionDefinition setStacGeoparquetUrl(String stacGeoparquetUrl) {
+        this.stacGeoparquetUrl = stacGeoparquetUrl;
+        this.updatedProperties.add("stacGeoparquetUrl");
+        return this;
+    }
+
+    /**
      * Get the skipExistingItems property: Skip processing existing items in the catalog.
      * 
      * @return the skipExistingItems value.
@@ -266,6 +295,7 @@ public final class IngestionDefinition implements JsonSerializable<IngestionDefi
             jsonWriter.writeStringField("importType", this.importType == null ? null : this.importType.toString());
             jsonWriter.writeStringField("displayName", this.displayName);
             jsonWriter.writeStringField("sourceCatalogUrl", this.sourceCatalogUrl);
+            jsonWriter.writeStringField("stacGeoparquetUrl", this.stacGeoparquetUrl);
             jsonWriter.writeBooleanField("skipExistingItems", this.skipExistingItems);
             jsonWriter.writeBooleanField("keepOriginalAssets", this.keepOriginalAssets);
             return jsonWriter.writeEndObject();
@@ -294,6 +324,13 @@ public final class IngestionDefinition implements JsonSerializable<IngestionDefi
                 jsonWriter.writeNullField("sourceCatalogUrl");
             } else {
                 jsonWriter.writeStringField("sourceCatalogUrl", this.sourceCatalogUrl);
+            }
+        }
+        if (updatedProperties.contains("stacGeoparquetUrl")) {
+            if (this.stacGeoparquetUrl == null) {
+                jsonWriter.writeNullField("stacGeoparquetUrl");
+            } else {
+                jsonWriter.writeStringField("stacGeoparquetUrl", this.stacGeoparquetUrl);
             }
         }
         if (updatedProperties.contains("skipExistingItems")) {
@@ -343,6 +380,8 @@ public final class IngestionDefinition implements JsonSerializable<IngestionDefi
                     deserializedIngestionDefinition.displayName = reader.getString();
                 } else if ("sourceCatalogUrl".equals(fieldName)) {
                     deserializedIngestionDefinition.sourceCatalogUrl = reader.getString();
+                } else if ("stacGeoparquetUrl".equals(fieldName)) {
+                    deserializedIngestionDefinition.stacGeoparquetUrl = reader.getString();
                 } else if ("skipExistingItems".equals(fieldName)) {
                     deserializedIngestionDefinition.skipExistingItems = reader.getNullable(JsonReader::getBoolean);
                 } else if ("keepOriginalAssets".equals(fieldName)) {

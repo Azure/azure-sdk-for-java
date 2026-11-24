@@ -24,6 +24,13 @@ public final class AccountKeyMetadata implements JsonSerializable<AccountKeyMeta
      */
     private OffsetDateTime generationTime;
 
+    /*
+     * Approximate time in UTC of the most recent usage of the key in ISO-8601 format.
+     * If the value is missing from the object, it means there is no recorded data plane
+     * usage for this key.
+     */
+    private OffsetDateTime approximateLastUsageTime;
+
     /**
      * Creates an instance of AccountKeyMetadata class.
      */
@@ -38,6 +45,18 @@ public final class AccountKeyMetadata implements JsonSerializable<AccountKeyMeta
      */
     public OffsetDateTime generationTime() {
         return this.generationTime;
+    }
+
+    /**
+     * Get the approximateLastUsageTime property: Approximate time in UTC of the most recent usage of the key in
+     * ISO-8601 format.
+     * If the value is missing from the object, it means there is no recorded data plane
+     * usage for this key.
+     * 
+     * @return the approximateLastUsageTime value.
+     */
+    public OffsetDateTime approximateLastUsageTime() {
+        return this.approximateLastUsageTime;
     }
 
     /**
@@ -74,6 +93,9 @@ public final class AccountKeyMetadata implements JsonSerializable<AccountKeyMeta
 
                 if ("generationTime".equals(fieldName)) {
                     deserializedAccountKeyMetadata.generationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("approximateLastUsageTime".equals(fieldName)) {
+                    deserializedAccountKeyMetadata.approximateLastUsageTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();

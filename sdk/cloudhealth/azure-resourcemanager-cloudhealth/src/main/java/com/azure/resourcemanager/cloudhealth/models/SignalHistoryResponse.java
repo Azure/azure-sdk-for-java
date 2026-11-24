@@ -33,6 +33,14 @@ public interface SignalHistoryResponse {
     List<SignalHistoryDataPoint> history();
 
     /**
+     * Gets the nextMarker property: An opaque string value that identifies the portion of the result set to be returned
+     * with the next operation.
+     * 
+     * @return the nextMarker value.
+     */
+    String nextMarker();
+
+    /**
      * Gets the inner com.azure.resourcemanager.cloudhealth.fluent.models.SignalHistoryResponseInner object.
      * 
      * @return the inner object.

@@ -129,9 +129,12 @@ public final class OperatorApiConnectionImpl
         com.azure.resourcemanager.programmableconnectivity.ProgrammableConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.operatorApiConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "operatorApiConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/operatorApiConnections/{operatorApiConnectionName}",
+            "resourceGroupName");
+        this.operatorApiConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgrammableConnectivity/operatorApiConnections/{operatorApiConnectionName}",
+            "operatorApiConnectionName");
     }
 
     public OperatorApiConnection refresh() {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,218 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2026-10-15)
+
+- Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Other Changes
+- First GA release.
+
+## 1.0.0-beta.5 (2026-09-25)
+
+- Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SignalConfiguration` was modified
+
+* `timeGrain()` was removed
+* `dimensionFilter()` was removed
+* `metricNamespace()` was removed
+* `aggregationType()` was removed
+* `metricName()` was removed
+* `unit()` was removed
+
+### Features Added
+
+* `models.LogAnalyticsQueryRecommendationConfiguration` was added
+
+* `models.SignalRecommendationKind` was added
+
+* `models.AzureResourceMetricRecommendationConfiguration` was added
+
+* `models.SignalRecommendationConfiguration` was added
+
+* `models.PrometheusMetricsRecommendationConfiguration` was added
+
+#### `models.SignalConfiguration` was modified
+
+* `displayName()` was added
+* `refreshInterval()` was added
+* `dataUnit()` was added
+* `description()` was added
+* `configuration()` was added
+* `applicableResourceTypes()` was added
+
+## 1.0.0-beta.4 (2026-08-25)
+
+- Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DependenciesAggregationType` was removed
+
+#### `models.LookBackWindow` was removed
+
+#### `models.DependenciesAggregationUnit` was removed
+
+#### `models.HealthState` was modified
+
+* `DELETED` was removed
+
+#### `models.ThresholdRuleV2` was modified
+
+* `withLookBackWindow(models.LookBackWindow)` was removed
+* `lookBackWindow()` was removed
+
+#### `models.DependenciesSignalGroupV2` was modified
+
+* `models.DependenciesAggregationType aggregationType()` -> `models.AggregationType aggregationType()`
+* `models.DependenciesAggregationUnit unit()` -> `models.AggregationUnit unit()`
+* `withAggregationType(models.DependenciesAggregationType)` was removed
+* `withUnit(models.DependenciesAggregationUnit)` was removed
+
+### Features Added
+
+* `models.AggregationUnit` was added
+
+* `models.AggregationType` was added
+
+* `models.SignalAggregationGroup` was added
+
+#### `models.EntityProperties` was modified
+
+* `withSignalAggregationGroups(java.util.List)` was added
+* `signalAggregationGroups()` was added
+
+#### `models.DependenciesSignalGroupV2` was modified
+
+* `withUnit(models.AggregationUnit)` was added
+* `withAggregationType(models.AggregationType)` was added
+
+## 1.0.0-beta.3 (2026-07-13)
+
+- Azure Resource Manager CloudHealth client library for Java. This package contains Microsoft Azure SDK for CloudHealth Management SDK.  Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.AzureResourceSignal` was modified
+
+* `dimension()` was removed
+* `withDimension(java.lang.String)` was removed
+
+#### `models.ThresholdRuleV2` was modified
+
+* `withThreshold(double)` was removed
+* `double threshold()` -> `java.lang.Double threshold()`
+
+#### `models.ResourceMetricSignalDefinitionProperties` was modified
+
+* `dimension()` was removed
+* `withDimension(java.lang.String)` was removed
+
+### Features Added
+
+* `models.GetDataAnnotationsResponse` was added
+
+* `models.GetDataAnnotationsRequest` was added
+
+* `models.DynamicThresholdSensitivity` was added
+
+* `models.ResourceHealthCategory` was added
+
+* `models.DataAnnotation` was added
+
+* `models.GetSignalRecommendationsResponse` was added
+
+* `models.AzureResourceHealthSignal` was added
+
+* `models.AddDataAnnotationRequest` was added
+
+* `models.ResourceHealthReasonType` was added
+
+* `models.LookBackWindow` was added
+
+* `models.SignalConfiguration` was added
+
+* `models.ResourceHealthAvailabilityStateSignalBehavior` was added
+
+* `models.ResourceHealthReasonChronicity` was added
+
+* `models.AzureResourceHealthSignalStatus` was added
+
+* `models.ResourceHealthAvailabilityState` was added
+
+#### `models.AzureResourceSignals` was modified
+
+* `withResourceHealth(models.AzureResourceHealthSignal)` was added
+* `resourceHealth()` was added
+
+#### `models.SignalOperator` was modified
+
+* `DYNAMIC` was added
+
+#### `models.SignalStatus` was modified
+
+* `additionalContext()` was added
+
+#### `models.EntityHistoryRequest` was modified
+
+* `nextMarker()` was added
+* `top()` was added
+* `withNextMarker(java.lang.String)` was added
+* `withTop(java.lang.Integer)` was added
+
+#### `models.DiscoveryRuleProperties` was modified
+
+* `addResourceHealthSignal()` was added
+* `withAddResourceHealthSignal(models.ResourceHealthAvailabilityStateSignalBehavior)` was added
+
+#### `models.ThresholdRuleV2` was modified
+
+* `withSensitivity(models.DynamicThresholdSensitivity)` was added
+* `withThreshold(java.lang.Double)` was added
+* `sensitivity()` was added
+* `lookBackWindow()` was added
+* `withLookBackWindow(models.LookBackWindow)` was added
+
+#### `models.Entities` was modified
+
+* `getSignalRecommendationsWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getDataAnnotations(java.lang.String,java.lang.String,java.lang.String,models.GetDataAnnotationsRequest)` was added
+* `getDataAnnotationsWithResponse(java.lang.String,java.lang.String,java.lang.String,models.GetDataAnnotationsRequest,com.azure.core.util.Context)` was added
+* `addDataAnnotation(java.lang.String,java.lang.String,java.lang.String,models.AddDataAnnotationRequest)` was added
+* `addDataAnnotationWithResponse(java.lang.String,java.lang.String,java.lang.String,models.AddDataAnnotationRequest,com.azure.core.util.Context)` was added
+* `getSignalRecommendations(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.EntityHistoryResponse` was modified
+
+* `nextMarker()` was added
+
+#### `models.Entity` was modified
+
+* `getDataAnnotations(models.GetDataAnnotationsRequest)` was added
+* `getSignalRecommendations()` was added
+* `getDataAnnotationsWithResponse(models.GetDataAnnotationsRequest,com.azure.core.util.Context)` was added
+* `addDataAnnotationWithResponse(models.AddDataAnnotationRequest,com.azure.core.util.Context)` was added
+* `addDataAnnotation(models.AddDataAnnotationRequest)` was added
+* `getSignalRecommendationsWithResponse(com.azure.core.util.Context)` was added
+
+#### `models.SignalHistoryRequest` was modified
+
+* `nextMarker()` was added
+* `withNextMarker(java.lang.String)` was added
+* `withTop(java.lang.Integer)` was added
+* `top()` was added
+
+#### `models.SignalHistoryResponse` was modified
+
+* `nextMarker()` was added
+
+#### `models.RefreshInterval` was modified
+
+* `PT15M` was added
 
 ## 1.0.0-beta.2 (2026-04-08)
 

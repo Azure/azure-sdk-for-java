@@ -14,21 +14,21 @@ public final class AlertConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertConfiguration model = BinaryData.fromString(
-            "{\"severity\":\"Sev1\",\"description\":\"byrcdlbhshfwp\",\"actionGroupIds\":[\"stwit\",\"khevxccedc\"]}")
+            "{\"severity\":\"Sev1\",\"description\":\"sgogczhonnxk\",\"actionGroupIds\":[\"nyhmossxkkgthr\",\"gh\",\"jbdhqxvc\"]}")
             .toObject(AlertConfiguration.class);
         Assertions.assertEquals(AlertSeverity.SEV1, model.severity());
-        Assertions.assertEquals("byrcdlbhshfwp", model.description());
-        Assertions.assertEquals("stwit", model.actionGroupIds().get(0));
+        Assertions.assertEquals("sgogczhonnxk", model.description());
+        Assertions.assertEquals("nyhmossxkkgthr", model.actionGroupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertConfiguration model = new AlertConfiguration().withSeverity(AlertSeverity.SEV1)
-            .withDescription("byrcdlbhshfwp")
-            .withActionGroupIds(Arrays.asList("stwit", "khevxccedc"));
+            .withDescription("sgogczhonnxk")
+            .withActionGroupIds(Arrays.asList("nyhmossxkkgthr", "gh", "jbdhqxvc"));
         model = BinaryData.fromObject(model).toObject(AlertConfiguration.class);
         Assertions.assertEquals(AlertSeverity.SEV1, model.severity());
-        Assertions.assertEquals("byrcdlbhshfwp", model.description());
-        Assertions.assertEquals("stwit", model.actionGroupIds().get(0));
+        Assertions.assertEquals("sgogczhonnxk", model.description());
+        Assertions.assertEquals("nyhmossxkkgthr", model.actionGroupIds().get(0));
     }
 }

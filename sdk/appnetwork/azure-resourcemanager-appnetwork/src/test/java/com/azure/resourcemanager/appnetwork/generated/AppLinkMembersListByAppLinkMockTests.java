@@ -26,7 +26,7 @@ public final class AppLinkMembersListByAppLinkMockTests {
     @Test
     public void testListByAppLink() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"abnetshh\"},\"upgradeProfile\":{\"mode\":\"FullyManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"lvwiwubmwmbesl\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"wtppjflcxogaoko\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"External\"},\"privateConnect\":{\"subnetResourceId\":\"ikvmkqzeqqk\"}},\"provisioningState\":\"Updating\"},\"location\":\"zxmhhvhgu\",\"tags\":{\"ibqdxbxwakbogqx\":\"dkwobdagx\",\"lbpodxunk\":\"dlkzgxhuri\"},\"id\":\"ebxmubyynt\",\"name\":\"lrb\",\"type\":\"tkoievseotgq\"}]}";
+            = "{\"value\":[{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"aulppggd\"},\"upgradeProfile\":{\"mode\":\"SelfManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Stable\"},\"selfManagedUpgradeProfile\":{\"version\":\"yiropu\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"vpgylgqgitxmed\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"External\"},\"privateConnect\":{\"subnetResourceId\":\"ynqwwncwzzhxgk\"},\"network\":\"mgucna\"},\"provisioningState\":\"Provisioning\"},\"location\":\"oellwp\",\"tags\":{\"ac\":\"ygpfqb\"},\"id\":\"op\",\"name\":\"fqrhhuaopppc\",\"type\":\"eqx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +36,22 @@ public final class AppLinkMembersListByAppLinkMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AppLinkMember> response
-            = manager.appLinkMembers().listByAppLink("fiwjmygtdssls", "tmweriofzpyq", com.azure.core.util.Context.NONE);
+            = manager.appLinkMembers().listByAppLink("exznelixhnr", "tfolhbnx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zxmhhvhgu", response.iterator().next().location());
-        Assertions.assertEquals("dkwobdagx", response.iterator().next().tags().get("ibqdxbxwakbogqx"));
+        Assertions.assertEquals("oellwp", response.iterator().next().location());
+        Assertions.assertEquals("ygpfqb", response.iterator().next().tags().get("ac"));
         Assertions.assertEquals(ClusterType.AKS, response.iterator().next().properties().clusterType());
-        Assertions.assertEquals("abnetshh", response.iterator().next().properties().metadata().resourceId());
-        Assertions.assertEquals(UpgradeMode.FULLY_MANAGED,
+        Assertions.assertEquals("aulppggd", response.iterator().next().properties().metadata().resourceId());
+        Assertions.assertEquals(UpgradeMode.SELF_MANAGED,
             response.iterator().next().properties().upgradeProfile().mode());
-        Assertions.assertEquals(UpgradeReleaseChannel.RAPID,
+        Assertions.assertEquals(UpgradeReleaseChannel.STABLE,
             response.iterator().next().properties().upgradeProfile().fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("lvwiwubmwmbesl",
+        Assertions.assertEquals("yiropu",
             response.iterator().next().properties().upgradeProfile().selfManagedUpgradeProfile().version());
         Assertions.assertEquals(EastWestGatewayVisibility.EXTERNAL,
             response.iterator().next().properties().connectivityProfile().eastWestGateway().visibility());
-        Assertions.assertEquals("ikvmkqzeqqk",
+        Assertions.assertEquals("ynqwwncwzzhxgk",
             response.iterator().next().properties().connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("mgucna", response.iterator().next().properties().connectivityProfile().network());
     }
 }

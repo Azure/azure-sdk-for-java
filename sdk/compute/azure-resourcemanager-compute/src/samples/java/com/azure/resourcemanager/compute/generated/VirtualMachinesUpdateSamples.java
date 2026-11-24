@@ -9,6 +9,7 @@ import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskDetachOptionTypes;
+import com.azure.resourcemanager.compute.models.FlexProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.ManagedDiskParameters;
@@ -26,8 +27,25 @@ import java.util.Arrays;
  */
 public final class VirtualMachinesUpdateSamples {
     /*
+     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Update_WithFlexProfile.json
+     */
+    /**
+     * Sample code: Update a VM's FlexProfile.
+     * 
+     * @param manager Entry point to ComputeManager.
+     */
+    public static void updateAVMSFlexProfile(com.azure.resourcemanager.compute.ComputeManager manager) {
+        manager.serviceClient()
+            .getVirtualMachines()
+            .update("myResourceGroup", "myVM",
+                new VirtualMachineUpdateInner()
+                    .withFlexProfile(new FlexProfile().withPreferredVMSize("Standard_D8s_v5")),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * 2026-03-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
+     * 2026-04-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
      */
     /**
      * Sample code: Update a VM by detaching data disk.
@@ -72,7 +90,7 @@ public final class VirtualMachinesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
+     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
      */
     /**
      * Sample code: Update a VM by force-detaching data disk.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.KeyKind;
  */
 public final class DatabaseAccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountRegenerateKey.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseAccountRegenerateKey.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegenerateKey.
@@ -22,7 +22,7 @@ public final class DatabaseAccountsRegenerateKeySamples {
     public static void cosmosDBDatabaseAccountRegenerateKey(com.azure.resourcemanager.cosmos.CosmosManager manager) {
         manager.serviceClient()
             .getDatabaseAccounts()
-            .regenerateKey("rg1", "ddb1", new DatabaseAccountRegenerateKeyParameters().withKeyKind(KeyKind.PRIMARY),
-                com.azure.core.util.Context.NONE);
+            .regenerateKey("rg1", "ddb1", new DatabaseAccountRegenerateKeyParameters().withKeyKind(KeyKind.PRIMARY)
+                .withSkipAccountKeysLastUsageCheck(false), com.azure.core.util.Context.NONE);
     }
 }

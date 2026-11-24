@@ -389,6 +389,7 @@ public final class BetaMemoryStoresClient {
      *         input_tokens: long (Required)
      *         input_tokens_details (Required): {
      *             cached_tokens: long (Required)
+     *             cache_write_tokens: long (Required)
      *         }
      *         output_tokens: long (Required)
      *         output_tokens_details (Required): {
@@ -462,6 +463,7 @@ public final class BetaMemoryStoresClient {
      *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
      *                 cached_tokens: long (Required)
+     *                 cache_write_tokens: long (Required)
      *             }
      *             output_tokens: long (Required)
      *             output_tokens_details (Required): {
@@ -475,6 +477,14 @@ public final class BetaMemoryStoresClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -582,6 +592,7 @@ public final class BetaMemoryStoresClient {
      *             input_tokens: long (Required)
      *             input_tokens_details (Required): {
      *                 cached_tokens: long (Required)
+     *                 cache_write_tokens: long (Required)
      *             }
      *             output_tokens: long (Required)
      *             output_tokens_details (Required): {
@@ -595,6 +606,14 @@ public final class BetaMemoryStoresClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             review_target: String (Optional)
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -955,6 +974,66 @@ public final class BetaMemoryStoresClient {
     }
 
     /**
+     * Delete a memory item
+     *
+     * Deletes the specified memory item from the memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     memory_id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for deleting a memory item from a memory store along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteMemoryWithResponse(String name, String memoryId, RequestOptions requestOptions) {
+        return new SimpleResponse<>(this.serviceClient.internalDeleteMemoryWithResponse(name, memoryId, requestOptions),
+            null);
+    }
+
+    /**
+     * Delete a memory item
+     *
+     * Deletes the specified memory item from the memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted/memory_store.item.deleted) (Required)
+     *     memory_id: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param memoryId The ID of the memory item to delete.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteMemory(String name, String memoryId) {
+        RequestOptions requestOptions = new RequestOptions();
+        deleteMemoryWithResponse(name, memoryId, requestOptions);
+    }
+
+    /**
      * Create a memory store
      *
      * Creates a memory store resource with the provided configuration.
@@ -1092,51 +1171,6 @@ public final class BetaMemoryStoresClient {
      *
      * Returns the memory stores available to the caller.
      *
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
-     * default is 20.
-     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
-     * for descending order.
-     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MemoryStoreDetails> listMemoryStores(Integer limit, PageOrder order, String after,
-        String before) {
-        // Generated convenience method for listMemoryStores
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        return serviceClient.listMemoryStores(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
-    }
-
-    /**
-     * List memory stores
-     *
-     * Returns the memory stores available to the caller.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1149,7 +1183,7 @@ public final class BetaMemoryStoresClient {
     public PagedIterable<MemoryStoreDetails> listMemoryStores() {
         // Generated convenience method for listMemoryStores
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listMemoryStores(requestOptions)
+        return serviceClient.listMemoryStores(null, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 
@@ -1235,6 +1269,75 @@ public final class BetaMemoryStoresClient {
         // Convert OpenAI ResponseInputItem list to Azure SDK InputItem list
         List<BinaryData> inputItems = OpenAIJsonHelper.toBinaryDataList(items);
         return internalSearchMemories(name, scope, inputItems, previousSearchId, options);
+    }
+
+    /**
+     * Search memories
+     *
+     * Searches the specified memory store for memories relevant to the provided conversation context.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     *     items (Optional): [
+     *         BinaryData (Optional)
+     *     ]
+     *     previous_search_id: String (Optional)
+     *     options (Optional): {
+     *         max_memories: Integer (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     search_id: String (Required)
+     *     memories (Required): [
+     *          (Required){
+     *             memory_item (Required): {
+     *                 kind: String(user_profile/chat_summary/procedural) (Required)
+     *                 memory_id: String (Required)
+     *                 updated_at: long (Required)
+     *                 scope: String (Required)
+     *                 content: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         embedding_tokens: int (Required)
+     *         input_tokens: long (Required)
+     *         input_tokens_details (Required): {
+     *             cached_tokens: long (Required)
+     *         }
+     *         output_tokens: long (Required)
+     *         output_tokens_details (Required): {
+     *             reasoning_tokens: long (Required)
+     *         }
+     *         total_tokens: long (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store to search.
+     * @param searchMemoriesRequest The searchMemoriesRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return memory search response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> searchMemoriesWithResponse(String name, BinaryData searchMemoriesRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalSearchMemoriesWithResponse(name, searchMemoriesRequest, requestOptions);
     }
 
     /**
@@ -1442,13 +1545,52 @@ public final class BetaMemoryStoresClient {
         if (order != null) {
             requestOptions.addQueryParam("order", order.toString(), false);
         }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return serviceClient.listMemories(after, name, listMemoriesRequest, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryItem.class));
+    }
+
+    /**
+     * List memory stores
+     *
+     * Returns the memory stores available to the caller.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MemoryStoreDetails> listMemoryStores(Integer limit, PageOrder order, String after,
+        String before) {
+        // Generated convenience method for listMemoryStores
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
         }
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listMemories(name, listMemoriesRequest, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryItem.class));
+        return serviceClient.listMemoryStores(after, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(MemoryStoreDetails.class));
     }
 }

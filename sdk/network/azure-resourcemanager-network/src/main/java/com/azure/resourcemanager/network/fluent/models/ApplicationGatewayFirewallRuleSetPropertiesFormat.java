@@ -38,6 +38,11 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat
     private String ruleSetVersion;
 
     /*
+     * Human-readable display name for the managed rule set version (e.g., 'Default Ruleset 2.2 (Latest, Recommended)').
+     */
+    private String displayName;
+
+    /*
      * The rule groups of the web application firewall rule set.
      */
     private List<ApplicationGatewayFirewallRuleGroup> ruleGroups;
@@ -78,6 +83,16 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat
      */
     public String ruleSetVersion() {
         return this.ruleSetVersion;
+    }
+
+    /**
+     * Get the displayName property: Human-readable display name for the managed rule set version (e.g., 'Default
+     * Ruleset 2.2 (Latest, Recommended)').
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
@@ -135,6 +150,7 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat
         jsonWriter.writeStringField("ruleSetType", this.ruleSetType);
         jsonWriter.writeStringField("ruleSetVersion", this.ruleSetVersion);
         jsonWriter.writeArrayField("ruleGroups", this.ruleGroups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeArrayField("tiers", this.tiers,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
@@ -168,6 +184,8 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayFirewallRuleSetPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleSetPropertiesFormat.displayName = reader.getString();
                 } else if ("tiers".equals(fieldName)) {
                     List<ApplicationGatewayTierTypes> tiers
                         = reader.readArray(reader1 -> ApplicationGatewayTierTypes.fromString(reader1.getString()));

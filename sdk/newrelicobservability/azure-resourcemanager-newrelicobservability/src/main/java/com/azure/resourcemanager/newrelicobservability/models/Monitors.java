@@ -422,7 +422,7 @@ public interface Monitors {
     NewRelicMonitorResource linkSaaS(String resourceGroupName, String monitorName, SaaSData body, Context context);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -436,7 +436,7 @@ public interface Monitors {
     NewRelicMonitorResource resubscribe(String resourceGroupName, String monitorName);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 

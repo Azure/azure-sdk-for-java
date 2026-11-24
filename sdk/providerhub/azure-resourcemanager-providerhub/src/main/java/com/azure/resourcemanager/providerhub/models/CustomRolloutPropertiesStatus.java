@@ -53,6 +53,15 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesStatus withCompletedRegionsInfo(List<AppliedManifestInfo> completedRegionsInfo) {
+        super.withCompletedRegionsInfo(completedRegionsInfo);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -69,6 +78,9 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
         if (manifestCheckinStatus() != null) {
             manifestCheckinStatus().validate();
         }
+        if (completedRegionsInfo() != null) {
+            completedRegionsInfo().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -82,6 +94,8 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
         jsonWriter.writeMapField("failedOrSkippedRegions", failedOrSkippedRegions(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("manifestCheckinStatus", manifestCheckinStatus());
+        jsonWriter.writeArrayField("completedRegionsInfo", completedRegionsInfo(),
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -111,6 +125,10 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
                 } else if ("manifestCheckinStatus".equals(fieldName)) {
                     deserializedCustomRolloutPropertiesStatus
                         .withManifestCheckinStatus(CustomRolloutStatusManifestCheckinStatus.fromJson(reader));
+                } else if ("completedRegionsInfo".equals(fieldName)) {
+                    List<AppliedManifestInfo> completedRegionsInfo
+                        = reader.readArray(reader1 -> AppliedManifestInfo.fromJson(reader1));
+                    deserializedCustomRolloutPropertiesStatus.withCompletedRegionsInfo(completedRegionsInfo);
                 } else {
                     reader.skipChildren();
                 }

@@ -47,7 +47,11 @@ public enum CryptographyServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2025-07-01}.
      */
-    V2025_07_01("2025-07-01");
+    V2025_07_01("2025-07-01"),
+    /**
+     * Service version {@code 2026-04-01}.
+     */
+    V2026_04_01("2026-04-01");
 
     private final String version;
 
@@ -69,6 +73,6 @@ public enum CryptographyServiceVersion implements ServiceVersion {
      * @return the latest {@link CryptographyServiceVersion}
      */
     public static CryptographyServiceVersion getLatest() {
-        return V2025_07_01;
+        return V2026_04_01;
     }
 }

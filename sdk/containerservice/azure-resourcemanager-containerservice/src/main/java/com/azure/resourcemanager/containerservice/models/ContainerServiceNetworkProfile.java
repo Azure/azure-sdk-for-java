@@ -84,15 +84,24 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private ManagedClusterLoadBalancerProfile loadBalancerProfile;
 
     /*
-     * Profile of the Bastion Host associated with the managed cluster.
-     * See https://aka.ms/aks/BastionConnect for more details.
+     * Configuration for accessing the managed cluster API through Bastion or Cloud Shell.
      */
-    private BastionProfile bastionProfile;
+    private ClusterApiConnectivityProfile clusterApiConnectivityProfile;
 
     /*
      * Profile of the cluster NAT gateway.
      */
     private ManagedClusterNatGatewayProfile natGatewayProfile;
+
+    /*
+     * The Azure resource ID of the NAT gateway to use for egress at cluster startup when outboundType is
+     * 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load balancer type is
+     * service SKU. This is of the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{
+     * natGatewayName}'. When using managed NATGateway this field is auto populated. For more information, see
+     * https://aka.ms/aks/container-native-slb
+     */
+    private String natGatewayId;
 
     /*
      * The profile for Static Egress Gateway addon. For more details about Static Egress Gateway, see
@@ -397,24 +406,25 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     }
 
     /**
-     * Get the bastionProfile property: Profile of the Bastion Host associated with the managed cluster.
-     * See https://aka.ms/aks/BastionConnect for more details.
+     * Get the clusterApiConnectivityProfile property: Configuration for accessing the managed cluster API through
+     * Bastion or Cloud Shell.
      * 
-     * @return the bastionProfile value.
+     * @return the clusterApiConnectivityProfile value.
      */
-    public BastionProfile bastionProfile() {
-        return this.bastionProfile;
+    public ClusterApiConnectivityProfile clusterApiConnectivityProfile() {
+        return this.clusterApiConnectivityProfile;
     }
 
     /**
-     * Set the bastionProfile property: Profile of the Bastion Host associated with the managed cluster.
-     * See https://aka.ms/aks/BastionConnect for more details.
+     * Set the clusterApiConnectivityProfile property: Configuration for accessing the managed cluster API through
+     * Bastion or Cloud Shell.
      * 
-     * @param bastionProfile the bastionProfile value to set.
+     * @param clusterApiConnectivityProfile the clusterApiConnectivityProfile value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
-    public ContainerServiceNetworkProfile withBastionProfile(BastionProfile bastionProfile) {
-        this.bastionProfile = bastionProfile;
+    public ContainerServiceNetworkProfile
+        withClusterApiConnectivityProfile(ClusterApiConnectivityProfile clusterApiConnectivityProfile) {
+        this.clusterApiConnectivityProfile = clusterApiConnectivityProfile;
         return this;
     }
 
@@ -435,6 +445,36 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      */
     public ContainerServiceNetworkProfile withNatGatewayProfile(ManagedClusterNatGatewayProfile natGatewayProfile) {
         this.natGatewayProfile = natGatewayProfile;
+        return this;
+    }
+
+    /**
+     * Get the natGatewayId property: The Azure resource ID of the NAT gateway to use for egress at cluster startup when
+     * outboundType is 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load
+     * balancer type is service SKU. This is of the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
+     * When using managed NATGateway this field is auto populated. For more information, see
+     * https://aka.ms/aks/container-native-slb.
+     * 
+     * @return the natGatewayId value.
+     */
+    public String natGatewayId() {
+        return this.natGatewayId;
+    }
+
+    /**
+     * Set the natGatewayId property: The Azure resource ID of the NAT gateway to use for egress at cluster startup when
+     * outboundType is 'userAssignedNATGateway' using StandardV2 Public IP, backend pool type is podIP, and load
+     * balancer type is service SKU. This is of the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
+     * When using managed NATGateway this field is auto populated. For more information, see
+     * https://aka.ms/aks/container-native-slb.
+     * 
+     * @param natGatewayId the natGatewayId value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNatGatewayId(String natGatewayId) {
+        this.natGatewayId = natGatewayId;
         return this;
     }
 
@@ -596,8 +636,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         if (loadBalancerProfile() != null) {
             loadBalancerProfile().validate();
         }
-        if (bastionProfile() != null) {
-            bastionProfile().validate();
+        if (clusterApiConnectivityProfile() != null) {
+            clusterApiConnectivityProfile().validate();
         }
         if (natGatewayProfile() != null) {
             natGatewayProfile().validate();
@@ -631,8 +671,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeStringField("loadBalancerSku",
             this.loadBalancerSku == null ? null : this.loadBalancerSku.toString());
         jsonWriter.writeJsonField("loadBalancerProfile", this.loadBalancerProfile);
-        jsonWriter.writeJsonField("bastionProfile", this.bastionProfile);
+        jsonWriter.writeJsonField("clusterAPIConnectivityProfile", this.clusterApiConnectivityProfile);
         jsonWriter.writeJsonField("natGatewayProfile", this.natGatewayProfile);
+        jsonWriter.writeStringField("natGatewayId", this.natGatewayId);
         jsonWriter.writeJsonField("staticEgressGatewayProfile", this.staticEgressGatewayProfile);
         jsonWriter.writeArrayField("podCidrs", this.podCidrs, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("serviceCidrs", this.serviceCidrs, (writer, element) -> writer.writeString(element));
@@ -691,11 +732,14 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("loadBalancerProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.loadBalancerProfile
                         = ManagedClusterLoadBalancerProfile.fromJson(reader);
-                } else if ("bastionProfile".equals(fieldName)) {
-                    deserializedContainerServiceNetworkProfile.bastionProfile = BastionProfile.fromJson(reader);
+                } else if ("clusterAPIConnectivityProfile".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.clusterApiConnectivityProfile
+                        = ClusterApiConnectivityProfile.fromJson(reader);
                 } else if ("natGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.natGatewayProfile
                         = ManagedClusterNatGatewayProfile.fromJson(reader);
+                } else if ("natGatewayId".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.natGatewayId = reader.getString();
                 } else if ("staticEgressGatewayProfile".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.staticEgressGatewayProfile
                         = ManagedClusterStaticEgressGatewayProfile.fromJson(reader);

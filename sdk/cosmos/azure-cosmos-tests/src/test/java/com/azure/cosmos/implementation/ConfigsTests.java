@@ -6,16 +6,54 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.handler.ssl.SslContext;
+import io.netty.util.ReferenceCountUtil;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import javax.net.ssl.SSLEngine;
 import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 
-import static com.azure.cosmos.implementation.Configs.isThinClientEnabled;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConfigsTests {
+
+    @DataProvider(name = "sslValidationSettings")
+    public Object[][] sslValidationSettings() {
+        return new Object[][] {
+            { false, false, false }, { false, false, true },
+            { false, true, false }, { false, true, true },
+            { true, false, false }, { true, false, true },
+            { true, true, false }, { true, true, true }
+        };
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "sslValidationSettings")
+    public void sslContextPreservesHostnameValidationSettings(
+        boolean serverCertValidationDisabled, boolean hostnameValidationDisabled, boolean http2Enabled)
+        throws IllegalAccessException {
+
+        Object original = FieldUtils.readStaticField(Configs.class, "cachedIsHostnameValidationDisabled", true);
+        SslContext sslContext = null;
+        SSLEngine engine = null;
+        try {
+            FieldUtils.writeStaticField(Configs.class, "cachedIsHostnameValidationDisabled",
+                hostnameValidationDisabled, true);
+            sslContext = new Configs().getSslContext(serverCertValidationDisabled, http2Enabled);
+            engine = sslContext.newEngine(ByteBufAllocator.DEFAULT, "localhost", 443);
+
+            assertThat(engine.getSSLParameters().getEndpointIdentificationAlgorithm())
+                .isEqualTo(serverCertValidationDisabled || hostnameValidationDisabled ? null : "HTTPS");
+        } finally {
+            ReferenceCountUtil.release(engine);
+            ReferenceCountUtil.release(sslContext);
+            FieldUtils.writeStaticField(Configs.class, "cachedIsHostnameValidationDisabled", original, true);
+        }
+    }
 
     @Test(groups = { "unit" })
     public void maxHttpHeaderSize() {
@@ -230,13 +268,62 @@ public class ConfigsTests {
         }
     }
 
-    @Test(groups = { "emulator" })
-    public void thinClientEnabledTest() {
-        assertThat(isThinClientEnabled()).isFalse();
+    @Test(groups = { "unit" })
+    public void thinClientEnabledExplicitlyDefaultTest() {
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        try {
+            // Not set -> null, so the probe may run and gates routing.
+            assertThat(Configs.isThinClientEnabled()).isNull();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientEnabledExplicitlyOverrideTest() {
+        // Explicitly enabled (true) -> hard opt-in, probe not required.
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
-            assertThat(isThinClientEnabled()).isTrue();
+            assertThat(Configs.isThinClientEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+        // Explicitly disabled (false) -> hard opt-out, thin-client off and no probe.
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "false");
+        try {
+            assertThat(Configs.isThinClientEnabled()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientEnabledInvalidValueTreatedAsUnset() {
+        // Only "true"/"false" (case-insensitive) are honored. Any other value must NOT silently
+        // collapse to a hard opt-out (which Boolean.parseBoolean would do); it is treated as unset
+        // (null -> probe-gated) so a typo/legacy truthy string does not disable thin-client for the
+        // client lifetime.
+        for (String invalid : new String[] {"yes", "1", "on", "TRUEISH", "enabled", "  "}) {
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", invalid);
+            try {
+                assertThat(Configs.isThinClientEnabled())
+                    .as("value '%s' should be treated as unset (null)", invalid)
+                    .isNull();
+            } finally {
+                System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            }
+        }
+
+        // Case-insensitivity of the honored tokens.
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "TrUe");
+        try {
+            assertThat(Configs.isThinClientEnabled()).isTrue();
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        }
+        System.setProperty("COSMOS.THINCLIENT_ENABLED", "FALSE");
+        try {
+            assertThat(Configs.isThinClientEnabled()).isFalse();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }

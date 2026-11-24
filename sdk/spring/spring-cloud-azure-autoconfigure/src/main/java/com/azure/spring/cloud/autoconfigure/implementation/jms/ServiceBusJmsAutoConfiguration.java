@@ -7,6 +7,7 @@ import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryFactory;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
@@ -19,6 +20,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.jms.autoconfigure.JmsAutoConfiguration;
 import org.springframework.boot.jms.autoconfigure.JndiConnectionFactoryAutoConfiguration;
@@ -29,6 +31,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -57,6 +60,15 @@ public class ServiceBusJmsAutoConfiguration {
     AzureServiceBusJmsProperties serviceBusJmsProperties(AzureGlobalProperties azureGlobalProperties) {
         AzureServiceBusJmsProperties properties = new AzureServiceBusJmsProperties();
         return mergeAzureProperties(azureGlobalProperties, properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    AzureServiceBusJmsConnectionFactoryFactory azureServiceBusJmsConnectionFactoryFactory(
+        final AzureServiceBusJmsProperties properties) {
+        ServiceBusJmsConnectionFactoryProvider provider =
+            new ServiceBusJmsConnectionFactoryProvider(properties, Collections.emptyList());
+        return provider::createDefaultServiceBusJmsConnectionFactory;
     }
 
     /**

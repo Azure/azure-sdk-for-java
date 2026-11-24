@@ -13,36 +13,36 @@ public final class ConfluentAgreementResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentAgreementResourceInner model = BinaryData.fromString(
-            "{\"id\":\"dbeesmie\",\"name\":\"lrariaawiu\",\"type\":\"ydwqfbylyrf\",\"properties\":{\"publisher\":\"tcojocqwo\",\"product\":\"nzjvusfzldm\",\"plan\":\"uxylfsbtkadpy\",\"licenseTextLink\":\"wn\",\"privacyPolicyLink\":\"gkbugrjqct\",\"retrieveDatetime\":\"2021-11-30T05:10:39Z\",\"signature\":\"isofieypefojyqd\",\"accepted\":false}}")
+            "{\"id\":\"jjfzqlqhycavo\",\"name\":\"gxdbeesmie\",\"type\":\"lrariaawiu\",\"properties\":{\"publisher\":\"wqfbylyrfgiagt\",\"product\":\"jocqwogfnzjvusf\",\"plan\":\"dmozu\",\"licenseTextLink\":\"lfsbtkadpysow\",\"privacyPolicyLink\":\"tgkbugrjqctojc\",\"retrieveDatetime\":\"2021-05-06T01:49:14Z\",\"signature\":\"fieypefojyqdhcup\",\"accepted\":false}}")
             .toObject(ConfluentAgreementResourceInner.class);
-        Assertions.assertEquals("tcojocqwo", model.publisher());
-        Assertions.assertEquals("nzjvusfzldm", model.product());
-        Assertions.assertEquals("uxylfsbtkadpy", model.plan());
-        Assertions.assertEquals("wn", model.licenseTextLink());
-        Assertions.assertEquals("gkbugrjqct", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T05:10:39Z"), model.retrieveDatetime());
-        Assertions.assertEquals("isofieypefojyqd", model.signature());
+        Assertions.assertEquals("wqfbylyrfgiagt", model.publisher());
+        Assertions.assertEquals("jocqwogfnzjvusf", model.product());
+        Assertions.assertEquals("dmozu", model.plan());
+        Assertions.assertEquals("lfsbtkadpysow", model.licenseTextLink());
+        Assertions.assertEquals("tgkbugrjqctojc", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T01:49:14Z"), model.retrieveDatetime());
+        Assertions.assertEquals("fieypefojyqdhcup", model.signature());
         Assertions.assertFalse(model.accepted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentAgreementResourceInner model = new ConfluentAgreementResourceInner().withPublisher("tcojocqwo")
-            .withProduct("nzjvusfzldm")
-            .withPlan("uxylfsbtkadpy")
-            .withLicenseTextLink("wn")
-            .withPrivacyPolicyLink("gkbugrjqct")
-            .withRetrieveDatetime(OffsetDateTime.parse("2021-11-30T05:10:39Z"))
-            .withSignature("isofieypefojyqd")
+        ConfluentAgreementResourceInner model = new ConfluentAgreementResourceInner().withPublisher("wqfbylyrfgiagt")
+            .withProduct("jocqwogfnzjvusf")
+            .withPlan("dmozu")
+            .withLicenseTextLink("lfsbtkadpysow")
+            .withPrivacyPolicyLink("tgkbugrjqctojc")
+            .withRetrieveDatetime(OffsetDateTime.parse("2021-05-06T01:49:14Z"))
+            .withSignature("fieypefojyqdhcup")
             .withAccepted(false);
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementResourceInner.class);
-        Assertions.assertEquals("tcojocqwo", model.publisher());
-        Assertions.assertEquals("nzjvusfzldm", model.product());
-        Assertions.assertEquals("uxylfsbtkadpy", model.plan());
-        Assertions.assertEquals("wn", model.licenseTextLink());
-        Assertions.assertEquals("gkbugrjqct", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-30T05:10:39Z"), model.retrieveDatetime());
-        Assertions.assertEquals("isofieypefojyqd", model.signature());
+        Assertions.assertEquals("wqfbylyrfgiagt", model.publisher());
+        Assertions.assertEquals("jocqwogfnzjvusf", model.product());
+        Assertions.assertEquals("dmozu", model.plan());
+        Assertions.assertEquals("lfsbtkadpysow", model.licenseTextLink());
+        Assertions.assertEquals("tgkbugrjqctojc", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T01:49:14Z"), model.retrieveDatetime());
+        Assertions.assertEquals("fieypefojyqdhcup", model.signature());
         Assertions.assertFalse(model.accepted());
     }
 }

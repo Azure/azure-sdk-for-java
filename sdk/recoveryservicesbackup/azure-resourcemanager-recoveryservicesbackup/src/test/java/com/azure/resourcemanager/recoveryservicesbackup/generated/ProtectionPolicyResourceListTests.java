@@ -12,13 +12,13 @@ public final class ProtectionPolicyResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionPolicyResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1939182119,\"resourceGuardOperationRequests\":[\"liohrd\",\"dtfgxqbawpcbb\",\"zqcyknap\"]},\"tags\":{\"wwgbdv\":\"yuicdhzbdy\",\"hmwffplfmuv\":\"bid\"},\"location\":\"ck\",\"eTag\":\"rrvwey\",\"id\":\"oy\",\"name\":\"ukphaimmoiroq\",\"type\":\"oshbragapyy\"}],\"nextLink\":\"fsv\"}")
+            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1947750114,\"resourceGuardOperationRequests\":[\"dgxvco\",\"raswugyxpqit\",\"eialwvskb\",\"hzacaqtyltco\"]},\"tags\":{\"zakuejk\":\"jpds\",\"vjufycsjmlbe\":\"vbiztjofqcv\",\"iuxegth\":\"yeji\"},\"location\":\"tudaw\",\"eTag\":\"jfel\",\"id\":\"rpptcbgqnzmnhiil\",\"name\":\"alwcjgckbb\",\"type\":\"ccgzpraoxnyu\"},{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1782927877,\"resourceGuardOperationRequests\":[\"ftipwcxbyubhiq\",\"xyur\"]},\"tags\":{\"byl\":\"uhzafccnuhii\",\"vxva\":\"ui\",\"lbnb\":\"vcrk\"},\"location\":\"vhcs\",\"eTag\":\"zlwxaeaovur\",\"id\":\"dndsbdweade\",\"name\":\"zmwntopagt\",\"type\":\"mvmmagoaqylkjz\"}],\"nextLink\":\"iua\"}")
             .toObject(ProtectionPolicyResourceList.class);
-        Assertions.assertEquals("fsv", model.nextLink());
-        Assertions.assertEquals(1939182119, model.value().get(0).properties().protectedItemsCount());
-        Assertions.assertEquals("liohrd", model.value().get(0).properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("yuicdhzbdy", model.value().get(0).tags().get("wwgbdv"));
-        Assertions.assertEquals("ck", model.value().get(0).location());
-        Assertions.assertEquals("rrvwey", model.value().get(0).etag());
+        Assertions.assertEquals("iua", model.nextLink());
+        Assertions.assertEquals(1947750114, model.value().get(0).properties().protectedItemsCount());
+        Assertions.assertEquals("dgxvco", model.value().get(0).properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jpds", model.value().get(0).tags().get("zakuejk"));
+        Assertions.assertEquals("tudaw", model.value().get(0).location());
+        Assertions.assertEquals("jfel", model.value().get(0).etag());
     }
 }

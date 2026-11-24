@@ -28,8 +28,8 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaEvaluationTaxonomiesAsyncClient {
 
     @Generated
@@ -50,7 +50,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      *
      * Retrieves the specified evaluation taxonomy.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -122,7 +122,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -202,7 +202,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      *
      * Creates or replaces the specified evaluation taxonomy with the provided definition.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -244,9 +244,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -308,9 +308,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     /**
      * Update an evaluation taxonomy
      *
-     * Update an evaluation taxonomy.
+     * Modifies the specified evaluation taxonomy with the provided changes.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -352,9 +352,9 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -466,9 +466,16 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listEvaluationTaxonomies(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluationTaxonomy>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -498,9 +505,16 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEvaluationTaxonomies(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, EvaluationTaxonomy>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -561,7 +575,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     /**
      * Update an evaluation taxonomy
      *
-     * Update an evaluation taxonomy.
+     * Modifies the specified evaluation taxonomy with the provided changes.
      *
      * @param name The name of the evaluation taxonomy.
      * @param taxonomy The evaluation taxonomy.

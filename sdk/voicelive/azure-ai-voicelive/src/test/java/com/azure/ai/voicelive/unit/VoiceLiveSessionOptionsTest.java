@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 class VoiceLiveSessionOptionsTest {
 
     private VoiceLiveSessionOptions sessionOptions;
-    private static final String TEST_MODEL = "gpt-4o-realtime-preview";
+    private static final String TEST_MODEL = "gpt-realtime";
 
     @BeforeEach
     void setUp() {

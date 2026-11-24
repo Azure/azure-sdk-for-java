@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
@@ -14,25 +15,31 @@ public final class EvaluationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EvaluationRule model = BinaryData.fromString(
-            "{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":35.49670121816201},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":78.95586918459733}}")
+            "{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":89.54885021656311,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":72.30050635322169,\"sensitivity\":\"High\"}}")
             .toObject(EvaluationRule.class);
-        Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.degradedRule().operator());
-        Assertions.assertEquals(35.49670121816201, model.degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.unhealthyRule().operator());
-        Assertions.assertEquals(78.95586918459733, model.unhealthyRule().threshold());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.degradedRule().operator());
+        Assertions.assertEquals(89.54885021656311D, model.degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.unhealthyRule().operator());
+        Assertions.assertEquals(72.30050635322169D, model.unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.unhealthyRule().sensitivity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EvaluationRule model = new EvaluationRule()
-            .withDegradedRule(
-                new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL).withThreshold(35.49670121816201))
-            .withUnhealthyRule(
-                new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(78.95586918459733));
+            .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                .withThreshold(89.54885021656311D)
+                .withSensitivity(DynamicThresholdSensitivity.LOW))
+            .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN_OR_EQUAL)
+                .withThreshold(72.30050635322169D)
+                .withSensitivity(DynamicThresholdSensitivity.HIGH));
         model = BinaryData.fromObject(model).toObject(EvaluationRule.class);
-        Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.degradedRule().operator());
-        Assertions.assertEquals(35.49670121816201, model.degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.unhealthyRule().operator());
-        Assertions.assertEquals(78.95586918459733, model.unhealthyRule().threshold());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.degradedRule().operator());
+        Assertions.assertEquals(89.54885021656311D, model.degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.unhealthyRule().operator());
+        Assertions.assertEquals(72.30050635322169D, model.unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.unhealthyRule().sensitivity());
     }
 }

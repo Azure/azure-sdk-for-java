@@ -195,6 +195,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         // and BE will respect the per-request value.
 
         this.fillTokenFromHeader(headers, this::getClientVersion, HttpHeaders.VERSION);
+
+        // QueryPlan headers — needed for proxy to extract supported features and query version
+        // from the RNTBD body (IDs match server-side proxy)
+        this.fillTokenFromHeader(headers, this::getSupportedQueryFeatures, HttpHeaders.SUPPORTED_QUERY_FEATURES);
+        this.fillTokenFromHeader(headers, this::getQueryVersion, HttpHeaders.QUERY_VERSION);
     }
 
     private RntbdRequestHeaders(ByteBuf in) {
@@ -204,6 +209,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     // endregion
 
     // region Methods
+
+    void overrideSessionToken(final String sessionToken) {
+        if (StringUtils.isNotEmpty(sessionToken)) {
+            this.getSessionToken().setValue(sessionToken);
+        } else {
+            this.tokens.put(RntbdRequestHeader.SessionToken, RntbdToken.create(RntbdRequestHeader.SessionToken));
+        }
+    }
 
     static RntbdRequestHeaders decode(final ByteBuf in) {
         final RntbdRequestHeaders metadata = new RntbdRequestHeaders(in);
@@ -653,6 +666,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         return this.get(RntbdRequestHeader.ChangeFeedWireFormatVersion);
     }
 
+    private RntbdToken getSupportedQueryFeatures() {
+        return this.get(RntbdRequestHeader.SupportedQueryFeatures);
+    }
+
+    private RntbdToken getQueryVersion() {
+        return this.get(RntbdRequestHeader.QueryVersion);
+    }
+
     private void addAimHeader(final Map<String, String> headers) {
 
         final String value = headers.get(HttpHeaders.A_IM);
@@ -884,7 +905,15 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         if (StringUtils.isNotEmpty(value)) {
             try {
                 final int workloadId = Integer.parseInt(value);
-                this.getWorkloadId().setValue((byte) workloadId);
+
+                // WorkloadId is a UShort token; values outside its range would be silently
+                // truncated on the wire and attributed to a different workload.
+                if (workloadId < 0 || workloadId > 0xFFFF) {
+                    logger.warn("Workload id header value {} is out of range and will not be sent", value);
+                    return;
+                }
+
+                this.getWorkloadId().setValue(workloadId);
             } catch (NumberFormatException e) {
                 logger.warn("Invalid value for workload id header: {}", value, e);
             }

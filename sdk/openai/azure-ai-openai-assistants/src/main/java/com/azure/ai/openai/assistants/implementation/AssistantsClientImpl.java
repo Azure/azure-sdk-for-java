@@ -4570,7 +4570,7 @@ public final class AssistantsClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData uploadFileRequest,
+    public Mono<Response<BinaryData>> uploadFileWithResponseInternalAsync(BinaryData uploadFileRequest,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -4606,7 +4606,8 @@ public final class AssistantsClientImpl {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> uploadFileWithResponseInternal(BinaryData uploadFileRequest,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return service.uploadFileSync(this.getEndpoint(), contentType, accept, uploadFileRequest, requestOptions,

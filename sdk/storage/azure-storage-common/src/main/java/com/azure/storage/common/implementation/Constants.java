@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.storage.common.sas.SasProtocol;
+import java.time.Duration;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -88,11 +89,19 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-06-06");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2027-03-07");
+
+    public static final String PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER
+        = "AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER";
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
     public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
+
+    /**
+     * Default lifetime for storage values cached when the service does not provide an expiration.
+     */
+    public static final Duration DEFAULT_CACHE_LIFETIME = Duration.ofMinutes(5);
 
     private Constants() {
     }
@@ -220,7 +229,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2026-06-06";
+        public static final String TARGET_STORAGE_VERSION = "2027-03-07";
 
         /**
          * Error code returned from the service.
@@ -250,6 +259,20 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        public static final String CONTENT_CRC64 = "x-ms-content-crc64";
+
+        public static final HttpHeaderName CONTENT_CRC64_HEADER_NAME = HttpHeaderName.fromString(CONTENT_CRC64);
+
+        public static final String STRUCTURED_BODY_TYPE = "x-ms-structured-body";
+
+        public static final HttpHeaderName STRUCTURED_BODY_TYPE_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_BODY_TYPE);
+
+        public static final String STRUCTURED_CONTENT_LENGTH = "x-ms-structured-content-length";
+
+        public static final HttpHeaderName STRUCTURED_CONTENT_LENGTH_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_CONTENT_LENGTH);
+
         /**
          * Metadata key ("hdi_isfolder") used to mark virtual directories in Azure Blob Storage.
          *
@@ -273,6 +296,14 @@ public final class Constants {
         public static final String INVALID_HEADER_VALUE = "InvalidHeaderValue";
 
         private HeaderConstants() {
+            // Private to prevent construction.
+        }
+    }
+
+    public static final class ContentTypeConstants {
+        public static final String APPLICATION_VND_APACHE_ARROW_STREAM = "application/vnd.apache.arrow.stream";
+
+        private ContentTypeConstants() {
             // Private to prevent construction.
         }
     }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.monitor.generated;
  */
 public final class MetricAlertsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/getMetricAlertQuery.json
+     * x-ms-original-file: 2026-01-01/getMetricAlertQuery.json
      */
     /**
      * Sample code: Get a query based alert rule.
@@ -23,7 +23,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/getMetricAlertResourceGroup.json
+     * x-ms-original-file: 2026-01-01/getMetricAlertResourceGroup.json
      */
     /**
      * Sample code: Get an alert rule on resource group(s).
@@ -38,7 +38,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/getDynamicMetricAlertMultipleResource.json
+     * x-ms-original-file: 2026-01-01/getDynamicMetricAlertMultipleResource.json
      */
     /**
      * Sample code: Get a dynamic alert rule for multiple resources.
@@ -54,7 +54,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/getWebTestMetricAlert.json
+     * x-ms-original-file: 2026-01-01/getWebTestMetricAlert.json
      */
     /**
      * Sample code: Get a web test alert rule.
@@ -68,7 +68,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/getMetricAlertSingleResource.json
+     * x-ms-original-file: 2026-01-01/getMetricAlertSingleResource.json
      */
     /**
      * Sample code: Get an alert rule for single resource.
@@ -82,7 +82,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/getMetricAlertSubscription.json
+     * x-ms-original-file: 2026-01-01/getMetricAlertSubscription.json
      */
     /**
      * Sample code: Get an alert rule on subscription.
@@ -97,7 +97,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/getDynamicMetricAlertSingleResource.json
+     * x-ms-original-file: 2026-01-01/getDynamicMetricAlertSingleResource.json
      */
     /**
      * Sample code: Get a dynamic alert rule for single resource.
@@ -111,7 +111,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/getMetricAlertMultipleResource.json
+     * x-ms-original-file: 2026-01-01/getMetricAlertMultipleResource.json
      */
     /**
      * Sample code: Get an alert rule for multiple resources.

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.security.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -13,23 +13,17 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AlertSyncSettings;
 import com.azure.resourcemanager.security.models.DataExportSettings;
 import com.azure.resourcemanager.security.models.SettingKind;
-import com.azure.resourcemanager.security.models.SettingProperties;
 import java.io.IOException;
 
 /**
  * The kind of the security setting.
  */
-@Fluent
+@Immutable
 public class SettingInner extends ProxyResource {
     /*
      * the kind of the settings string
      */
     private SettingKind kind = SettingKind.fromString("Setting");
-
-    /*
-     * The resource-specific properties for this resource.
-     */
-    private SettingProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -64,26 +58,6 @@ public class SettingInner extends ProxyResource {
      */
     public SettingKind kind() {
         return this.kind;
-    }
-
-    /**
-     * Get the properties property: The resource-specific properties for this resource.
-     * 
-     * @return the properties value.
-     */
-    public SettingProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the SettingInner object itself.
-     */
-    public SettingInner withProperties(SettingProperties properties) {
-        this.properties = properties;
-        return this;
     }
 
     /**
@@ -142,9 +116,6 @@ public class SettingInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
     }
 
     /**
@@ -154,7 +125,6 @@ public class SettingInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -209,8 +179,6 @@ public class SettingInner extends ProxyResource {
                     deserializedSettingInner.type = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     deserializedSettingInner.kind = SettingKind.fromString(reader.getString());
-                } else if ("properties".equals(fieldName)) {
-                    deserializedSettingInner.properties = SettingProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSettingInner.systemData = SystemData.fromJson(reader);
                 } else {

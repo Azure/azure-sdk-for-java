@@ -39,7 +39,7 @@ public final class GlossaryUpdateTermTests extends DataMapClientTestBase {
                 .setSynonyms(
                     Arrays.asList(new AtlasRelatedTermHeader().setTermGuid("952c7ba4-4c89-42d8-a05a-7d2161be7008"),
                         new AtlasRelatedTermHeader().setTermGuid("821beef0-ced9-47ba-8f7f-c4f3459f4d18"))),
-            null);
+            (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

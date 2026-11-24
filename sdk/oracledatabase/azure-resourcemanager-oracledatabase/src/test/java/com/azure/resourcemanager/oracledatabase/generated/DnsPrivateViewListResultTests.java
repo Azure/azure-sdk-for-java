@@ -14,18 +14,18 @@ public final class DnsPrivateViewListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"vvyhg\",\"displayName\":\"opbyrqufegxu\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"fbn\",\"timeCreated\":\"2021-09-27T14:47:09Z\",\"timeUpdated\":\"2021-08-15T03:14:49Z\",\"provisioningState\":\"Canceled\"},\"id\":\"p\",\"name\":\"ngitvgbmhrixkwm\",\"type\":\"ijejvegrhbpn\"},{\"properties\":{\"ocid\":\"xexccbdreaxhcexd\",\"displayName\":\"rvqahqkghtpwi\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"yjsvfyc\",\"timeCreated\":\"2021-05-05T00:18:03Z\",\"timeUpdated\":\"2021-07-22T08:07:37Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"owvrvmtgjqppyos\",\"name\":\"ronzmyhgfip\",\"type\":\"sxkm\"}],\"nextLink\":\"a\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"xscyhwzdgirujbz\",\"displayName\":\"omvzzbtd\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"pniyujviyl\",\"timeCreated\":\"2021-03-03T06:15:22Z\",\"timeUpdated\":\"2021-08-02T10:55:37Z\",\"provisioningState\":\"Canceled\"},\"id\":\"snrbgyefrymsgao\",\"name\":\"fmwncotmrfh\",\"type\":\"rctym\"},{\"properties\":{\"ocid\":\"oftpipiwycz\",\"displayName\":\"hxacpqjlihhyu\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"kasdvlm\",\"timeCreated\":\"2021-10-06T05:18:17Z\",\"timeUpdated\":\"2021-01-29T03:07Z\",\"provisioningState\":\"Failed\"},\"id\":\"ulucv\",\"name\":\"amrsreuzv\",\"type\":\"urisjnhnytxifqj\"},{\"properties\":{\"ocid\":\"xmrhu\",\"displayName\":\"lw\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"sutrgjup\",\"timeCreated\":\"2021-11-15T14:36:08Z\",\"timeUpdated\":\"2021-08-30T15:20:14Z\",\"provisioningState\":\"Failed\"},\"id\":\"oqh\",\"name\":\"hej\",\"type\":\"g\"},{\"properties\":{\"ocid\":\"pnfqntcyp\",\"displayName\":\"xjvfoimwksl\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"izjx\",\"timeCreated\":\"2021-01-01T11:30:07Z\",\"timeUpdated\":\"2021-01-08T09:26:16Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"acvlhv\",\"name\":\"gdyftumrtwna\",\"type\":\"jslb\"}],\"nextLink\":\"kojgcyzts\"}")
             .toObject(DnsPrivateViewListResult.class);
-        Assertions.assertEquals("vvyhg", model.value().get(0).properties().ocid());
-        Assertions.assertEquals("opbyrqufegxu", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("xscyhwzdgirujbz", model.value().get(0).properties().ocid());
+        Assertions.assertEquals("omvzzbtd", model.value().get(0).properties().displayName());
         Assertions.assertFalse(model.value().get(0).properties().isProtected());
         Assertions.assertEquals(DnsPrivateViewsLifecycleState.ACTIVE,
             model.value().get(0).properties().lifecycleState());
-        Assertions.assertEquals("fbn", model.value().get(0).properties().self());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T14:47:09Z"),
+        Assertions.assertEquals("pniyujviyl", model.value().get(0).properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T06:15:22Z"),
             model.value().get(0).properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T03:14:49Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T10:55:37Z"),
             model.value().get(0).properties().timeUpdated());
-        Assertions.assertEquals("a", model.nextLink());
+        Assertions.assertEquals("kojgcyzts", model.nextLink());
     }
 }

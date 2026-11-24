@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
  * kept
  */
-public final class OperationLocationPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
+public class OperationLocationPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationLocationPollingStrategy.class);
 
@@ -56,8 +56,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
      * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
     public OperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
-        super(PollingUtils.OPERATION_LOCATION_HEADER,
-            AgentsServicePollUtils.withFoundryFeatures(pollingStrategyOptions));
+        super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null

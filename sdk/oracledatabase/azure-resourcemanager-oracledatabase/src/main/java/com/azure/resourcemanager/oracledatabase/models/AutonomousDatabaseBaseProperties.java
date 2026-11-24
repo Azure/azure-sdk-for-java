@@ -416,6 +416,37 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
      */
     private List<String> whitelistedIps;
 
+    /*
+     * Update AZ at the earliest available opportunity
+     */
+    private Boolean isScheduleAzUpdateToEarliest;
+
+    /*
+     * The date and time when the Autonomous Database availability zone is to be updated.
+     */
+    private String timeScheduledAzUpdate;
+
+    /*
+     * The logical zone where the Autonomous Database is provisioned.
+     */
+    private String zone;
+
+    /*
+     * Backup destination for auto and long-term backups. Existing backups stay in their original destination when this
+     * value changes.
+     */
+    private BackupDestinationType backupDestination;
+
+    /*
+     * Azure Resource Anchor ID
+     */
+    private String resourceAnchorId;
+
+    /*
+     * Azure Network Anchor ID
+     */
+    private String networkAnchorId;
+
     /**
      * Creates an instance of AutonomousDatabaseBaseProperties class.
      */
@@ -2024,6 +2055,130 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
     }
 
     /**
+     * Get the isScheduleAzUpdateToEarliest property: Update AZ at the earliest available opportunity.
+     * 
+     * @return the isScheduleAzUpdateToEarliest value.
+     */
+    public Boolean isScheduleAzUpdateToEarliest() {
+        return this.isScheduleAzUpdateToEarliest;
+    }
+
+    /**
+     * Set the isScheduleAzUpdateToEarliest property: Update AZ at the earliest available opportunity.
+     * 
+     * @param isScheduleAzUpdateToEarliest the isScheduleAzUpdateToEarliest value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties withIsScheduleAzUpdateToEarliest(Boolean isScheduleAzUpdateToEarliest) {
+        this.isScheduleAzUpdateToEarliest = isScheduleAzUpdateToEarliest;
+        return this;
+    }
+
+    /**
+     * Get the timeScheduledAzUpdate property: The date and time when the Autonomous Database availability zone is to be
+     * updated.
+     * 
+     * @return the timeScheduledAzUpdate value.
+     */
+    public String timeScheduledAzUpdate() {
+        return this.timeScheduledAzUpdate;
+    }
+
+    /**
+     * Set the timeScheduledAzUpdate property: The date and time when the Autonomous Database availability zone is to be
+     * updated.
+     * 
+     * @param timeScheduledAzUpdate the timeScheduledAzUpdate value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties withTimeScheduledAzUpdate(String timeScheduledAzUpdate) {
+        this.timeScheduledAzUpdate = timeScheduledAzUpdate;
+        return this;
+    }
+
+    /**
+     * Get the zone property: The logical zone where the Autonomous Database is provisioned.
+     * 
+     * @return the zone value.
+     */
+    public String zone() {
+        return this.zone;
+    }
+
+    /**
+     * Set the zone property: The logical zone where the Autonomous Database is provisioned.
+     * 
+     * @param zone the zone value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties withZone(String zone) {
+        this.zone = zone;
+        return this;
+    }
+
+    /**
+     * Get the backupDestination property: Backup destination for auto and long-term backups. Existing backups stay in
+     * their original destination when this value changes.
+     * 
+     * @return the backupDestination value.
+     */
+    public BackupDestinationType backupDestination() {
+        return this.backupDestination;
+    }
+
+    /**
+     * Set the backupDestination property: Backup destination for auto and long-term backups. Existing backups stay in
+     * their original destination when this value changes.
+     * 
+     * @param backupDestination the backupDestination value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties withBackupDestination(BackupDestinationType backupDestination) {
+        this.backupDestination = backupDestination;
+        return this;
+    }
+
+    /**
+     * Get the resourceAnchorId property: Azure Resource Anchor ID.
+     * 
+     * @return the resourceAnchorId value.
+     */
+    public String resourceAnchorId() {
+        return this.resourceAnchorId;
+    }
+
+    /**
+     * Set the resourceAnchorId property: Azure Resource Anchor ID.
+     * 
+     * @param resourceAnchorId the resourceAnchorId value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties withResourceAnchorId(String resourceAnchorId) {
+        this.resourceAnchorId = resourceAnchorId;
+        return this;
+    }
+
+    /**
+     * Get the networkAnchorId property: Azure Network Anchor ID.
+     * 
+     * @return the networkAnchorId value.
+     */
+    public String networkAnchorId() {
+        return this.networkAnchorId;
+    }
+
+    /**
+     * Set the networkAnchorId property: Azure Network Anchor ID.
+     * 
+     * @param networkAnchorId the networkAnchorId value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties withNetworkAnchorId(String networkAnchorId) {
+        this.networkAnchorId = networkAnchorId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -2071,6 +2226,13 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
         jsonWriter.writeNumberField("backupRetentionPeriodInDays", this.backupRetentionPeriodInDays);
         jsonWriter.writeArrayField("whitelistedIps", this.whitelistedIps,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isScheduleAzUpdateToEarliest", this.isScheduleAzUpdateToEarliest);
+        jsonWriter.writeStringField("timeScheduledAzUpdate", this.timeScheduledAzUpdate);
+        jsonWriter.writeStringField("zone", this.zone);
+        jsonWriter.writeStringField("backupDestination",
+            this.backupDestination == null ? null : this.backupDestination.toString());
+        jsonWriter.writeStringField("resourceAnchorId", this.resourceAnchorId);
+        jsonWriter.writeStringField("networkAnchorId", this.networkAnchorId);
         return jsonWriter.writeEndObject();
     }
 
@@ -2325,6 +2487,20 @@ public class AutonomousDatabaseBaseProperties implements JsonSerializable<Autono
                 } else if ("whitelistedIps".equals(fieldName)) {
                     List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
                     deserializedAutonomousDatabaseBaseProperties.whitelistedIps = whitelistedIps;
+                } else if ("isScheduleAzUpdateToEarliest".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.isScheduleAzUpdateToEarliest
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeScheduledAzUpdate".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.timeScheduledAzUpdate = reader.getString();
+                } else if ("zone".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.zone = reader.getString();
+                } else if ("backupDestination".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.backupDestination
+                        = BackupDestinationType.fromString(reader.getString());
+                } else if ("resourceAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.resourceAnchorId = reader.getString();
+                } else if ("networkAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBaseProperties.networkAnchorId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

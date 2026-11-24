@@ -109,17 +109,13 @@ public final class OpenApiTool extends Tool {
     }
 
     /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
+     * Deprecated. This property is deprecated and will be removed in a future version.
      */
     @Generated
     private Map<String, ToolConfig> toolConfigs;
 
     /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @return the toolConfigs value.
      */
@@ -129,9 +125,7 @@ public final class OpenApiTool extends Tool {
     }
 
     /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
      *
      * @param toolConfigs the toolConfigs value to set.
      * @return the OpenApiTool object itself.

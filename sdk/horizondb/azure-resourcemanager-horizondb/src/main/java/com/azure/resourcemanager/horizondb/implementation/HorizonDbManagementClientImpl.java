@@ -26,15 +26,29 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.horizondb.fluent.HorizonDbClustersClient;
-import com.azure.resourcemanager.horizondb.fluent.HorizonDbFirewallRulesClient;
+import com.azure.resourcemanager.horizondb.fluent.AuthenticationsClient;
+import com.azure.resourcemanager.horizondb.fluent.CapabilitiesClient;
+import com.azure.resourcemanager.horizondb.fluent.ChangeDataCaptureCapabilitiesClient;
+import com.azure.resourcemanager.horizondb.fluent.ChangeDataCaptureConfigurationsClient;
+import com.azure.resourcemanager.horizondb.fluent.ChangeDataCaptureDestinationsClient;
+import com.azure.resourcemanager.horizondb.fluent.ClustersClient;
+import com.azure.resourcemanager.horizondb.fluent.DefaultParameterGroupsClient;
+import com.azure.resourcemanager.horizondb.fluent.EndpointsClient;
+import com.azure.resourcemanager.horizondb.fluent.FirewallRulesClient;
 import com.azure.resourcemanager.horizondb.fluent.HorizonDbManagementClient;
-import com.azure.resourcemanager.horizondb.fluent.HorizonDbParameterGroupsClient;
-import com.azure.resourcemanager.horizondb.fluent.HorizonDbPoolsClient;
-import com.azure.resourcemanager.horizondb.fluent.HorizonDbPrivateEndpointConnectionsClient;
-import com.azure.resourcemanager.horizondb.fluent.HorizonDbPrivateLinkResourcesClient;
-import com.azure.resourcemanager.horizondb.fluent.HorizonDbReplicasClient;
+import com.azure.resourcemanager.horizondb.fluent.IdentityAssignmentsClient;
+import com.azure.resourcemanager.horizondb.fluent.LogCaptureConfigurationsClient;
+import com.azure.resourcemanager.horizondb.fluent.LogFilesClient;
+import com.azure.resourcemanager.horizondb.fluent.MaintenanceEventsClient;
+import com.azure.resourcemanager.horizondb.fluent.MicrosoftEntraAdministratorsClient;
+import com.azure.resourcemanager.horizondb.fluent.MicrosoftEntraAuthenticationsClient;
+import com.azure.resourcemanager.horizondb.fluent.NodesClient;
 import com.azure.resourcemanager.horizondb.fluent.OperationsClient;
+import com.azure.resourcemanager.horizondb.fluent.ParameterGroupsClient;
+import com.azure.resourcemanager.horizondb.fluent.PasswordAuthenticationsClient;
+import com.azure.resourcemanager.horizondb.fluent.PoolsClient;
+import com.azure.resourcemanager.horizondb.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.horizondb.fluent.PrivateLinkResourcesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -148,101 +162,297 @@ public final class HorizonDbManagementClientImpl implements HorizonDbManagementC
     }
 
     /**
-     * The HorizonDbClustersClient object to access its operations.
+     * The CapabilitiesClient object to access its operations.
      */
-    private final HorizonDbClustersClient horizonDbClusters;
+    private final CapabilitiesClient capabilities;
 
     /**
-     * Gets the HorizonDbClustersClient object to access its operations.
+     * Gets the CapabilitiesClient object to access its operations.
      * 
-     * @return the HorizonDbClustersClient object.
+     * @return the CapabilitiesClient object.
      */
-    public HorizonDbClustersClient getHorizonDbClusters() {
-        return this.horizonDbClusters;
+    public CapabilitiesClient getCapabilities() {
+        return this.capabilities;
     }
 
     /**
-     * The HorizonDbPoolsClient object to access its operations.
+     * The ClustersClient object to access its operations.
      */
-    private final HorizonDbPoolsClient horizonDbPools;
+    private final ClustersClient clusters;
 
     /**
-     * Gets the HorizonDbPoolsClient object to access its operations.
+     * Gets the ClustersClient object to access its operations.
      * 
-     * @return the HorizonDbPoolsClient object.
+     * @return the ClustersClient object.
      */
-    public HorizonDbPoolsClient getHorizonDbPools() {
-        return this.horizonDbPools;
+    public ClustersClient getClusters() {
+        return this.clusters;
     }
 
     /**
-     * The HorizonDbReplicasClient object to access its operations.
+     * The PoolsClient object to access its operations.
      */
-    private final HorizonDbReplicasClient horizonDbReplicas;
+    private final PoolsClient pools;
 
     /**
-     * Gets the HorizonDbReplicasClient object to access its operations.
+     * Gets the PoolsClient object to access its operations.
      * 
-     * @return the HorizonDbReplicasClient object.
+     * @return the PoolsClient object.
      */
-    public HorizonDbReplicasClient getHorizonDbReplicas() {
-        return this.horizonDbReplicas;
+    public PoolsClient getPools() {
+        return this.pools;
     }
 
     /**
-     * The HorizonDbFirewallRulesClient object to access its operations.
+     * The FirewallRulesClient object to access its operations.
      */
-    private final HorizonDbFirewallRulesClient horizonDbFirewallRules;
+    private final FirewallRulesClient firewallRules;
 
     /**
-     * Gets the HorizonDbFirewallRulesClient object to access its operations.
+     * Gets the FirewallRulesClient object to access its operations.
      * 
-     * @return the HorizonDbFirewallRulesClient object.
+     * @return the FirewallRulesClient object.
      */
-    public HorizonDbFirewallRulesClient getHorizonDbFirewallRules() {
-        return this.horizonDbFirewallRules;
+    public FirewallRulesClient getFirewallRules() {
+        return this.firewallRules;
     }
 
     /**
-     * The HorizonDbPrivateEndpointConnectionsClient object to access its operations.
+     * The PrivateEndpointConnectionsClient object to access its operations.
      */
-    private final HorizonDbPrivateEndpointConnectionsClient horizonDbPrivateEndpointConnections;
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
-     * Gets the HorizonDbPrivateEndpointConnectionsClient object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      * 
-     * @return the HorizonDbPrivateEndpointConnectionsClient object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    public HorizonDbPrivateEndpointConnectionsClient getHorizonDbPrivateEndpointConnections() {
-        return this.horizonDbPrivateEndpointConnections;
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
-     * The HorizonDbPrivateLinkResourcesClient object to access its operations.
+     * The PrivateLinkResourcesClient object to access its operations.
      */
-    private final HorizonDbPrivateLinkResourcesClient horizonDbPrivateLinkResources;
+    private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
-     * Gets the HorizonDbPrivateLinkResourcesClient object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      * 
-     * @return the HorizonDbPrivateLinkResourcesClient object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    public HorizonDbPrivateLinkResourcesClient getHorizonDbPrivateLinkResources() {
-        return this.horizonDbPrivateLinkResources;
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
     }
 
     /**
-     * The HorizonDbParameterGroupsClient object to access its operations.
+     * The ParameterGroupsClient object to access its operations.
      */
-    private final HorizonDbParameterGroupsClient horizonDbParameterGroups;
+    private final ParameterGroupsClient parameterGroups;
 
     /**
-     * Gets the HorizonDbParameterGroupsClient object to access its operations.
+     * Gets the ParameterGroupsClient object to access its operations.
      * 
-     * @return the HorizonDbParameterGroupsClient object.
+     * @return the ParameterGroupsClient object.
      */
-    public HorizonDbParameterGroupsClient getHorizonDbParameterGroups() {
-        return this.horizonDbParameterGroups;
+    public ParameterGroupsClient getParameterGroups() {
+        return this.parameterGroups;
+    }
+
+    /**
+     * The DefaultParameterGroupsClient object to access its operations.
+     */
+    private final DefaultParameterGroupsClient defaultParameterGroups;
+
+    /**
+     * Gets the DefaultParameterGroupsClient object to access its operations.
+     * 
+     * @return the DefaultParameterGroupsClient object.
+     */
+    public DefaultParameterGroupsClient getDefaultParameterGroups() {
+        return this.defaultParameterGroups;
+    }
+
+    /**
+     * The MicrosoftEntraAdministratorsClient object to access its operations.
+     */
+    private final MicrosoftEntraAdministratorsClient microsoftEntraAdministrators;
+
+    /**
+     * Gets the MicrosoftEntraAdministratorsClient object to access its operations.
+     * 
+     * @return the MicrosoftEntraAdministratorsClient object.
+     */
+    public MicrosoftEntraAdministratorsClient getMicrosoftEntraAdministrators() {
+        return this.microsoftEntraAdministrators;
+    }
+
+    /**
+     * The AuthenticationsClient object to access its operations.
+     */
+    private final AuthenticationsClient authentications;
+
+    /**
+     * Gets the AuthenticationsClient object to access its operations.
+     * 
+     * @return the AuthenticationsClient object.
+     */
+    public AuthenticationsClient getAuthentications() {
+        return this.authentications;
+    }
+
+    /**
+     * The PasswordAuthenticationsClient object to access its operations.
+     */
+    private final PasswordAuthenticationsClient passwordAuthentications;
+
+    /**
+     * Gets the PasswordAuthenticationsClient object to access its operations.
+     * 
+     * @return the PasswordAuthenticationsClient object.
+     */
+    public PasswordAuthenticationsClient getPasswordAuthentications() {
+        return this.passwordAuthentications;
+    }
+
+    /**
+     * The MicrosoftEntraAuthenticationsClient object to access its operations.
+     */
+    private final MicrosoftEntraAuthenticationsClient microsoftEntraAuthentications;
+
+    /**
+     * Gets the MicrosoftEntraAuthenticationsClient object to access its operations.
+     * 
+     * @return the MicrosoftEntraAuthenticationsClient object.
+     */
+    public MicrosoftEntraAuthenticationsClient getMicrosoftEntraAuthentications() {
+        return this.microsoftEntraAuthentications;
+    }
+
+    /**
+     * The ChangeDataCaptureCapabilitiesClient object to access its operations.
+     */
+    private final ChangeDataCaptureCapabilitiesClient changeDataCaptureCapabilities;
+
+    /**
+     * Gets the ChangeDataCaptureCapabilitiesClient object to access its operations.
+     * 
+     * @return the ChangeDataCaptureCapabilitiesClient object.
+     */
+    public ChangeDataCaptureCapabilitiesClient getChangeDataCaptureCapabilities() {
+        return this.changeDataCaptureCapabilities;
+    }
+
+    /**
+     * The ChangeDataCaptureDestinationsClient object to access its operations.
+     */
+    private final ChangeDataCaptureDestinationsClient changeDataCaptureDestinations;
+
+    /**
+     * Gets the ChangeDataCaptureDestinationsClient object to access its operations.
+     * 
+     * @return the ChangeDataCaptureDestinationsClient object.
+     */
+    public ChangeDataCaptureDestinationsClient getChangeDataCaptureDestinations() {
+        return this.changeDataCaptureDestinations;
+    }
+
+    /**
+     * The IdentityAssignmentsClient object to access its operations.
+     */
+    private final IdentityAssignmentsClient identityAssignments;
+
+    /**
+     * Gets the IdentityAssignmentsClient object to access its operations.
+     * 
+     * @return the IdentityAssignmentsClient object.
+     */
+    public IdentityAssignmentsClient getIdentityAssignments() {
+        return this.identityAssignments;
+    }
+
+    /**
+     * The ChangeDataCaptureConfigurationsClient object to access its operations.
+     */
+    private final ChangeDataCaptureConfigurationsClient changeDataCaptureConfigurations;
+
+    /**
+     * Gets the ChangeDataCaptureConfigurationsClient object to access its operations.
+     * 
+     * @return the ChangeDataCaptureConfigurationsClient object.
+     */
+    public ChangeDataCaptureConfigurationsClient getChangeDataCaptureConfigurations() {
+        return this.changeDataCaptureConfigurations;
+    }
+
+    /**
+     * The EndpointsClient object to access its operations.
+     */
+    private final EndpointsClient endpoints;
+
+    /**
+     * Gets the EndpointsClient object to access its operations.
+     * 
+     * @return the EndpointsClient object.
+     */
+    public EndpointsClient getEndpoints() {
+        return this.endpoints;
+    }
+
+    /**
+     * The MaintenanceEventsClient object to access its operations.
+     */
+    private final MaintenanceEventsClient maintenanceEvents;
+
+    /**
+     * Gets the MaintenanceEventsClient object to access its operations.
+     * 
+     * @return the MaintenanceEventsClient object.
+     */
+    public MaintenanceEventsClient getMaintenanceEvents() {
+        return this.maintenanceEvents;
+    }
+
+    /**
+     * The NodesClient object to access its operations.
+     */
+    private final NodesClient nodes;
+
+    /**
+     * Gets the NodesClient object to access its operations.
+     * 
+     * @return the NodesClient object.
+     */
+    public NodesClient getNodes() {
+        return this.nodes;
+    }
+
+    /**
+     * The LogCaptureConfigurationsClient object to access its operations.
+     */
+    private final LogCaptureConfigurationsClient logCaptureConfigurations;
+
+    /**
+     * Gets the LogCaptureConfigurationsClient object to access its operations.
+     * 
+     * @return the LogCaptureConfigurationsClient object.
+     */
+    public LogCaptureConfigurationsClient getLogCaptureConfigurations() {
+        return this.logCaptureConfigurations;
+    }
+
+    /**
+     * The LogFilesClient object to access its operations.
+     */
+    private final LogFilesClient logFiles;
+
+    /**
+     * Gets the LogFilesClient object to access its operations.
+     * 
+     * @return the LogFilesClient object.
+     */
+    public LogFilesClient getLogFiles() {
+        return this.logFiles;
     }
 
     /**
@@ -262,15 +472,29 @@ public final class HorizonDbManagementClientImpl implements HorizonDbManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-20-preview";
+        this.apiVersion = "2026-10-01-preview";
         this.operations = new OperationsClientImpl(this);
-        this.horizonDbClusters = new HorizonDbClustersClientImpl(this);
-        this.horizonDbPools = new HorizonDbPoolsClientImpl(this);
-        this.horizonDbReplicas = new HorizonDbReplicasClientImpl(this);
-        this.horizonDbFirewallRules = new HorizonDbFirewallRulesClientImpl(this);
-        this.horizonDbPrivateEndpointConnections = new HorizonDbPrivateEndpointConnectionsClientImpl(this);
-        this.horizonDbPrivateLinkResources = new HorizonDbPrivateLinkResourcesClientImpl(this);
-        this.horizonDbParameterGroups = new HorizonDbParameterGroupsClientImpl(this);
+        this.capabilities = new CapabilitiesClientImpl(this);
+        this.clusters = new ClustersClientImpl(this);
+        this.pools = new PoolsClientImpl(this);
+        this.firewallRules = new FirewallRulesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.parameterGroups = new ParameterGroupsClientImpl(this);
+        this.defaultParameterGroups = new DefaultParameterGroupsClientImpl(this);
+        this.microsoftEntraAdministrators = new MicrosoftEntraAdministratorsClientImpl(this);
+        this.authentications = new AuthenticationsClientImpl(this);
+        this.passwordAuthentications = new PasswordAuthenticationsClientImpl(this);
+        this.microsoftEntraAuthentications = new MicrosoftEntraAuthenticationsClientImpl(this);
+        this.changeDataCaptureCapabilities = new ChangeDataCaptureCapabilitiesClientImpl(this);
+        this.changeDataCaptureDestinations = new ChangeDataCaptureDestinationsClientImpl(this);
+        this.identityAssignments = new IdentityAssignmentsClientImpl(this);
+        this.changeDataCaptureConfigurations = new ChangeDataCaptureConfigurationsClientImpl(this);
+        this.endpoints = new EndpointsClientImpl(this);
+        this.maintenanceEvents = new MaintenanceEventsClientImpl(this);
+        this.nodes = new NodesClientImpl(this);
+        this.logCaptureConfigurations = new LogCaptureConfigurationsClientImpl(this);
+        this.logFiles = new LogFilesClientImpl(this);
     }
 
     /**

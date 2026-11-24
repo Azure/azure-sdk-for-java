@@ -6,10 +6,16 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ProjectInner;
+import com.azure.resourcemanager.cognitiveservices.models.CapabilitySettings;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.ProjectProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlEntry;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlType;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControls;
+import com.azure.resourcemanager.cognitiveservices.models.ToolControlsDefaultAction;
 import com.azure.resourcemanager.cognitiveservices.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -18,29 +24,64 @@ public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"ccxlzhcoxovnek\",\"description\":\"nlusfnrd\",\"endpoints\":{\"ttgepuslvyjtcv\":\"txrdcqtjvi\",\"ughtuqfecjxeygtu\":\"wkasiziesf\",\"cbuewmrswnjlxuz\":\"xu\",\"aqehg\":\"hwpusxj\"},\"isDefault\":true},\"tags\":{\"nwfepbnwg\":\"jqatucoigebxn\",\"jgcgbjbgdlfgtdys\":\"m\",\"zjrwdkqze\":\"aquflqbctqha\"},\"location\":\"jleziunjx\",\"etag\":\"zantkwceg\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"nseqacjjvp\",\"principalId\":\"guooqjagmdit\",\"userAssignedIdentities\":{\"lmotoebnfxofvcj\":{\"principalId\":\"ookjbsahrtdtpde\",\"clientId\":\"ac\"},\"excmjurbuhhl\":{\"principalId\":\"dirazf\",\"clientId\":\"ejwabmdujtmvco\"},\"kffdjktsys\":{\"principalId\":\"ql\",\"clientId\":\"srogtu\"}}},\"id\":\"fvcl\",\"name\":\"lxnfuijtkbusqogs\",\"type\":\"ikayiansharuj\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"yilbvz\",\"description\":\"xcjzlquze\",\"endpoints\":{\"b\":\"jxebj\",\"v\":\"inzabwmvoglj\"},\"isDefault\":false,\"capabilitySettings\":{\"documentStore\":\"nwcehaqidoyzl\",\"vectorStore\":\"iomqoqpepiaea\",\"blobStore\":\"sergdtpe\"},\"toolControls\":{\"defaultAction\":\"Deny\",\"allowedTools\":[{\"type\":\"function\",\"serverUrl\":\"wbpqqncjubkhjoz\",\"connectorId\":\"mcwmbup\"},{\"type\":\"browser_automation\",\"serverUrl\":\"yvliq\",\"connectorId\":\"psejbsvsiaies\"},{\"type\":\"function\",\"serverUrl\":\"dzydisnuep\",\"connectorId\":\"yjln\"},{\"type\":\"apply_patch\",\"serverUrl\":\"xottdiia\",\"connectorId\":\"qibzji\"}]}},\"tags\":{\"ratjhdhzybspij\":\"ebiphryvcjwqwoq\"},\"location\":\"rzgdkkagvw\",\"etag\":\"hsusmmor\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"ilz\",\"principalId\":\"nijmriprlkdne\",\"userAssignedIdentities\":{\"ywauyqnjckhm\":{\"principalId\":\"rcxivcbkut\",\"clientId\":\"mltwjfluxynbpvzl\"},\"bsjrclrv\":{\"principalId\":\"gjs\",\"clientId\":\"ouarhwvixqqggljk\"},\"dnyeita\":{\"principalId\":\"qnrbc\",\"clientId\":\"hpjhxpcv\"},\"iceevsaaxwspca\":{\"principalId\":\"qady\",\"clientId\":\"jahwriuomzczf\"}}},\"id\":\"khfjqebglcxkx\",\"name\":\"zzromvygysemtmes\",\"type\":\"fsvpink\"}")
             .toObject(ProjectInner.class);
-        Assertions.assertEquals("ccxlzhcoxovnek", model.properties().displayName());
-        Assertions.assertEquals("nlusfnrd", model.properties().description());
-        Assertions.assertEquals("jqatucoigebxn", model.tags().get("nwfepbnwg"));
-        Assertions.assertEquals("jleziunjx", model.location());
+        Assertions.assertEquals("yilbvz", model.properties().displayName());
+        Assertions.assertEquals("xcjzlquze", model.properties().description());
+        Assertions.assertEquals("nwcehaqidoyzl", model.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("iomqoqpepiaea", model.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("sergdtpe", model.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals(ToolControlsDefaultAction.DENY, model.properties().toolControls().defaultAction());
+        Assertions.assertEquals(ToolControlType.FUNCTION,
+            model.properties().toolControls().allowedTools().get(0).type());
+        Assertions.assertEquals("wbpqqncjubkhjoz", model.properties().toolControls().allowedTools().get(0).serverUrl());
+        Assertions.assertEquals("mcwmbup", model.properties().toolControls().allowedTools().get(0).connectorId());
+        Assertions.assertEquals("ebiphryvcjwqwoq", model.tags().get("ratjhdhzybspij"));
+        Assertions.assertEquals("rzgdkkagvw", model.location());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProjectInner model = new ProjectInner()
-            .withProperties(new ProjectProperties().withDisplayName("ccxlzhcoxovnek").withDescription("nlusfnrd"))
-            .withTags(mapOf("nwfepbnwg", "jqatucoigebxn", "jgcgbjbgdlfgtdys", "m", "zjrwdkqze", "aquflqbctqha"))
-            .withLocation("jleziunjx")
+            .withProperties(new ProjectProperties().withDisplayName("yilbvz")
+                .withDescription("xcjzlquze")
+                .withCapabilitySettings(new CapabilitySettings().withDocumentStore("nwcehaqidoyzl")
+                    .withVectorStore("iomqoqpepiaea")
+                    .withBlobStore("sergdtpe"))
+                .withToolControls(new ToolControls().withDefaultAction(ToolControlsDefaultAction.DENY)
+                    .withAllowedTools(Arrays.asList(
+                        new ToolControlEntry().withType(ToolControlType.FUNCTION)
+                            .withServerUrl("wbpqqncjubkhjoz")
+                            .withConnectorId("mcwmbup"),
+                        new ToolControlEntry().withType(ToolControlType.BROWSER_AUTOMATION)
+                            .withServerUrl("yvliq")
+                            .withConnectorId("psejbsvsiaies"),
+                        new ToolControlEntry().withType(ToolControlType.FUNCTION)
+                            .withServerUrl("dzydisnuep")
+                            .withConnectorId("yjln"),
+                        new ToolControlEntry().withType(ToolControlType.APPLY_PATCH)
+                            .withServerUrl("xottdiia")
+                            .withConnectorId("qibzji")))))
+            .withTags(mapOf("ratjhdhzybspij", "ebiphryvcjwqwoq"))
+            .withLocation("rzgdkkagvw")
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("lmotoebnfxofvcj", new UserAssignedIdentity(), "excmjurbuhhl",
-                    new UserAssignedIdentity(), "kffdjktsys", new UserAssignedIdentity())));
+                .withUserAssignedIdentities(
+                    mapOf("ywauyqnjckhm", new UserAssignedIdentity(), "bsjrclrv", new UserAssignedIdentity(), "dnyeita",
+                        new UserAssignedIdentity(), "iceevsaaxwspca", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals("ccxlzhcoxovnek", model.properties().displayName());
-        Assertions.assertEquals("nlusfnrd", model.properties().description());
-        Assertions.assertEquals("jqatucoigebxn", model.tags().get("nwfepbnwg"));
-        Assertions.assertEquals("jleziunjx", model.location());
+        Assertions.assertEquals("yilbvz", model.properties().displayName());
+        Assertions.assertEquals("xcjzlquze", model.properties().description());
+        Assertions.assertEquals("nwcehaqidoyzl", model.properties().capabilitySettings().documentStore());
+        Assertions.assertEquals("iomqoqpepiaea", model.properties().capabilitySettings().vectorStore());
+        Assertions.assertEquals("sergdtpe", model.properties().capabilitySettings().blobStore());
+        Assertions.assertEquals(ToolControlsDefaultAction.DENY, model.properties().toolControls().defaultAction());
+        Assertions.assertEquals(ToolControlType.FUNCTION,
+            model.properties().toolControls().allowedTools().get(0).type());
+        Assertions.assertEquals("wbpqqncjubkhjoz", model.properties().toolControls().allowedTools().get(0).serverUrl());
+        Assertions.assertEquals("mcwmbup", model.properties().toolControls().allowedTools().get(0).connectorId());
+        Assertions.assertEquals("ebiphryvcjwqwoq", model.tags().get("ratjhdhzybspij"));
+        Assertions.assertEquals("rzgdkkagvw", model.location());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 

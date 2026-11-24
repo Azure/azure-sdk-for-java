@@ -17,9 +17,8 @@ omitted_paths:
   - "sdk/*/swagger/*"
   - "sdk/*/codegen/*"
   - sdk/*/*-stress/*
-  - doc/*
+  - docs/*
   - eng/*
-  - samples/*
 language: java
 root_check_enabled: True
 required_readme_sections:
@@ -91,7 +90,6 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/quick-start.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/Samples/DatabricksLiveContainerMigration/README.md', '#3113']
   - ['sdk/cosmos/README.md', '#3113']
-  - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']

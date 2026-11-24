@@ -169,6 +169,23 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(this.shouldRetryOnSessionNotAvailable(this.request));
         }
 
+        if (isPartitionKeyRangeMetadataNotAvailable(clientException)) {
+            // Right after a container is (re)created the partition key range metadata can be materialized in one
+            // region before another, so the current regional endpoint may still return NotFound while a peer region
+            // already serves it. Unlike a data-plane 404 (which is authoritative), this metadata 404 is treated as a
+            // transient "backend service unavailable" for this region and a bounded cross-region failover is attempted
+            // so the operation can recover from the other region instead of failing fast on a lagging endpoint.
+            logger.info(
+                "Partition key range metadata is not available on the current regional endpoint. Will retry metadata request. ",
+                clientException);
+
+            return this.shouldRetryOnBackendServiceUnavailableAsync(
+                true,
+                true,
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                clientException);
+        }
+
         if (clientException != null &&
             Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)) {
 
@@ -248,6 +265,27 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // on RxDocumentServiceRequest instance is not set back to false after address resolution completes so hard to stay what stage timed out - address resolution or the Document write
         return request.isReadOnly();
       }
+
+    private boolean isPartitionKeyRangeMetadataNotAvailable(CosmosException cosmosException) {
+        if (cosmosException == null
+            || this.request == null
+            || this.request.getOperationType() != OperationType.ReadFeed
+            || this.request.getResourceType() != ResourceType.PartitionKeyRange) {
+
+            return false;
+        }
+
+        // 404/0 is only retryable here because this branch is scoped to partition key range metadata reads.
+        // Other 404/0 cases, such as item or container reads, must keep their normal semantics.
+        if (!Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.NOTFOUND)) {
+            return false;
+        }
+
+        int subStatusCode = cosmosException.getSubStatusCode();
+        return subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN
+            || subStatusCode == HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
+            || subStatusCode == HttpConstants.SubStatusCodes.COLLECTION_NOT_AVAILABLE_FOR_READ;
+    }
 
     private ShouldRetryResult shouldRetryOnSessionNotAvailable(RxDocumentServiceRequest request) {
         this.sessionTokenRetryCount++;
@@ -487,6 +525,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean isReadRequest,
         boolean nonIdempotentWriteRetriesEnabled,
         int subStatusCode) {
+
+        if (subStatusCode == HttpConstants.SubStatusCodes.SERVER_WRITE_BARRIER_THROTTLED) {
+            // A 408 synthesized from write-barrier throttling (all contacted replicas returned 429) is an
+            // RU hot-spot signal, not an endpoint failure. Do not mark the endpoint unavailable or trigger
+            // per-partition automatic failover (PPAF) - failing over to another region would not relieve the
+            // RU exhaustion at the source and would pollute endpoint health. Surface it as terminal (no retry).
+            logger.info("shouldRetryOnRequestTimeout() Not retrying and not marking endpoint unavailable for "
+                + "SERVER_WRITE_BARRIER_THROTTLED (substatus {}).", subStatusCode);
+            return Mono.just(ShouldRetryResult.NO_RETRY);
+        }
 
         if (subStatusCode == HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT) {
             if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {

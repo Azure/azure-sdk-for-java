@@ -11,8 +11,7 @@ public final class RecommendationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Recommendation model = BinaryData
-            .fromString(
-                "{\"recommendationStatus\":\"EvaluationCancelled\",\"evaluationRunAt\":\"2021-09-26T09:40:12Z\"}")
+            .fromString("{\"recommendationStatus\":\"NotApplicable\",\"evaluationRunAt\":\"2021-07-14T06:34:32Z\"}")
             .toObject(Recommendation.class);
     }
 }

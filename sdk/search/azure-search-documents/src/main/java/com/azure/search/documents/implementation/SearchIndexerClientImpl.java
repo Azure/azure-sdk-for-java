@@ -28,6 +28,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -37,6 +41,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.SearchServiceVersion;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
@@ -158,8 +165,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("dataSourceName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData dataSource,
             RequestOptions requestOptions, Context context);
 
@@ -170,8 +177,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("dataSourceName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData dataSource,
             RequestOptions requestOptions, Context context);
 
@@ -181,8 +188,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 204, 404 })
@@ -190,8 +197,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
@@ -200,8 +207,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
@@ -210,8 +217,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources")
         @ExpectedResponses({ 200 })
@@ -219,7 +226,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataSourceConnections(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listDataSourceConnections(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -229,7 +236,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getDataSourceConnectionsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listDataSourceConnectionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -264,8 +271,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })
@@ -274,8 +281,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resync")
         @ExpectedResponses({ 204 })
@@ -284,8 +291,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData indexerResync, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resync")
@@ -295,7 +302,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resyncSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @PathParam("indexerName") String name,
+            @PathParam("indexerName") String name, @HeaderParam("Accept") String accept,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexerResync,
             RequestOptions requestOptions, Context context);
 
@@ -306,8 +313,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetDocuments(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resetdocs")
         @ExpectedResponses({ 204 })
@@ -316,8 +323,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetDocumentsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
@@ -326,8 +333,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> runIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
@@ -336,8 +343,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> runIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/indexers('{indexerName}')")
         @ExpectedResponses({ 200, 201 })
@@ -346,8 +353,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexerName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
             RequestOptions requestOptions, Context context);
 
@@ -358,8 +365,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexerName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
             RequestOptions requestOptions, Context context);
 
@@ -369,8 +376,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/indexers('{indexerName}')")
         @ExpectedResponses({ 204, 404 })
@@ -378,8 +385,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
@@ -388,8 +395,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
@@ -398,8 +405,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers")
         @ExpectedResponses({ 200 })
@@ -407,7 +414,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getIndexers(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listIndexers(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -417,7 +424,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getIndexersSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listIndexersSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -450,8 +457,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexerStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')/search.status")
         @ExpectedResponses({ 200 })
@@ -460,8 +467,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexerStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200, 201 })
@@ -470,8 +477,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("skillsetName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
             RequestOptions requestOptions, Context context);
 
@@ -482,8 +489,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("skillsetName") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Prefer") String prefer,
             @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
             RequestOptions requestOptions, Context context);
 
@@ -493,8 +500,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 204, 404 })
@@ -502,8 +509,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200 })
@@ -512,8 +519,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200 })
@@ -522,8 +529,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/skillsets")
         @ExpectedResponses({ 200 })
@@ -531,7 +538,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getSkillsets(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listSkillsets(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -541,7 +548,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSkillsetsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listSkillsetsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
@@ -574,8 +581,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetSkills(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData skillNames, RequestOptions requestOptions, Context context);
 
         @Post("/skillsets('{skillsetName}')/search.resetskills")
@@ -585,9 +592,69 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetSkillsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData skillNames, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listDataSourceConnectionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listDataSourceConnectionsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listIndexersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listIndexersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listSkillsetsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSkillsetsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -629,7 +696,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -673,7 +740,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -714,7 +781,7 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, prefer, name, contentType, dataSource, requestOptions,
+            this.getServiceVersion().getVersion(), name, accept, prefer, contentType, dataSource, requestOptions,
             context));
     }
 
@@ -757,7 +824,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -801,7 +868,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -842,7 +909,7 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return service.createOrUpdateDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, prefer, name, contentType, dataSource, requestOptions, Context.NONE);
+            name, accept, prefer, contentType, dataSource, requestOptions, Context.NONE);
     }
 
     /**
@@ -870,7 +937,7 @@ public final class SearchIndexerClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -896,8 +963,8 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataSourceConnectionWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.deleteDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -922,7 +989,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -960,7 +1027,7 @@ public final class SearchIndexerClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -985,7 +1052,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1021,8 +1088,8 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDataSourceConnectionWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.getDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1034,6 +1101,12 @@ public final class SearchIndexerClientImpl {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1041,45 +1114,41 @@ public final class SearchIndexerClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             description: String (Optional)
-     *             type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *             subType: String (Optional)
-     *             credentials (Required): {
-     *                 connectionString: String (Optional)
-     *             }
-     *             container (Required): {
-     *                 name: String (Required)
-     *                 query: String (Optional)
-     *             }
-     *             identity (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *             }
-     *             indexerPermissionOptions (Optional): [
-     *                 String(userIds/groupIds/rbacScope) (Optional)
-     *             ]
-     *             dataChangeDetectionPolicy (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *             }
-     *             dataDeletionDetectionPolicy (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *             }
-     *             &#64;odata.etag: String (Optional)
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): (recursive schema, see identity above)
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *         }
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -1089,14 +1158,17 @@ public final class SearchIndexerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List Datasources request along with {@link Response} on successful completion of
+     * @return response from a List Datasources request along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDataSourceConnectionsWithResponseAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listDataSourceConnectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return FluxUtil.withContext(context -> service.getDataSourceConnections(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.listDataSourceConnections(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
 
     /**
@@ -1108,6 +1180,12 @@ public final class SearchIndexerClientImpl {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1115,45 +1193,41 @@ public final class SearchIndexerClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             description: String (Optional)
-     *             type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *             subType: String (Optional)
-     *             credentials (Required): {
-     *                 connectionString: String (Optional)
-     *             }
-     *             container (Required): {
-     *                 name: String (Required)
-     *                 query: String (Optional)
-     *             }
-     *             identity (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *             }
-     *             indexerPermissionOptions (Optional): [
-     *                 String(userIds/groupIds/rbacScope) (Optional)
-     *             ]
-     *             dataChangeDetectionPolicy (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *             }
-     *             dataDeletionDetectionPolicy (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *             }
-     *             &#64;odata.etag: String (Optional)
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): (recursive schema, see identity above)
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *         }
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -1163,13 +1237,169 @@ public final class SearchIndexerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List Datasources request along with {@link Response}.
+     * @return response from a List Datasources request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listDataSourceConnectionsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listDataSourceConnectionsSinglePageAsync(requestOptions),
+            nextLink -> listDataSourceConnectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Lists all datasources available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Datasources request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listDataSourceConnectionsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getDataSourceConnectionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listDataSourceConnectionsSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    /**
+     * Lists all datasources available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Datasources request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listDataSourceConnections(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listDataSourceConnectionsSinglePage(requestOptions),
+            nextLink -> listDataSourceConnectionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1194,7 +1424,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1238,7 +1468,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1302,7 +1532,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1346,7 +1576,7 @@ public final class SearchIndexerClientImpl {
      *         &#64;odata.type: String (Required)
      *     }
      *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
      *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
@@ -1403,7 +1633,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> resetIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.resetIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1420,7 +1650,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.resetIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.resetIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1453,7 +1683,7 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.resync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, name, contentType, indexerResync, requestOptions, context));
+            name, accept, contentType, indexerResync, requestOptions, context));
     }
 
     /**
@@ -1483,7 +1713,7 @@ public final class SearchIndexerClientImpl {
     public Response<Void> resyncWithResponse(String name, BinaryData indexerResync, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.resyncSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name, contentType,
+        return service.resyncSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept, contentType,
             indexerResync, requestOptions, Context.NONE);
     }
 
@@ -1538,7 +1768,7 @@ public final class SearchIndexerClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.resetDocuments(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptionsLocal, context));
     }
 
     /**
@@ -1591,7 +1821,7 @@ public final class SearchIndexerClientImpl {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.resetDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.resetDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptionsLocal, Context.NONE);
     }
 
@@ -1610,7 +1840,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> runIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.runIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1627,7 +1857,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.runIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.runIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -1689,6 +1919,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -1771,6 +2002,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -1832,8 +2064,8 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(
-            context -> service.createOrUpdateIndexer(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                prefer, name, contentType, indexer, requestOptions, context));
+            context -> service.createOrUpdateIndexer(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+                accept, prefer, contentType, indexer, requestOptions, context));
     }
 
     /**
@@ -1894,6 +2126,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -1976,6 +2209,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2036,8 +2270,8 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, indexer, requestOptions, Context.NONE);
+        return service.createOrUpdateIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, prefer, contentType, indexer, requestOptions, Context.NONE);
     }
 
     /**
@@ -2064,7 +2298,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> deleteIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2090,7 +2324,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -2133,6 +2367,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2190,7 +2425,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<BinaryData>> getIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2232,6 +2467,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2288,7 +2524,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexerWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -2301,6 +2537,12 @@ public final class SearchIndexerClientImpl {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2308,83 +2550,80 @@ public final class SearchIndexerClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             description: String (Optional)
-     *             dataSourceName: String (Required)
-     *             skillsetName: String (Optional)
-     *             targetIndexName: String (Required)
-     *             schedule (Optional): {
-     *                 interval: Duration (Required)
-     *                 startTime: OffsetDateTime (Optional)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
      *             }
-     *             parameters (Optional): {
-     *                 batchSize: Integer (Optional)
-     *                 maxFailedItems: Integer (Optional)
-     *                 maxFailedItemsPerBatch: Integer (Optional)
-     *                 configuration (Optional): {
-     *                     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *                     excludedFileNameExtensions: String (Optional)
-     *                     indexedFileNameExtensions: String (Optional)
-     *                     failOnUnsupportedContentType: Boolean (Optional)
-     *                     failOnUnprocessableDocument: Boolean (Optional)
-     *                     indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
-     *                     delimitedTextHeaders: String (Optional)
-     *                     delimitedTextDelimiter: String (Optional)
-     *                     firstLineContainsHeaders: Boolean (Optional)
-     *                     markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
-     *                     markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
-     *                     documentRoot: String (Optional)
-     *                     dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
-     *                     imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
-     *                     allowSkillsetToReadFileData: Boolean (Optional)
-     *                     pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
-     *                     executionEnvironment: String(standard/private) (Optional)
-     *                     queryTimeout: String (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
      *                 }
-     *             }
-     *             fieldMappings (Optional): [
-     *                  (Optional){
-     *                     sourceFieldName: String (Required)
-     *                     targetFieldName: String (Optional)
-     *                     mappingFunction (Optional): {
-     *                         name: String (Required)
-     *                         parameters (Optional): {
-     *                             String: Object (Required)
-     *                         }
-     *                     }
-     *                 }
-     *             ]
-     *             outputFieldMappings (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             disabled: Boolean (Optional)
-     *             &#64;odata.etag: String (Optional)
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): {
-     *                     &#64;odata.type: String (Required)
-     *                 }
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *             cache (Optional): {
-     *                 id: String (Optional)
-     *                 storageConnectionString: String (Optional)
-     *                 enableReprocessing: Boolean (Optional)
-     *                 identity (Optional): (recursive schema, see identity above)
      *             }
      *         }
      *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
      * }
      * }
      * </pre>
@@ -2394,14 +2633,17 @@ public final class SearchIndexerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List Indexers request along with {@link Response} on successful completion of
+     * @return response from a List Indexers request along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getIndexersWithResponseAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listIndexersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return FluxUtil.withContext(context -> service.getIndexers(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.listIndexers(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
 
     /**
@@ -2413,6 +2655,12 @@ public final class SearchIndexerClientImpl {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -2420,83 +2668,80 @@ public final class SearchIndexerClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             description: String (Optional)
-     *             dataSourceName: String (Required)
-     *             skillsetName: String (Optional)
-     *             targetIndexName: String (Required)
-     *             schedule (Optional): {
-     *                 interval: Duration (Required)
-     *                 startTime: OffsetDateTime (Optional)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
      *             }
-     *             parameters (Optional): {
-     *                 batchSize: Integer (Optional)
-     *                 maxFailedItems: Integer (Optional)
-     *                 maxFailedItemsPerBatch: Integer (Optional)
-     *                 configuration (Optional): {
-     *                     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *                     excludedFileNameExtensions: String (Optional)
-     *                     indexedFileNameExtensions: String (Optional)
-     *                     failOnUnsupportedContentType: Boolean (Optional)
-     *                     failOnUnprocessableDocument: Boolean (Optional)
-     *                     indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
-     *                     delimitedTextHeaders: String (Optional)
-     *                     delimitedTextDelimiter: String (Optional)
-     *                     firstLineContainsHeaders: Boolean (Optional)
-     *                     markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
-     *                     markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
-     *                     documentRoot: String (Optional)
-     *                     dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
-     *                     imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
-     *                     allowSkillsetToReadFileData: Boolean (Optional)
-     *                     pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
-     *                     executionEnvironment: String(standard/private) (Optional)
-     *                     queryTimeout: String (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
      *                 }
-     *             }
-     *             fieldMappings (Optional): [
-     *                  (Optional){
-     *                     sourceFieldName: String (Required)
-     *                     targetFieldName: String (Optional)
-     *                     mappingFunction (Optional): {
-     *                         name: String (Required)
-     *                         parameters (Optional): {
-     *                             String: Object (Required)
-     *                         }
-     *                     }
-     *                 }
-     *             ]
-     *             outputFieldMappings (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             disabled: Boolean (Optional)
-     *             &#64;odata.etag: String (Optional)
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): {
-     *                     &#64;odata.type: String (Required)
-     *                 }
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *             cache (Optional): {
-     *                 id: String (Optional)
-     *                 storageConnectionString: String (Optional)
-     *                 enableReprocessing: Boolean (Optional)
-     *                 identity (Optional): (recursive schema, see identity above)
      *             }
      *         }
      *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
      * }
      * }
      * </pre>
@@ -2506,13 +2751,247 @@ public final class SearchIndexerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List Indexers request along with {@link Response}.
+     * @return response from a List Indexers request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listIndexersAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listIndexersSinglePageAsync(requestOptions),
+            nextLink -> listIndexersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Lists all indexers available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexers request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getIndexersWithResponse(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listIndexersSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    /**
+     * Lists all indexers available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexers request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listIndexers(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listIndexersSinglePage(requestOptions),
+            nextLink -> listIndexersNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2554,6 +3033,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2636,6 +3116,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2737,6 +3218,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2819,6 +3301,7 @@ public final class SearchIndexerClientImpl {
      *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
      *             executionEnvironment: String(standard/private) (Optional)
      *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
      *              (Optional): {
      *                 String: Object (Required)
      *             }
@@ -2889,7 +3372,7 @@ public final class SearchIndexerClientImpl {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
+     *     runtime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -2966,7 +3449,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<BinaryData>> getIndexerStatusWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexerStatus(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2978,7 +3461,7 @@ public final class SearchIndexerClientImpl {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
+     *     runtime (Optional): {
      *         usedSeconds: long (Required)
      *         remainingSeconds: Long (Optional)
      *         beginningTime: OffsetDateTime (Required)
@@ -3053,7 +3536,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexerStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexerStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -3336,8 +3819,8 @@ public final class SearchIndexerClientImpl {
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(
-            context -> service.createOrUpdateSkillset(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                prefer, name, contentType, skillset, requestOptions, context));
+            context -> service.createOrUpdateSkillset(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+                accept, prefer, contentType, skillset, requestOptions, context));
     }
 
     /**
@@ -3618,8 +4101,8 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, skillset, requestOptions, Context.NONE);
+        return service.createOrUpdateSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            accept, prefer, contentType, skillset, requestOptions, Context.NONE);
     }
 
     /**
@@ -3646,7 +4129,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<Void>> deleteSkillsetWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteSkillset(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3672,7 +4155,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSkillsetWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -3811,7 +4294,7 @@ public final class SearchIndexerClientImpl {
     public Mono<Response<BinaryData>> getSkillsetWithResponseAsync(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getSkillset(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3948,7 +4431,7 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             requestOptions, Context.NONE);
     }
 
@@ -3961,6 +4444,12 @@ public final class SearchIndexerClientImpl {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -3968,122 +4457,118 @@ public final class SearchIndexerClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Required): [
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
      *          (Required){
-     *             name: String (Required)
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
      *             description: String (Optional)
-     *             skills (Required): [
+     *             context: String (Optional)
+     *             inputs (Required): [
      *                  (Required){
-     *                     &#64;odata.type: String (Required)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     context: String (Optional)
-     *                     inputs (Required): [
-     *                          (Required){
-     *                             name: String (Required)
-     *                             source: String (Optional)
-     *                             sourceContext: String (Optional)
-     *                             inputs (Optional): [
-     *                                 (recursive schema, see above)
-     *                             ]
-     *                         }
-     *                     ]
-     *                     outputs (Required): [
-     *                          (Required){
-     *                             name: String (Required)
-     *                             targetName: String (Optional)
-     *                         }
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
      *                     ]
      *                 }
      *             ]
-     *             cognitiveServices (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *                 description: String (Optional)
-     *             }
-     *             knowledgeStore (Optional): {
-     *                 storageConnectionString: String (Required)
-     *                 projections (Required): [
-     *                      (Required){
-     *                         tables (Optional): [
-     *                              (Optional){
-     *                                 referenceKeyName: String (Optional)
-     *                                 generatedKeyName: String (Required)
-     *                                 source: String (Optional)
-     *                                 sourceContext: String (Optional)
-     *                                 inputs (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                                 tableName: String (Required)
-     *                             }
-     *                         ]
-     *                         objects (Optional): [
-     *                              (Optional){
-     *                                 referenceKeyName: String (Optional)
-     *                                 generatedKeyName: String (Optional)
-     *                                 source: String (Optional)
-     *                                 sourceContext: String (Optional)
-     *                                 inputs (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                                 storageContainer: String (Required)
-     *                             }
-     *                         ]
-     *                         files (Optional): [
-     *                              (Optional){
-     *                                 referenceKeyName: String (Optional)
-     *                                 generatedKeyName: String (Optional)
-     *                                 source: String (Optional)
-     *                                 sourceContext: String (Optional)
-     *                                 inputs (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                                 storageContainer: String (Required)
-     *                             }
-     *                         ]
-     *                     }
-     *                 ]
-     *                 identity (Optional): {
-     *                     &#64;odata.type: String (Required)
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
      *                 }
-     *                 parameters (Optional): {
-     *                     synthesizeGeneratedKeyName: Boolean (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
-     *             }
-     *             indexProjections (Optional): {
-     *                 selectors (Required): [
-     *                      (Required){
-     *                         targetIndexName: String (Required)
-     *                         parentKeyFieldName: String (Required)
-     *                         sourceContext: String (Required)
-     *                         mappings (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *                 parameters (Optional): {
-     *                     projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
-     *             }
-     *             &#64;odata.etag: String (Optional)
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): (recursive schema, see identity above)
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
+     *             ]
      *         }
      *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -4093,14 +4578,17 @@ public final class SearchIndexerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a list skillset request along with {@link Response} on successful completion of
+     * @return response from a list skillset request along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSkillsetsWithResponseAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSkillsetsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return FluxUtil.withContext(context -> service.getSkillsets(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.listSkillsets(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
     }
 
     /**
@@ -4112,6 +4600,12 @@ public final class SearchIndexerClientImpl {
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
      * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
      * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -4119,122 +4613,118 @@ public final class SearchIndexerClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Required): [
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
      *          (Required){
-     *             name: String (Required)
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
      *             description: String (Optional)
-     *             skills (Required): [
+     *             context: String (Optional)
+     *             inputs (Required): [
      *                  (Required){
-     *                     &#64;odata.type: String (Required)
-     *                     name: String (Optional)
-     *                     description: String (Optional)
-     *                     context: String (Optional)
-     *                     inputs (Required): [
-     *                          (Required){
-     *                             name: String (Required)
-     *                             source: String (Optional)
-     *                             sourceContext: String (Optional)
-     *                             inputs (Optional): [
-     *                                 (recursive schema, see above)
-     *                             ]
-     *                         }
-     *                     ]
-     *                     outputs (Required): [
-     *                          (Required){
-     *                             name: String (Required)
-     *                             targetName: String (Optional)
-     *                         }
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
      *                     ]
      *                 }
      *             ]
-     *             cognitiveServices (Optional): {
-     *                 &#64;odata.type: String (Required)
-     *                 description: String (Optional)
-     *             }
-     *             knowledgeStore (Optional): {
-     *                 storageConnectionString: String (Required)
-     *                 projections (Required): [
-     *                      (Required){
-     *                         tables (Optional): [
-     *                              (Optional){
-     *                                 referenceKeyName: String (Optional)
-     *                                 generatedKeyName: String (Required)
-     *                                 source: String (Optional)
-     *                                 sourceContext: String (Optional)
-     *                                 inputs (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                                 tableName: String (Required)
-     *                             }
-     *                         ]
-     *                         objects (Optional): [
-     *                              (Optional){
-     *                                 referenceKeyName: String (Optional)
-     *                                 generatedKeyName: String (Optional)
-     *                                 source: String (Optional)
-     *                                 sourceContext: String (Optional)
-     *                                 inputs (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                                 storageContainer: String (Required)
-     *                             }
-     *                         ]
-     *                         files (Optional): [
-     *                              (Optional){
-     *                                 referenceKeyName: String (Optional)
-     *                                 generatedKeyName: String (Optional)
-     *                                 source: String (Optional)
-     *                                 sourceContext: String (Optional)
-     *                                 inputs (Optional): [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                                 storageContainer: String (Required)
-     *                             }
-     *                         ]
-     *                     }
-     *                 ]
-     *                 identity (Optional): {
-     *                     &#64;odata.type: String (Required)
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
      *                 }
-     *                 parameters (Optional): {
-     *                     synthesizeGeneratedKeyName: Boolean (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
-     *             }
-     *             indexProjections (Optional): {
-     *                 selectors (Required): [
-     *                      (Required){
-     *                         targetIndexName: String (Required)
-     *                         parentKeyFieldName: String (Required)
-     *                         sourceContext: String (Required)
-     *                         mappings (Required): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                     }
-     *                 ]
-     *                 parameters (Optional): {
-     *                     projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
-     *             }
-     *             &#64;odata.etag: String (Optional)
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): (recursive schema, see identity above)
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
+     *             ]
      *         }
      *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -4244,13 +4734,323 @@ public final class SearchIndexerClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a list skillset request along with {@link Response}.
+     * @return response from a list skillset request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listSkillsetsAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listSkillsetsSinglePageAsync(requestOptions),
+            nextLink -> listSkillsetsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List all skillsets in a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a list skillset request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSkillsetsWithResponse(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listSkillsetsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
-        return service.getSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    /**
+     * List all skillsets in a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
+     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
+     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
+     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
+     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
+     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a list skillset request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listSkillsets(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listSkillsetsSinglePage(requestOptions),
+            nextLink -> listSkillsetsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4803,7 +5603,7 @@ public final class SearchIndexerClientImpl {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.resetSkills(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, contentType, skillNames, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, accept, contentType, skillNames, requestOptions, context));
     }
 
     /**
@@ -4833,7 +5633,652 @@ public final class SearchIndexerClientImpl {
     public Response<Void> resetSkillsWithResponse(String name, BinaryData skillNames, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.resetSkillsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.resetSkillsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
             contentType, skillNames, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Datasources request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listDataSourceConnectionsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil
+            .withContext(context -> service.listDataSourceConnectionsNext(nextLink, this.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope/oneLakeParentFolders/oneLakeLakehouseId) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Datasources request along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listDataSourceConnectionsNextSinglePage(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        Response<BinaryData> res = service.listDataSourceConnectionsNextSync(nextLink, this.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexers request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listIndexersNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil
+            .withContext(
+                context -> service.listIndexersNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *             refreshAllAcls: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexers request along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listIndexersNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        Response<BinaryData> res
+            = service.listIndexersNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a list skillset request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listSkillsetsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        return FluxUtil
+            .withContext(
+                context -> service.listSkillsetsNext(nextLink, this.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *         isServiceLevelKey: Boolean (Optional)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a list skillset request along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSkillsetsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json;odata.metadata=minimal";
+        Response<BinaryData> res
+            = service.listSkillsetsNextSync(nextLink, this.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "@odata.nextLink"), null);
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
+        try {
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String... path) {
+        try {
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

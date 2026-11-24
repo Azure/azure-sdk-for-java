@@ -25,12 +25,6 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     private List<DataGenerationJobOutput> outputs;
 
     /*
-     * The number of samples actually generated.
-     */
-    @Generated
-    private final int generatedSamples;
-
-    /*
      * The token usage information for the data generation job.
      */
     @Generated
@@ -39,11 +33,11 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     /**
      * Creates an instance of DataGenerationJobResult class.
      *
-     * @param generatedSamples the generatedSamples value to set.
+     * @param generatedSampleCount the generatedSampleCount value to set.
      */
     @Generated
-    private DataGenerationJobResult(int generatedSamples) {
-        this.generatedSamples = generatedSamples;
+    private DataGenerationJobResult(int generatedSampleCount) {
+        this.generatedSampleCount = generatedSampleCount;
     }
 
     /**
@@ -54,16 +48,6 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     @Generated
     public List<DataGenerationJobOutput> getOutputs() {
         return this.outputs;
-    }
-
-    /**
-     * Get the generatedSamples property: The number of samples actually generated.
-     *
-     * @return the generatedSamples value.
-     */
-    @Generated
-    public int getGeneratedSamples() {
-        return this.generatedSamples;
     }
 
     /**
@@ -83,9 +67,10 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("generated_samples", this.generatedSamples);
+        jsonWriter.writeIntField("generated_samples", this.generatedSampleCount);
         jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("token_usage", this.tokenUsage);
+        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -101,26 +86,67 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     @Generated
     public static DataGenerationJobResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int generatedSamples = 0;
+            int generatedSampleCount = 0;
             List<DataGenerationJobOutput> outputs = null;
             DataGenerationTokenUsage tokenUsage = null;
+            List<DataGenerationWarning> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("generated_samples".equals(fieldName)) {
-                    generatedSamples = reader.getInt();
+                    generatedSampleCount = reader.getInt();
                 } else if ("outputs".equals(fieldName)) {
                     outputs = reader.readArray(reader1 -> DataGenerationJobOutput.fromJson(reader1));
                 } else if ("token_usage".equals(fieldName)) {
                     tokenUsage = DataGenerationTokenUsage.fromJson(reader);
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = reader.readArray(reader1 -> DataGenerationWarning.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            DataGenerationJobResult deserializedDataGenerationJobResult = new DataGenerationJobResult(generatedSamples);
+            DataGenerationJobResult deserializedDataGenerationJobResult
+                = new DataGenerationJobResult(generatedSampleCount);
             deserializedDataGenerationJobResult.outputs = outputs;
             deserializedDataGenerationJobResult.tokenUsage = tokenUsage;
+            deserializedDataGenerationJobResult.warnings = warnings;
             return deserializedDataGenerationJobResult;
         });
+    }
+
+    /*
+     * The number of samples actually generated.
+     */
+    @Generated
+    private final int generatedSampleCount;
+
+    /**
+     * Get the generatedSampleCount property: The number of samples actually generated.
+     *
+     * @return the generatedSampleCount value.
+     */
+    @Generated
+    public int getGeneratedSampleCount() {
+        return this.generatedSampleCount;
+    }
+
+    /*
+     * Nonfatal warnings associated with otherwise usable output. `test_case_description_generation_incomplete`
+     * indicates that conversation rows were produced but one or more optional descriptions failed. Warning messages do
+     * not expose raw provider or model error bodies.
+     */
+    @Generated
+    private List<DataGenerationWarning> warnings;
+
+    /**
+     * Get the warnings property: Nonfatal warnings associated with otherwise usable output.
+     * `test_case_description_generation_incomplete` indicates that conversation rows were produced but one or more
+     * optional descriptions failed. Warning messages do not expose raw provider or model error bodies.
+     *
+     * @return the warnings value.
+     */
+    @Generated
+    public List<DataGenerationWarning> getWarnings() {
+        return this.warnings;
     }
 }

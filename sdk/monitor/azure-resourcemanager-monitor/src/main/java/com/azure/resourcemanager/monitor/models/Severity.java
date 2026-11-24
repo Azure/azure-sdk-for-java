@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class Severity extends ExpandableStringEnum<Severity> {
     /**
-     * Static value Warning for Severity.
+     * The issue is a warning and does not prevent the configuration from being applied.
      */
     public static final Severity WARNING = fromString("Warning");
 
     /**
-     * Static value Error for Severity.
+     * The issue is an error and prevents the configuration from being applied.
      */
     public static final Severity ERROR = fromString("Error");
 

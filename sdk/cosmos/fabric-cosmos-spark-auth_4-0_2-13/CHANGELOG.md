@@ -10,6 +10,8 @@
 
 #### Other Changes
 
+* Upgraded Jackson from `2.18.7` to `2.18.11`.
+
 ### 1.2.0 (2026-06-08)
 
 #### Features Added

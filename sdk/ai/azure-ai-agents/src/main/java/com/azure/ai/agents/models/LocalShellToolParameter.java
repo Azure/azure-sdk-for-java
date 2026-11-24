@@ -25,6 +25,24 @@ public final class LocalShellToolParameter extends Tool {
     @Generated
     private ToolType type = ToolType.LOCAL_SHELL;
 
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String description;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
+
     /**
      * Creates an instance of LocalShellToolParameter class.
      */
@@ -41,6 +59,72 @@ public final class LocalShellToolParameter extends Tool {
     @Override
     public ToolType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param name the name value to set.
+     * @return the LocalShellToolParameter object itself.
+     */
+    @Generated
+    public LocalShellToolParameter setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the description property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the description value.
+     */
+    @Generated
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param description the description value to set.
+     * @return the LocalShellToolParameter object itself.
+     */
+    @Generated
+    public LocalShellToolParameter setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @return the toolConfigs value.
+     */
+    @Generated
+    public Map<String, ToolConfig> getToolConfigs() {
+        return this.toolConfigs;
+    }
+
+    /**
+     * Set the toolConfigs property: Deprecated. This property is deprecated and will be removed in a future version.
+     *
+     * @param toolConfigs the toolConfigs value to set.
+     * @return the LocalShellToolParameter object itself.
+     */
+    @Generated
+    public LocalShellToolParameter setToolConfigs(Map<String, ToolConfig> toolConfigs) {
+        this.toolConfigs = toolConfigs;
+        return this;
     }
 
     /**
@@ -87,95 +171,5 @@ public final class LocalShellToolParameter extends Tool {
             }
             return deserializedLocalShellToolParameter;
         });
-    }
-
-    /*
-     * Optional user-defined name for this tool or configuration.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Optional user-defined description for this tool or configuration.
-     */
-    @Generated
-    private String description;
-
-    /**
-     * Get the name property: Optional user-defined name for this tool or configuration.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: Optional user-defined name for this tool or configuration.
-     *
-     * @param name the name value to set.
-     * @return the LocalShellToolParameter object itself.
-     */
-    @Generated
-    public LocalShellToolParameter setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the description property: Optional user-defined description for this tool or configuration.
-     *
-     * @return the description value.
-     */
-    @Generated
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Optional user-defined description for this tool or configuration.
-     *
-     * @param description the description value to set.
-     * @return the LocalShellToolParameter object itself.
-     */
-    @Generated
-    public LocalShellToolParameter setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /*
-     * Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
-
-    /**
-     * Get the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @return the toolConfigs value.
-     */
-    @Generated
-    public Map<String, ToolConfig> getToolConfigs() {
-        return this.toolConfigs;
-    }
-
-    /**
-     * Set the toolConfigs property: Per-tool configuration map. Keys are tool names or `*` (catch-all default).
-     * Resolution order: exact tool name match takes priority over `*`.
-     * Unknown tool names are silently ignored at runtime.
-     *
-     * @param toolConfigs the toolConfigs value to set.
-     * @return the LocalShellToolParameter object itself.
-     */
-    @Generated
-    public LocalShellToolParameter setToolConfigs(Map<String, ToolConfig> toolConfigs) {
-        this.toolConfigs = toolConfigs;
-        return this;
     }
 }

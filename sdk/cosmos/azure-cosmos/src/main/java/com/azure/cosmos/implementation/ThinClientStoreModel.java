@@ -15,7 +15,12 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.HexConvert;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -30,6 +35,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -53,6 +59,19 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         Map<String, String> additionalHeaders) {
+        this(clientContext, sessionContainer, defaultConsistencyLevel, userAgentContainer,
+            globalEndpointManager, httpClient, additionalHeaders, null);
+    }
+
+    public ThinClientStoreModel(
+        DiagnosticsClientContext clientContext,
+        ISessionContainer sessionContainer,
+        ConsistencyLevel defaultConsistencyLevel,
+        UserAgentContainer userAgentContainer,
+        GlobalEndpointManager globalEndpointManager,
+        HttpClient httpClient,
+        Map<String, String> additionalHeaders,
+        CosmosClientTelemetryConfig clientTelemetryConfig) {
         super(
             clientContext,
             sessionContainer,
@@ -62,7 +81,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             globalEndpointManager,
             httpClient,
             ApiType.SQL,
-            additionalHeaders);
+            additionalHeaders,
+            clientTelemetryConfig);
 
         String userAgent = userAgentContainer != null
             ? userAgentContainer.getUserAgent()
@@ -196,6 +216,11 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        if (SessionTokenHelper.isCompoundSessionToken(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            return prepareCompoundSessionToken(request)
+                .then(Mono.defer(() -> super.performRequestInternal(request, requestUri)));
+        }
+
         // Ensure partitionKeyDefinition is resolved from the collection cache before
         // reaching wrapInHttpRequest, which needs it for client-side EPK computation.
         // This handles cases where clone() or other code paths didn't propagate partitionKeyDefinition.
@@ -223,6 +248,85 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         return super.performRequestInternal(request, requestUri);
     }
 
+    private Mono<Void> prepareCompoundSessionToken(RxDocumentServiceRequest request) {
+        String originalToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        ClientSideRequestStatistics statistics = request.requestContext.cosmosDiagnostics == null ? null
+            : ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor()
+                .getClientSideRequestStatisticsRaw(request.requestContext.cosmosDiagnostics);
+        MetadataDiagnosticsContext diagnostics = statistics == null ? null : statistics.getMetadataDiagnosticsContext();
+        return getCollectionCache().resolveCollectionAsync(diagnostics, request)
+            .flatMap(collection -> {
+                if (collection.v == null) {
+                    return Mono.error(new IllegalStateException("Collection cannot be null"));
+                }
+                String collectionRid = collection.v.getResourceId();
+                PartitionKeyDefinition definition = collection.v.getPartitionKey();
+                request.setPartitionKeyDefinition(definition);
+                return getPartitionKeyRangeCache().tryLookupAsync(
+                    diagnostics, collectionRid, null, false, request.properties)
+                    .flatMap(cached -> {
+                        if (cached.v == null) {
+                            return Mono.error(new CollectionRoutingMapNotFoundException(
+                                "No collection routing map found for collection rid " + collectionRid));
+                        }
+                        PartitionKeyRange target = resolveCompoundSessionTokenRange(request, definition, cached.v);
+                        ISessionToken token = SessionTokenHelper.scopeCompoundSessionToken(originalToken, target);
+                        if (token != null) {
+                            request.requestContext.sessionToken = token;
+                            return Mono.empty();
+                        }
+
+                        return getPartitionKeyRangeCache().tryLookupAsync(
+                            diagnostics, collectionRid, cached.v, true, request.properties)
+                            .doOnNext(refreshed -> {
+                                if (refreshed.v == null) {
+                                    throw new CollectionRoutingMapNotFoundException(
+                                        "No collection routing map found for collection rid " + collectionRid);
+                                }
+                                PartitionKeyRange refreshedTarget = resolveCompoundSessionTokenRange(
+                                    request, definition, refreshed.v);
+                                ISessionToken refreshedToken = SessionTokenHelper.scopeCompoundSessionToken(
+                                    originalToken, refreshedTarget);
+                                request.requestContext.sessionToken = refreshedToken;
+                                if (refreshedToken == null) {
+                                    SessionTokenHelper.recordUnmatchedSessionToken(
+                                        request, originalToken, refreshedTarget != null ? refreshedTarget.getId() : "");
+                                }
+                            }).then();
+                    });
+            });
+    }
+
+    private PartitionKeyRange resolveCompoundSessionTokenRange(
+        RxDocumentServiceRequest request, PartitionKeyDefinition definition, CollectionRoutingMap routingMap) {
+
+        PartitionKeyRange range = request.requestContext.resolvedPartitionKeyRange;
+        if (range == null || routingMap.tryGetRangeByPartitionKeyRangeId(range.getId()) != range) {
+            range = null;
+            if (request.getPartitionKeyRangeIdentity() != null) {
+                range = routingMap.getRangeByPartitionKeyRangeId(
+                    request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+            } else if (PartitionKeyHelper.isFullPartitionKey(definition, request.getPartitionKeyInternal())) {
+                String epk = PartitionKeyInternalHelper.getEffectivePartitionKeyString(
+                    request.getPartitionKeyInternal(), definition);
+                request.setEffectivePartitionKey(epk);
+                range = routingMap.getRangeByEffectivePartitionKey(epk);
+            } else {
+                String start = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
+                String end = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
+                if (start != null && end != null && ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(
+                    request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))) {
+                    List<PartitionKeyRange> ranges = routingMap.getOverlappingRanges(new Range<>(start, end, true, false));
+                    if (ranges.size() == 1) {
+                        range = ranges.get(0);
+                    }
+                }
+            }
+        }
+        request.requestContext.resolvedPartitionKeyRange = range;
+        return range;
+    }
+
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         if (this.globalDatabaseAccountName == null) {
@@ -239,16 +343,50 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             request.properties = new HashMap<>();
         }
 
+        PartitionKeyInternal partitionKey = request.getPartitionKeyInternal();
+
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
+        RntbdRequest rntbdRequest;
+        if (SessionTokenHelper.isCompoundSessionToken(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            ISessionToken token = request.requestContext.sessionToken;
+            rntbdRequest = RntbdRequest.from(rntbdRequestArgs, token == null ? null
+                : SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(
+                    request.requestContext.resolvedPartitionKeyRange.getId(), token.convertToString()));
+        } else {
+            rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
+        }
 
         HttpHeaders headers = this.getHttpHeaders();
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());
 
-        RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
-
-        PartitionKeyInternal partitionKey = request.getPartitionKeyInternal();
-
-        if (partitionKey != null) {
+        String startEpk = request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK);
+        String endEpk = request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK);
+        String readFeedKeyType = request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE);
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            // QueryPlan is collection-scoped on the thin-client proxy: it carries no
+            // EffectivePartitionKey and no StartEpkHash/EndEpkHash headers - the proxy fans out
+            // across partitions itself. Keep this explicit so the contract is self-documenting and
+            // cannot be violated if a resolved partition key range is ever present on the request.
+            //noinspection StatementWithEmptyBody
+        } else if (startEpk != null && endEpk != null
+            && ReadFeedKeyType.EffectivePartitionKeyRange.name().equalsIgnoreCase(readFeedKeyType)) {
+            // The request already carries the effective-partition-key range as HTTP headers (set together by
+            // FeedRangeEpkImpl#populateFeedRangeFilteringHeaders). This covers a partial (prefix)
+            // hierarchical partition key query as well as any explicit EPK-range read. All three headers
+            // (ReadFeedKeyType=EffectivePartitionKeyRange, StartEpk, EndEpk) are required for the backend to
+            // interpret the range: RntbdRequestHeaders#addStartAndEndKeys reads each independently and only
+            // emits the ReadFeedKeyType RNTBD token when READ_FEED_KEY_TYPE is present, so we guard on it here
+            // as well to keep the StartEpk/EndEpk string tokens and the StartEpkHash/EndEpkHash binary tokens
+            // coherent. The ReadFeedKeyType/StartEpk/EndEpk RNTBD string tokens are copied verbatim from those
+            // HTTP headers by RntbdRequestHeaders#addStartAndEndKeys during RntbdRequest.from() above, so only
+            // the StartEpkHash/EndEpkHash tokens (the decoded hash bytes) are additive here. They steer the
+            // thin-client proxy to the owning physical partition(s); without them the proxy resolves the
+            // request to the whole physical partition and returns every co-located document (an over-span).
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.StartEpkHash,
+                HexConvert.hexToBytes(startEpk));
+            rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EndEpkHash,
+                HexConvert.hexToBytes(endEpk));
+        } else if (partitionKey != null) {
             byte[] epk = partitionKey.getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
             rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
         } else if (request.requestContext.resolvedPartitionKeyRange == null) {

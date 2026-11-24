@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -53,7 +54,14 @@ public final class SearchUtils {
             .setAnswers(options.getAnswers())
             .setCaptions(options.getCaptions())
             .setVectorQueries(options.getVectorQueries())
-            .setVectorFilterMode(options.getVectorFilterMode());
+            .setVectorFilterMode(options.getVectorFilterMode())
+            .setQueryLanguage(options.getQueryLanguage())
+            .setQuerySpeller(options.getQuerySpeller())
+            .setQueryRewrites(options.getQueryRewrites())
+            .setSemanticFields(options.getSemanticFields())
+            .setHybridSearch(options.getHybridSearch())
+            .setMoreLikeThis(options.getMoreLikeThis())
+            .setAgenticOptions(options.getAgenticOptions());
     }
 
     /**
@@ -65,7 +73,19 @@ public final class SearchUtils {
      */
     public static RequestOptions addSearchHeaders(RequestOptions requestOptions, SearchOptions searchOptions) {
 
-        return requestOptions;
+        if (searchOptions == null) {
+            return requestOptions;
+        }
+        RequestOptions options = requestOptions == null ? new RequestOptions() : requestOptions;
+        if (searchOptions.getQuerySourceAuthorization() != null) {
+            options.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                searchOptions.getQuerySourceAuthorization());
+        }
+        if (searchOptions.isEnableElevatedRead() != null) {
+            options.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+                searchOptions.isEnableElevatedRead().toString());
+        }
+        return options;
     }
 
     /**

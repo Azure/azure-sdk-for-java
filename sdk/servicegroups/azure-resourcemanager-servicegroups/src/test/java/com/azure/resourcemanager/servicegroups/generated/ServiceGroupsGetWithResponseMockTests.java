@@ -21,7 +21,7 @@ public final class ServiceGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ertumkdo\",\"parent\":{\"resourceId\":\"whbmd\"}},\"kind\":\"bjf\",\"tags\":{\"q\":\"mbmbexppbh\",\"algbquxigjyjg\":\"rolfpfp\",\"lnerkujysvleju\":\"jaoyfhrtx\"},\"id\":\"qawrlyxwj\",\"name\":\"cpr\",\"type\":\"nwbxgjvtbvpyssz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"cbacphejkotynqg\",\"attributes\":{\"criticality\":2032457047},\"parent\":{\"resourceId\":\"likwyqkgfgib\"}},\"kind\":\"dgak\",\"tags\":{\"qedqytbciqfoufl\":\"rxybz\"},\"id\":\"nkzsmodmglou\",\"name\":\"pbkwtmu\",\"type\":\"duqkt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class ServiceGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceGroup response
-            = manager.serviceGroups().getWithResponse("mutduqktaps", com.azure.core.util.Context.NONE).getValue();
+            = manager.serviceGroups().getWithResponse("ryplwckbasyypn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ertumkdo", response.properties().displayName());
-        Assertions.assertEquals("whbmd", response.properties().parent().resourceId());
-        Assertions.assertEquals("bjf", response.kind());
-        Assertions.assertEquals("mbmbexppbh", response.tags().get("q"));
+        Assertions.assertEquals("cbacphejkotynqg", response.properties().displayName());
+        Assertions.assertEquals(2032457047, response.properties().attributes().criticality());
+        Assertions.assertEquals("likwyqkgfgib", response.properties().parent().resourceId());
+        Assertions.assertEquals("dgak", response.kind());
+        Assertions.assertEquals("rxybz", response.tags().get("qedqytbciqfoufl"));
     }
 }

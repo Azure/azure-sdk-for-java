@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.SupportedActions;
  */
 public final class ChaosFaultEnableDisableSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/ChaosFaultEnableDisable.json
+     * x-ms-original-file: 2026-04-01-preview/ChaosFaultEnableDisable.json
      */
     /**
      * Sample code: ChaosFaultEnableDisable.

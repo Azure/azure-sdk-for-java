@@ -419,7 +419,9 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             }
 
             // getting one item from each feedRange
-            List<FeedRange> feedRanges = testContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                testContainer,
+                "get feed ranges for gateway v2 fault injection setup");
             AssertionsForClassTypes.assertThat(feedRanges.size()).isGreaterThan(1);
 
             String query = "select * from c";

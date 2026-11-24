@@ -33,6 +33,7 @@ import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.Placement;
+import com.azure.resourcemanager.storage.models.PolicyViolationAction;
 import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.ResourceAccessRule;
 import com.azure.resourcemanager.storage.models.RoutingChoice;
@@ -45,6 +46,8 @@ import com.azure.resourcemanager.storage.models.SmbOAuthSettings;
 import com.azure.resourcemanager.storage.models.StorageAccountSharedKeyAccessProperties;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import com.azure.resourcemanager.storage.models.StorageDataCollaborationPolicyProperties;
+import com.azure.resourcemanager.storage.models.TurboTier;
+import com.azure.resourcemanager.storage.models.TurboTierStatus;
 import com.azure.resourcemanager.storage.models.UserAssignedIdentity;
 import com.azure.resourcemanager.storage.models.ZonePlacementPolicy;
 import java.util.Arrays;
@@ -56,7 +59,7 @@ import java.util.Map;
  */
 public final class StorageAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdateWithImmutabilityPolicy.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateWithImmutabilityPolicy.json
      */
     /**
      * Sample code: StorageAccountUpdateWithImmutabilityPolicy.
@@ -78,7 +81,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.
@@ -111,7 +114,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdate_placement.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdate_placement.json
      */
     /**
      * Sample code: StorageAccountUpdate_placement.
@@ -152,7 +155,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountEnableSmbOAuth.json
+     * x-ms-original-file: 2026-09-01/StorageAccountEnableSmbOAuth.json
      */
     /**
      * Sample code: StorageAccountEnableSmbOAuth.
@@ -171,7 +174,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdateWithDataCollaborationPolicy.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateWithDataCollaborationPolicy.json
      */
     /**
      * Sample code: StorageAccountUpdateWithDataCollaborationPolicy.
@@ -191,7 +194,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdateDisablePublicNetworkAccess.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateDisablePublicNetworkAccess.json
      */
     /**
      * Sample code: StorageAccountUpdateDisablePublicNetworkAccess.
@@ -229,7 +232,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdate_zones.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdate_zones.json
      */
     /**
      * Sample code: StorageAccountUpdate_zones.
@@ -269,7 +272,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountLeverageIPv6Ability.json
+     * x-ms-original-file: 2026-09-01/StorageAccountLeverageIPv6Ability.json
      */
     /**
      * Sample code: StorageAccountUpdateEnableIpv6Features.
@@ -291,7 +294,22 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountEnableAD.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateDisableTurboTier.json
+     */
+    /**
+     * Sample code: StorageAccountUpdateDisableTurboTier.
+     * 
+     * @param manager Entry point to StorageManager.
+     */
+    public static void storageAccountUpdateDisableTurboTier(com.azure.resourcemanager.storage.StorageManager manager) {
+        manager.serviceClient()
+            .getStorageAccounts()
+            .updateWithResponse("res9407", "staturbocontoso01", new StorageAccountUpdateParameters()
+                .withTurboTier(new TurboTier().withStatus(TurboTierStatus.DISABLED)), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/StorageAccountEnableAD.json
      */
     /**
      * Sample code: StorageAccountEnableAD.
@@ -316,7 +334,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
      */
     /**
      * Sample code: StorageAccountUpdateAllowedCopyScopeToAAD.
@@ -354,7 +372,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountEnableCMK.json
+     * x-ms-original-file: 2026-09-01/StorageAccountEnableCMK.json
      */
     /**
      * Sample code: StorageAccountEnableCMK.
@@ -377,7 +395,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdate.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdate.json
      */
     /**
      * Sample code: StorageAccountUpdate.
@@ -394,8 +412,11 @@ public final class StorageAccountsUpdateSamples {
                             .withBlob(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT))
                             .withFile(new EncryptionService().withEnabled(true).withKeyType(KeyType.ACCOUNT)))
                         .withKeySource(KeySource.MICROSOFT_STORAGE))
-                    .withSasPolicy(new SasPolicy().withSasExpirationPeriod("1.15:59:59")
-                        .withExpirationAction(ExpirationAction.LOG))
+                    .withSasPolicy(new SasPolicy()
+                        .withSasExpirationPeriod("1.15:59:59")
+                        .withExpirationAction(ExpirationAction.LOG)
+                        .withRequireUserBoundUserDelegationSas(true)
+                        .withRequireUserBoundUserDelegationSasAction(PolicyViolationAction.BLOCK))
                     .withKeyPolicy(new KeyPolicy().withKeyExpirationPeriodInDays(20))
                     .withIsSftpEnabled(true)
                     .withIsLocalUserEnabled(true)
@@ -418,12 +439,13 @@ public final class StorageAccountsUpdateSamples {
                         .withBlob(new ServiceSharedKeyAccessProperties().withEnabled(true))
                         .withFile(new ServiceSharedKeyAccessProperties().withEnabled(false))
                         .withTable(new ServiceSharedKeyAccessProperties().withEnabled(false))
-                        .withQueue(new ServiceSharedKeyAccessProperties().withEnabled(true))),
+                        .withQueue(new ServiceSharedKeyAccessProperties().withEnabled(true)))
+                    .withAllowCrossTenantDelegationSas(false),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdateAccessTierToSmart.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateAccessTierToSmart.json
      */
     /**
      * Sample code: StorageAccountUpdateAccessTierToSmart.
@@ -465,7 +487,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+     * x-ms-original-file: 2026-09-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**
      * Sample code: StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.

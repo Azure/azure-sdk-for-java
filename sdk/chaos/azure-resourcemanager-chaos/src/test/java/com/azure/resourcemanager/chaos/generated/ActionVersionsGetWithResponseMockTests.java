@@ -20,7 +20,7 @@ public final class ActionVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"canonicalId\":\"elpkpbafvafhlbyl\",\"displayName\":\"bevxrhyzd\",\"description\":\"rsofpltdbmairrh\",\"actionName\":\"fnrac\",\"version\":\"pqigtuujwouhd\",\"actionType\":\"Discrete\",\"supportedTargetTypes\":[{\"targetType\":\"bjb\",\"requiredPermissions\":[\"ybvitvqkjyaznumt\",\"gmuwdchozfnkf\"]},{\"targetType\":\"lv\",\"requiredPermissions\":[\"akizvoaikna\",\"lnuwiguy\",\"lykwphvxz\"]},{\"targetType\":\"xhmpejtlkex\",\"requiredPermissions\":[\"wiv\",\"cqhrxhxknlccrmm\",\"yupiju\"]},{\"targetType\":\"qjfkakfqfrkemyi\",\"requiredPermissions\":[\"dxjascowvfdj\",\"pdxphlkksnmgzvyf\",\"jd\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"nwsithuqolyahluq\",\"qulsutrjbhxykfhy\",\"ezvqq\",\"g\"]},\"id\":\"ftbcvexreuquow\",\"name\":\"ljvfwhreagk\",\"type\":\"yxvrqtvbczsul\"}";
+            = "{\"properties\":{\"canonicalId\":\"rctat\",\"displayName\":\"intqpbrlcyr\",\"description\":\"czkgofxyfsrucvcr\",\"actionName\":\"cjttbstvjeaqnrm\",\"version\":\"fkoxmlghktuidvr\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"wwexymzvlazipbh\",\"requiredPermissions\":[\"qsg\"]},{\"targetType\":\"yuuzivens\",\"requiredPermissions\":[\"eyyvpkpatl\",\"ijp\",\"gsksrfhf\"]},{\"targetType\":\"lmknbnxwcdom\",\"requiredPermissions\":[\"fqawzfgbrttui\",\"clkiexhajl\",\"n\",\"hiqfyuttdiy\"]},{\"targetType\":\"pvn\",\"requiredPermissions\":[\"mtx\",\"yctww\",\"zwxjlm\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"gygzyvn\"]},\"id\":\"zaifghtmoqqtlff\",\"name\":\"zbkr\",\"type\":\"jjjavfqnvhnq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ActionVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ActionVersion response = manager.actionVersions()
-            .getWithResponse("ziu", "fbzkk", "tnhqsycl", com.azure.core.util.Context.NONE)
+            .getWithResponse("wrq", "fulopmjnlexwhcb", "pibkephuu", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

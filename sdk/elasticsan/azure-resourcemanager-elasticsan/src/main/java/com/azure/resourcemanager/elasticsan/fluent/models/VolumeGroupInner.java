@@ -10,11 +10,13 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.QualityOfService;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import java.io.IOException;
 import java.util.List;
@@ -260,6 +262,131 @@ public final class VolumeGroupInner extends ProxyResource {
             this.innerProperties = new VolumeGroupProperties();
         }
         this.innerProperties().withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+        return this;
+    }
+
+    /**
+     * Get the encryptionInTransit property: A boolean indicating whether or not Encryption in Transit is enabled,
+     * supported only for ISCSI protocol.
+     * 
+     * @return the encryptionInTransit value.
+     */
+    public Boolean encryptionInTransit() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionInTransit();
+    }
+
+    /**
+     * Set the encryptionInTransit property: A boolean indicating whether or not Encryption in Transit is enabled,
+     * supported only for ISCSI protocol.
+     * 
+     * @param encryptionInTransit the encryptionInTransit value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withEncryptionInTransit(Boolean encryptionInTransit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withEncryptionInTransit(encryptionInTransit);
+        return this;
+    }
+
+    /**
+     * Get the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedIops value.
+     */
+    public Integer reservedIops() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservedIops();
+    }
+
+    /**
+     * Set the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedIops the reservedIops value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withReservedIops(Integer reservedIops) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withReservedIops(reservedIops);
+        return this;
+    }
+
+    /**
+     * Get the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedMBps value.
+     */
+    public Integer reservedMBps() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservedMBps();
+    }
+
+    /**
+     * Set the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedMBps the reservedMBps value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withReservedMBps(Integer reservedMBps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withReservedMBps(reservedMBps);
+        return this;
+    }
+
+    /**
+     * Get the qualityOfService property: Quality of Service tier for the volume group, applicable for ElasticSanVersion
+     * V2 only.
+     * 
+     * @return the qualityOfService value.
+     */
+    public QualityOfService qualityOfService() {
+        return this.innerProperties() == null ? null : this.innerProperties().qualityOfService();
+    }
+
+    /**
+     * Set the qualityOfService property: Quality of Service tier for the volume group, applicable for ElasticSanVersion
+     * V2 only.
+     * 
+     * @param qualityOfService the qualityOfService value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withQualityOfService(QualityOfService qualityOfService) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withQualityOfService(qualityOfService);
+        return this;
+    }
+
+    /**
+     * Get the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().deleteRetentionPolicy();
+    }
+
+    /**
+     * Set the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withDeleteRetentionPolicy(deleteRetentionPolicy);
         return this;
     }
 

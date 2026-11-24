@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinition;
@@ -28,7 +29,7 @@ public final class SignalDefinitionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"qxtjjfzqlqhyca\",\"refreshInterval\":\"PT10M\",\"tags\":{\"ariaawi\":\"xdbeesmieknl\",\"wqfbylyrfgiagt\":\"agy\",\"zjvusfzldmo\":\"ojocqwogf\"},\"dataUnit\":\"xylfsb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":11.050071561561914},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":4.695037263110901}}},\"id\":\"nbtgkbugrjqctoj\",\"name\":\"mi\",\"type\":\"of\"}";
+            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"kjjeokbz\",\"refreshInterval\":\"PT1H\",\"tags\":{\"ipqxbkwvzgnzv\":\"xcczurtl\"},\"dataUnit\":\"bzdixzmq\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":36.659936416675855,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":45.10328360218613,\"sensitivity\":\"Medium\"}}},\"id\":\"mcgsbostzelnd\",\"name\":\"atutmzlbiojlvfhr\",\"type\":\"bpneqvcwwyyurm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,29 +39,37 @@ public final class SignalDefinitionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SignalDefinition response = manager.signalDefinitions()
-            .define("spave")
-            .withExistingHealthmodel("khocxvdfffwaf", "roud")
-            .withProperties(new SignalDefinitionProperties().withDisplayName("bunzozudh")
-                .withRefreshInterval(RefreshInterval.PT2H)
-                .withTags(mapOf("mfdn", "oyxcdyuib"))
-                .withDataUnit("ydvfvfcjnae")
+            .define("or")
+            .withExistingHealthmodel("rotwypundmbxhugc", "jkavl")
+            .withProperties(new SignalDefinitionProperties().withDisplayName("mdtzfjltfvnzc")
+                .withRefreshInterval(RefreshInterval.PT30M)
+                .withTags(mapOf("opv", "p", "qgqqihedsvqwthmk", "bdb", "dhohsdtmcdzsuf", "ibcysihsgqc"))
+                .withDataUnit("hdxbzlm")
                 .withEvaluationRules(new EvaluationRule()
-                    .withDegradedRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.EQUAL).withThreshold(40.47698334777199))
-                    .withUnhealthyRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL).withThreshold(66.67512243948644))))
+                    .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
+                        .withThreshold(91.29743010513795D)
+                        .withSensitivity(DynamicThresholdSensitivity.HIGH))
+                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                        .withThreshold(78.00867559611804D)
+                        .withSensitivity(DynamicThresholdSensitivity.LOW))))
             .create();
 
-        Assertions.assertEquals("qxtjjfzqlqhyca", response.properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT10M, response.properties().refreshInterval());
-        Assertions.assertEquals("xdbeesmieknl", response.properties().tags().get("ariaawi"));
-        Assertions.assertEquals("xylfsb", response.properties().dataUnit());
+        Assertions.assertEquals("kjjeokbz", response.properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT1H, response.properties().refreshInterval());
+        Assertions.assertEquals("xcczurtl", response.properties().tags().get("ipqxbkwvzgnzv"));
+        Assertions.assertEquals("bzdixzmq", response.properties().dataUnit());
         Assertions.assertEquals(SignalOperator.EQUAL,
             response.properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(11.050071561561914, response.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(36.659936416675855D,
+            response.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            response.properties().evaluationRules().degradedRule().sensitivity());
         Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
             response.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(4.695037263110901, response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(45.10328360218613D,
+            response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            response.properties().evaluationRules().unhealthyRule().sensitivity());
     }
 
     // Use "Map.of" if available

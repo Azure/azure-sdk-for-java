@@ -26,8 +26,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.compute.recommender.fluent.ComputePlacementScoresClient;
 import com.azure.resourcemanager.compute.recommender.fluent.ComputeRecommenderManagementClient;
 import com.azure.resourcemanager.compute.recommender.fluent.OperationsClient;
+import com.azure.resourcemanager.compute.recommender.fluent.SkuMixPlacementScoresClient;
 import com.azure.resourcemanager.compute.recommender.fluent.SpotPlacementScoresClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -156,6 +158,34 @@ public final class ComputeRecommenderManagementClientImpl implements ComputeReco
     }
 
     /**
+     * The ComputePlacementScoresClient object to access its operations.
+     */
+    private final ComputePlacementScoresClient computePlacementScores;
+
+    /**
+     * Gets the ComputePlacementScoresClient object to access its operations.
+     * 
+     * @return the ComputePlacementScoresClient object.
+     */
+    public ComputePlacementScoresClient getComputePlacementScores() {
+        return this.computePlacementScores;
+    }
+
+    /**
+     * The SkuMixPlacementScoresClient object to access its operations.
+     */
+    private final SkuMixPlacementScoresClient skuMixPlacementScores;
+
+    /**
+     * Gets the SkuMixPlacementScoresClient object to access its operations.
+     * 
+     * @return the SkuMixPlacementScoresClient object.
+     */
+    public SkuMixPlacementScoresClient getSkuMixPlacementScores() {
+        return this.skuMixPlacementScores;
+    }
+
+    /**
      * Initializes an instance of ComputeRecommenderManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -172,9 +202,11 @@ public final class ComputeRecommenderManagementClientImpl implements ComputeReco
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-05";
+        this.apiVersion = "2026-10-05-preview";
         this.operations = new OperationsClientImpl(this);
         this.spotPlacementScores = new SpotPlacementScoresClientImpl(this);
+        this.computePlacementScores = new ComputePlacementScoresClientImpl(this);
+        this.skuMixPlacementScores = new SkuMixPlacementScoresClientImpl(this);
     }
 
     /**

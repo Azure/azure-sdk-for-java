@@ -968,6 +968,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
 
+    public boolean isExecuteStoredProcedureBasedRequest() {
+        return this.resourceType == ResourceType.StoredProcedure && this.operationType == OperationType.ExecuteJavaScript;
+    }
+
     public boolean isAllVersionsAndDeletesChangeFeedMode() {
         String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
@@ -1071,11 +1075,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
         rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
+        rxDocumentServiceRequest.setAddressRefresh(this.isAddressRefresh(), this.shouldForceAddressRefresh());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.useThinClientMode = this.useThinClientMode;
-        rxDocumentServiceRequest.requestContext = this.requestContext;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
         rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
         rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
@@ -1087,6 +1091,16 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest = this.isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
         rxDocumentServiceRequest.partitionKeyDefinition = this.partitionKeyDefinition;
+        rxDocumentServiceRequest.effectivePartitionKey = this.effectivePartitionKey;
+        rxDocumentServiceRequest.numberOfItemsInBatchRequest = this.numberOfItemsInBatchRequest;
+        rxDocumentServiceRequest.entityId = this.entityId;
+        rxDocumentServiceRequest.authorizationTokenType = this.authorizationTokenType;
+        rxDocumentServiceRequest.properties = this.properties != null ? new HashMap<>(this.properties) : null;
+        rxDocumentServiceRequest.throughputControlGroupName = this.throughputControlGroupName;
+        rxDocumentServiceRequest.intendedCollectionRidPassedIntoSDK = this.intendedCollectionRidPassedIntoSDK;
+        rxDocumentServiceRequest.isBarrierRequest = this.isBarrierRequest;
+        rxDocumentServiceRequest.responseTimeout = this.responseTimeout;
+        rxDocumentServiceRequest.httpTransportSerializer.set(this.httpTransportSerializer.get());
         return rxDocumentServiceRequest;
     }
 

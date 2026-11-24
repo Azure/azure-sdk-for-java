@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class SqlResourcesSqlDatabaseRetrieveThroughputDistributionSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseRetrieveThroughputDistribution.

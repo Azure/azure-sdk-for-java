@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IconDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IconDefinition model = BinaryData.fromString("{\"iconName\":\"uoujmkcjhwqy\",\"customData\":\"r\"}")
+        IconDefinition model = BinaryData.fromString("{\"iconName\":\"hos\",\"customData\":\"dqrhzoymib\"}")
             .toObject(IconDefinition.class);
-        Assertions.assertEquals("uoujmkcjhwqy", model.iconName());
-        Assertions.assertEquals("r", model.customData());
+        Assertions.assertEquals("hos", model.iconName());
+        Assertions.assertEquals("dqrhzoymib", model.customData());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IconDefinition model = new IconDefinition().withIconName("uoujmkcjhwqy").withCustomData("r");
+        IconDefinition model = new IconDefinition().withIconName("hos").withCustomData("dqrhzoymib");
         model = BinaryData.fromObject(model).toObject(IconDefinition.class);
-        Assertions.assertEquals("uoujmkcjhwqy", model.iconName());
-        Assertions.assertEquals("r", model.customData());
+        Assertions.assertEquals("hos", model.iconName());
+        Assertions.assertEquals("dqrhzoymib", model.customData());
     }
 }

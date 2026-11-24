@@ -9,14 +9,15 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class MongoClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_Get.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_Get.json
      */
     /**
-     * Sample code: Gets a Mongo Cluster resource.
+     * Sample code: Gets a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void getsAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+    public static void
+        getsADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }

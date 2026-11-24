@@ -6,6 +6,7 @@ package com.azure.resourcemanager.servicegroups.generated;
 
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
 import com.azure.resourcemanager.servicegroups.models.ParentServiceGroupProperties;
+import com.azure.resourcemanager.servicegroups.models.ServiceGroupAttributes;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
 
 /**
@@ -13,7 +14,7 @@ import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
  */
 public final class ResourceProviderCreateOrUpdateServiceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Put.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Put.json
      */
     /**
      * Sample code: PutServiceGroup.
@@ -25,6 +26,7 @@ public final class ResourceProviderCreateOrUpdateServiceGroupSamples {
             .createOrUpdateServiceGroup("ServiceGroup1",
                 new ServiceGroupInner()
                     .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name")
+                        .withAttributes(new ServiceGroupAttributes().withCriticality(2))
                         .withParent(new ParentServiceGroupProperties()
                             .withResourceId("/providers/Microsoft.Management/serviceGroups/RootGroup"))),
                 com.azure.core.util.Context.NONE);

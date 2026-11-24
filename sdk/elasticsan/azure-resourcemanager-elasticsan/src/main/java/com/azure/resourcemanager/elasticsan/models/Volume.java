@@ -7,6 +7,7 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
+import java.util.List;
 
 /**
  * An immutable client-side representation of Volume.
@@ -69,11 +70,11 @@ public interface Volume {
     IscsiTargetInfo storageTarget();
 
     /**
-     * Gets the managedBy property: Parent resource information.
+     * Gets the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @return the managedBy value.
      */
-    ManagedByInfo managedBy();
+    List<ManagedByResources> managedBy();
 
     /**
      * Gets the provisioningState property: State of the operation on the resource.
@@ -181,12 +182,13 @@ public interface Volume {
          */
         interface WithManagedBy {
             /**
-             * Specifies the managedBy property: Parent resource information..
+             * Specifies the managedBy property: Information about Azure services owning the ElasticSan volume
+             * resource..
              * 
-             * @param managedBy Parent resource information.
+             * @param managedBy Information about Azure services owning the ElasticSan volume resource.
              * @return the next definition stage.
              */
-            WithCreate withManagedBy(ManagedByInfo managedBy);
+            WithCreate withManagedBy(List<ManagedByResources> managedBy);
         }
     }
 
@@ -239,12 +241,13 @@ public interface Volume {
          */
         interface WithManagedBy {
             /**
-             * Specifies the managedBy property: Parent resource information..
+             * Specifies the managedBy property: Information about Azure services owning the ElasticSan volume
+             * resource..
              * 
-             * @param managedBy Parent resource information.
+             * @param managedBy Information about Azure services owning the ElasticSan volume resource.
              * @return the next definition stage.
              */
-            Update withManagedBy(ManagedByInfo managedBy);
+            Update withManagedBy(List<ManagedByResources> managedBy);
         }
     }
 

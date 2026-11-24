@@ -17,7 +17,6 @@ import java.util.Map;
  * The hosted agent definition.
  */
 @Fluent
-@Beta(warningText = "Preview API. HostedAgents=V1Preview")
 public final class HostedAgentDefinition extends AgentDefinition {
 
     /*
@@ -25,13 +24,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
      */
     @Generated
     private AgentKind kind = AgentKind.HOSTED;
-
-    /*
-     * An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     */
-    @Generated
-    private List<Tool> tools;
 
     /*
      * The CPU configuration for the hosted agent.
@@ -60,30 +52,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
     @Override
     public AgentKind getKind() {
         return this.kind;
-    }
-
-    /**
-     * Get the tools property: An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     *
-     * @return the tools value.
-     */
-    @Generated
-    public List<Tool> getTools() {
-        return this.tools;
-    }
-
-    /**
-     * Set the tools property: An array of tools the hosted agent's model may call while generating a response. You
-     * can specify which tool to use by setting the `tool_choice` parameter.
-     *
-     * @param tools the tools value to set.
-     * @return the HostedAgentDefinition object itself.
-     */
-    @Generated
-    public HostedAgentDefinition setTools(List<Tool> tools) {
-        this.tools = tools;
-        return this;
     }
 
     /**
@@ -149,7 +117,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
         jsonWriter.writeStringField("cpu", this.cpu);
         jsonWriter.writeStringField("memory", this.memory);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("environment_variables", this.environmentVariables,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("container_configuration", this.containerConfiguration);
@@ -157,6 +124,8 @@ public final class HostedAgentDefinition extends AgentDefinition {
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("code_configuration", this.codeConfiguration);
         jsonWriter.writeJsonField("telemetry_config", this.telemetryConfig);
+        jsonWriter.writeJsonField("session_configuration", this.sessionConfiguration);
+        jsonWriter.writeBooleanField("enable_memory_snapshot", this.memorySnapshotEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -176,12 +145,13 @@ public final class HostedAgentDefinition extends AgentDefinition {
             String cpu = null;
             String memory = null;
             AgentKind kind = AgentKind.HOSTED;
-            List<Tool> tools = null;
             Map<String, String> environmentVariables = null;
             ContainerConfiguration containerConfiguration = null;
             List<ProtocolVersionRecord> protocolVersions = null;
             CodeConfiguration codeConfiguration = null;
             TelemetryConfig telemetryConfig = null;
+            SessionConfiguration sessionConfiguration = null;
+            Boolean memorySnapshotEnabled = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -193,8 +163,6 @@ public final class HostedAgentDefinition extends AgentDefinition {
                     memory = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = AgentKind.fromString(reader.getString());
-                } else if ("tools".equals(fieldName)) {
-                    tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
                 } else if ("environment_variables".equals(fieldName)) {
                     environmentVariables = reader.readMap(reader1 -> reader1.getString());
                 } else if ("container_configuration".equals(fieldName)) {
@@ -205,6 +173,10 @@ public final class HostedAgentDefinition extends AgentDefinition {
                     codeConfiguration = CodeConfiguration.fromJson(reader);
                 } else if ("telemetry_config".equals(fieldName)) {
                     telemetryConfig = TelemetryConfig.fromJson(reader);
+                } else if ("session_configuration".equals(fieldName)) {
+                    sessionConfiguration = SessionConfiguration.fromJson(reader);
+                } else if ("enable_memory_snapshot".equals(fieldName)) {
+                    memorySnapshotEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -212,12 +184,13 @@ public final class HostedAgentDefinition extends AgentDefinition {
             HostedAgentDefinition deserializedHostedAgentDefinition = new HostedAgentDefinition(cpu, memory);
             deserializedHostedAgentDefinition.setRaiConfig(raiConfig);
             deserializedHostedAgentDefinition.kind = kind;
-            deserializedHostedAgentDefinition.tools = tools;
             deserializedHostedAgentDefinition.environmentVariables = environmentVariables;
             deserializedHostedAgentDefinition.containerConfiguration = containerConfiguration;
             deserializedHostedAgentDefinition.protocolVersions = protocolVersions;
             deserializedHostedAgentDefinition.codeConfiguration = codeConfiguration;
             deserializedHostedAgentDefinition.telemetryConfig = telemetryConfig;
+            deserializedHostedAgentDefinition.sessionConfiguration = sessionConfiguration;
+            deserializedHostedAgentDefinition.memorySnapshotEnabled = memorySnapshotEnabled;
             return deserializedHostedAgentDefinition;
         });
     }
@@ -230,9 +203,12 @@ public final class HostedAgentDefinition extends AgentDefinition {
     private ContainerConfiguration containerConfiguration;
 
     /*
-     * The protocols that the agent supports for ingress communication.
+     * The protocols that the agent supports for ingress communication. (Preview) Declaring the `a2a` protocol enables
+     * A2A passthrough to the hosted agent and requires `Foundry-Features: A2AAgents=V1Preview` when creating or
+     * modifying the hosted agent definition.
      */
     @Generated
+    @Beta(warningText = "Preview API. A2AAgents=V1Preview")
     private List<ProtocolVersionRecord> protocolVersions;
 
     /*
@@ -279,22 +255,28 @@ public final class HostedAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the protocolVersions property: The protocols that the agent supports for ingress communication.
+     * Get the protocolVersions property: The protocols that the agent supports for ingress communication. (Preview)
+     * Declaring the `a2a` protocol enables A2A passthrough to the hosted agent and requires `Foundry-Features:
+     * A2AAgents=V1Preview` when creating or modifying the hosted agent definition.
      *
      * @return the protocolVersions value.
      */
     @Generated
+    @Beta(warningText = "Preview API. A2AAgents=V1Preview")
     public List<ProtocolVersionRecord> getProtocolVersions() {
         return this.protocolVersions;
     }
 
     /**
-     * Set the protocolVersions property: The protocols that the agent supports for ingress communication.
+     * Set the protocolVersions property: The protocols that the agent supports for ingress communication. (Preview)
+     * Declaring the `a2a` protocol enables A2A passthrough to the hosted agent and requires `Foundry-Features:
+     * A2AAgents=V1Preview` when creating or modifying the hosted agent definition.
      *
      * @param protocolVersions the protocolVersions value to set.
      * @return the HostedAgentDefinition object itself.
      */
     @Generated
+    @Beta(warningText = "Preview API. A2AAgents=V1Preview")
     public HostedAgentDefinition setProtocolVersions(List<ProtocolVersionRecord> protocolVersions) {
         this.protocolVersions = protocolVersions;
         return this;
@@ -351,6 +333,69 @@ public final class HostedAgentDefinition extends AgentDefinition {
     @Generated
     public HostedAgentDefinition setTelemetryConfig(TelemetryConfig telemetryConfig) {
         this.telemetryConfig = telemetryConfig;
+        return this;
+    }
+
+    /*
+     * Optional session defaults (for example, the idle timeout) applied to sessions created for this agent version.
+     */
+    @Generated
+    private SessionConfiguration sessionConfiguration;
+
+    /**
+     * Get the sessionConfiguration property: Optional session defaults (for example, the idle timeout) applied to
+     * sessions created for this agent version.
+     *
+     * @return the sessionConfiguration value.
+     */
+    @Generated
+    public SessionConfiguration getSessionConfiguration() {
+        return this.sessionConfiguration;
+    }
+
+    /**
+     * Set the sessionConfiguration property: Optional session defaults (for example, the idle timeout) applied to
+     * sessions created for this agent version.
+     *
+     * @param sessionConfiguration the sessionConfiguration value to set.
+     * @return the HostedAgentDefinition object itself.
+     */
+    @Generated
+    public HostedAgentDefinition setSessionConfiguration(SessionConfiguration sessionConfiguration) {
+        this.sessionConfiguration = sessionConfiguration;
+        return this;
+    }
+
+    /*
+     * Whether this agent version uses memory snapshots. Sessions for a snapshot-enabled version start from a snapshot
+     * of the agent's initialized process rather than starting the process from its image. Defaults to false.
+     */
+    @Generated
+    private Boolean memorySnapshotEnabled;
+
+    /**
+     * Get the memorySnapshotEnabled property: Whether this agent version uses memory snapshots. Sessions for a
+     * snapshot-enabled version start from a snapshot of the agent's initialized process rather than starting the
+     * process from its image. Defaults to false.
+     *
+     * @return the memorySnapshotEnabled value.
+     */
+    @Generated
+    public Boolean isMemorySnapshotEnabled() {
+        return this.memorySnapshotEnabled;
+    }
+
+    /**
+     * Set the memorySnapshotEnabled property: Whether this agent version uses memory snapshots. Sessions for a
+     * snapshot-enabled version start from a snapshot of the agent's initialized process rather than starting the
+     * process from its image. Defaults to false.
+     *
+     * @param memorySnapshotEnabled the memorySnapshotEnabled value to set.
+     * @return the HostedAgentDefinition object itself.
+     */
+    @Generated
+    public HostedAgentDefinition setMemorySnapshotEnabled(Boolean memorySnapshotEnabled) {
+        this.memorySnapshotEnabled = memorySnapshotEnabled;
         return this;
     }
 }

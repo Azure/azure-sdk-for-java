@@ -4,6 +4,8 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -13,15 +15,55 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.core.JsonValue;
 import com.openai.core.ObjectMappers;
+import com.openai.models.responses.ResponseCreateParams;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 public final class OpenAIJsonHelper {
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIJsonHelper.class);
+    private static final ObjectMapper OPENAI_MODEL_MAPPER = ObjectMappers.jsonMapper();
+
+    private static final JsonSerializer OPENAI_MODEL_SERIALIZER = new JsonSerializer() {
+        @Override
+        public <T> T deserialize(InputStream stream, com.azure.core.util.serializer.TypeReference<T> typeReference) {
+            try {
+                return OPENAI_MODEL_MAPPER.readValue(stream,
+                    OPENAI_MODEL_MAPPER.constructType(typeReference.getJavaType()));
+            } catch (IOException error) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(error));
+            }
+        }
+
+        @Override
+        public <T> Mono<T> deserializeAsync(InputStream stream,
+            com.azure.core.util.serializer.TypeReference<T> typeReference) {
+            return Mono.fromCallable(() -> deserialize(stream, typeReference));
+        }
+
+        @Override
+        public void serialize(OutputStream stream, Object value) {
+            try {
+                stream.write(OPENAI_MODEL_MAPPER.writeValueAsBytes(value));
+            } catch (IOException error) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(error));
+            }
+        }
+
+        @Override
+        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+            return Mono.fromRunnable(() -> serialize(stream, value));
+        }
+    };
 
     private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper()
         .rebuild()
@@ -110,11 +152,8 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            String json = MAPPER.writeValueAsString(openAIObject);
-            try (JsonReader reader = JsonProviders.createReader(new StringReader(json))) {
-                reader.nextToken();
-                return BinaryData.fromObject(reader.readUntyped());
-            }
+            String json = OPENAI_MODEL_MAPPER.writeValueAsString(openAIObject);
+            return BinaryData.fromObject(OPENAI_MODEL_MAPPER.readTree(json), OPENAI_MODEL_SERIALIZER);
         } catch (IOException e) {
             throw new RuntimeException("Failed to convert OpenAI type to BinaryData", e);
         }
@@ -148,10 +187,25 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            return MAPPER.readValue(data.toString(), type);
+            return OPENAI_MODEL_MAPPER.readValue(data.toString(), type);
         } catch (IOException e) {
             throw new RuntimeException("Failed to deserialize BinaryData to OpenAI type", e);
         }
+    }
+
+    /**
+     * Deserializes a list of {@link BinaryData} values to a list of openai-java types.
+     *
+     * @param dataList the list of BinaryData values containing JSON.
+     * @param type the target openai-java class.
+     * @param <T> the target type.
+     * @return the deserialized list, or null if the input is null.
+     */
+    public static <T> List<T> fromBinaryDataList(List<BinaryData> dataList, Class<T> type) {
+        if (dataList == null) {
+            return null;
+        }
+        return dataList.stream().map(data -> fromBinaryData(data, type)).collect(Collectors.toList());
     }
 
     /**
@@ -200,6 +254,64 @@ public final class OpenAIJsonHelper {
         } catch (IOException e) {
             throw new RuntimeException("Failed to parse JSON body to JsonValue map", e);
         }
+    }
+
+    /**
+     * Converts a raw create-response body to OpenAI request parameters while promoting the fields used by tracing to
+     * their strongly typed builder properties. All remaining fields, including Azure extensions, stay in the
+     * additional body-property map.
+     *
+     * @param body the raw create-response body.
+     * @return request parameters preserving all top-level fields.
+     */
+    public static ResponseCreateParams toRawResponseCreateParams(BinaryData body) {
+        Map<String, JsonValue> properties = jsonBodyToValueMap(body);
+        ResponseCreateParams.Builder builder = ResponseCreateParams.builder();
+
+        JsonValue model = properties.remove("model");
+        if (model != null) {
+            String modelName = model.convert(String.class);
+            if (modelName != null) {
+                builder.model(modelName);
+            } else {
+                properties.put("model", model);
+            }
+        }
+        JsonValue input = properties.get("input");
+        if (input != null) {
+            try {
+                String inputText = input.convert(String.class);
+                if (inputText != null) {
+                    properties.remove("input");
+                    builder.input(inputText);
+                }
+            } catch (IllegalArgumentException ignored) {
+                // Structured input remains an additional body property and is preserved on the wire.
+            }
+        }
+        JsonValue instructions = properties.remove("instructions");
+        if (instructions != null) {
+            String instructionsText = instructions.convert(String.class);
+            if (instructionsText != null) {
+                builder.instructions(instructionsText);
+            } else {
+                properties.put("instructions", instructions);
+            }
+        }
+        JsonValue conversation = properties.get("conversation");
+        if (conversation != null) {
+            try {
+                String conversationId = conversation.convert(String.class);
+                if (conversationId != null) {
+                    properties.remove("conversation");
+                    builder.conversation(conversationId);
+                }
+            } catch (IllegalArgumentException ignored) {
+                // Structured conversation parameters remain additional body properties.
+            }
+        }
+
+        return builder.additionalBodyProperties(properties).build();
     }
 
     private static Map<String, JsonValue> jsonStringToJsonValueMap(String json) throws IOException {

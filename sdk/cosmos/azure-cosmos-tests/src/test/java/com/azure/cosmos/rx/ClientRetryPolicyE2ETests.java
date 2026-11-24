@@ -63,9 +63,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -85,6 +84,167 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private List<String> preferredRegions;
     private List<String> serviceOrderedReadableRegions;
     private List<String> serviceOrderedWriteableRegions;
+
+    private void assertContactedRegionCount(
+        CosmosDiagnostics cosmosDiagnostics,
+        int expectedCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (contactedRegionNames.size() != expectedCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count <%d>", expectedCount),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private void assertContactedRegionCount(
+        CosmosDiagnosticsContext diagnosticsContext,
+        int expectedCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(diagnosticsContext, expectation);
+        if (contactedRegionNames.size() != expectedCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count <%d>", expectedCount),
+                contactedRegionNames,
+                null,
+                diagnosticsContext));
+        }
+    }
+
+    private void assertContactedRegionCountBetween(
+        CosmosDiagnostics cosmosDiagnostics,
+        int minCount,
+        int maxCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (contactedRegionNames.size() < minCount || contactedRegionNames.size() > maxCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count between <%d> and <%d>", minCount, maxCount),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private void assertContactedRegionsContain(
+        CosmosDiagnostics cosmosDiagnostics,
+        String expectedRegion,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (!contactedRegionNames.contains(expectedRegion)) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted regions to contain <%s>", expectedRegion),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private void assertContactedRegionsContainAll(
+        CosmosDiagnostics cosmosDiagnostics,
+        List<String> expectedRegions,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (!contactedRegionNames.containsAll(expectedRegions)) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted regions to contain all <%s>", expectedRegions),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private Set<String> getContactedRegionNamesOrFail(CosmosDiagnostics cosmosDiagnostics, String expectation) {
+        if (cosmosDiagnostics == null) {
+            fail(expectation + ". Cosmos diagnostics were null.");
+        }
+
+        Set<String> contactedRegionNames = cosmosDiagnostics.getContactedRegionNames();
+        if (contactedRegionNames == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null contacted region names",
+                null,
+                cosmosDiagnostics,
+                cosmosDiagnostics.getDiagnosticsContext()));
+        }
+
+        return contactedRegionNames;
+    }
+
+    private Set<String> getContactedRegionNamesOrFail(CosmosDiagnosticsContext diagnosticsContext, String expectation) {
+        if (diagnosticsContext == null) {
+            fail(expectation + ". Diagnostics context was null.");
+        }
+
+        Set<String> contactedRegionNames = diagnosticsContext.getContactedRegionNames();
+        if (contactedRegionNames == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null contacted region names",
+                null,
+                null,
+                diagnosticsContext));
+        }
+
+        return contactedRegionNames;
+    }
+
+    private String formatContactedRegionsAssertionMessage(
+        String expectation,
+        String expected,
+        Set<String> contactedRegionNames,
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosDiagnosticsContext diagnosticsContext) {
+
+        return String.format(
+            "%s. Expected %s but actual contacted regions were <%s>. "
+                + "preferredRegions=<%s>, serviceOrderedReadableRegions=<%s>, "
+                + "serviceOrderedWriteableRegions=<%s>, diagnosticsContext=<%s>, diagnostics=<%s>",
+            expectation,
+            expected,
+            contactedRegionNames,
+            this.preferredRegions,
+            this.serviceOrderedReadableRegions,
+            this.serviceOrderedWriteableRegions,
+            diagnosticsContext == null ? null : diagnosticsContext.toJson(),
+            cosmosDiagnostics == null ? null : cosmosDiagnostics.toString());
+    }
+
+    private List<String> getServiceOrderedRegionsForOperation(OperationType operationType) {
+        return Utils.isWriteOperation(operationType)
+            ? this.serviceOrderedWriteableRegions
+            : this.serviceOrderedReadableRegions;
+    }
+
+    private List<String> getExpectedServiceOrderedRegionsForMessage(OperationType operationType, int maxRegionCount) {
+        List<String> serviceOrderedRegions = getServiceOrderedRegionsForOperation(operationType);
+        if (serviceOrderedRegions == null) {
+            return Collections.emptyList();
+        }
+
+        return serviceOrderedRegions.subList(0, Math.min(maxRegionCount, serviceOrderedRegions.size()));
+    }
+
+    private List<String> getExpectedPreferredRegionsForMessage(int maxRegionCount) {
+        if (this.preferredRegions == null) {
+            return Collections.emptyList();
+        }
+
+        return this.preferredRegions.subList(0, Math.min(maxRegionCount, this.preferredRegions.size()));
+    }
 
     @DataProvider(name = "channelAcquisitionExceptionArgProvider")
     public static Object[][] channelAcquisitionExceptionArgProvider() {
@@ -270,9 +430,20 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 .byPage()
                 .blockFirst();
 
-            assertThat(firstPage.getCosmosDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
+            CosmosDiagnostics diagnostics = firstPage.getCosmosDiagnostics();
+            assertContactedRegionCount(
+                diagnostics,
+                1,
+                String.format(
+                    "Expected query plan timeout to keep the data plane request in first preferred region <%s>",
+                    this.preferredRegions.get(0)));
             // validate query plan timeout should not cause region failover
-            assertThat(firstPage.getCosmosDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(0),
+                String.format(
+                    "Expected query plan timeout diagnostics to include first preferred region <%s>",
+                    this.preferredRegions.get(0)));
         } catch (Exception e) {
             fail("Except test to succeeded, " + e);
         } finally {
@@ -344,9 +515,24 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
             CosmosDiagnostics diagnostics = itemResponse.getDiagnostics();
 
-            assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
-            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
-            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(1));
+            assertContactedRegionCount(
+                diagnostics,
+                2,
+                String.format(
+                    "Expected address refresh read retry diagnostics to include first two preferred regions <%s>",
+                    getExpectedPreferredRegionsForMessage(2)));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(0),
+                String.format(
+                    "Expected address refresh read retry diagnostics to include first preferred region <%s>",
+                    this.preferredRegions.get(0)));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(1),
+                String.format(
+                    "Expected address refresh read retry diagnostics to include second preferred region <%s>",
+                    this.preferredRegions.get(1)));
         } finally {
             addressRefreshDelayRule.disable();
             serverGoneRule.disable();
@@ -409,8 +595,19 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             TestObject newItem = TestObject.create();
             resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
-            assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
+            CosmosDiagnostics diagnostics = e.getDiagnostics();
+            assertContactedRegionCount(
+                diagnostics,
+                1,
+                String.format(
+                    "Expected address refresh write retry diagnostics to include only first preferred region <%s>",
+                    this.preferredRegions.get(0)));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(0),
+                String.format(
+                    "Expected address refresh write retry diagnostics to include first preferred region <%s>",
+                    this.preferredRegions.get(0)));
             assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
             assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
         } finally {
@@ -474,8 +671,18 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                             false
                         ).block();
 
-                    assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
-                    assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegions)).isTrue();
+                    assertContactedRegionCount(
+                        cosmosDiagnostics,
+                        this.preferredRegions.size(),
+                        String.format(
+                            "Expected data plane request timeout diagnostics to include all preferred regions <%s>",
+                            this.preferredRegions));
+                    assertContactedRegionsContainAll(
+                        cosmosDiagnostics,
+                        this.preferredRegions,
+                        String.format(
+                            "Expected data plane request timeout diagnostics to include all preferred regions <%s>",
+                            this.preferredRegions));
                 } catch (Exception e) {
                     fail("dataPlaneRequestHttpTimeout() should succeed for operationType " + operationType, e);
                 }
@@ -493,8 +700,18 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                 System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + cosmosDiagnostics.getDiagnosticsContext().toJson());
 
-                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-                assertThat(cosmosDiagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
+                assertContactedRegionCount(
+                    cosmosDiagnostics,
+                    1,
+                    String.format(
+                        "Expected data plane write timeout diagnostics to include only first preferred region <%s>",
+                        this.preferredRegions.get(0)));
+                assertContactedRegionsContain(
+                    cosmosDiagnostics,
+                    this.preferredRegions.get(0),
+                    String.format(
+                        "Expected data plane write timeout diagnostics to include first preferred region <%s>",
+                        this.preferredRegions.get(0)));
                 assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
                 assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
             }
@@ -575,8 +792,15 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
                     CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                    List<String> expectedRegions = getExpectedServiceOrderedRegionsForMessage(operationType, 2);
 
-                    assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                    assertContactedRegionCount(
+                        diagnosticsContext,
+                        2,
+                        String.format(
+                            "Expected lease not found retry diagnostics for operationType <%s> to include regions <%s>",
+                            operationType,
+                            expectedRegions));
                     assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
                     assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
                 } else {
@@ -585,7 +809,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                     CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
-                    assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                    assertContactedRegionCount(
+                        diagnosticsContext,
+                        1,
+                        String.format(
+                            "Expected lease not found diagnostics for operationType <%s> to include only first preferred region <%s>",
+                            operationType,
+                            this.preferredRegions.get(0)));
                     assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                     assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
                     assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
@@ -692,8 +922,15 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                List<String> expectedRegions = getExpectedServiceOrderedRegionsForMessage(operationType, 2);
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                assertContactedRegionCount(
+                    diagnosticsContext,
+                    2,
+                    String.format(
+                        "Expected lease not found/resource throttle retry diagnostics for operationType <%s> to include regions <%s>",
+                        operationType,
+                        expectedRegions));
                 assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
 
                 if (operationType.isReadOnlyOperation()) {
@@ -705,7 +942,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                assertContactedRegionCount(
+                    diagnosticsContext,
+                    1,
+                    String.format(
+                        "Expected lease not found/resource throttle diagnostics for operationType <%s> to include only first preferred region <%s>",
+                        operationType,
+                        this.preferredRegions.get(0)));
                 assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
 
@@ -786,20 +1029,28 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         (testItem) -> new PartitionKey(testItem.getMypk()),
                         false))
                 .doOnNext(diagnostics -> {
-                    // since we have only injected connection delay error in one region, so we should eventually see
-                    // 2-3 regions being contacted (at least 2, but not an excessive number during failover/retry)
-                    // Using a range instead of strict equality to handle timing variations in CI environments
-                    assertThat(diagnostics.getContactedRegionNames().size())
-                        .isGreaterThanOrEqualTo(2)
-                        .isLessThanOrEqualTo(3);
                     // Validate that the first 2 preferred regions are contacted.
                     // If fewer than 2 preferred regions are configured, skip the test to avoid hiding misconfiguration.
                     if (this.preferredRegions == null || this.preferredRegions.size() < 2) {
                         throw new SkipException(
                             "Test requires at least 2 preferred regions but found: " + this.preferredRegions);
                     }
-                    assertThat(diagnostics.getContactedRegionNames()
-                        .containsAll(this.preferredRegions.subList(0, 2))).isTrue();
+                    // since we have only injected connection delay error in one region, so we should eventually see
+                    // 2-3 regions being contacted (at least 2, but not an excessive number during failover/retry)
+                    // Using a range instead of strict equality to handle timing variations in CI environments
+                    assertContactedRegionCountBetween(
+                        diagnostics,
+                        2,
+                        3,
+                        String.format(
+                            "Expected channel acquisition diagnostics to include between 2 and 3 regions, including first two preferred regions <%s>",
+                            getExpectedPreferredRegionsForMessage(2)));
+                    assertContactedRegionsContainAll(
+                        diagnostics,
+                        getExpectedPreferredRegionsForMessage(2),
+                        String.format(
+                            "Expected channel acquisition diagnostics to include first two preferred regions <%s>",
+                            getExpectedPreferredRegionsForMessage(2)));
 
                     if (isChannelAcquisitionExceptionTriggeredRegionRetryExists(diagnostics.toString())) {
                         channelAcquisitionExceptionTriggeredRetryExists.compareAndSet(false, true);
@@ -987,7 +1238,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             }
 
             if (operationType == OperationType.ReadFeed) {
-                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    cosmosAsyncContainer,
+                    "get feed ranges for client retry policy setup");
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
@@ -1044,11 +1297,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         List<String> serviceOrderedReadableRegions = new ArrayList<>();
         List<String> serviceOrderedWriteableRegions = new ArrayList<>();
-        Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
-            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
 
             if (writeOnly) {
                 serviceOrderedWriteableRegions.add(accountLocation.getName());
@@ -1059,8 +1310,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         return new AccountLevelLocationContext(
             serviceOrderedReadableRegions,
-            serviceOrderedWriteableRegions,
-            regionMap);
+            serviceOrderedWriteableRegions);
     }
 
     private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
@@ -1079,16 +1329,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
         private final List<String> serviceOrderedWriteableRegions;
-        private final Map<String, String> regionNameToEndpoint;
 
         public AccountLevelLocationContext(
             List<String> serviceOrderedReadableRegions,
-            List<String> serviceOrderedWriteableRegions,
-            Map<String, String> regionNameToEndpoint) {
+            List<String> serviceOrderedWriteableRegions) {
 
             this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
-            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }

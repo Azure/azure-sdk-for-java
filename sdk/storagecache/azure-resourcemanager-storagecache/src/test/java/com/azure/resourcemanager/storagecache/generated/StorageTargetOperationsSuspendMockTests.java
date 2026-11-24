@@ -28,7 +28,7 @@ public final class StorageTargetOperationsSuspendMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.storageTargetOperations()
-            .suspend("nzqodfvpg", "hoxgsgbpf", "zdjtxvzflbqv", com.azure.core.util.Context.NONE);
+            .suspend("jpdn", "zhajoylhjlmuo", "xprimrsop", com.azure.core.util.Context.NONE);
 
     }
 }

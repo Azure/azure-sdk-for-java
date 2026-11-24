@@ -91,11 +91,6 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     private List<String> zones;
 
     /*
-     * The dsts configuration.
-     */
-    private ResourceTypeEndpointDstsConfiguration dstsConfiguration;
-
-    /*
      * The data boundary.
      */
     private DataBoundary dataBoundary;
@@ -389,26 +384,6 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the dstsConfiguration property: The dsts configuration.
-     * 
-     * @return the dstsConfiguration value.
-     */
-    public ResourceTypeEndpointDstsConfiguration dstsConfiguration() {
-        return this.dstsConfiguration;
-    }
-
-    /**
-     * Set the dstsConfiguration property: The dsts configuration.
-     * 
-     * @param dstsConfiguration the dstsConfiguration value to set.
-     * @return the ResourceTypeEndpoint object itself.
-     */
-    public ResourceTypeEndpoint withDstsConfiguration(ResourceTypeEndpointDstsConfiguration dstsConfiguration) {
-        this.dstsConfiguration = dstsConfiguration;
-        return this;
-    }
-
-    /**
      * Get the dataBoundary property: The data boundary.
      * 
      * @return the dataBoundary value.
@@ -443,9 +418,6 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
         if (tokenAuthConfiguration() != null) {
             tokenAuthConfiguration().validate();
         }
-        if (dstsConfiguration() != null) {
-            dstsConfiguration().validate();
-        }
     }
 
     /**
@@ -469,7 +441,6 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
         jsonWriter.writeStringField("endpointUri", this.endpointUri);
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("dstsConfiguration", this.dstsConfiguration);
         jsonWriter.writeStringField("dataBoundary", this.dataBoundary == null ? null : this.dataBoundary.toString());
         return jsonWriter.writeEndObject();
     }
@@ -525,9 +496,6 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedResourceTypeEndpoint.zones = zones;
-                } else if ("dstsConfiguration".equals(fieldName)) {
-                    deserializedResourceTypeEndpoint.dstsConfiguration
-                        = ResourceTypeEndpointDstsConfiguration.fromJson(reader);
                 } else if ("dataBoundary".equals(fieldName)) {
                     deserializedResourceTypeEndpoint.dataBoundary = DataBoundary.fromString(reader.getString());
                 } else {

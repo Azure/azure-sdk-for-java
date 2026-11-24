@@ -23,24 +23,37 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -67,6 +80,10 @@ public class SyncRestProxyTests {
         @Put("my/url/path")
         @ExpectedResponses({ 200 })
         Response<InputStream> testInputStreamResponse(Context context);
+
+        @Get("my/url/path")
+        @ExpectedResponses({ 200 })
+        Response<BinaryData> testBinaryDataResponse(Context context);
     }
 
     @Test
@@ -191,6 +208,129 @@ public class SyncRestProxyTests {
         InputStream stream = inputStreamResponse.getValue();
         byte[] bytes = MockHttpResponse.readAllBytes(stream);
         assertEquals("hello", new String(bytes));
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnCompletion() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface
+            = createBinaryDataService(Flux.just(ByteBuffer.wrap("hello".getBytes())), responseCloseCount);
+
+        BinaryData responseBody = testInterface.testBinaryDataResponse(Context.NONE).getValue();
+
+        assertFalse(responseBody.isReplayable());
+        assertEquals("hello", responseBody.toString());
+        assertEquals(1, responseCloseCount.get());
+        assertEquals("hello", responseBody.toString());
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnCancellation() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        Flux<ByteBuffer> responseBody = Flux.concat(Flux.just(ByteBuffer.wrap("hello".getBytes())), Flux.never());
+        TestInterface testInterface = createBinaryDataService(responseBody, responseCloseCount);
+
+        Disposable subscription
+            = testInterface.testBinaryDataResponse(Context.NONE).getValue().toFluxByteBuffer().subscribe();
+        subscription.dispose();
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseToStreamReadsWithoutWaitingForCompletion() throws IOException {
+        byte[] firstChunk = new byte[8192];
+        byte[] secondChunk = new byte[8192];
+        firstChunk[0] = 1;
+        secondChunk[0] = 2;
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        Flux<ByteBuffer> responseBody
+            = Flux.concat(Flux.just(ByteBuffer.wrap(firstChunk), ByteBuffer.wrap(secondChunk)), Flux.never());
+        TestInterface testInterface = createBinaryDataService(responseBody, responseCloseCount);
+
+        BinaryData binaryData = testInterface.testBinaryDataResponse(Context.NONE).getValue();
+        assertFalse(binaryData.isReplayable());
+
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {
+            try (InputStream stream = binaryData.toStream()) {
+                byte[] actualFirstChunk = new byte[firstChunk.length];
+                byte[] actualSecondChunk = new byte[secondChunk.length];
+                assertEquals(firstChunk.length, stream.read(actualFirstChunk));
+                assertEquals(secondChunk.length, stream.read(actualSecondChunk));
+                assertArrayEquals(firstChunk, actualFirstChunk);
+                assertArrayEquals(secondChunk, actualSecondChunk);
+                assertEquals(0, responseCloseCount.get());
+            }
+        });
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseToStreamClosesOnError() throws IOException {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface
+            = createBinaryDataService(Flux.error(new IllegalStateException("Body read failed.")), responseCloseCount);
+
+        try (InputStream stream = testInterface.testBinaryDataResponse(Context.NONE).getValue().toStream()) {
+            assertThrows(IOException.class, stream::read);
+            assertEquals(1, responseCloseCount.get());
+        }
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseToStreamClosesBeforeFirstRead() throws IOException {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface = createBinaryDataService(Flux.never(), responseCloseCount);
+
+        BinaryData responseBody = testInterface.testBinaryDataResponse(Context.NONE).getValue();
+        assertInstanceOf(FluxByteBufferContent.class, BinaryDataHelper.getContent(responseBody));
+        responseBody.toStream().close();
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnError() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface
+            = createBinaryDataService(Flux.error(new IllegalStateException("Body read failed.")), responseCloseCount);
+
+        StepVerifier.create(testInterface.testBinaryDataResponse(Context.NONE).getValue().toFluxByteBuffer())
+            .expectErrorMessage("Body read failed.")
+            .verify();
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    private static TestInterface createBinaryDataService(Flux<ByteBuffer> responseBody,
+        AtomicInteger responseCloseCount) {
+        HttpClient client = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.error(new IllegalStateException("Async Send API was Invoked."));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                return new MockHttpResponse(request, 200) {
+                    @Override
+                    public BinaryData getBodyAsBinaryData() {
+                        return BinaryData.fromFlux(responseBody, null, false).block();
+                    }
+
+                    @Override
+                    public void close() {
+                        responseCloseCount.incrementAndGet();
+                        super.close();
+                    }
+                };
+            }
+        };
+        return RestProxy.create(TestInterface.class, new HttpPipelineBuilder().httpClient(client).build());
     }
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {

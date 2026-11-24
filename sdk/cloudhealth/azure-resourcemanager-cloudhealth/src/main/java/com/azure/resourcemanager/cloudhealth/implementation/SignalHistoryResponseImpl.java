@@ -38,6 +38,10 @@ public final class SignalHistoryResponseImpl implements SignalHistoryResponse {
         }
     }
 
+    public String nextMarker() {
+        return this.innerModel().nextMarker();
+    }
+
     public SignalHistoryResponseInner innerModel() {
         return this.innerObject;
     }

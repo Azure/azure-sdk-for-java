@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesListSqlUserDefinedFunctionsSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlUserDefinedFunctionList.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionList.json
      */
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionList.

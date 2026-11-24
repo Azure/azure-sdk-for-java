@@ -16,52 +16,52 @@ public final class DpmContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DpmContainer model = BinaryData.fromString(
-            "{\"containerType\":\"DPMContainer\",\"canReRegister\":true,\"containerId\":\"eclze\",\"protectedItemCount\":358295639817715571,\"dpmAgentVersion\":\"hzlhplodqkdlww\",\"dpmServers\":[\"u\"],\"upgradeAvailable\":false,\"protectionStatus\":\"trqjfsmlmbtx\",\"extendedInfo\":{\"lastRefreshedAt\":\"2021-01-27T14:19:26Z\"},\"friendlyName\":\"srtawcoezbr\",\"backupManagementType\":\"DefaultBackup\",\"registrationStatus\":\"kh\",\"healthStatus\":\"ygo\",\"protectableObjectType\":\"kkqfqjbvle\"}")
+            "{\"containerType\":\"DPMContainer\",\"canReRegister\":false,\"containerId\":\"ylw\",\"protectedItemCount\":4021129053674716546,\"dpmAgentVersion\":\"mweoohgu\",\"dpmServers\":[\"zboyjathwt\",\"olbaemwmdx\",\"ebwjscjpahlxvea\"],\"upgradeAvailable\":false,\"protectionStatus\":\"nmwmqtibx\",\"extendedInfo\":{\"lastRefreshedAt\":\"2020-12-25T19:20:35Z\"},\"friendlyName\":\"tvqcttadijaeu\",\"backupManagementType\":\"AzureBackupServer\",\"registrationStatus\":\"ieekpndzaa\",\"healthStatus\":\"udqmeqwigpibudq\",\"protectableObjectType\":\"xebeybpmz\",\"sourceLocation\":\"rtffyaqitmh\"}")
             .toObject(DpmContainer.class);
-        Assertions.assertEquals("srtawcoezbr", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("kh", model.registrationStatus());
-        Assertions.assertEquals("ygo", model.healthStatus());
-        Assertions.assertEquals("kkqfqjbvle", model.protectableObjectType());
-        Assertions.assertTrue(model.canReRegister());
-        Assertions.assertEquals("eclze", model.containerId());
-        Assertions.assertEquals(358295639817715571L, model.protectedItemCount());
-        Assertions.assertEquals("hzlhplodqkdlww", model.dpmAgentVersion());
-        Assertions.assertEquals("u", model.dpmServers().get(0));
+        Assertions.assertEquals("tvqcttadijaeu", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("ieekpndzaa", model.registrationStatus());
+        Assertions.assertEquals("udqmeqwigpibudq", model.healthStatus());
+        Assertions.assertEquals("xebeybpmz", model.protectableObjectType());
+        Assertions.assertFalse(model.canReRegister());
+        Assertions.assertEquals("ylw", model.containerId());
+        Assertions.assertEquals(4021129053674716546L, model.protectedItemCount());
+        Assertions.assertEquals("mweoohgu", model.dpmAgentVersion());
+        Assertions.assertEquals("zboyjathwt", model.dpmServers().get(0));
         Assertions.assertFalse(model.upgradeAvailable());
-        Assertions.assertEquals("trqjfsmlmbtx", model.protectionStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T14:19:26Z"), model.extendedInfo().lastRefreshedAt());
+        Assertions.assertEquals("nmwmqtibx", model.protectionStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T19:20:35Z"), model.extendedInfo().lastRefreshedAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DpmContainer model = new DpmContainer().withFriendlyName("srtawcoezbr")
-            .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-            .withRegistrationStatus("kh")
-            .withHealthStatus("ygo")
-            .withProtectableObjectType("kkqfqjbvle")
-            .withCanReRegister(true)
-            .withContainerId("eclze")
-            .withProtectedItemCount(358295639817715571L)
-            .withDpmAgentVersion("hzlhplodqkdlww")
-            .withDpmServers(Arrays.asList("u"))
+        DpmContainer model = new DpmContainer().withFriendlyName("tvqcttadijaeu")
+            .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
+            .withRegistrationStatus("ieekpndzaa")
+            .withHealthStatus("udqmeqwigpibudq")
+            .withProtectableObjectType("xebeybpmz")
+            .withCanReRegister(false)
+            .withContainerId("ylw")
+            .withProtectedItemCount(4021129053674716546L)
+            .withDpmAgentVersion("mweoohgu")
+            .withDpmServers(Arrays.asList("zboyjathwt", "olbaemwmdx", "ebwjscjpahlxvea"))
             .withUpgradeAvailable(false)
-            .withProtectionStatus("trqjfsmlmbtx")
+            .withProtectionStatus("nmwmqtibx")
             .withExtendedInfo(
-                new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2021-01-27T14:19:26Z")));
+                new DpmContainerExtendedInfo().withLastRefreshedAt(OffsetDateTime.parse("2020-12-25T19:20:35Z")));
         model = BinaryData.fromObject(model).toObject(DpmContainer.class);
-        Assertions.assertEquals("srtawcoezbr", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("kh", model.registrationStatus());
-        Assertions.assertEquals("ygo", model.healthStatus());
-        Assertions.assertEquals("kkqfqjbvle", model.protectableObjectType());
-        Assertions.assertTrue(model.canReRegister());
-        Assertions.assertEquals("eclze", model.containerId());
-        Assertions.assertEquals(358295639817715571L, model.protectedItemCount());
-        Assertions.assertEquals("hzlhplodqkdlww", model.dpmAgentVersion());
-        Assertions.assertEquals("u", model.dpmServers().get(0));
+        Assertions.assertEquals("tvqcttadijaeu", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("ieekpndzaa", model.registrationStatus());
+        Assertions.assertEquals("udqmeqwigpibudq", model.healthStatus());
+        Assertions.assertEquals("xebeybpmz", model.protectableObjectType());
+        Assertions.assertFalse(model.canReRegister());
+        Assertions.assertEquals("ylw", model.containerId());
+        Assertions.assertEquals(4021129053674716546L, model.protectedItemCount());
+        Assertions.assertEquals("mweoohgu", model.dpmAgentVersion());
+        Assertions.assertEquals("zboyjathwt", model.dpmServers().get(0));
         Assertions.assertFalse(model.upgradeAvailable());
-        Assertions.assertEquals("trqjfsmlmbtx", model.protectionStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T14:19:26Z"), model.extendedInfo().lastRefreshedAt());
+        Assertions.assertEquals("nmwmqtibx", model.protectionStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T19:20:35Z"), model.extendedInfo().lastRefreshedAt());
     }
 }

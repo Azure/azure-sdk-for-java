@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
 import com.azure.resourcemanager.containerregistry.models.EndpointProtocol;
-import com.azure.resourcemanager.containerregistry.models.MetadataSearch;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.Policies;
@@ -79,11 +78,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
      * Enables registry-wide pull from unauthenticated clients.
      */
     private Boolean anonymousPullEnabled;
-
-    /*
-     * Determines whether registry artifacts are indexed for metadata search.
-     */
-    private MetadataSearch metadataSearch;
 
     /*
      * Determines registry role assignment mode.
@@ -325,26 +319,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
     }
 
     /**
-     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @return the metadataSearch value.
-     */
-    public MetadataSearch metadataSearch() {
-        return this.metadataSearch;
-    }
-
-    /**
-     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
-     * 
-     * @param metadataSearch the metadataSearch value to set.
-     * @return the RegistryPropertiesUpdateParameters object itself.
-     */
-    public RegistryPropertiesUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
-        this.metadataSearch = metadataSearch;
-        return this;
-    }
-
-    /**
      * Get the roleAssignmentMode property: Determines registry role assignment mode.
      * 
      * @return the roleAssignmentMode value.
@@ -402,8 +376,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
             this.networkRuleBypassOptions == null ? null : this.networkRuleBypassOptions.toString());
         jsonWriter.writeBooleanField("networkRuleBypassAllowedForTasks", this.networkRuleBypassAllowedForTasks);
         jsonWriter.writeBooleanField("anonymousPullEnabled", this.anonymousPullEnabled);
-        jsonWriter.writeStringField("metadataSearch",
-            this.metadataSearch == null ? null : this.metadataSearch.toString());
         jsonWriter.writeStringField("roleAssignmentMode",
             this.roleAssignmentMode == null ? null : this.roleAssignmentMode.toString());
         return jsonWriter.writeEndObject();
@@ -455,9 +427,6 @@ public final class RegistryPropertiesUpdateParameters implements JsonSerializabl
                 } else if ("anonymousPullEnabled".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.anonymousPullEnabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("metadataSearch".equals(fieldName)) {
-                    deserializedRegistryPropertiesUpdateParameters.metadataSearch
-                        = MetadataSearch.fromString(reader.getString());
                 } else if ("roleAssignmentMode".equals(fieldName)) {
                     deserializedRegistryPropertiesUpdateParameters.roleAssignmentMode
                         = RoleAssignmentMode.fromString(reader.getString());

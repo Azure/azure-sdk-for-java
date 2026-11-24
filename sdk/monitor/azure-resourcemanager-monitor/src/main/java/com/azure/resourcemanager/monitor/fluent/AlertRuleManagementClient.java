@@ -45,18 +45,4 @@ public interface AlertRuleManagementClient {
      * @return the AlertRulesClient object.
      */
     AlertRulesClient getAlertRules();
-
-    /**
-     * Gets the DiagnosticSettingsOperationsClient object to access its operations.
-     * 
-     * @return the DiagnosticSettingsOperationsClient object.
-     */
-    DiagnosticSettingsOperationsClient getDiagnosticSettingsOperations();
-
-    /**
-     * Gets the DiagnosticSettingsCategoriesClient object to access its operations.
-     * 
-     * @return the DiagnosticSettingsCategoriesClient object.
-     */
-    DiagnosticSettingsCategoriesClient getDiagnosticSettingsCategories();
 }

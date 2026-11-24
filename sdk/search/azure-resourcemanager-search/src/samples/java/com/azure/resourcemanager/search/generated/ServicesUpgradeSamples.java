@@ -9,7 +9,7 @@ package com.azure.resourcemanager.search.generated;
  */
 public final class ServicesUpgradeSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/UpgradeSearchServiceToLatestVersion.json
+     * x-ms-original-file: 2026-11-01/UpgradeSearchServiceToLatestVersion.json
      */
     /**
      * Sample code: UpgradeSearchServiceToLatestVersion.

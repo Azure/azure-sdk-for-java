@@ -22,7 +22,7 @@ public final class SecuritySettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Pending\",\"wdacCompliance\":\"Compliant\",\"dataAtRestEncrypted\":\"Pending\",\"dataInTransitProtected\":\"NonCompliant\",\"lastUpdated\":\"2021-10-12T13:25:20Z\"},\"provisioningState\":\"Deleted\"},\"id\":\"arlcjiwgsxfaiocw\",\"name\":\"gujjgn\",\"type\":\"grzxbarcbpaefzqs\"}";
+            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"Audit\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"NonCompliant\",\"wdacCompliance\":\"Pending\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"NonCompliant\",\"lastUpdated\":\"2021-11-10T15:56:33Z\"},\"provisioningState\":\"PartiallySucceeded\"},\"id\":\"otumbmwgft\",\"name\":\"hfgmuxuqiagsko\",\"type\":\"kuqirhskxpao\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class SecuritySettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecuritySetting response = manager.securitySettings()
-            .getWithResponse("dxckdl", "zwhcukvb", "sjjfd", com.azure.core.util.Context.NONE)
+            .getWithResponse("yojfchicpare", "zoksgqhb", "ojuxil", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
-            response.securedCoreComplianceAssignment());
+        Assertions.assertEquals(ComplianceAssignmentType.AUDIT, response.securedCoreComplianceAssignment());
         Assertions.assertEquals(ComplianceAssignmentType.AUDIT, response.wdacComplianceAssignment());
         Assertions.assertEquals(ComplianceAssignmentType.AUDIT,
             response.smbEncryptionForIntraClusterTrafficComplianceAssignment());

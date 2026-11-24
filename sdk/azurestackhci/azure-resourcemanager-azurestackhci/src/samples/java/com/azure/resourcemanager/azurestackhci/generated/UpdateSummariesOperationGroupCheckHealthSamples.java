@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class UpdateSummariesOperationGroupCheckHealthSamples {
     /*
-     * x-ms-original-file: 2026-04-30/UpdateSummaries_CheckHealth.json
+     * x-ms-original-file: 2026-10-01/UpdateSummaries_CheckHealth.json
      */
     /**
      * Sample code: Check health of UpdateSummaries.

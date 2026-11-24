@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -309,22 +310,27 @@ public class ExcludeRegionTests extends TestSuiteBase {
             throw new SkipException("Test requires multi-master with multi-regions");
         }
 
-        TestObject createdItem = TestObject.create();
-        this.cosmosAsyncContainer.createItem(createdItem).block();
-
-        Thread.sleep(2000);
-
         // Exclude the first preferred region using UPPERCASE name
         String firstRegionUppercase = this.preferredRegionList.get(0).toUpperCase();
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+            .setExcludedRegions(Arrays.asList(firstRegionUppercase));
+        TestObject missingItem = TestObject.create();
 
-        CosmosDiagnosticsContext diagnostics = this.performDocumentOperation(
-            cosmosAsyncContainer,
-            OperationType.Read,
-            createdItem,
-            Arrays.asList(firstRegionUppercase),
-            INF_E2E_TIMEOUT);
-
-        validateRegionsContacted(diagnostics, this.preferredRegionList.subList(1, 2));
+        try {
+            this.cosmosAsyncContainer
+                .readItem(
+                    missingItem.getId(),
+                    new PartitionKey(missingItem.getMypk()),
+                    requestOptions,
+                    TestObject.class)
+                .block();
+            fail("Reading a missing item should fail with 404.");
+        } catch (CosmosException error) {
+            assertThat(error.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+            validateRegionsContacted(
+                error.getDiagnostics().getDiagnosticsContext(),
+                this.preferredRegionList.subList(1, 2));
+        }
     }
 
     private List<String> getPreferredRegionList(CosmosAsyncClient client) {

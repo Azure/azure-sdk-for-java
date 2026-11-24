@@ -8,6 +8,10 @@
 - [Get](#accesspolicyassignment_get)
 - [List](#accesspolicyassignment_list)
 
+## Clusters
+
+- [UnlinkMigratedEndpoint](#clusters_unlinkmigratedendpoint)
+
 ## Databases
 
 - [Create](#databases_create)
@@ -23,6 +27,15 @@
 - [RegenerateKey](#databases_regeneratekey)
 - [Update](#databases_update)
 - [UpgradeDBRedisVersion](#databases_upgradedbredisversion)
+
+## Migrations
+
+- [Get](#migrations_get)
+- [List](#migrations_list)
+- [Start](#migrations_start)
+- [Undo](#migrations_undo)
+- [UnlinkMigratedEndpoint](#migrations_unlinkmigratedendpoint)
+- [Validate](#migrations_validate)
 
 ## Operations
 
@@ -63,8 +76,26 @@ import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignmentPr
 public final class AccessPolicyAssignmentCreateUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
+     * 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.json
+     */
+    /**
+     * Sample code: RedisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseAccessPolicyAssignmentCreateUpdateWithCustomAccessString(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.accessPolicyAssignments()
+            .define("defaultTestEntraApp1")
+            .withExistingDatabase("rg1", "cache1", "default")
+            .withAccessPolicyName("default")
+            .withAccessString("+@read ~cache:*")
+            .withUser(new AccessPolicyAssignmentPropertiesUser().withObjectId("6497c918-11ad-41e7-1b0f-7c518a87d0b0"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentCreateUpdate.
@@ -91,9 +122,7 @@ public final class AccessPolicyAssignmentCreateUpdateSamples {
  */
 public final class AccessPolicyAssignmentDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseAccessPolicyAssignmentDelete.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentDelete.
@@ -116,9 +145,7 @@ public final class AccessPolicyAssignmentDeleteSamples {
  */
 public final class AccessPolicyAssignmentGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseAccessPolicyAssignmentGet.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentGet.
@@ -126,6 +153,21 @@ public final class AccessPolicyAssignmentGetSamples {
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseAccessPolicyAssignmentGet(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.accessPolicyAssignments()
+            .getWithResponse("rg1", "cache1", "default", "accessPolicyAssignmentName1",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.json
+     */
+    /**
+     * Sample code: RedisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseAccessPolicyAssignmentGetWithFailedProvisioningState(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.accessPolicyAssignments()
             .getWithResponse("rg1", "cache1", "default", "accessPolicyAssignmentName1",
@@ -142,9 +184,7 @@ public final class AccessPolicyAssignmentGetSamples {
  */
 public final class AccessPolicyAssignmentListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseAccessPolicyAssignmentsList.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
      */
     /**
      * Sample code: RedisEnterpriseAccessPolicyAssignmentList.
@@ -154,6 +194,28 @@ public final class AccessPolicyAssignmentListSamples {
     public static void redisEnterpriseAccessPolicyAssignmentList(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         manager.accessPolicyAssignments().list("rg1", "cache1", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Clusters_UnlinkMigratedEndpoint
+
+```java
+/**
+ * Samples for Clusters UnlinkMigratedEndpoint.
+ */
+public final class ClustersUnlinkMigratedEndpointSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseUnlinkMigratedEndpoint.json
+     */
+    /**
+     * Sample code: RedisEnterpriseUnlinkMigratedEndpoint.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseUnlinkMigratedEndpoint(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.clusters().unlinkMigratedEndpoint("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -178,9 +240,7 @@ import java.util.Arrays;
  */
 public final class DatabasesCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesNoClusterCacheCreate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesNoClusterCacheCreate.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate No Cluster Cache.
@@ -196,13 +256,12 @@ public final class DatabasesCreateSamples {
             .withPort(10000)
             .withClusteringPolicy(ClusteringPolicy.NO_CLUSTER)
             .withEvictionPolicy(EvictionPolicy.NO_EVICTION)
+            .withNotifyKeyspaceEvents("")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesCreate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesCreate.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate.
@@ -214,6 +273,7 @@ public final class DatabasesCreateSamples {
         manager.databases()
             .define("default")
             .withExistingRedisEnterprise("rg1", "cache1")
+            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
             .withClientProtocol(Protocol.ENCRYPTED)
             .withPort(10000)
             .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
@@ -223,14 +283,12 @@ public final class DatabasesCreateSamples {
                 new Module().withName("RedisTimeSeries").withArgs("RETENTION_POLICY 20"),
                 new Module().withName("RediSearch")))
             .withDeferUpgrade(DeferUpgradeSetting.NOT_DEFERRED)
-            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
+            .withNotifyKeyspaceEvents("KEA")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesCreateWithGeoReplication.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesCreateWithGeoReplication.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate With Active Geo Replication.
@@ -242,6 +300,7 @@ public final class DatabasesCreateSamples {
         manager.databases()
             .define("default")
             .withExistingRedisEnterprise("rg1", "cache1")
+            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
             .withClientProtocol(Protocol.ENCRYPTED)
             .withPort(10000)
             .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
@@ -251,7 +310,7 @@ public final class DatabasesCreateSamples {
                     "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
                     new LinkedDatabase().withId(
                         "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8e/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default"))))
-            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
+            .withNotifyKeyspaceEvents("KEA")
             .create();
     }
 }
@@ -265,9 +324,7 @@ public final class DatabasesCreateSamples {
  */
 public final class DatabasesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesDelete.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesDelete.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesDelete.
@@ -291,9 +348,7 @@ import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
  */
 public final class DatabasesExportSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesExport.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesExport.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesExport.
@@ -322,9 +377,7 @@ import java.util.Arrays;
  */
 public final class DatabasesFlushSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesFlush.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesFlush.json
      */
     /**
      * Sample code: How to flush all the keys in the database.
@@ -354,9 +407,7 @@ import java.util.Arrays;
  */
 public final class DatabasesForceLinkToReplicationGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesForceLink.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesForceLink.json
      */
     /**
      * Sample code: How to relink a database after a regional outage.
@@ -389,9 +440,7 @@ import java.util.Arrays;
  */
 public final class DatabasesForceUnlinkSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesForceUnlink.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesForceUnlink.json
      */
     /**
      * Sample code: How to unlink a database during a regional outage.
@@ -416,9 +465,7 @@ public final class DatabasesForceUnlinkSamples {
  */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesGet.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesGet.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesGet.
@@ -443,9 +490,7 @@ import java.util.Arrays;
  */
 public final class DatabasesImportMethodSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesImport.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesImport.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesImport.
@@ -472,9 +517,7 @@ public final class DatabasesImportMethodSamples {
  */
 public final class DatabasesListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesListByCluster.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesListByCluster.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesListByCluster.
@@ -496,9 +539,7 @@ public final class DatabasesListByClusterSamples {
  */
 public final class DatabasesListKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesListKeys.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesListKeys.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesListKeys.
@@ -523,9 +564,7 @@ import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
  */
 public final class DatabasesRegenerateKeySamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesRegenerateKey.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesRegenerateKey.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesRegenerateKey.
@@ -557,9 +596,7 @@ import com.azure.resourcemanager.redisenterprise.models.RdbFrequency;
  */
 public final class DatabasesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesUpdate Clustering on No Cluster Cache.
@@ -575,13 +612,12 @@ public final class DatabasesUpdateSamples {
             .withClientProtocol(Protocol.ENCRYPTED)
             .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
             .withEvictionPolicy(EvictionPolicy.NO_EVICTION)
+            .withNotifyKeyspaceEvents("")
             .apply();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesUpdate.
@@ -594,10 +630,11 @@ public final class DatabasesUpdateSamples {
             .getWithResponse("rg1", "cache1", "default", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
             .withClientProtocol(Protocol.ENCRYPTED)
             .withEvictionPolicy(EvictionPolicy.ALL_KEYS_LRU)
             .withPersistence(new Persistence().withRdbEnabled(true).withRdbFrequency(RdbFrequency.ONE_TWOH))
-            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
+            .withNotifyKeyspaceEvents("KEA")
             .apply();
     }
 }
@@ -611,9 +648,7 @@ public final class DatabasesUpdateSamples {
  */
 public final class DatabasesUpgradeDBRedisVersionSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
      */
     /**
      * Sample code: How to upgrade your database Redis version.
@@ -627,6 +662,192 @@ public final class DatabasesUpgradeDBRedisVersionSamples {
 }
 ```
 
+### Migrations_Get
+
+```java
+/**
+ * Samples for Migrations Get.
+ */
+public final class MigrationsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationGet.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationGet.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void
+        redisEnterpriseMigrationGet(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations().getWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Migrations_List
+
+```java
+/**
+ * Samples for Migrations List.
+ */
+public final class MigrationsListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationList.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationList.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void
+        redisEnterpriseMigrationList(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations().list("rg1", "cache1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Migrations_Start
+
+```java
+import com.azure.resourcemanager.redisenterprise.fluent.models.MigrationInner;
+import com.azure.resourcemanager.redisenterprise.models.AzureCacheForRedisMigrationProperties;
+
+/**
+ * Samples for Migrations Start.
+ */
+public final class MigrationsStartSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationStartWithDataMigration.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationStartWithDataMigration.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseMigrationStartWithDataMigration(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations()
+            .start("rg1", "cache1",
+                new MigrationInner().withProperties(new AzureCacheForRedisMigrationProperties().withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")
+                    .withSwitchDns(true)
+                    .withSkipDataMigration(false)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationStart.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationStart.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void
+        redisEnterpriseMigrationStart(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations()
+            .start("rg1", "cache1",
+                new MigrationInner().withProperties(new AzureCacheForRedisMigrationProperties().withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")
+                    .withSwitchDns(true)
+                    .withSkipDataMigration(true)),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Migrations_Undo
+
+```java
+import com.azure.resourcemanager.redisenterprise.models.MigrationRollbackReason;
+import com.azure.resourcemanager.redisenterprise.models.MigrationUndoRequest;
+
+/**
+ * Samples for Migrations Undo.
+ */
+public final class MigrationsUndoSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationUndo.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationUndo.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void
+        redisEnterpriseMigrationUndo(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations()
+            .undo("rg1", "cache1", new MigrationUndoRequest().withRollbackReason(MigrationRollbackReason.PERFORMANCE),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Migrations_UnlinkMigratedEndpoint
+
+```java
+/**
+ * Samples for Migrations UnlinkMigratedEndpoint.
+ */
+public final class MigrationsUnlinkMigratedEndpointSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationUnlinkMigratedEndpoint.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationUnlinkMigratedEndpoint.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseMigrationUnlinkMigratedEndpoint(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations().unlinkMigratedEndpoint("rg1", "cache1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Migrations_Validate
+
+```java
+import com.azure.resourcemanager.redisenterprise.models.MigrationValidationRequest;
+
+/**
+ * Samples for Migrations Validate.
+ */
+public final class MigrationsValidateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationValidateWithDataMigration.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationValidateWithDataMigration.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void redisEnterpriseMigrationValidateWithDataMigration(
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations()
+            .validateWithResponse("rg1", "cache1", new MigrationValidationRequest().withSourceResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")
+                .withSkipDataMigration(false), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationValidate.json
+     */
+    /**
+     * Sample code: RedisEnterpriseMigrationValidate.
+     * 
+     * @param manager Entry point to RedisEnterpriseManager.
+     */
+    public static void
+        redisEnterpriseMigrationValidate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.migrations()
+            .validateWithResponse("rg1", "cache1", new MigrationValidationRequest().withSourceResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1")
+                .withSkipDataMigration(true), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -635,9 +856,7 @@ public final class DatabasesUpgradeDBRedisVersionSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * OperationsList.json
+     * x-ms-original-file: 2026-10-01-preview/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -658,9 +877,7 @@ public final class OperationsListSamples {
  */
 public final class OperationsStatusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * OperationsStatusGet.json
+     * x-ms-original-file: 2026-10-01-preview/OperationsStatusGet.json
      */
     /**
      * Sample code: OperationsStatusGet.
@@ -681,9 +898,7 @@ public final class OperationsStatusGetSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisEnterpriseDeletePrivateEndpointConnection.
@@ -705,9 +920,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseGetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisEnterpriseGetPrivateEndpointConnection.
@@ -730,9 +943,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseListPrivateEndpointConnections.json
      */
     /**
      * Sample code: RedisEnterpriseListPrivateEndpointConnections.
@@ -757,9 +968,7 @@ import com.azure.resourcemanager.redisenterprise.models.PrivateLinkServiceConnec
  */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterprisePutPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterprisePutPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisEnterprisePutPrivateEndpointConnection.
@@ -787,9 +996,7 @@ public final class PrivateEndpointConnectionsPutSamples {
  */
 public final class PrivateLinkResourcesListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseListPrivateLinkResources.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseListPrivateLinkResources.json
      */
     /**
      * Sample code: RedisEnterpriseListPrivateLinkResources.
@@ -810,6 +1017,12 @@ import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncrypt
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryptionCustomerManagedKeyEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.redisenterprise.models.CmkIdentityType;
+import com.azure.resourcemanager.redisenterprise.models.FirewallRule;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceConfiguration;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceDayOfWeek;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindow;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindowSchedule;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindowType;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
@@ -826,9 +1039,7 @@ import java.util.Map;
  */
 public final class RedisEnterpriseCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseCreate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseCreate.json
      */
     /**
      * Sample code: RedisEnterpriseCreate.
@@ -840,14 +1051,14 @@ public final class RedisEnterpriseCreateSamples {
             .define("cache1")
             .withRegion("West US")
             .withExistingResourceGroup("rg1")
-            .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(3))
+            .withSku(new Sku().withName(SkuName.BALANCED_B10))
             .withTags(mapOf("tag1", "value1"))
             .withZones(Arrays.asList("1", "2", "3"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity",
                     new UserAssignedIdentity())))
-            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
             .withEncryption(new ClusterPropertiesEncryption().withCustomerManagedKeyEncryption(
                 new ClusterPropertiesEncryptionCustomerManagedKeyEncryption().withKeyEncryptionKeyIdentity(
@@ -856,6 +1067,22 @@ public final class RedisEnterpriseCreateSamples {
                             "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity")
                         .withIdentityType(CmkIdentityType.USER_ASSIGNED_IDENTITY))
                     .withKeyEncryptionKeyUrl("fakeTokenPlaceholder")))
+            .withMaintenanceConfiguration(new MaintenanceConfiguration().withMaintenanceWindows(Arrays.asList(
+                new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
+                    .withDuration("PT6H")
+                    .withStartHourUtc(3)
+                    .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.MONDAY)),
+                new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
+                    .withDuration("PT6H")
+                    .withStartHourUtc(3)
+                    .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.TUESDAY)),
+                new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
+                    .withDuration("PT6H")
+                    .withStartHourUtc(3)
+                    .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.WEDNESDAY)))))
+            .withFirewallRules(
+                Arrays.asList(new FirewallRule().withName("allowOfficeNetwork").withSourceAddressPrefix("10.0.0.0/24"),
+                    new FirewallRule().withName("allowPartnerNetwork").withSourceAddressPrefix("192.168.1.0/24")))
             .create();
     }
 
@@ -881,9 +1108,7 @@ public final class RedisEnterpriseCreateSamples {
  */
 public final class RedisEnterpriseDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseDelete.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseDelete.json
      */
     /**
      * Sample code: RedisEnterpriseDelete.
@@ -904,9 +1129,7 @@ public final class RedisEnterpriseDeleteSamples {
  */
 public final class RedisEnterpriseGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseGet.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseGet.json
      */
     /**
      * Sample code: RedisEnterpriseGet.
@@ -927,9 +1150,7 @@ public final class RedisEnterpriseGetByResourceGroupSamples {
  */
 public final class RedisEnterpriseListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseList.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseList.json
      */
     /**
      * Sample code: RedisEnterpriseList.
@@ -950,9 +1171,7 @@ public final class RedisEnterpriseListSamples {
  */
 public final class RedisEnterpriseListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseListByResourceGroup.json
      */
     /**
      * Sample code: RedisEnterpriseListByResourceGroup.
@@ -974,9 +1193,7 @@ public final class RedisEnterpriseListByResourceGroupSamples {
  */
 public final class RedisEnterpriseListSkusForScalingSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseListSkusForScaling.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseListSkusForScaling.json
      */
     /**
      * Sample code: RedisEnterpriseListSkusForScaling.
@@ -994,10 +1211,17 @@ public final class RedisEnterpriseListSkusForScalingSamples {
 
 ```java
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
+import com.azure.resourcemanager.redisenterprise.models.FirewallRule;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceConfiguration;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceDayOfWeek;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindow;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindowSchedule;
+import com.azure.resourcemanager.redisenterprise.models.MaintenanceWindowType;
 import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.SkuName;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1006,9 +1230,7 @@ import java.util.Map;
  */
 public final class RedisEnterpriseUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/
-     * RedisEnterpriseUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseUpdate.
@@ -1021,9 +1243,25 @@ public final class RedisEnterpriseUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("tag1", "value1"))
-            .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(9))
+            .withSku(new Sku().withName(SkuName.BALANCED_B10))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+            .withMaintenanceConfiguration(new MaintenanceConfiguration().withMaintenanceWindows(Arrays.asList(
+                new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
+                    .withDuration("PT6H")
+                    .withStartHourUtc(3)
+                    .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.MONDAY)),
+                new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
+                    .withDuration("PT6H")
+                    .withStartHourUtc(3)
+                    .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.TUESDAY)),
+                new MaintenanceWindow().withType(MaintenanceWindowType.WEEKLY)
+                    .withDuration("PT6H")
+                    .withStartHourUtc(3)
+                    .withSchedule(new MaintenanceWindowSchedule().withDayOfWeek(MaintenanceDayOfWeek.WEDNESDAY)))))
+            .withFirewallRules(
+                Arrays.asList(new FirewallRule().withName("allowOfficeNetwork").withSourceAddressPrefix("10.0.0.0/24"),
+                    new FirewallRule().withName("allowPartnerNetwork").withSourceAddressPrefix("192.168.1.0/24")))
             .apply();
     }
 

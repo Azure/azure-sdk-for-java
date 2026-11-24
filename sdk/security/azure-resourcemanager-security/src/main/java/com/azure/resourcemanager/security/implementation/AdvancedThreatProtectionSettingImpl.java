@@ -19,6 +19,8 @@ public final class AdvancedThreatProtectionSettingImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}", "resourceId");
     }
 
     public String id() {

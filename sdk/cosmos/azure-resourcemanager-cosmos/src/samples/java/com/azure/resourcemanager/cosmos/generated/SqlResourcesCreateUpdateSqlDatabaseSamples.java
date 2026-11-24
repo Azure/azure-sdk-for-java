@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlDatabaseCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseCreateUpdate.
@@ -37,7 +37,7 @@ public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlDatabaseRestore.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlDatabaseRestore.json
      */
     /**
      * Sample code: CosmosDBSqlDatabaseRestore.

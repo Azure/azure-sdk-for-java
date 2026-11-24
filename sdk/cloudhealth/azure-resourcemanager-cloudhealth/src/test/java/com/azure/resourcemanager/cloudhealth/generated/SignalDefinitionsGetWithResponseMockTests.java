@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinition;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
@@ -23,7 +24,7 @@ public final class SignalDefinitionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Deleting\",\"displayName\":\"mbnraauzzp\",\"refreshInterval\":\"PT2H\",\"tags\":{\"aiqyuvvfo\":\"sdzhezww\",\"ikvylauya\":\"kphhq\"},\"dataUnit\":\"uwmncs\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":89.45173843745359},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":93.5287746137057}}},\"id\":\"o\",\"name\":\"krsgsgb\",\"type\":\"huzqgn\"}";
+            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"brjtloqxfuoj\",\"refreshInterval\":\"PT1M\",\"tags\":{\"z\":\"l\",\"zdlyjdfqw\":\"asccbiui\"},\"dataUnit\":\"yoqufdvruz\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":0.3638686621154186,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":57.46778494124541,\"sensitivity\":\"Low\"}}},\"id\":\"tngfdgugeyzihgr\",\"name\":\"yui\",\"type\":\"absnmfpp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +34,24 @@ public final class SignalDefinitionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SignalDefinition response = manager.signalDefinitions()
-            .getWithResponse("ayzri", "khyawfvjlboxqv", "jlmxhomdynhd", com.azure.core.util.Context.NONE)
+            .getWithResponse("jjrcgegydc", "boxjumvq", "olihrra", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mbnraauzzp", response.properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT2H, response.properties().refreshInterval());
-        Assertions.assertEquals("sdzhezww", response.properties().tags().get("aiqyuvvfo"));
-        Assertions.assertEquals("uwmncs", response.properties().dataUnit());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+        Assertions.assertEquals("brjtloqxfuoj", response.properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT1M, response.properties().refreshInterval());
+        Assertions.assertEquals("l", response.properties().tags().get("z"));
+        Assertions.assertEquals("yoqufdvruz", response.properties().dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
             response.properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(89.45173843745359, response.properties().evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.LESS_THAN,
+        Assertions.assertEquals(0.3638686621154186D,
+            response.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            response.properties().evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.EQUAL,
             response.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(93.5287746137057, response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(57.46778494124541D,
+            response.properties().evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+            response.properties().evaluationRules().unhealthyRule().sensitivity());
     }
 }

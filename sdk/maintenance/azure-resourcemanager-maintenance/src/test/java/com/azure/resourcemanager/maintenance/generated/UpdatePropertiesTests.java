@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateProperties model = BinaryData.fromString("{\"resourceId\":\"kjz\"}").toObject(UpdateProperties.class);
-        Assertions.assertEquals("kjz", model.resourceId());
+        UpdateProperties model = BinaryData.fromString("{\"resourceId\":\"u\"}").toObject(UpdateProperties.class);
+        Assertions.assertEquals("u", model.resourceId());
     }
 }

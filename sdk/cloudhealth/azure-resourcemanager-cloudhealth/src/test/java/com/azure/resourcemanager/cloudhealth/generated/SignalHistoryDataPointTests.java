@@ -14,11 +14,11 @@ public final class SignalHistoryDataPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalHistoryDataPoint model = BinaryData.fromString(
-            "{\"occurredAt\":\"2021-04-04T10:13:31Z\",\"value\":8.172721089277523,\"healthState\":\"Healthy\",\"additionalContext\":\"hftwesgog\"}")
+            "{\"occurredAt\":\"2021-09-08T01:13:47Z\",\"value\":22.37929870571135,\"healthState\":\"Unhealthy\",\"additionalContext\":\"qem\"}")
             .toObject(SignalHistoryDataPoint.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T10:13:31Z"), model.occurredAt());
-        Assertions.assertEquals(8.172721089277523D, model.value());
-        Assertions.assertEquals(HealthState.HEALTHY, model.healthState());
-        Assertions.assertEquals("hftwesgog", model.additionalContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-08T01:13:47Z"), model.occurredAt());
+        Assertions.assertEquals(22.37929870571135D, model.value());
+        Assertions.assertEquals(HealthState.UNHEALTHY, model.healthState());
+        Assertions.assertEquals("qem", model.additionalContext());
     }
 }

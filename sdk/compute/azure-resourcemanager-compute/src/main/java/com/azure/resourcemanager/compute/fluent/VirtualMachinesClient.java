@@ -2695,7 +2695,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2708,7 +2708,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2721,7 +2721,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

@@ -18,6 +18,69 @@ import reactor.core.publisher.Mono;
  */
 public interface OperationStatusResultsClient {
     /**
+     * Gets a list of operations in the specified agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param activeOnly If true, only return operations that are currently active (not terminal).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of operations in the specified agent pool as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<OperationStatusResultInner> listByAgentPoolAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, Boolean activeOnly);
+
+    /**
+     * Gets a list of operations in the specified agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of operations in the specified agent pool as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<OperationStatusResultInner> listByAgentPoolAsync(String resourceGroupName, String resourceName,
+        String agentPoolName);
+
+    /**
+     * Gets a list of operations in the specified agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of operations in the specified agent pool as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OperationStatusResultInner> listByAgentPool(String resourceGroupName, String resourceName,
+        String agentPoolName);
+
+    /**
+     * Gets a list of operations in the specified agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param activeOnly If true, only return operations that are currently active (not terminal).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of operations in the specified agent pool as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OperationStatusResultInner> listByAgentPool(String resourceGroupName, String resourceName,
+        String agentPoolName, Boolean activeOnly, Context context);
+
+    /**
      * Get the status of a specific operation in the specified agent pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

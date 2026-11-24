@@ -14,18 +14,18 @@ public final class SimpleRetentionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SimpleRetentionPolicy model = BinaryData.fromString(
-            "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":1408895656,\"durationType\":\"Months\"}}")
+            "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":1031241635,\"durationType\":\"Months\"}}")
             .toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1408895656, model.retentionDuration().count());
+        Assertions.assertEquals(1031241635, model.retentionDuration().count());
         Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SimpleRetentionPolicy model = new SimpleRetentionPolicy().withRetentionDuration(
-            new RetentionDuration().withCount(1408895656).withDurationType(RetentionDurationType.MONTHS));
+            new RetentionDuration().withCount(1031241635).withDurationType(RetentionDurationType.MONTHS));
         model = BinaryData.fromObject(model).toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1408895656, model.retentionDuration().count());
+        Assertions.assertEquals(1031241635, model.retentionDuration().count());
         Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
     }
 }

@@ -14,9 +14,10 @@ public final class ResourceTypeRegistrationPropertiesRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesRequestHeaderOptions model = BinaryData
-            .fromString("{\"optInHeaders\":\"PrivateLinkId\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
+            .fromString(
+                "{\"optInHeaders\":\"ResourceGroupLocation\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
             .toObject(ResourceTypeRegistrationPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.PRIVATE_LINK_ID, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.RESOURCE_GROUP_LOCATION, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 
@@ -24,10 +25,10 @@ public final class ResourceTypeRegistrationPropertiesRequestHeaderOptionsTests {
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesRequestHeaderOptions model
             = new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
-                .withOptInHeaders(OptInHeaderType.PRIVATE_LINK_ID)
+                .withOptInHeaders(OptInHeaderType.RESOURCE_GROUP_LOCATION)
                 .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.PRIVATE_LINK_ID, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.RESOURCE_GROUP_LOCATION, model.optInHeaders());
         Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 }

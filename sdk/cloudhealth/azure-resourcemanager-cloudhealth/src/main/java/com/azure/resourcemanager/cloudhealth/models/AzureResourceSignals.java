@@ -37,6 +37,12 @@ public final class AzureResourceSignals implements JsonSerializable<AzureResourc
      */
     private List<AzureResourceSignal> signals;
 
+    /*
+     * Optional configuration for automatically adding a signal based on the resource's availability state in Azure
+     * Resource Health.
+     */
+    private AzureResourceHealthSignal resourceHealth;
+
     /**
      * Creates an instance of AzureResourceSignals class.
      */
@@ -128,6 +134,28 @@ public final class AzureResourceSignals implements JsonSerializable<AzureResourc
     }
 
     /**
+     * Get the resourceHealth property: Optional configuration for automatically adding a signal based on the resource's
+     * availability state in Azure Resource Health.
+     * 
+     * @return the resourceHealth value.
+     */
+    public AzureResourceHealthSignal resourceHealth() {
+        return this.resourceHealth;
+    }
+
+    /**
+     * Set the resourceHealth property: Optional configuration for automatically adding a signal based on the resource's
+     * availability state in Azure Resource Health.
+     * 
+     * @param resourceHealth the resourceHealth value to set.
+     * @return the AzureResourceSignals object itself.
+     */
+    public AzureResourceSignals withResourceHealth(AzureResourceHealthSignal resourceHealth) {
+        this.resourceHealth = resourceHealth;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -137,6 +165,7 @@ public final class AzureResourceSignals implements JsonSerializable<AzureResourc
         jsonWriter.writeStringField("azureResourceId", this.azureResourceId);
         jsonWriter.writeStringField("azureResourceKind", this.azureResourceKind);
         jsonWriter.writeArrayField("signals", this.signals, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resourceHealth", this.resourceHealth);
         return jsonWriter.writeEndObject();
     }
 
@@ -166,6 +195,8 @@ public final class AzureResourceSignals implements JsonSerializable<AzureResourc
                     List<AzureResourceSignal> signals
                         = reader.readArray(reader1 -> AzureResourceSignal.fromJson(reader1));
                     deserializedAzureResourceSignals.signals = signals;
+                } else if ("resourceHealth".equals(fieldName)) {
+                    deserializedAzureResourceSignals.resourceHealth = AzureResourceHealthSignal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

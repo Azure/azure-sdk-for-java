@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.FleetAnalyticsPropertiesStorageLo
  */
 public final class FleetAnalyticsCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/fleet/CosmosDBFleetAnalyticsCreate.json
+     * x-ms-original-file: 2026-04-01-preview/fleet/CosmosDBFleetAnalyticsCreate.json
      */
     /**
      * Sample code: CosmosDB FleetAnalytics Create.

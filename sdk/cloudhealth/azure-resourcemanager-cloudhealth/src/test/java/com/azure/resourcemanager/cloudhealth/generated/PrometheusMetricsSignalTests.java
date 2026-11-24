@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.PrometheusMetricsSignal;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
@@ -16,46 +17,54 @@ public final class PrometheusMetricsSignalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrometheusMetricsSignal model = BinaryData.fromString(
-            "{\"signalKind\":\"PrometheusMetricsQuery\",\"queryText\":\"nw\",\"timeGrain\":\"wzsyyceuzs\",\"displayName\":\"bjudpfrxtrthzv\",\"refreshInterval\":\"PT1M\",\"dataUnit\":\"wkqbrqu\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":0.7295389823285925},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":86.79135891079454}},\"name\":\"livpdt\",\"signalDefinitionName\":\"r\",\"status\":{\"healthState\":\"Healthy\",\"value\":70.66703872149927,\"reportedAt\":\"2021-03-24T09:09:32Z\",\"error\":\"zfgs\"}}")
+            "{\"signalKind\":\"PrometheusMetricsQuery\",\"queryText\":\"q\",\"timeGrain\":\"krribdeibqi\",\"displayName\":\"kghv\",\"refreshInterval\":\"PT30M\",\"dataUnit\":\"wm\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":77.75329452118753,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":30.854982610858293,\"sensitivity\":\"Low\"}},\"name\":\"hgbijt\",\"signalDefinitionName\":\"vfxzsjab\",\"status\":{\"healthState\":\"Unknown\",\"value\":69.51650373857628,\"reportedAt\":\"2021-05-13T21:12:04Z\",\"error\":\"djpvkvpbjxbkz\",\"additionalContext\":\"kd\"}}")
             .toObject(PrometheusMetricsSignal.class);
-        Assertions.assertEquals("livpdt", model.name());
-        Assertions.assertEquals("r", model.signalDefinitionName());
-        Assertions.assertEquals("nw", model.queryText());
-        Assertions.assertEquals("wzsyyceuzs", model.timeGrain());
-        Assertions.assertEquals("bjudpfrxtrthzv", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT1M, model.refreshInterval());
-        Assertions.assertEquals("wkqbrqu", model.dataUnit());
-        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(0.7295389823285925, model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(86.79135891079454, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals("hgbijt", model.name());
+        Assertions.assertEquals("vfxzsjab", model.signalDefinitionName());
+        Assertions.assertEquals("q", model.queryText());
+        Assertions.assertEquals("krribdeibqi", model.timeGrain());
+        Assertions.assertEquals("kghv", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT30M, model.refreshInterval());
+        Assertions.assertEquals("wm", model.dataUnit());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+            model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(77.75329452118753D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(30.854982610858293D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().unhealthyRule().sensitivity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrometheusMetricsSignal model = new PrometheusMetricsSignal().withName("livpdt")
-            .withSignalDefinitionName("r")
-            .withQueryText("nw")
-            .withTimeGrain("wzsyyceuzs")
-            .withDisplayName("bjudpfrxtrthzv")
-            .withRefreshInterval(RefreshInterval.PT1M)
-            .withDataUnit("wkqbrqu")
+        PrometheusMetricsSignal model = new PrometheusMetricsSignal().withName("hgbijt")
+            .withSignalDefinitionName("vfxzsjab")
+            .withQueryText("q")
+            .withTimeGrain("krribdeibqi")
+            .withDisplayName("kghv")
+            .withRefreshInterval(RefreshInterval.PT30M)
+            .withDataUnit("wm")
             .withEvaluationRules(new EvaluationRule()
-                .withDegradedRule(
-                    new ThresholdRuleV2().withOperator(SignalOperator.EQUAL).withThreshold(0.7295389823285925))
-                .withUnhealthyRule(
-                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(86.79135891079454)));
+                .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
+                    .withThreshold(77.75329452118753D)
+                    .withSensitivity(DynamicThresholdSensitivity.HIGH))
+                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
+                    .withThreshold(30.854982610858293D)
+                    .withSensitivity(DynamicThresholdSensitivity.LOW)));
         model = BinaryData.fromObject(model).toObject(PrometheusMetricsSignal.class);
-        Assertions.assertEquals("livpdt", model.name());
-        Assertions.assertEquals("r", model.signalDefinitionName());
-        Assertions.assertEquals("nw", model.queryText());
-        Assertions.assertEquals("wzsyyceuzs", model.timeGrain());
-        Assertions.assertEquals("bjudpfrxtrthzv", model.displayName());
-        Assertions.assertEquals(RefreshInterval.PT1M, model.refreshInterval());
-        Assertions.assertEquals("wkqbrqu", model.dataUnit());
-        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(0.7295389823285925, model.evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(86.79135891079454, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals("hgbijt", model.name());
+        Assertions.assertEquals("vfxzsjab", model.signalDefinitionName());
+        Assertions.assertEquals("q", model.queryText());
+        Assertions.assertEquals("krribdeibqi", model.timeGrain());
+        Assertions.assertEquals("kghv", model.displayName());
+        Assertions.assertEquals(RefreshInterval.PT30M, model.refreshInterval());
+        Assertions.assertEquals("wm", model.dataUnit());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+            model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(77.75329452118753D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.evaluationRules().degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(30.854982610858293D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().unhealthyRule().sensitivity());
     }
 }

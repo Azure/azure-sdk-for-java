@@ -186,6 +186,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeJsonField("definition", this.definition);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("draft", this.draft);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
@@ -209,6 +210,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
             OffsetDateTime createdAt = null;
             AgentDefinition definition = null;
             String description = null;
+            Boolean draft = null;
             AgentVersionStatus status = null;
             AgentIdentity instanceIdentity = null;
             AgentIdentity blueprint = null;
@@ -231,6 +233,8 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
                     definition = AgentDefinition.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("draft".equals(fieldName)) {
+                    draft = reader.getNullable(JsonReader::getBoolean);
                 } else if ("status".equals(fieldName)) {
                     status = AgentVersionStatus.fromString(reader.getString());
                 } else if ("instance_identity".equals(fieldName)) {
@@ -248,6 +252,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
             AgentVersionDetails deserializedAgentVersionDetails
                 = new AgentVersionDetails(metadata, id, name, version, createdAt, definition);
             deserializedAgentVersionDetails.description = description;
+            deserializedAgentVersionDetails.draft = draft;
             deserializedAgentVersionDetails.status = status;
             deserializedAgentVersionDetails.instanceIdentity = instanceIdentity;
             deserializedAgentVersionDetails.blueprint = blueprint;
@@ -277,28 +282,24 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
      * The instance identity of the agent
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentIdentity instanceIdentity;
 
     /*
      * The blueprint for the agent
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentIdentity blueprint;
 
     /*
      * The blueprint for the agent
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private AgentBlueprintReference blueprintReference;
 
     /*
      * The unique GUID identifier of the agent.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     private String agentGuid;
 
     /**
@@ -307,7 +308,6 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
      * @return the instanceIdentity value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentIdentity getInstanceIdentity() {
         return this.instanceIdentity;
     }
@@ -318,7 +318,6 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
      * @return the blueprint value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentIdentity getBlueprint() {
         return this.blueprint;
     }
@@ -329,7 +328,6 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
      * @return the blueprintReference value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public AgentBlueprintReference getBlueprintReference() {
         return this.blueprintReference;
     }
@@ -340,7 +338,6 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
      * @return the agentGuid value.
      */
     @Generated
-    @Beta(warningText = "Preview API. AgentEndpoints=V1Preview")
     public String getAgentGuid() {
         return this.agentGuid;
     }
@@ -361,5 +358,25 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
     @Generated
     public AgentVersionStatus getStatus() {
         return this.status;
+    }
+
+    /*
+     * Whether this agent version is a draft (candidate) rather than a release. Draft versions are recorded but excluded
+     * from default 'latest' resolution and are not auto-promoted. Defaults to false.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. DraftAgents=V1Preview")
+    private Boolean draft;
+
+    /**
+     * Get the draft property: Whether this agent version is a draft (candidate) rather than a release. Draft versions
+     * are recorded but excluded from default 'latest' resolution and are not auto-promoted. Defaults to false.
+     *
+     * @return the draft value.
+     */
+    @Generated
+    @Beta(warningText = "Preview API. DraftAgents=V1Preview")
+    public Boolean isDraft() {
+        return this.draft;
     }
 }

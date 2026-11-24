@@ -23,7 +23,7 @@ public final class IotHubResourcesGetValidSkusMockTests {
     @Test
     public void testGetValidSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"qhoftrmaequiah\",\"sku\":{\"name\":\"S3\",\"tier\":\"Basic\",\"capacity\":5718593450165440906},\"capacity\":{\"minimum\":6940065807913814544,\"maximum\":7697781764042454025,\"default\":8868873963072900799,\"scaleType\":\"Automatic\"}}]}";
+            = "{\"value\":[{\"resourceType\":\"qhoftrmaequiah\",\"sku\":{\"name\":\"S1\",\"tier\":\"Free\",\"capacity\":5718593450165440906},\"capacity\":{\"minimum\":6940065807913814544,\"maximum\":7697781764042454025,\"default\":8868873963072900799,\"scaleType\":\"Automatic\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,7 +35,7 @@ public final class IotHubResourcesGetValidSkusMockTests {
         PagedIterable<IotHubSkuDescription> response = manager.iotHubResources()
             .getValidSkus("bminrfdwoyuhhzi", "iefozbhdmsml", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(IotHubSku.S3, response.iterator().next().sku().name());
+        Assertions.assertEquals(IotHubSku.S1, response.iterator().next().sku().name());
         Assertions.assertEquals(5718593450165440906L, response.iterator().next().sku().capacity());
     }
 }

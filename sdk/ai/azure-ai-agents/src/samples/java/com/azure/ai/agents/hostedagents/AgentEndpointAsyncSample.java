@@ -5,29 +5,23 @@ package com.azure.ai.agents.hostedagents;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.AgentEndpointProtocol;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * This sample demonstrates configuring a hosted agent endpoint and invoking it using the async OpenAI client.
+ * This sample demonstrates invoking a hosted agent's default endpoint using the async OpenAI client.
  *
- * <p>Agent endpoints and sessions are currently preview features and only work with hosted agents.</p>
+ * <p>Hosted-agent sessions are currently a preview feature.</p>
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -45,41 +39,31 @@ public class AgentEndpointAsyncSample {
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
-        AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
-        BetaAgentsAsyncClient betaAgentsAsyncClient = builder.beta().buildBetaAgentsAsyncClient();
+        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 
         Mono<Void> workflow = HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient,
-            betaAgentsAsyncClient, agentName, image)
+            agentName, image)
             .flatMap(resources -> {
                 resourcesRef.set(resources);
 
-                AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100)
-                            .setAgentVersion(resources.getAgent().getVersion()))))
-                    .setProtocols(Collections.singletonList(AgentEndpointProtocol.RESPONSES));
-
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                return betaAgentsAsyncClient.updateAgentDetails(agentName,
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
-                    .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
-                        updated.getName()))
-                    .then(Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                return Mono.<Response>fromFuture(
+                    () -> openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                         .input("What is the size of France in square miles?")
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))
-                        .build())))
+                        .build()))
                     .doOnNext(HostedAgentsSampleUtils::printResponseOutput)
                     .then();
             });
 
         workflow
-            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient,
+            .onErrorResume(error -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient,
                 agentName,
                 resourcesRef.get()).then(Mono.error(error)))
-            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, betaAgentsAsyncClient,
+            .then(Mono.defer(() -> HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient,
                 agentName,
                 resourcesRef.get())))
             .timeout(Duration.ofMinutes(15))

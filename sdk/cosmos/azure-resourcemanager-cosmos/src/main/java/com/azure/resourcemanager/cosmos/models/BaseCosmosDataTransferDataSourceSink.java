@@ -111,8 +111,6 @@ public class BaseCosmosDataTransferDataSourceSink extends DataTransferDataSource
                     return CosmosMongoDataTransferDataSourceSink.fromJson(readerToUse.reset());
                 } else if ("CosmosDBSql".equals(discriminatorValue)) {
                     return CosmosSqlDataTransferDataSourceSink.fromJson(readerToUse.reset());
-                } else if ("AzureBlobStorage".equals(discriminatorValue)) {
-                    return AzureBlobDataTransferDataSourceSink.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

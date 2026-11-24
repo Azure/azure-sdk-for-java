@@ -269,6 +269,9 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
         jsonWriter.writeJsonField("aiServices", this.aiServices);
         jsonWriter.writeJsonField("assetStore", this.assetStore);
         jsonWriter.writeJsonField("freshnessPolicy", this.freshnessPolicy);
+        jsonWriter.writeStringField("networkAccessMode",
+            this.networkAccessMode == null ? null : this.networkAccessMode.toString());
+        jsonWriter.writeJsonField("cache", this.cache);
         return jsonWriter.writeEndObject();
     }
 
@@ -317,6 +320,11 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                     deserializedKnowledgeSourceIngestionParameters.assetStore = AssetStore.fromJson(reader);
                 } else if ("freshnessPolicy".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.freshnessPolicy = FreshnessPolicy.fromJson(reader);
+                } else if ("networkAccessMode".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.networkAccessMode
+                        = KnowledgeSourceNetworkAccessMode.fromString(reader.getString());
+                } else if ("cache".equals(fieldName)) {
+                    deserializedKnowledgeSourceIngestionParameters.cache = KnowledgeSourceCache.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -406,6 +414,74 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     @Generated
     public KnowledgeSourceIngestionParameters setAiServices(AiServices aiServices) {
         this.aiServices = aiServices;
+        return this;
+    }
+
+    /*
+     * Optional network access mode for ingestion. Set to 'private' to run ingestion in a private execution environment
+     * that can reach data sources and dependencies over a private network. Default is 'public'. This is a create-time
+     * setting and cannot be changed after the knowledge source is created.
+     */
+    @Generated
+    private KnowledgeSourceNetworkAccessMode networkAccessMode;
+
+    /**
+     * Get the networkAccessMode property: Optional network access mode for ingestion. Set to 'private' to run ingestion
+     * in a private execution environment that can reach data sources and dependencies over a private network. Default
+     * is 'public'. This is a create-time setting and cannot be changed after the knowledge source is created.
+     *
+     * @return the networkAccessMode value.
+     */
+    @Generated
+    public KnowledgeSourceNetworkAccessMode getNetworkAccessMode() {
+        return this.networkAccessMode;
+    }
+
+    /**
+     * Set the networkAccessMode property: Optional network access mode for ingestion. Set to 'private' to run ingestion
+     * in a private execution environment that can reach data sources and dependencies over a private network. Default
+     * is 'public'. This is a create-time setting and cannot be changed after the knowledge source is created.
+     *
+     * @param networkAccessMode the networkAccessMode value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setNetworkAccessMode(KnowledgeSourceNetworkAccessMode networkAccessMode) {
+        this.networkAccessMode = networkAccessMode;
+        return this;
+    }
+
+    /*
+     * Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage account with Blob and
+     * Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or its storage binding or
+     * identity changed.
+     */
+    @Generated
+    private KnowledgeSourceCache cache;
+
+    /**
+     * Get the cache property: Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage
+     * account with Blob and Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or
+     * its storage binding or identity changed.
+     *
+     * @return the cache value.
+     */
+    @Generated
+    public KnowledgeSourceCache getCache() {
+        return this.cache;
+    }
+
+    /**
+     * Set the cache property: Enrichment cache configuration for Azure Blob graph extraction. Requires a GPv2 storage
+     * account with Blob and Table endpoints and reprocessing enabled. Once configured, the cache cannot be removed or
+     * its storage binding or identity changed.
+     *
+     * @param cache the cache value to set.
+     * @return the KnowledgeSourceIngestionParameters object itself.
+     */
+    @Generated
+    public KnowledgeSourceIngestionParameters setCache(KnowledgeSourceCache cache) {
+        this.cache = cache;
         return this;
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import org.junit.jupiter.api.Assertions;
@@ -12,18 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ThresholdRuleV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThresholdRuleV2 model = BinaryData.fromString("{\"operator\":\"GreaterThan\",\"threshold\":34.71437790880483}")
+        ThresholdRuleV2 model = BinaryData
+            .fromString("{\"operator\":\"Dynamic\",\"threshold\":25.902287895735654,\"sensitivity\":\"Low\"}")
             .toObject(ThresholdRuleV2.class);
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.operator());
-        Assertions.assertEquals(34.71437790880483, model.threshold());
+        Assertions.assertEquals(SignalOperator.DYNAMIC, model.operator());
+        Assertions.assertEquals(25.902287895735654D, model.threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.sensitivity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThresholdRuleV2 model
-            = new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(34.71437790880483);
+        ThresholdRuleV2 model = new ThresholdRuleV2().withOperator(SignalOperator.DYNAMIC)
+            .withThreshold(25.902287895735654D)
+            .withSensitivity(DynamicThresholdSensitivity.LOW);
         model = BinaryData.fromObject(model).toObject(ThresholdRuleV2.class);
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.operator());
-        Assertions.assertEquals(34.71437790880483, model.threshold());
+        Assertions.assertEquals(SignalOperator.DYNAMIC, model.operator());
+        Assertions.assertEquals(25.902287895735654D, model.threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.sensitivity());
     }
 }

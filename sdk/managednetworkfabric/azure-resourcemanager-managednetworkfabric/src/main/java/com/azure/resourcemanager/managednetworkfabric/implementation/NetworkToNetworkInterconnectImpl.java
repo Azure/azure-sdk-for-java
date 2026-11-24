@@ -197,10 +197,15 @@ public final class NetworkToNetworkInterconnectImpl implements NetworkToNetworkI
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkFabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFabrics");
-        this.networkToNetworkInterconnectName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkToNetworkInterconnects");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "resourceGroupName");
+        this.networkFabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkFabricName");
+        this.networkToNetworkInterconnectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics/{networkFabricName}/networkToNetworkInterconnects/{networkToNetworkInterconnectName}",
+            "networkToNetworkInterconnectName");
     }
 
     public NetworkToNetworkInterconnect refresh() {

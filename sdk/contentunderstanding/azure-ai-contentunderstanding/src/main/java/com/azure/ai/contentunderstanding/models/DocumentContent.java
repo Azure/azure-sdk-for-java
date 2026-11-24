@@ -80,6 +80,12 @@ public final class DocumentContent extends AnalysisContent {
     private List<DocumentAnnotation> annotations;
 
     /*
+     * List of signatures in the document. Only if enableLayout and returnDetails are true.
+     */
+    @Generated
+    private List<DocumentSignature> signatures;
+
+    /*
      * List of hyperlinks in the document. Only if returnDetails are true.
      */
     @Generated
@@ -90,6 +96,12 @@ public final class DocumentContent extends AnalysisContent {
      */
     @Generated
     private List<DocumentContentSegment> segments;
+
+    /*
+     * List of document chunks. Only if chunkingStrategy is configured on the analyzer.
+     */
+    @Generated
+    private List<DocumentChunk> chunks;
 
     /**
      * Creates an instance of DocumentContent class.
@@ -209,6 +221,16 @@ public final class DocumentContent extends AnalysisContent {
     }
 
     /**
+     * Get the signatures property: List of signatures in the document. Only if enableLayout and returnDetails are true.
+     * 
+     * @return the signatures value.
+     */
+    @Generated
+    public List<DocumentSignature> getSignatures() {
+        return this.signatures;
+    }
+
+    /**
      * Get the hyperlinks property: List of hyperlinks in the document. Only if returnDetails are true.
      * 
      * @return the hyperlinks value.
@@ -229,6 +251,16 @@ public final class DocumentContent extends AnalysisContent {
     }
 
     /**
+     * Get the chunks property: List of document chunks. Only if chunkingStrategy is configured on the analyzer.
+     * 
+     * @return the chunks value.
+     */
+    @Generated
+    public List<DocumentChunk> getChunks() {
+        return this.chunks;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -241,6 +273,7 @@ public final class DocumentContent extends AnalysisContent {
         jsonWriter.writeStringField("path", getPath());
         jsonWriter.writeStringField("markdown", getMarkdown());
         jsonWriter.writeMapField("fields", getFields(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", getMetadata(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeIntField("startPageNumber", this.startPageNumber);
         jsonWriter.writeIntField("endPageNumber", this.endPageNumber);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
@@ -251,8 +284,10 @@ public final class DocumentContent extends AnalysisContent {
         jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("figures", this.figures, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("signatures", this.signatures, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("hyperlinks", this.hyperlinks, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("segments", this.segments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("chunks", this.chunks, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -274,6 +309,7 @@ public final class DocumentContent extends AnalysisContent {
             String path = null;
             String markdown = null;
             Map<String, ContentField> fields = null;
+            Map<String, String> metadata = null;
             int startPageNumber = 0;
             int endPageNumber = 0;
             AnalysisContentKind kind = AnalysisContentKind.DOCUMENT;
@@ -284,8 +320,10 @@ public final class DocumentContent extends AnalysisContent {
             List<DocumentTable> tables = null;
             List<DocumentFigure> figures = null;
             List<DocumentAnnotation> annotations = null;
+            List<DocumentSignature> signatures = null;
             List<DocumentHyperlink> hyperlinks = null;
             List<DocumentContentSegment> segments = null;
+            List<DocumentChunk> chunks = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -302,6 +340,8 @@ public final class DocumentContent extends AnalysisContent {
                     markdown = reader.getString();
                 } else if ("fields".equals(fieldName)) {
                     fields = reader.readMap(reader1 -> ContentField.fromJson(reader1));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("startPageNumber".equals(fieldName)) {
                     startPageNumber = reader.getInt();
                 } else if ("endPageNumber".equals(fieldName)) {
@@ -322,10 +362,14 @@ public final class DocumentContent extends AnalysisContent {
                     figures = reader.readArray(reader1 -> DocumentFigure.fromJson(reader1));
                 } else if ("annotations".equals(fieldName)) {
                     annotations = reader.readArray(reader1 -> DocumentAnnotation.fromJson(reader1));
+                } else if ("signatures".equals(fieldName)) {
+                    signatures = reader.readArray(reader1 -> DocumentSignature.fromJson(reader1));
                 } else if ("hyperlinks".equals(fieldName)) {
                     hyperlinks = reader.readArray(reader1 -> DocumentHyperlink.fromJson(reader1));
                 } else if ("segments".equals(fieldName)) {
                     segments = reader.readArray(reader1 -> DocumentContentSegment.fromJson(reader1));
+                } else if ("chunks".equals(fieldName)) {
+                    chunks = reader.readArray(reader1 -> DocumentChunk.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -336,6 +380,7 @@ public final class DocumentContent extends AnalysisContent {
             deserializedDocumentContent.setPath(path);
             deserializedDocumentContent.setMarkdown(markdown);
             deserializedDocumentContent.setFields(fields);
+            deserializedDocumentContent.setMetadata(metadata);
             deserializedDocumentContent.kind = kind;
             deserializedDocumentContent.unit = unit;
             deserializedDocumentContent.pages = pages;
@@ -344,8 +389,10 @@ public final class DocumentContent extends AnalysisContent {
             deserializedDocumentContent.tables = tables;
             deserializedDocumentContent.figures = figures;
             deserializedDocumentContent.annotations = annotations;
+            deserializedDocumentContent.signatures = signatures;
             deserializedDocumentContent.hyperlinks = hyperlinks;
             deserializedDocumentContent.segments = segments;
+            deserializedDocumentContent.chunks = chunks;
 
             return deserializedDocumentContent;
         });

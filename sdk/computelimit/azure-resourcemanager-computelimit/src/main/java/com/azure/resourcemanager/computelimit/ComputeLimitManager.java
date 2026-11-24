@@ -32,6 +32,7 @@ import com.azure.resourcemanager.computelimit.implementation.MemberCapOverridesI
 import com.azure.resourcemanager.computelimit.implementation.OperationsImpl;
 import com.azure.resourcemanager.computelimit.implementation.SharedLimitCapsImpl;
 import com.azure.resourcemanager.computelimit.implementation.SharedLimitsImpl;
+import com.azure.resourcemanager.computelimit.implementation.TrustedHostSubscriptionsImpl;
 import com.azure.resourcemanager.computelimit.implementation.VmFamiliesImpl;
 import com.azure.resourcemanager.computelimit.models.Features;
 import com.azure.resourcemanager.computelimit.models.GuestSubscriptions;
@@ -39,6 +40,7 @@ import com.azure.resourcemanager.computelimit.models.MemberCapOverrides;
 import com.azure.resourcemanager.computelimit.models.Operations;
 import com.azure.resourcemanager.computelimit.models.SharedLimitCaps;
 import com.azure.resourcemanager.computelimit.models.SharedLimits;
+import com.azure.resourcemanager.computelimit.models.TrustedHostSubscriptions;
 import com.azure.resourcemanager.computelimit.models.VmFamilies;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -56,6 +58,8 @@ public final class ComputeLimitManager {
     private Operations operations;
 
     private GuestSubscriptions guestSubscriptions;
+
+    private TrustedHostSubscriptions trustedHostSubscriptions;
 
     private SharedLimits sharedLimits;
 
@@ -304,6 +308,19 @@ public final class ComputeLimitManager {
             this.guestSubscriptions = new GuestSubscriptionsImpl(clientObject.getGuestSubscriptions(), this);
         }
         return guestSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of TrustedHostSubscriptions. It manages TrustedHostSubscription.
+     * 
+     * @return Resource collection API of TrustedHostSubscriptions.
+     */
+    public TrustedHostSubscriptions trustedHostSubscriptions() {
+        if (this.trustedHostSubscriptions == null) {
+            this.trustedHostSubscriptions
+                = new TrustedHostSubscriptionsImpl(clientObject.getTrustedHostSubscriptions(), this);
+        }
+        return trustedHostSubscriptions;
     }
 
     /**

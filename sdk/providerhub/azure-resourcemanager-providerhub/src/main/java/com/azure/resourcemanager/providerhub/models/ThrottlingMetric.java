@@ -34,6 +34,11 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
      */
     private Duration interval;
 
+    /*
+     * The bucket size.
+     */
+    private String bucketSize;
+
     /**
      * Creates an instance of ThrottlingMetric class.
      */
@@ -101,6 +106,26 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
     }
 
     /**
+     * Get the bucketSize property: The bucket size.
+     * 
+     * @return the bucketSize value.
+     */
+    public String bucketSize() {
+        return this.bucketSize;
+    }
+
+    /**
+     * Set the bucketSize property: The bucket size.
+     * 
+     * @param bucketSize the bucketSize value to set.
+     * @return the ThrottlingMetric object itself.
+     */
+    public ThrottlingMetric withBucketSize(String bucketSize) {
+        this.bucketSize = bucketSize;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -123,6 +148,7 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeLongField("limit", this.limit);
         jsonWriter.writeStringField("interval", CoreUtils.durationToStringWithDays(this.interval));
+        jsonWriter.writeStringField("bucketSize", this.bucketSize);
         return jsonWriter.writeEndObject();
     }
 
@@ -149,6 +175,8 @@ public final class ThrottlingMetric implements JsonSerializable<ThrottlingMetric
                 } else if ("interval".equals(fieldName)) {
                     deserializedThrottlingMetric.interval
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("bucketSize".equals(fieldName)) {
+                    deserializedThrottlingMetric.bucketSize = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

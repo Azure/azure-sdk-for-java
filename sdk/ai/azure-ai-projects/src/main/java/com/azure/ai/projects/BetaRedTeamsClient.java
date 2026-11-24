@@ -22,8 +22,8 @@ import com.azure.core.util.BinaryData;
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaRedTeamsClient {
 
     @Generated
@@ -44,7 +44,7 @@ public final class BetaRedTeamsClient {
      *
      * Retrieves the specified redteam and its configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -94,7 +94,7 @@ public final class BetaRedTeamsClient {
      *
      * Returns the redteams available in the current project.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -141,7 +141,7 @@ public final class BetaRedTeamsClient {
      *
      * Submits a new redteam run for execution with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -169,9 +169,9 @@ public final class BetaRedTeamsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

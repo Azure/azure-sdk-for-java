@@ -21,21 +21,46 @@ import com.openai.services.blocking.ResponseService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class ClientTestBase extends TestProxyTestBase {
 
     private boolean sanitizersRemoved = false;
 
     protected AgentsClientBuilder getClientBuilder(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion) {
-        AgentsClientBuilder builder = new AgentsClientBuilder()
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return getClientBuilder(httpClient, agentsServiceVersion, false);
+    }
+
+    protected AgentsClientBuilder getClientBuilder(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion,
+        boolean allowPreview) {
+        return getClientBuilder(httpClient, agentsServiceVersion, allowPreview, false);
+    }
+
+    protected AgentsClientBuilder getWebSocketClientBuilder(AgentsServiceVersion agentsServiceVersion) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            throw new IllegalStateException("Playback tests must not open native WebSocket connections.");
+        }
+        return getClientBuilder(null, agentsServiceVersion, true, true);
+    }
+
+    private AgentsClientBuilder getClientBuilder(HttpClient httpClient, AgentsServiceVersion agentsServiceVersion,
+        boolean allowPreview, boolean webSocket) {
+        AgentsClientBuilder builder = new AgentsClientBuilder();
+        if (!webSocket) {
+            builder
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        }
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addCustomMatchers();
             addTestRecordCustomSanitizers();
-            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            // Disable "$..id"=AZSDK3430 and "Set-Cookie"=AZSDK2015 for both Azure and non-Azure clients from the
+            // list of common sanitizers.
             if (!sanitizersRemoved) {
-                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493", "AZSDK2015");
+                List<String> sanitizersToRemove = new ArrayList<>(Arrays.asList("AZSDK3430", "AZSDK3493", "AZSDK2015"));
+                sanitizersToRemove.addAll(getAdditionalTestProxySanitizersToRemove());
+                interceptorManager.removeSanitizers(sanitizersToRemove.toArray(new String[0]));
                 sanitizersRemoved = true;
             }
         }
@@ -43,8 +68,10 @@ public class ClientTestBase extends TestProxyTestBase {
         if (testMode == TestMode.PLAYBACK) {
             builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
+            if (!webSocket) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            builder.endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else {
             builder.endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
@@ -56,6 +83,9 @@ public class ClientTestBase extends TestProxyTestBase {
         AgentsServiceVersion serviceVersion
             = version == null ? agentsServiceVersion : AgentsServiceVersion.valueOf(version);
         builder.serviceVersion(serviceVersion);
+        if (allowPreview) {
+            builder.allowPreview(true);
+        }
         return builder;
     }
 
@@ -106,14 +136,25 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresAsyncClient();
     }
 
+    protected VoiceAgentsTelephonyClient getVoiceAgentsTelephonySyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).buildVoiceAgentsTelephonyClient();
+    }
+
     private void addTestRecordCustomSanitizers() {
 
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("$..image", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..principal_id", null, "00000000-0000-0000-0000-000000000000",
+            TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..client_id", null, "00000000-0000-0000-0000-000000000000",
+            TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..agent_guid", null, "00000000-0000-0000-0000-000000000000",
+            TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..blueprint_id", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
-        sanitizers.add(new TestProxySanitizer("Content-Type",
-            "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+        sanitizers.add(new TestProxySanitizer("Content-Type", "^multipart\\/form-data(; charset=[^;]+)?; boundary=.*",
             "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER));
 
         interceptorManager.addSanitizers(sanitizers);
@@ -121,9 +162,30 @@ public class ClientTestBase extends TestProxyTestBase {
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie",
-            "X-Stainless-Arch", "X-Stainless-Lang", "X-Stainless-OS", "X-Stainless-OS-Version",
-            "X-Stainless-Package-Version", "X-Stainless-Runtime", "X-Stainless-Runtime-Version")));
+        List<String> excludedHeaders
+            = new ArrayList<>(Arrays.asList("Cookie", "Set-Cookie", "Accept", "X-Stainless-Arch", "X-Stainless-Lang",
+                "X-Stainless-OS", "X-Stainless-OS-Version", "X-Stainless-Package-Version", "X-Stainless-Runtime",
+                "X-Stainless-Runtime-Version", "X-Stainless-Kotlin-Version", "X-Stainless-Retry-Count"));
+        excludedHeaders.addAll(getAdditionalTestProxyExcludedHeaders());
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(excludedHeaders));
+    }
+
+    /**
+     * Returns request headers that a derived test class needs the test proxy to exclude from playback matching.
+     *
+     * @return Additional request header names to exclude.
+     */
+    protected List<String> getAdditionalTestProxyExcludedHeaders() {
+        return Collections.emptyList();
+    }
+
+    /**
+     * Returns common sanitizer IDs that a derived test class needs to replace with test-specific sanitizers.
+     *
+     * @return Additional common sanitizer IDs to remove.
+     */
+    protected List<String> getAdditionalTestProxySanitizersToRemove() {
+        return Collections.emptyList();
     }
 
     protected void sleep(long millis) {

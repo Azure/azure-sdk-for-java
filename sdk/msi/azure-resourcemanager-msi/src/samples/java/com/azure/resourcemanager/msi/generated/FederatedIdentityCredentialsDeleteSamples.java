@@ -9,7 +9,7 @@ package com.azure.resourcemanager.msi.generated;
  */
 public final class FederatedIdentityCredentialsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/FederatedIdentityCredentialDelete.json
+     * x-ms-original-file: 2024-11-30/FederatedIdentityCredentialDelete.json
      */
     /**
      * Sample code: FederatedIdentityCredentialDelete.

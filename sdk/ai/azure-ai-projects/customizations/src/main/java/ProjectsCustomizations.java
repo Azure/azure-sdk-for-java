@@ -1,6 +1,9 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -14,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 
@@ -25,11 +29,87 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        modifyPollingStrategies(libraryCustomization);
+        stopPagingWhenHasMoreIsFalse(libraryCustomization, logger);
+        protectPolymorphicBaseConstructors(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
-        private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
+    private void modifyPollingStrategies(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.projects.implementation", "OperationLocationPollingStrategy")
+            .customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName("OperationLocationPollingStrategy")
+                    .orElseThrow(
+                        () -> new IllegalStateException("OperationLocationPollingStrategy was not generated."));
+                clazz.getMethodsByName("poll").forEach(MethodDeclaration::remove);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("/** {@inheritDoc} */\n"
+                    + "@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, "
+                    + "TypeReference<T> pollResponseType) {\n"
+                    + "    return super.poll(pollingContext, pollResponseType)"
+                    + ".map(ProjectsServicePollUtils::remapStatus);\n" + "}"));
+            });
+
+        customization.getClass("com.azure.ai.projects.implementation", "SyncOperationLocationPollingStrategy")
+            .customizeAst(ast -> {
+                ClassOrInterfaceDeclaration clazz = ast.getClassByName("SyncOperationLocationPollingStrategy")
+                    .orElseThrow(
+                        () -> new IllegalStateException("SyncOperationLocationPollingStrategy was not generated."));
+                clazz.getMethodsByName("poll").forEach(MethodDeclaration::remove);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("/** {@inheritDoc} */\n"
+                    + "@Override public PollResponse<T> poll(PollingContext<T> pollingContext, "
+                    + "TypeReference<T> pollResponseType) {\n"
+                    + "    return ProjectsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType));\n"
+                    + "}"));
+            });
+    }
+
+    private void stopPagingWhenHasMoreIsFalse(LibraryCustomization customization, Logger logger) {
+        int[] customizedMethods = new int[1];
+        customization.getPackage("com.azure.ai.projects.implementation").listClasses().forEach(classCustomization ->
+            classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName())
+                .ifPresent(clazz -> clazz.getMethodsByName("getNextLink").forEach(method -> {
+                    method.setBody(StaticJavaParser.parseBlock("{\n"
+                        + "    try {\n"
+                        + "        Object value = binaryData.toObject(Map.class);\n"
+                        + "        if (Boolean.FALSE.equals(((Map<?, ?>) value).get(\"has_more\"))) {\n"
+                        + "            return null;\n"
+                        + "        }\n"
+                        + "        for (String segment : path) {\n"
+                        + "            value = ((Map<?, ?>) value).get(segment);\n"
+                        + "        }\n"
+                        + "        return (String) value;\n"
+                        + "    } catch (RuntimeException e) {\n"
+                        + "        return null;\n"
+                        + "    }\n"
+                        + "}"));
+                    customizedMethods[0]++;
+                }))));
+
+        if (customizedMethods[0] == 0) {
+            throw new IllegalStateException("No generated getNextLink methods were found.");
+        }
+        logger.info("Customized {} paging continuation methods to honor has_more.", customizedMethods[0]);
+    }
+
+    private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
+        List<String> classNames = Arrays.asList("DataGenerationJobInputs", "DataGenerationJobConfiguration",
+            "DataGenerationJobSource", "EvaluationRunDataSource", "EvaluationTaxonomyInput", "EvaluatorDefinition",
+            "EvaluatorGenerationJobSource", "InsightRequest", "ItemGenerationParameters", "RecurrenceSchedule",
+            "RoutineAction", "RoutineDispatchPayload", "RoutineTrigger", "ScheduleTask", "TargetConfig", "TraceSource",
+            "Trigger");
+        for (String className : classNames) {
+            customization.getClass("com.azure.ai.projects.models", className)
+                .customizeAst(ast -> ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException(className + " was not generated"))
+                    .getConstructors()
+                    .stream()
+                    .filter(constructor -> constructor.isPublic())
+                    .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED)));
+        }
+    }
+
+    private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
         customization.getPackage("com.azure.ai.projects")
             .listClasses()
             .stream()
@@ -142,6 +222,9 @@ public class ProjectsCustomizations extends Customization {
      */
     private List<String[]> loadBetaAnnotations(Logger logger) {
         Path csvPath = locateBetaCsv(logger);
+        if (csvPath == null) {
+            return new ArrayList<>();
+        }
         logger.info("Loading @Beta annotations from {}", csvPath);
 
         List<String> lines;
@@ -201,15 +284,25 @@ public class ProjectsCustomizations extends Customization {
 
     /**
      * Resolves the {@code beta-annotations.csv} path. {@code tsp-client update} launches the customization with its
-     * working directory set to the library module, so the file lives at {@code <module>/customizations/...}.
+     * working directory set to the library module (so the file lives at {@code <module>/customizations/...}), while
+     * spec SDK-generation launches from the repo root; both locations are checked. Returns {@code null} (rather than
+     * failing) when the file cannot be found, in which case {@code @Beta} annotations are skipped.
      */
     private Path locateBetaCsv(Logger logger) {
-        Path csvPath = Paths.get(System.getProperty("user.dir"), "customizations", CSV_FILE_NAME).toAbsolutePath();
-        if (!Files.isRegularFile(csvPath)) {
-            logger.error("Could not locate {} at expected path {} (user.dir={})", CSV_FILE_NAME, csvPath,
-                System.getProperty("user.dir"));
-            throw new IllegalStateException("Could not locate " + CSV_FILE_NAME + " at " + csvPath);
+        // tsp-client update launches the customization from the module folder (user.dir = module).
+        Path modulePath = Paths.get(System.getProperty("user.dir"), "customizations", CSV_FILE_NAME).toAbsolutePath();
+        if (Files.isRegularFile(modulePath)) {
+            return modulePath;
         }
-        return csvPath;
+        // spec SDK-generation (spec-gen-sdk) launches from the repo root (user.dir = repo root).
+        Path repoRootPath = Paths
+            .get(System.getProperty("user.dir"), "sdk", "ai", "azure-ai-projects", "customizations", CSV_FILE_NAME)
+            .toAbsolutePath();
+        if (Files.isRegularFile(repoRootPath)) {
+            return repoRootPath;
+        }
+        logger.warn("Could not locate {} at {} or {} (user.dir={}); skipping @Beta annotations.", CSV_FILE_NAME,
+            modulePath, repoRootPath, System.getProperty("user.dir"));
+        return null;
     }
 }

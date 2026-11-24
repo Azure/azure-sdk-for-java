@@ -333,7 +333,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -355,7 +355,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -373,7 +373,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -393,7 +393,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -413,7 +413,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -433,7 +433,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -444,7 +444,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
+    private SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginEnable(String location,
         String featureName, FeatureEnableRequest body) {
         Response<BinaryData> response = enableWithResponse(location, featureName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
@@ -452,7 +452,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -471,7 +471,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -491,7 +491,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -508,7 +508,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -524,7 +524,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -540,7 +540,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Enables a compute limit feature for the subscription at the specified location.
+     * Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -558,7 +558,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -578,7 +578,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -595,7 +595,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -613,7 +613,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -632,7 +632,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -650,7 +650,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -669,7 +669,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -684,7 +684,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.
@@ -699,7 +699,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * Disables a compute limit feature for the subscription at the specified location.
+     * Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
      * 
      * @param location The name of the Azure region.
      * @param featureName The name of the Feature.

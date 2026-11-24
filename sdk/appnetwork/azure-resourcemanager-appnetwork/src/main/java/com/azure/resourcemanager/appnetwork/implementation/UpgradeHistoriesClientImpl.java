@@ -100,7 +100,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -124,7 +124,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -143,7 +143,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -165,7 +165,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -188,7 +188,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -207,7 +207,7 @@ public final class UpgradeHistoriesClientImpl implements UpgradeHistoriesClient 
     }
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.

@@ -34,6 +34,17 @@ public final class SignalHistoryRequest implements JsonSerializable<SignalHistor
      */
     private OffsetDateTime endAt;
 
+    /*
+     * Maximum number of data points to return per page. Defaults to 1000.
+     */
+    private Integer top;
+
+    /*
+     * An opaque string value that identifies the portion of the result set to be returned with the next operation. Must
+     * not be combined with startAt or endAt.
+     */
+    private String nextMarker;
+
     /**
      * Creates an instance of SignalHistoryRequest class.
      */
@@ -101,6 +112,48 @@ public final class SignalHistoryRequest implements JsonSerializable<SignalHistor
     }
 
     /**
+     * Get the top property: Maximum number of data points to return per page. Defaults to 1000.
+     * 
+     * @return the top value.
+     */
+    public Integer top() {
+        return this.top;
+    }
+
+    /**
+     * Set the top property: Maximum number of data points to return per page. Defaults to 1000.
+     * 
+     * @param top the top value to set.
+     * @return the SignalHistoryRequest object itself.
+     */
+    public SignalHistoryRequest withTop(Integer top) {
+        this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the nextMarker property: An opaque string value that identifies the portion of the result set to be returned
+     * with the next operation. Must not be combined with startAt or endAt.
+     * 
+     * @return the nextMarker value.
+     */
+    public String nextMarker() {
+        return this.nextMarker;
+    }
+
+    /**
+     * Set the nextMarker property: An opaque string value that identifies the portion of the result set to be returned
+     * with the next operation. Must not be combined with startAt or endAt.
+     * 
+     * @param nextMarker the nextMarker value to set.
+     * @return the SignalHistoryRequest object itself.
+     */
+    public SignalHistoryRequest withNextMarker(String nextMarker) {
+        this.nextMarker = nextMarker;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -111,6 +164,8 @@ public final class SignalHistoryRequest implements JsonSerializable<SignalHistor
             this.startAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startAt));
         jsonWriter.writeStringField("endAt",
             this.endAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endAt));
+        jsonWriter.writeNumberField("top", this.top);
+        jsonWriter.writeStringField("nextMarker", this.nextMarker);
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +193,10 @@ public final class SignalHistoryRequest implements JsonSerializable<SignalHistor
                 } else if ("endAt".equals(fieldName)) {
                     deserializedSignalHistoryRequest.endAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("top".equals(fieldName)) {
+                    deserializedSignalHistoryRequest.top = reader.getNullable(JsonReader::getInt);
+                } else if ("nextMarker".equals(fieldName)) {
+                    deserializedSignalHistoryRequest.nextMarker = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -44,6 +44,12 @@ public final class VirtualMachineScaleSetIPConfigurationProperties
     private IpVersion privateIpAddressVersion;
 
     /*
+     * The private IP address prefix length. If specified and the allocation method is dynamic, the service will
+     * allocate a CIDR block instead of a single IP address.
+     */
+    private Integer privateIPAddressPrefixLength;
+
+    /*
      * Specifies an array of references to backend address pools of application gateways. A scale set can reference
      * backend address pools of multiple application gateways. Multiple scale sets cannot use the same application
      * gateway.
@@ -158,6 +164,29 @@ public final class VirtualMachineScaleSetIPConfigurationProperties
     public VirtualMachineScaleSetIPConfigurationProperties
         withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
         this.privateIpAddressVersion = privateIpAddressVersion;
+        return this;
+    }
+
+    /**
+     * Get the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @return the privateIPAddressPrefixLength value.
+     */
+    public Integer privateIPAddressPrefixLength() {
+        return this.privateIPAddressPrefixLength;
+    }
+
+    /**
+     * Set the privateIPAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @param privateIPAddressPrefixLength the privateIPAddressPrefixLength value to set.
+     * @return the VirtualMachineScaleSetIPConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetIPConfigurationProperties
+        withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
+        this.privateIPAddressPrefixLength = privateIPAddressPrefixLength;
         return this;
     }
 
@@ -282,6 +311,7 @@ public final class VirtualMachineScaleSetIPConfigurationProperties
         jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIpAddressConfiguration);
         jsonWriter.writeStringField("privateIPAddressVersion",
             this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
+        jsonWriter.writeNumberField("privateIPAddressPrefixLength", this.privateIPAddressPrefixLength);
         jsonWriter.writeArrayField("applicationGatewayBackendAddressPools", this.applicationGatewayBackendAddressPools,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
@@ -321,6 +351,9 @@ public final class VirtualMachineScaleSetIPConfigurationProperties
                 } else if ("privateIPAddressVersion".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetIPConfigurationProperties.privateIpAddressVersion
                         = IpVersion.fromString(reader.getString());
+                } else if ("privateIPAddressPrefixLength".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetIPConfigurationProperties.privateIPAddressPrefixLength
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("applicationGatewayBackendAddressPools".equals(fieldName)) {
                     List<SubResource> applicationGatewayBackendAddressPools
                         = reader.readArray(reader1 -> SubResource.fromJson(reader1));

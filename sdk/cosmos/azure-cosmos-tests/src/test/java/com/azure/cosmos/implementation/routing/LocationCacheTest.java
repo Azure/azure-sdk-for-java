@@ -22,6 +22,7 @@ import com.azure.cosmos.models.ModelBridgeUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -543,9 +544,19 @@ public class LocationCacheTest {
         }
     }
 
-    @AfterClass()
+    @AfterMethod(alwaysRun = true)
+    public void afterMethod() {
+        closeEndpointManager();
+    }
+
+    @AfterClass(alwaysRun = true)
     public void afterClass() {
+        closeEndpointManager();
+    }
+
+    private void closeEndpointManager() {
         LifeCycleUtils.closeQuietly(this.endpointManager);
+        this.endpointManager = null;
     }
 
     private static DatabaseAccount createDatabaseAccount(boolean useMultipleWriteLocations) {
@@ -580,6 +591,8 @@ public class LocationCacheTest {
                             boolean enableEndpointDiscovery,
                             boolean isPreferredLocationsListEmpty,
                             boolean isDefaultEndpointAlsoRegionalEndpoint) {
+
+        closeEndpointManager();
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);

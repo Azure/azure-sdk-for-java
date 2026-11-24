@@ -15,10 +15,9 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * A maintenance window is a resource-group-scoped resource that defines a reusable
- * maintenance schedule which can be linked to maintenance configurations on one
- * or more managed clusters.
- * For more information, see https://aka.ms/aks/maintenance-windows.
+ * A maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule which can be
+ * linked to maintenance configurations on one or more managed clusters. For more information, see
+ * https://aka.ms/aks/maintenance-windows.
  */
 @Fluent
 public final class MaintenanceWindowResourceInner extends Resource {

@@ -13,13 +13,13 @@ public final class AccountSkuListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccountSkuListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"qgtz\",\"sku\":{\"name\":\"pnqbqqwxrjfe\",\"tier\":\"Basic\",\"size\":\"wsubisnja\",\"family\":\"mngnzscxaqw\",\"capacity\":2024300309}},{\"resourceType\":\"cbonqvpk\",\"sku\":{\"name\":\"rxnjeaseipheofl\",\"tier\":\"Basic\",\"size\":\"y\",\"family\":\"nj\",\"capacity\":147839675}},{\"resourceType\":\"tgrhpdjpjumas\",\"sku\":{\"name\":\"zj\",\"tier\":\"Premium\",\"size\":\"gual\",\"family\":\"xxhejjzzvd\",\"capacity\":572482803}}]}")
+            "{\"value\":[{\"resourceType\":\"f\",\"sku\":{\"name\":\"keyyi\",\"tier\":\"Basic\",\"size\":\"dlwtgrhpdj\",\"family\":\"umasxazjpq\",\"capacity\":973371108}}]}")
             .toObject(AccountSkuListResultInner.class);
-        Assertions.assertEquals("qgtz", model.value().get(0).resourceType());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.value().get(0).sku().name());
+        Assertions.assertEquals("f", model.value().get(0).resourceType());
+        Assertions.assertEquals("keyyi", model.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("wsubisnja", model.value().get(0).sku().size());
-        Assertions.assertEquals("mngnzscxaqw", model.value().get(0).sku().family());
-        Assertions.assertEquals(2024300309, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("dlwtgrhpdj", model.value().get(0).sku().size());
+        Assertions.assertEquals("umasxazjpq", model.value().get(0).sku().family());
+        Assertions.assertEquals(973371108, model.value().get(0).sku().capacity());
     }
 }

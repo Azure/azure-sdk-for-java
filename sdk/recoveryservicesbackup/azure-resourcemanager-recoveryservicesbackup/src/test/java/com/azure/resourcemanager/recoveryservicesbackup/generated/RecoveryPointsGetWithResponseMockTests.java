@@ -24,7 +24,7 @@ public final class RecoveryPointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"UnHealthy\",\"threatInfo\":[{\"threatTitle\":\"gftcvbiiftksdwg\",\"threatDescription\":\"kefgmwdhce\",\"lastUpdatedTime\":\"2021-07-30T07:38:02Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-09-27T11:55:39Z\",\"threatEndTime\":\"2021-03-24T17:25:13Z\",\"threatURI\":\"zoutb\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"zeka\",\"threatDescription\":\"lyzgsnor\",\"lastUpdatedTime\":\"2021-01-09T01:50:27Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-08-18T09:31:15Z\",\"threatEndTime\":\"2021-09-03T19:01:34Z\",\"threatURI\":\"mrxkhlobvv\",\"threatSeverity\":\"Critical\"}]},\"tags\":{\"iyu\":\"diqayfl\",\"rswhbuubpyro\":\"snuudtelvhyibdr\"},\"location\":\"joxztfwfqchvczev\",\"eTag\":\"nctagfyvrtpqpem\",\"id\":\"cgkrepdqhqy\",\"name\":\"wqwemvxqabckmze\",\"type\":\"xin\"}";
+            = "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"UnHealthy\",\"threatInfo\":[{\"threatTitle\":\"fpcfjf\",\"threatDescription\":\"lgzawkgyepeyamnn\",\"lastUpdatedTime\":\"2021-02-15T10:13:01Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-01-16T09:56:14Z\",\"threatEndTime\":\"2021-07-02T14:34:17Z\",\"threatURI\":\"kzrn\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"tdhuo\",\"threatDescription\":\"wqpsqaz\",\"lastUpdatedTime\":\"2021-01-30T13:42:07Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-06-25T01:03:25Z\",\"threatEndTime\":\"2021-11-30T20:35:22Z\",\"threatURI\":\"bh\",\"threatSeverity\":\"Informational\"}]},\"tags\":{\"ftvhkmoogj\":\"ztibniyntsxjmfm\",\"gmjgrul\":\"hskb\"},\"location\":\"ogxhcxn\",\"eTag\":\"tpfdzxcouzfwofwa\",\"id\":\"kzkdtzxsoednlwg\",\"name\":\"ihezomucmq\",\"type\":\"isnionetbzdrdpue\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RecoveryPointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPointResource response = manager.recoveryPoints()
-            .getWithResponse("kqv", "qepdx", "ltuubw", "vpjbowcpjqduq", "ixexkydfbwljavhu", "rkjd",
+            .getWithResponse("lgsrgkrfizrpywlp", "yuqh", "lmcskyk", "fuofixcnpcfykkp", "ycpawm", "jp",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(ThreatStatus.UN_HEALTHY, response.properties().threatStatus());
-        Assertions.assertEquals(ThreatState.RESOLVED, response.properties().threatInfo().get(0).threatState());
+        Assertions.assertEquals(ThreatState.ACTIVE, response.properties().threatInfo().get(0).threatState());
         Assertions.assertEquals(ThreatSeverity.CRITICAL, response.properties().threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("diqayfl", response.tags().get("iyu"));
-        Assertions.assertEquals("joxztfwfqchvczev", response.location());
-        Assertions.assertEquals("nctagfyvrtpqpem", response.etag());
+        Assertions.assertEquals("ztibniyntsxjmfm", response.tags().get("ftvhkmoogj"));
+        Assertions.assertEquals("ogxhcxn", response.location());
+        Assertions.assertEquals("tpfdzxcouzfwofwa", response.etag());
     }
 }

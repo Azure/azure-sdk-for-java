@@ -15,7 +15,7 @@ import java.io.IOException;
  * An Azure Blob Storage data source/sink.
  */
 @Fluent
-public final class AzureBlobDataTransferDataSourceSink extends BaseCosmosDataTransferDataSourceSink {
+public final class AzureBlobDataTransferDataSourceSink extends DataTransferDataSourceSink {
     /*
      * The component property.
      */
@@ -88,15 +88,6 @@ public final class AzureBlobDataTransferDataSourceSink extends BaseCosmosDataTra
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AzureBlobDataTransferDataSourceSink withRemoteAccountName(String remoteAccountName) {
-        super.withRemoteAccountName(remoteAccountName);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -118,7 +109,6 @@ public final class AzureBlobDataTransferDataSourceSink extends BaseCosmosDataTra
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("remoteAccountName", remoteAccountName());
         jsonWriter.writeStringField("containerName", this.containerName);
         jsonWriter.writeStringField("component", this.component == null ? null : this.component.toString());
         jsonWriter.writeStringField("endpointUrl", this.endpointUrl);
@@ -142,9 +132,7 @@ public final class AzureBlobDataTransferDataSourceSink extends BaseCosmosDataTra
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("remoteAccountName".equals(fieldName)) {
-                    deserializedAzureBlobDataTransferDataSourceSink.withRemoteAccountName(reader.getString());
-                } else if ("containerName".equals(fieldName)) {
+                if ("containerName".equals(fieldName)) {
                     deserializedAzureBlobDataTransferDataSourceSink.containerName = reader.getString();
                 } else if ("component".equals(fieldName)) {
                     deserializedAzureBlobDataTransferDataSourceSink.component

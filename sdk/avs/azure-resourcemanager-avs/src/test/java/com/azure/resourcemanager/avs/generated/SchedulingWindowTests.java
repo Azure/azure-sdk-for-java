@@ -11,7 +11,7 @@ public final class SchedulingWindowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulingWindow model = BinaryData.fromString(
-            "{\"kind\":\"SchedulingWindow\",\"startsAt\":\"2021-10-14T20:39:54Z\",\"endsAt\":\"2021-08-23T08:34:37Z\"}")
+            "{\"kind\":\"SchedulingWindow\",\"startsAt\":\"2021-04-27T10:17:36Z\",\"endsAt\":\"2021-10-19T19:08:50Z\"}")
             .toObject(SchedulingWindow.class);
     }
 }

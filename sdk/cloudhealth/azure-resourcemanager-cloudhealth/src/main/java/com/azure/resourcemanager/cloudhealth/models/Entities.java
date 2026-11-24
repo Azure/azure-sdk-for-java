@@ -187,6 +187,101 @@ public interface Entities {
         HealthReportRequest body);
 
     /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity along with {@link Response}.
+     */
+    Response<DataAnnotation> addDataAnnotationWithResponse(String resourceGroupName, String healthModelName,
+        String entityName, AddDataAnnotationRequest body, Context context);
+
+    /**
+     * Add a data annotation to an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single data annotation on an entity.
+     */
+    DataAnnotation addDataAnnotation(String resourceGroupName, String healthModelName, String entityName,
+        AddDataAnnotationRequest body);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity along with {@link Response}.
+     */
+    Response<GetDataAnnotationsResponse> getDataAnnotationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, GetDataAnnotationsRequest body, Context context);
+
+    /**
+     * Retrieve data annotations for an entity.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing data annotations for an entity.
+     */
+    GetDataAnnotationsResponse getDataAnnotations(String resourceGroupName, String healthModelName, String entityName,
+        GetDataAnnotationsRequest body);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources) along with {@link Response}.
+     */
+    Response<GetSignalRecommendationsResponse> getSignalRecommendationsWithResponse(String resourceGroupName,
+        String healthModelName, String entityName, Context context);
+
+    /**
+     * Get recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param entityName Name of the entity. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recommended signal configurations for a given Entity (only applicable for Entities representing Azure
+     * resources).
+     */
+    GetSignalRecommendationsResponse getSignalRecommendations(String resourceGroupName, String healthModelName,
+        String entityName);
+
+    /**
      * Get a Entity.
      * 
      * @param id the resource ID.

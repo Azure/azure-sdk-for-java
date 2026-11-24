@@ -25,11 +25,15 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relationships.fluent.RelationshipsManagementClient;
+import com.azure.resourcemanager.relationships.implementation.ContainsRelationshipsImpl;
+import com.azure.resourcemanager.relationships.implementation.DependencyOfRelationshipsByServiceGroupsImpl;
 import com.azure.resourcemanager.relationships.implementation.DependencyOfRelationshipsImpl;
 import com.azure.resourcemanager.relationships.implementation.OperationsImpl;
 import com.azure.resourcemanager.relationships.implementation.RelationshipsManagementClientBuilder;
 import com.azure.resourcemanager.relationships.implementation.ServiceGroupMemberRelationshipsImpl;
+import com.azure.resourcemanager.relationships.models.ContainsRelationships;
 import com.azure.resourcemanager.relationships.models.DependencyOfRelationships;
+import com.azure.resourcemanager.relationships.models.DependencyOfRelationshipsByServiceGroups;
 import com.azure.resourcemanager.relationships.models.Operations;
 import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationships;
 import java.time.Duration;
@@ -49,7 +53,11 @@ public final class RelationshipsManager {
 
     private DependencyOfRelationships dependencyOfRelationships;
 
+    private DependencyOfRelationshipsByServiceGroups dependencyOfRelationshipsByServiceGroups;
+
     private ServiceGroupMemberRelationships serviceGroupMemberRelationships;
+
+    private ContainsRelationships containsRelationships;
 
     private final RelationshipsManagementClient clientObject;
 
@@ -58,6 +66,7 @@ public final class RelationshipsManager {
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new RelationshipsManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
             .buildClient();
     }
@@ -291,6 +300,19 @@ public final class RelationshipsManager {
     }
 
     /**
+     * Gets the resource collection API of DependencyOfRelationshipsByServiceGroups.
+     * 
+     * @return Resource collection API of DependencyOfRelationshipsByServiceGroups.
+     */
+    public DependencyOfRelationshipsByServiceGroups dependencyOfRelationshipsByServiceGroups() {
+        if (this.dependencyOfRelationshipsByServiceGroups == null) {
+            this.dependencyOfRelationshipsByServiceGroups = new DependencyOfRelationshipsByServiceGroupsImpl(
+                clientObject.getDependencyOfRelationshipsByServiceGroups(), this);
+        }
+        return dependencyOfRelationshipsByServiceGroups;
+    }
+
+    /**
      * Gets the resource collection API of ServiceGroupMemberRelationships. It manages ServiceGroupMemberRelationship.
      * 
      * @return Resource collection API of ServiceGroupMemberRelationships.
@@ -301,6 +323,18 @@ public final class RelationshipsManager {
                 = new ServiceGroupMemberRelationshipsImpl(clientObject.getServiceGroupMemberRelationships(), this);
         }
         return serviceGroupMemberRelationships;
+    }
+
+    /**
+     * Gets the resource collection API of ContainsRelationships.
+     * 
+     * @return Resource collection API of ContainsRelationships.
+     */
+    public ContainsRelationships containsRelationships() {
+        if (this.containsRelationships == null) {
+            this.containsRelationships = new ContainsRelationshipsImpl(clientObject.getContainsRelationships(), this);
+        }
+        return containsRelationships;
     }
 
     /**

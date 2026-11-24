@@ -9,31 +9,35 @@ import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleProperties;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleSpecification;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import org.junit.jupiter.api.Assertions;
 
 public final class DiscoveryRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryRuleProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"displayName\":\"zgemjdftuljlt\",\"authenticationSetting\":\"ucea\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"error\":{\"message\":\"zuo\",\"context\":[\"wcw\"]},\"entityName\":\"qioknssxmojm\"}")
+            "{\"provisioningState\":\"Succeeded\",\"displayName\":\"qlyvijo\",\"authenticationSetting\":\"wivkxo\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"xxrtikvc\",\"context\":[\"gclrci\",\"tso\"]},\"entityName\":\"rkenx\"}")
             .toObject(DiscoveryRuleProperties.class);
-        Assertions.assertEquals("zgemjdftuljlt", model.displayName());
-        Assertions.assertEquals("ucea", model.authenticationSetting());
-        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED, model.discoverRelationships());
+        Assertions.assertEquals("qlyvijo", model.displayName());
+        Assertions.assertEquals("wivkxo", model.authenticationSetting());
+        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED, model.discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED, model.addRecommendedSignals());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED, model.addResourceHealthSignal());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveryRuleProperties model = new DiscoveryRuleProperties().withDisplayName("zgemjdftuljlt")
-            .withAuthenticationSetting("ucea")
-            .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED)
+        DiscoveryRuleProperties model = new DiscoveryRuleProperties().withDisplayName("qlyvijo")
+            .withAuthenticationSetting("wivkxo")
+            .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED)
             .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
-            .withSpecification(new DiscoveryRuleSpecification());
+            .withSpecification(new DiscoveryRuleSpecification())
+            .withAddResourceHealthSignal(ResourceHealthAvailabilityStateSignalBehavior.ENABLED);
         model = BinaryData.fromObject(model).toObject(DiscoveryRuleProperties.class);
-        Assertions.assertEquals("zgemjdftuljlt", model.displayName());
-        Assertions.assertEquals("ucea", model.authenticationSetting());
-        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED, model.discoverRelationships());
+        Assertions.assertEquals("qlyvijo", model.displayName());
+        Assertions.assertEquals("wivkxo", model.authenticationSetting());
+        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED, model.discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED, model.addRecommendedSignals());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED, model.addResourceHealthSignal());
     }
 }

@@ -16,18 +16,18 @@ public final class CacheIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"rfuwutt\",\"tenantId\":\"fvjrbirphxepcy\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"uujqgidokgjljyo\":{\"principalId\":\"jky\",\"clientId\":\"j\"},\"hbijhtxfvgxb\":{\"principalId\":\"vcltbgsncgh\",\"clientId\":\"esz\"}}}")
+            "{\"principalId\":\"mwvvjektcxsenhw\",\"tenantId\":\"s\",\"type\":\"None\",\"userAssignedIdentities\":{\"tvfcivfsn\":{\"principalId\":\"v\",\"clientId\":\"dqgbiqylihkaetc\"},\"rfuwutt\":{\"principalId\":\"m\",\"clientId\":\"tqhjfbebrjcx\"}}}")
             .toObject(CacheIdentity.class);
-        Assertions.assertEquals(CacheIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(CacheIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheIdentity model = new CacheIdentity().withType(CacheIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("uujqgidokgjljyo", new UserAssignedIdentitiesValue(), "hbijhtxfvgxb",
-                new UserAssignedIdentitiesValue()));
+        CacheIdentity model = new CacheIdentity().withType(CacheIdentityType.NONE)
+            .withUserAssignedIdentities(
+                mapOf("tvfcivfsn", new UserAssignedIdentitiesValue(), "rfuwutt", new UserAssignedIdentitiesValue()));
         model = BinaryData.fromObject(model).toObject(CacheIdentity.class);
-        Assertions.assertEquals(CacheIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(CacheIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

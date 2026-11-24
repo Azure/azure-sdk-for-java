@@ -47,7 +47,7 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlMaterializedViewCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlMaterializedViewCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlMaterializedViewCreateUpdate.
@@ -83,7 +83,7 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlContainerCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlContainerCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlContainerCreateUpdate.
@@ -164,7 +164,7 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBSqlContainerRestore.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlContainerRestore.json
      */
     /**
      * Sample code: CosmosDBSqlContainerRestore.

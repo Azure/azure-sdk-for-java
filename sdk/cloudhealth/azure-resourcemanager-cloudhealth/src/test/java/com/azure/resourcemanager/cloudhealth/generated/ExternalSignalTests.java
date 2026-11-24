@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.ExternalSignal;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
@@ -15,31 +16,39 @@ public final class ExternalSignalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSignal model = BinaryData.fromString(
-            "{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":38.97777089679916},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":51.602360644099235}},\"name\":\"eptra\",\"signalDefinitionName\":\"jezwlwnw\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":59.55474680688931,\"reportedAt\":\"2021-06-21T00:43:05Z\",\"error\":\"atdooaojkniod\"}}")
+            "{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":63.41765038451496,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":48.94204394065626,\"sensitivity\":\"Medium\"}},\"name\":\"o\",\"signalDefinitionName\":\"hjjklff\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":66.63313011749618,\"reportedAt\":\"2021-01-26T12:14:58Z\",\"error\":\"fzeeyebizik\",\"additionalContext\":\"uhqlbjbsybbqwrvt\"}}")
             .toObject(ExternalSignal.class);
-        Assertions.assertEquals("eptra", model.name());
-        Assertions.assertEquals("jezwlwnw", model.signalDefinitionName());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(38.97777089679916, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals("o", model.name());
+        Assertions.assertEquals("hjjklff", model.signalDefinitionName());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(63.41765038451496D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().degradedRule().sensitivity());
         Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(51.602360644099235, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(48.94204394065626D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            model.evaluationRules().unhealthyRule().sensitivity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalSignal model = new ExternalSignal().withName("eptra")
-            .withSignalDefinitionName("jezwlwnw")
+        ExternalSignal model = new ExternalSignal().withName("o")
+            .withSignalDefinitionName("hjjklff")
             .withEvaluationRules(new EvaluationRule()
-                .withDegradedRule(
-                    new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(38.97777089679916))
-                .withUnhealthyRule(
-                    new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL).withThreshold(51.602360644099235)));
+                .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
+                    .withThreshold(63.41765038451496D)
+                    .withSensitivity(DynamicThresholdSensitivity.LOW))
+                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL)
+                    .withThreshold(48.94204394065626D)
+                    .withSensitivity(DynamicThresholdSensitivity.MEDIUM)));
         model = BinaryData.fromObject(model).toObject(ExternalSignal.class);
-        Assertions.assertEquals("eptra", model.name());
-        Assertions.assertEquals("jezwlwnw", model.signalDefinitionName());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(38.97777089679916, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals("o", model.name());
+        Assertions.assertEquals("hjjklff", model.signalDefinitionName());
+        Assertions.assertEquals(SignalOperator.EQUAL, model.evaluationRules().degradedRule().operator());
+        Assertions.assertEquals(63.41765038451496D, model.evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().degradedRule().sensitivity());
         Assertions.assertEquals(SignalOperator.NOT_EQUAL, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(51.602360644099235, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(48.94204394065626D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+            model.evaluationRules().unhealthyRule().sensitivity());
     }
 }

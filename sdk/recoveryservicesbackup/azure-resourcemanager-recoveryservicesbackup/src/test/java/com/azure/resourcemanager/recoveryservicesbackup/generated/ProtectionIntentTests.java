@@ -14,28 +14,27 @@ public final class ProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionIntent model = BinaryData.fromString(
-            "{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"naz\",\"itemId\":\"ohzrsqalsx\",\"policyId\":\"nwqapfgsdpcvess\",\"protectionState\":\"Invalid\"}")
+            "{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureStorage\",\"sourceResourceId\":\"csqhtkbtnqlrng\",\"itemId\":\"mbiipsnawwlqk\",\"policyId\":\"xhhllxricct\",\"protectionState\":\"Invalid\"}")
             .toObject(ProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
-        Assertions.assertEquals("naz", model.sourceResourceId());
-        Assertions.assertEquals("ohzrsqalsx", model.itemId());
-        Assertions.assertEquals("nwqapfgsdpcvess", model.policyId());
+        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
+        Assertions.assertEquals("csqhtkbtnqlrng", model.sourceResourceId());
+        Assertions.assertEquals("mbiipsnawwlqk", model.itemId());
+        Assertions.assertEquals("xhhllxricct", model.policyId());
         Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionIntent model
-            = new ProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
-                .withSourceResourceId("naz")
-                .withItemId("ohzrsqalsx")
-                .withPolicyId("nwqapfgsdpcvess")
-                .withProtectionState(ProtectionStatus.INVALID);
+        ProtectionIntent model = new ProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+            .withSourceResourceId("csqhtkbtnqlrng")
+            .withItemId("mbiipsnawwlqk")
+            .withPolicyId("xhhllxricct")
+            .withProtectionState(ProtectionStatus.INVALID);
         model = BinaryData.fromObject(model).toObject(ProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
-        Assertions.assertEquals("naz", model.sourceResourceId());
-        Assertions.assertEquals("ohzrsqalsx", model.itemId());
-        Assertions.assertEquals("nwqapfgsdpcvess", model.policyId());
+        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
+        Assertions.assertEquals("csqhtkbtnqlrng", model.sourceResourceId());
+        Assertions.assertEquals("mbiipsnawwlqk", model.itemId());
+        Assertions.assertEquals("xhhllxricct", model.policyId());
         Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
     }
 }

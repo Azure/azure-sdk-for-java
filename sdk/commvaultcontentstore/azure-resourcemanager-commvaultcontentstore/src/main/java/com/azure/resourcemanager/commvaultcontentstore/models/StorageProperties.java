@@ -41,6 +41,11 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
      */
     private ResourceProvisioningState provisioningState;
 
+    /*
+     * The compliance lock status of the storage.
+     */
+    private ComplianceLockStatus complianceLockStatus;
+
     /**
      * Creates an instance of StorageProperties class.
      */
@@ -137,6 +142,15 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     }
 
     /**
+     * Get the complianceLockStatus property: The compliance lock status of the storage.
+     * 
+     * @return the complianceLockStatus value.
+     */
+    public ComplianceLockStatus complianceLockStatus() {
+        return this.complianceLockStatus;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -176,6 +190,9 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStorageProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("complianceLockStatus".equals(fieldName)) {
+                    deserializedStorageProperties.complianceLockStatus
+                        = ComplianceLockStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

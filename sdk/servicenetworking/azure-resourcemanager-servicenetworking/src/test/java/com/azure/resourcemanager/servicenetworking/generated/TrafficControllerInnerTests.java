@@ -18,29 +18,27 @@ public final class TrafficControllerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerInner model = BinaryData.fromString(
-            "{\"properties\":{\"configurationEndpoints\":[\"suesnzw\"],\"frontends\":[{\"id\":\"bavo\"},{\"id\":\"xzdmohctb\"},{\"id\":\"vudwx\"}],\"associations\":[{\"id\":\"nvowgujju\"},{\"id\":\"wdkcglhsl\"}],\"securityPolicies\":[{\"id\":\"dyggdtjixhbku\"},{\"id\":\"fqweykhmene\"},{\"id\":\"fyexfwhy\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"bvyvdcsity\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"aamdect\"}},\"provisioningState\":\"Canceled\"},\"location\":\"qsc\",\"tags\":{\"kgqhcjrefovg\":\"pvhez\",\"jpkcattpng\":\"kqsleyyvxy\",\"czsqpjhvm\":\"cr\"},\"id\":\"ajvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"}")
+            "{\"properties\":{\"configurationEndpoints\":[\"suesnzw\"],\"frontends\":[{\"id\":\"bavo\"},{\"id\":\"xzdmohctb\"},{\"id\":\"vudwx\"}],\"associations\":[{\"id\":\"nvowgujju\"},{\"id\":\"wdkcglhsl\"}],\"securityPolicies\":[{\"id\":\"dyggdtjixhbku\"},{\"id\":\"fqweykhmene\"},{\"id\":\"fyexfwhy\"}],\"privateEndpointConnections\":[{\"id\":\"bvyvdcsity\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"amdecte\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"iqscjeypv\"}},\"provisioningState\":\"Accepted\"},\"location\":\"kgqhcjrefovg\",\"tags\":{\"yvxyqjp\":\"sle\"},\"id\":\"cattpngjcrcczsq\",\"name\":\"jh\",\"type\":\"mdajv\"}")
             .toObject(TrafficControllerInner.class);
-        Assertions.assertEquals("qsc", model.location());
-        Assertions.assertEquals("pvhez", model.tags().get("kgqhcjrefovg"));
-        Assertions.assertEquals("bvyvdcsity",
-            model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("aamdect",
+        Assertions.assertEquals("kgqhcjrefovg", model.location());
+        Assertions.assertEquals("sle", model.tags().get("yvxyqjp"));
+        Assertions.assertEquals("amdecte", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("iqscjeypv",
             model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerInner model = new TrafficControllerInner().withLocation("qsc")
-            .withTags(mapOf("kgqhcjrefovg", "pvhez", "jpkcattpng", "kqsleyyvxy", "czsqpjhvm", "cr"))
+        TrafficControllerInner model = new TrafficControllerInner().withLocation("kgqhcjrefovg")
+            .withTags(mapOf("yvxyqjp", "sle"))
             .withProperties(new TrafficControllerProperties().withSecurityPolicyConfigurations(
-                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("bvyvdcsity"))
-                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("aamdect"))));
+                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("amdecte"))
+                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("iqscjeypv"))));
         model = BinaryData.fromObject(model).toObject(TrafficControllerInner.class);
-        Assertions.assertEquals("qsc", model.location());
-        Assertions.assertEquals("pvhez", model.tags().get("kgqhcjrefovg"));
-        Assertions.assertEquals("bvyvdcsity",
-            model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("aamdect",
+        Assertions.assertEquals("kgqhcjrefovg", model.location());
+        Assertions.assertEquals("sle", model.tags().get("yvxyqjp"));
+        Assertions.assertEquals("amdecte", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("iqscjeypv",
             model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
