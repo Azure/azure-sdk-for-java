@@ -370,9 +370,8 @@ public class EncryptionProcessor {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
             encryptPatchArray(encryptionSettings, arrayNode, propertyName);
             return arrayNode;
-        } else if (!propertyValueHolder.isNull()) {
-            return BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder,
-                propertyName));
+        } else {
+            encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName);
         }
         return propertyValueHolder;
     }
