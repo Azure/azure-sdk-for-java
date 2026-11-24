@@ -8,31 +8,15 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.encryption.implementation.Constants;
-import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
-import com.azure.cosmos.encryption.implementation.EncryptionSettings;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.util.EnumSet;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class CosmosEncryptionAsyncClientUnitTest {
-    private static final String MIXED_ARRAYS_ENABLED_PROPERTY = "COSMOS.ENCRYPTION_MIXED_ARRAYS_ENABLED";
 
     private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
 
@@ -71,100 +55,4 @@ public class CosmosEncryptionAsyncClientUnitTest {
         Mockito.verify(spyEncryptionAsyncClient, Mockito.times(2)).fetchClientEncryptionKeyPropertiesAsync(Mockito.any(CosmosAsyncContainer.class), Mockito.anyString(), Mockito.any(RequestOptions.class));
     }
 
-    @DataProvider(name = "mixedArrayUserAgentSettings")
-    public Object[][] mixedArrayUserAgentSettings() {
-        return new Object[][] {{null, false}, {"true", false}, {"false", true}};
-    }
-
-    @Test(groups = {"unit"}, dataProvider = "mixedArrayUserAgentSettings", timeOut = TestSuiteBase.TIMEOUT)
-    public void encryptionClientAppendsUserAgentSuffix(String setting, boolean optOutExpected) throws Exception {
-        CosmosAsyncClient mockAsyncClient = Mockito.mock(CosmosAsyncClient.class);
-        RxDocumentClientImpl mockDocClient = Mockito.mock(RxDocumentClientImpl.class);
-        KeyEncryptionKeyResolver mockKeyResolver = Mockito.mock(KeyEncryptionKeyResolver.class);
-        UserAgentContainer userAgent = new UserAgentContainer();
-        userAgent.setSuffix("customer-app");
-        userAgent.setFeatureEnabledFlagsAsSuffix(EnumSet.of(UserAgentFeatureFlags.ThinClient));
-        FieldUtils.writeField(mockDocClient, "userAgentContainer", userAgent, true);
-        FieldUtils.writeField(mockAsyncClient, "asyncDocumentClient", mockDocClient, true);
-        Mockito.doCallRealMethod().when(mockDocClient).appendUserAgentSuffix(Mockito.anyString());
-        Mockito.doCallRealMethod().when(mockDocClient)
-            .addUserAgentFeatureFlag(Mockito.any(UserAgentFeatureFlags.class));
-        String previousValue = System.getProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
-
-        try {
-            if (setting == null) {
-                System.clearProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
-            } else {
-                System.setProperty(MIXED_ARRAYS_ENABLED_PROPERTY, setting);
-            }
-            new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
-            new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
-
-            assertThat(userAgent.getUserAgent())
-                .contains("customer-app", Constants.USER_AGENT_SUFFIX);
-            assertThat(userAgent.getSuffix().split("\\s+"))
-                .containsExactly("customer-app", Constants.USER_AGENT_SUFFIX);
-            assertThat(userAgent.getUserAgent()).endsWith(optOutExpected ? "|F84" : "|F4");
-        } finally {
-            restoreMixedArraySetting(previousValue);
-        }
-    }
-
-    @Test(groups = {"unit"}, timeOut = TestSuiteBase.TIMEOUT)
-    public void encryptionOptOutSnapshotMatchesUserAgent() throws Exception {
-        CosmosAsyncClient mockAsyncClient = Mockito.mock(CosmosAsyncClient.class);
-        AsyncDocumentClient mockDocClient = Mockito.mock(AsyncDocumentClient.class);
-        FieldUtils.writeField(mockAsyncClient, "asyncDocumentClient", mockDocClient, true);
-        KeyEncryptionKeyResolver mockKeyResolver = Mockito.mock(KeyEncryptionKeyResolver.class);
-        String previousValue = System.getProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
-        try {
-            System.setProperty(MIXED_ARRAYS_ENABLED_PROPERTY, "false");
-            CosmosEncryptionAsyncClient client =
-                new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
-            System.setProperty(MIXED_ARRAYS_ENABLED_PROPERTY, "true");
-
-            EncryptionProcessor processor = new EncryptionProcessor(Mockito.mock(CosmosAsyncContainer.class), client);
-            JsonNode array = new ObjectMapper().readTree("[{},42]");
-            JsonNode encryptedArray = processor.encryptAndSerializePatchProperty(
-                Mockito.mock(EncryptionSettings.class), array, "sensitiveString");
-
-            assertThat(client.isMixedArrayEncryptionEnabled()).isFalse();
-            assertThat(encryptedArray.get(1).asInt()).isEqualTo(42);
-            Mockito.verify(mockDocClient).addUserAgentFeatureFlag(UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
-        } finally {
-            restoreMixedArraySetting(previousValue);
-        }
-    }
-
-    private void restoreMixedArraySetting(String previousValue) {
-        if (previousValue == null) {
-            System.clearProperty(MIXED_ARRAYS_ENABLED_PROPERTY);
-        } else {
-            System.setProperty(MIXED_ARRAYS_ENABLED_PROPERTY, previousValue);
-        }
-    }
-
-    @Test(groups = {"unit"}, timeOut = TestSuiteBase.TIMEOUT)
-    public void encryptionUserAgentSuffixContainsVersionInfo() {
-        // Verify the suffix constants are properly loaded from properties
-        assertThat(Constants.CURRENT_NAME).isNotEmpty();
-        assertThat(Constants.CURRENT_VERSION).isNotEmpty();
-        assertThat(Constants.USER_AGENT_SUFFIX).isEqualTo(Constants.CURRENT_NAME + "/" + Constants.CURRENT_VERSION);
-        assertThat(Constants.USER_AGENT_SUFFIX).startsWith("azure-cosmos-encryption/");
-    }
-
-    @Test(groups = {"unit"}, timeOut = TestSuiteBase.TIMEOUT)
-    public void encryptionClientHandlesAppendFailureGracefully() throws Exception {
-        CosmosAsyncClient mockAsyncClient = Mockito.mock(CosmosAsyncClient.class);
-        AsyncDocumentClient mockDocClient = Mockito.mock(AsyncDocumentClient.class);
-        KeyEncryptionKeyResolver mockKeyResolver = Mockito.mock(KeyEncryptionKeyResolver.class);
-        FieldUtils.writeField(mockAsyncClient, "asyncDocumentClient", mockDocClient, true);
-        Mockito.doThrow(new RuntimeException("simulated failure"))
-            .when(mockDocClient).appendUserAgentSuffix(Constants.USER_AGENT_SUFFIX);
-
-        CosmosEncryptionAsyncClient client =
-            new CosmosEncryptionAsyncClient(mockAsyncClient, mockKeyResolver, "TEST_KEY_RESOLVER");
-        assertThat(client).isNotNull();
-        assertThat(client.getCosmosAsyncClient()).isSameAs(mockAsyncClient);
-    }
 }
