@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share;
 
-import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -22,18 +21,15 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for the file copy option validation and SMB information shared by {@link ShareFileClient#beginCopy} and
+ * Unit tests for the file copy option validation shared by {@link ShareFileClient#beginCopy} and
  * {@link ShareFileAsyncClient#beginCopy}.
  */
 public class CopyOptionsModelHelperTests {
     private static final OffsetDateTime TIME = OffsetDateTime.parse("2026-01-02T03:04:05.1234567Z");
-    private static final String SMB_TIME = "2026-01-02T03:04:05.1234567Z";
 
     @ParameterizedTest
     @MethodSource("permissionCopyModeSupplier")
@@ -111,46 +107,6 @@ public class CopyOptionsModelHelperTests {
                 "isSetLastWrittenOn"),
             Arguments.of(flag(list -> list.setChangedOn(true)), property(p -> p.setFileChangeTime(TIME)),
                 "isSetChangedOn"));
-    }
-
-    @Test
-    public void createCopyFileSmbInfoSetsProperties() {
-        FileSmbProperties smbProperties = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE))
-            .setFileCreationTime(TIME)
-            .setFileLastWriteTime(TIME)
-            .setFileChangeTime(TIME);
-        ShareFileCopyOptions options
-            = new ShareFileCopyOptions().setPermissionCopyModeType(PermissionCopyModeType.SOURCE)
-                .setIgnoreReadOnly(true)
-                .setArchiveAttribute(false);
-
-        CopyFileSmbInfo smbInfo = ModelHelper.createCopyFileSmbInfo(options, smbProperties);
-
-        assertEquals(PermissionCopyModeType.SOURCE, smbInfo.getFilePermissionCopyMode());
-        assertEquals(NtfsFileAttributes.toString(smbProperties.getNtfsFileAttributes()), smbInfo.getFileAttributes());
-        assertEquals(SMB_TIME, smbInfo.getFileCreationTime());
-        assertEquals(SMB_TIME, smbInfo.getFileLastWriteTime());
-        assertEquals(SMB_TIME, smbInfo.getFileChangeTime());
-        assertEquals(true, smbInfo.isIgnoreReadOnly());
-        assertEquals(false, smbInfo.isSetArchiveAttribute());
-    }
-
-    @Test
-    public void createCopyFileSmbInfoLeavesCopiedPropertiesUnset() {
-        CopyableFileSmbPropertiesList copyAll = new CopyableFileSmbPropertiesList().setFileAttributes(true)
-            .setCreatedOn(true)
-            .setLastWrittenOn(true)
-            .setChangedOn(true);
-        ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbPropertiesToCopy(copyAll);
-
-        CopyFileSmbInfo smbInfo = ModelHelper.createCopyFileSmbInfo(options, new FileSmbProperties());
-
-        assertNull(smbInfo.getFileAttributes());
-        assertNull(smbInfo.getFileCreationTime());
-        assertNull(smbInfo.getFileLastWriteTime());
-        assertNull(smbInfo.getFileChangeTime());
-        assertNull(smbInfo.getFilePermissionCopyMode());
     }
 
     private static Function<CopyableFileSmbPropertiesList, CopyableFileSmbPropertiesList>

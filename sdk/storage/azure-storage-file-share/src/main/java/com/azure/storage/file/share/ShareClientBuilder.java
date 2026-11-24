@@ -675,7 +675,7 @@ public class ShareClientBuilder implements TokenCredentialTrait<ShareClientBuild
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
                 perRetryPolicies, configuration, audience, LOGGER);
 
-        return new AzureFileStorageImpl(pipeline, serviceVersion.getVersion(), shareTokenIntent, endpoint,
-            allowTrailingDot, allowSourceTrailingDot);
+        return new AzureFileStorageImpl(pipeline, endpoint, shareTokenIntent, allowTrailingDot, allowSourceTrailingDot,
+            serviceVersion);
     }
 }
