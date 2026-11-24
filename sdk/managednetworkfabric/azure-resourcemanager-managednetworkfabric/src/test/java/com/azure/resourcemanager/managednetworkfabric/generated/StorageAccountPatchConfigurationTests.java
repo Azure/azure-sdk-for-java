@@ -14,24 +14,25 @@ public final class StorageAccountPatchConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageAccountPatchConfiguration model = BinaryData.fromString(
-            "{\"storageAccountId\":\"ev\",\"storageAccountIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"pfhga\"}}")
+            "{\"storageAccountId\":\"fgnyscaccpt\",\"storageAccountIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"y\"}}")
             .toObject(StorageAccountPatchConfiguration.class);
-        Assertions.assertEquals("ev", model.storageAccountId());
+        Assertions.assertEquals("fgnyscaccpt", model.storageAccountId());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.storageAccountIdentity().identityType());
-        Assertions.assertEquals("pfhga", model.storageAccountIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("y", model.storageAccountIdentity().userAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageAccountPatchConfiguration model = new StorageAccountPatchConfiguration().withStorageAccountId("ev")
-            .withStorageAccountIdentity(new IdentitySelectorPatch()
-                .withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
-                .withUserAssignedIdentityResourceId("pfhga"));
+        StorageAccountPatchConfiguration model
+            = new StorageAccountPatchConfiguration().withStorageAccountId("fgnyscaccpt")
+                .withStorageAccountIdentity(new IdentitySelectorPatch()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId("y"));
         model = BinaryData.fromObject(model).toObject(StorageAccountPatchConfiguration.class);
-        Assertions.assertEquals("ev", model.storageAccountId());
+        Assertions.assertEquals("fgnyscaccpt", model.storageAccountId());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.storageAccountIdentity().identityType());
-        Assertions.assertEquals("pfhga", model.storageAccountIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("y", model.storageAccountIdentity().userAssignedIdentityResourceId());
     }
 }

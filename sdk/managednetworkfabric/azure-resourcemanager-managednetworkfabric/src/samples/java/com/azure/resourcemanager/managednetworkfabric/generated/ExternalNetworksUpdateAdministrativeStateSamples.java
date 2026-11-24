@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ExternalNetworksUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/ExternalNetworks_UpdateAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/ExternalNetworks_UpdateAdministrativeState.json
      */
     /**
      * Sample code: ExternalNetworks_UpdateAdministrativeState_MaximumSet_Gen.

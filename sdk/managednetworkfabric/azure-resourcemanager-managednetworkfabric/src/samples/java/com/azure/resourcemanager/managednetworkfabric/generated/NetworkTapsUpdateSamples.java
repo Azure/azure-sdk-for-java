@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class NetworkTapsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkTaps_Update.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkTaps_Update.json
      */
     /**
      * Sample code: NetworkTaps_Update_MaximumSet_Gen.

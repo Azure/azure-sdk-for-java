@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
@@ -244,6 +245,15 @@ public final class NeighborGroupInner extends Resource {
      */
     public ConfigurationState configurationState() {
         return this.innerProperties() == null ? null : this.innerProperties().configurationState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     * 
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
     }
 
     /**

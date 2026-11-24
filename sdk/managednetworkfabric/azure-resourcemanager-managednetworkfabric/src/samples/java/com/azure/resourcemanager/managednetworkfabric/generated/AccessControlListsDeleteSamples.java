@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class AccessControlListsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/AccessControlLists_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/AccessControlLists_Delete.json
      */
     /**
      * Sample code: AccessControlLists_Delete_MaximumSet_Gen.

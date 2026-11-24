@@ -23,7 +23,7 @@ public final class IpExtendedCommunitiesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"annotation\":\"uvaejyaf\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":68814974622341063,\"routeTargets\":[\"xvdn\"]},{\"action\":\"Permit\",\"sequenceNumber\":6913517984931682319,\"routeTargets\":[\"tulwgpdzlf\",\"bi\"]}],\"networkFabricId\":\"gmxynwaofnoiphwa\",\"lastOperation\":{\"details\":\"ugxjtuhidjws\"},\"configurationState\":\"Provisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\"},\"location\":\"jwadvfqrvtymn\",\"tags\":{\"t\":\"dmjdp\",\"rqbfimageiqjne\":\"pjrbnzbe\",\"rpjmevszbjnqktok\":\"rhxsktu\",\"b\":\"jckm\"},\"id\":\"xxdxnhinn\",\"name\":\"akqwtozxltjsf\",\"type\":\"x\"}]}";
+            = "{\"value\":[{\"properties\":{\"annotation\":\"uvaejyaf\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":68814974622341063,\"routeTargets\":[\"xvdn\"]},{\"action\":\"Permit\",\"sequenceNumber\":6913517984931682319,\"routeTargets\":[\"tulwgpdzlf\",\"bi\"]}],\"networkFabricId\":\"gmxynwaofnoiphwa\",\"lastOperation\":{\"details\":\"ugxjtuhidjws\"},\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\"},\"location\":\"jwadvfqrvtymn\",\"tags\":{\"t\":\"dmjdp\",\"rqbfimageiqjne\":\"pjrbnzbe\",\"rpjmevszbjnqktok\":\"rhxsktu\",\"b\":\"jckm\"},\"id\":\"xxdxnhinn\",\"name\":\"akqwtozxltjsf\",\"type\":\"x\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsProvisionSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_Provision.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_Provision.json
      */
     /**
      * Sample code: NetworkFabrics_Provision_MaximumSet_Gen.

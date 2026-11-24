@@ -26,7 +26,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.ManagedNetworkFabricManagementClient;
 import com.azure.resourcemanager.managednetworkfabric.implementation.AccessControlListsImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.EdgeConnectorsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.ExternalNetworksImpl;
+import com.azure.resourcemanager.managednetworkfabric.implementation.FabricsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.InternalNetworksImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.InternetGatewayRulesImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.InternetGatewaysImpl;
@@ -54,7 +56,9 @@ import com.azure.resourcemanager.managednetworkfabric.implementation.NetworkToNe
 import com.azure.resourcemanager.managednetworkfabric.implementation.OperationsImpl;
 import com.azure.resourcemanager.managednetworkfabric.implementation.RoutePoliciesImpl;
 import com.azure.resourcemanager.managednetworkfabric.models.AccessControlLists;
+import com.azure.resourcemanager.managednetworkfabric.models.EdgeConnectors;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworks;
+import com.azure.resourcemanager.managednetworkfabric.models.Fabrics;
 import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworks;
 import com.azure.resourcemanager.managednetworkfabric.models.InternetGatewayRules;
 import com.azure.resourcemanager.managednetworkfabric.models.InternetGateways;
@@ -146,6 +150,10 @@ public final class ManagedNetworkFabricManager {
     private NetworkBootstrapDevices networkBootstrapDevices;
 
     private NetworkBootstrapInterfaces networkBootstrapInterfaces;
+
+    private EdgeConnectors edgeConnectors;
+
+    private Fabrics fabrics;
 
     private final ManagedNetworkFabricManagementClient clientObject;
 
@@ -688,6 +696,30 @@ public final class ManagedNetworkFabricManager {
                 = new NetworkBootstrapInterfacesImpl(clientObject.getNetworkBootstrapInterfaces(), this);
         }
         return networkBootstrapInterfaces;
+    }
+
+    /**
+     * Gets the resource collection API of EdgeConnectors. It manages EdgeConnector.
+     * 
+     * @return Resource collection API of EdgeConnectors.
+     */
+    public EdgeConnectors edgeConnectors() {
+        if (this.edgeConnectors == null) {
+            this.edgeConnectors = new EdgeConnectorsImpl(clientObject.getEdgeConnectors(), this);
+        }
+        return edgeConnectors;
+    }
+
+    /**
+     * Gets the resource collection API of Fabrics. It manages Fabric.
+     * 
+     * @return Resource collection API of Fabrics.
+     */
+    public Fabrics fabrics() {
+        if (this.fabrics == null) {
+            this.fabrics = new FabricsImpl(clientObject.getFabrics(), this);
+        }
+        return fabrics;
     }
 
     /**

@@ -14,27 +14,27 @@ public final class NetworkTapRuleActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkTapRuleAction model = BinaryData.fromString(
-            "{\"type\":\"Redirect\",\"truncate\":\"law\",\"isTimestampEnabled\":\"False\",\"destinationId\":\"qabjropxfqdmllz\",\"matchConfigurationName\":\"jyuwq\"}")
+            "{\"type\":\"Replicate\",\"truncate\":\"lsrvq\",\"isTimestampEnabled\":\"True\",\"destinationId\":\"sosrnjlvgrghnh\",\"matchConfigurationName\":\"xrqhj\"}")
             .toObject(NetworkTapRuleAction.class);
-        Assertions.assertEquals(TapRuleActionType.REDIRECT, model.type());
-        Assertions.assertEquals("law", model.truncate());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.isTimestampEnabled());
-        Assertions.assertEquals("qabjropxfqdmllz", model.destinationId());
-        Assertions.assertEquals("jyuwq", model.matchConfigurationName());
+        Assertions.assertEquals(TapRuleActionType.REPLICATE, model.type());
+        Assertions.assertEquals("lsrvq", model.truncate());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.isTimestampEnabled());
+        Assertions.assertEquals("sosrnjlvgrghnh", model.destinationId());
+        Assertions.assertEquals("xrqhj", model.matchConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapRuleAction model = new NetworkTapRuleAction().withType(TapRuleActionType.REDIRECT)
-            .withTruncate("law")
-            .withIsTimestampEnabled(BooleanEnumProperty.FALSE)
-            .withDestinationId("qabjropxfqdmllz")
-            .withMatchConfigurationName("jyuwq");
+        NetworkTapRuleAction model = new NetworkTapRuleAction().withType(TapRuleActionType.REPLICATE)
+            .withTruncate("lsrvq")
+            .withIsTimestampEnabled(BooleanEnumProperty.TRUE)
+            .withDestinationId("sosrnjlvgrghnh")
+            .withMatchConfigurationName("xrqhj");
         model = BinaryData.fromObject(model).toObject(NetworkTapRuleAction.class);
-        Assertions.assertEquals(TapRuleActionType.REDIRECT, model.type());
-        Assertions.assertEquals("law", model.truncate());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.isTimestampEnabled());
-        Assertions.assertEquals("qabjropxfqdmllz", model.destinationId());
-        Assertions.assertEquals("jyuwq", model.matchConfigurationName());
+        Assertions.assertEquals(TapRuleActionType.REPLICATE, model.type());
+        Assertions.assertEquals("lsrvq", model.truncate());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.isTimestampEnabled());
+        Assertions.assertEquals("sosrnjlvgrghnh", model.destinationId());
+        Assertions.assertEquals("xrqhj", model.matchConfigurationName());
     }
 }

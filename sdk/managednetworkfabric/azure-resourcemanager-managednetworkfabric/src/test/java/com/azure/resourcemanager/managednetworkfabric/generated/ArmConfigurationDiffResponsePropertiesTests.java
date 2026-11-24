@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmConfigurationDiffResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmConfigurationDiffResponseProperties model = BinaryData.fromString("{\"configurationDiffUrl\":\"ronsdunr\"}")
-            .toObject(ArmConfigurationDiffResponseProperties.class);
-        Assertions.assertEquals("ronsdunr", model.configurationDiffUrl());
+        ArmConfigurationDiffResponseProperties model
+            = BinaryData.fromString("{\"configurationDiffUrl\":\"igcfddofxnf\"}")
+                .toObject(ArmConfigurationDiffResponseProperties.class);
+        Assertions.assertEquals("igcfddofxnf", model.configurationDiffUrl());
     }
 }

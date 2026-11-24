@@ -21,7 +21,7 @@ public final class NetworkFabricSkusGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":1929977189,\"maximumServerCount\":898198822,\"supportedVersions\":[\"xehmnizoybtehk\",\"tlnmmyznwrc\",\"qwkqulkzov\"],\"details\":\"hwiwhrqxjxlssosn\",\"provisioningState\":\"Deleting\"},\"id\":\"xnsjjjcdd\",\"name\":\"vg\",\"type\":\"bfn\"}";
+            = "{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":688772296,\"maximumServerCount\":1635172751,\"supportedVersions\":[\"zp\",\"hfejgpef\",\"boxvwtlnv\",\"shtujaqpkupnr\"],\"details\":\"jeypdk\",\"provisioningState\":\"Failed\"},\"id\":\"zsyn\",\"name\":\"d\",\"type\":\"q\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class NetworkFabricSkusGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkFabricSku response
-            = manager.networkFabricSkus().getWithResponse("cjighmkd", com.azure.core.util.Context.NONE).getValue();
+            = manager.networkFabricSkus().getWithResponse("zyadafecwnufl", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(1929977189, response.maxComputeRacks());
-        Assertions.assertEquals(898198822, response.maximumServerCount());
+        Assertions.assertEquals(688772296, response.maxComputeRacks());
+        Assertions.assertEquals(1635172751, response.maximumServerCount());
     }
 }

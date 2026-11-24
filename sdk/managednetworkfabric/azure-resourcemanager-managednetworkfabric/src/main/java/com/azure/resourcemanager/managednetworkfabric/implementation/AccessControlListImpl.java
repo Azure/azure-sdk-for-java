@@ -29,7 +29,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProper
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -272,11 +272,11 @@ public final class AccessControlListImpl
         return serviceManager.accessControlLists().resync(resourceGroupName, accessControlListName, context);
     }
 
-    public ValidateConfigurationResponse validateConfiguration() {
+    public ValidateConfigurationResponseV2 validateConfiguration() {
         return serviceManager.accessControlLists().validateConfiguration(resourceGroupName, accessControlListName);
     }
 
-    public ValidateConfigurationResponse validateConfiguration(Context context) {
+    public ValidateConfigurationResponseV2 validateConfiguration(Context context) {
         return serviceManager.accessControlLists()
             .validateConfiguration(resourceGroupName, accessControlListName, context);
     }

@@ -13,25 +13,25 @@ public final class RouteTargetPatchInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteTargetPatchInformation model = BinaryData.fromString(
-            "{\"importIpv4RouteTargets\":[\"auqmllfeoth\"],\"importIpv6RouteTargets\":[\"rigrjdljlkq\",\"vkrbzkuastaxklpr\",\"ulhgltoiz\",\"xvsc\"],\"exportIpv4RouteTargets\":[\"fyy\",\"ky\"],\"exportIpv6RouteTargets\":[\"afxcz\",\"fcck\"]}")
+            "{\"importIpv4RouteTargets\":[\"gxyxyauxredd\",\"bmcnltmwytku\",\"sqycmmoxfablqg\"],\"importIpv6RouteTargets\":[\"mwh\",\"ialiwry\",\"gnwplrrb\"],\"exportIpv4RouteTargets\":[\"tsbbibtic\",\"hqvumspbfs\"],\"exportIpv6RouteTargets\":[\"bbewfcu\",\"fpyyxmzrmtm\",\"wi\",\"uweyyjshcyb\"]}")
             .toObject(RouteTargetPatchInformation.class);
-        Assertions.assertEquals("auqmllfeoth", model.importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("rigrjdljlkq", model.importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("fyy", model.exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("afxcz", model.exportIpv6RouteTargets().get(0));
+        Assertions.assertEquals("gxyxyauxredd", model.importIpv4RouteTargets().get(0));
+        Assertions.assertEquals("mwh", model.importIpv6RouteTargets().get(0));
+        Assertions.assertEquals("tsbbibtic", model.exportIpv4RouteTargets().get(0));
+        Assertions.assertEquals("bbewfcu", model.exportIpv6RouteTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteTargetPatchInformation model
-            = new RouteTargetPatchInformation().withImportIpv4RouteTargets(Arrays.asList("auqmllfeoth"))
-                .withImportIpv6RouteTargets(Arrays.asList("rigrjdljlkq", "vkrbzkuastaxklpr", "ulhgltoiz", "xvsc"))
-                .withExportIpv4RouteTargets(Arrays.asList("fyy", "ky"))
-                .withExportIpv6RouteTargets(Arrays.asList("afxcz", "fcck"));
+        RouteTargetPatchInformation model = new RouteTargetPatchInformation()
+            .withImportIpv4RouteTargets(Arrays.asList("gxyxyauxredd", "bmcnltmwytku", "sqycmmoxfablqg"))
+            .withImportIpv6RouteTargets(Arrays.asList("mwh", "ialiwry", "gnwplrrb"))
+            .withExportIpv4RouteTargets(Arrays.asList("tsbbibtic", "hqvumspbfs"))
+            .withExportIpv6RouteTargets(Arrays.asList("bbewfcu", "fpyyxmzrmtm", "wi", "uweyyjshcyb"));
         model = BinaryData.fromObject(model).toObject(RouteTargetPatchInformation.class);
-        Assertions.assertEquals("auqmllfeoth", model.importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("rigrjdljlkq", model.importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("fyy", model.exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("afxcz", model.exportIpv6RouteTargets().get(0));
+        Assertions.assertEquals("gxyxyauxredd", model.importIpv4RouteTargets().get(0));
+        Assertions.assertEquals("mwh", model.importIpv6RouteTargets().get(0));
+        Assertions.assertEquals("tsbbibtic", model.exportIpv4RouteTargets().get(0));
+        Assertions.assertEquals("bbewfcu", model.exportIpv6RouteTargets().get(0));
     }
 }

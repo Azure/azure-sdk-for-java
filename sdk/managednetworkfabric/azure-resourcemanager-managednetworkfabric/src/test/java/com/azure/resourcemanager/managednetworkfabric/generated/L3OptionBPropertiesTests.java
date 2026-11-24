@@ -14,33 +14,31 @@ public final class L3OptionBPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3OptionBProperties model = BinaryData.fromString(
-            "{\"importRouteTargets\":[\"gzhogsmgbvmtd\",\"rqbebjnfveglab\",\"vkbiw\",\"nhtfgfi\"],\"exportRouteTargets\":[\"yhizpaczmu\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"kznhokhoitwhrj\",\"dmmazdnc\",\"idb\",\"pglhzqp\"],\"importIpv6RouteTargets\":[\"awkikcdgfh\",\"ssdpjeyoqxded\",\"cfiwhagxsurejq\"],\"exportIpv4RouteTargets\":[\"zzbgullcxiqqz\",\"koxdupnamgl\",\"ouigdmfivjqte\",\"dqqigdydkghpc\"],\"exportIpv6RouteTargets\":[\"qirvtk\",\"yhhmvfxl\",\"pjajodmkrrwe\"]}}")
+            "{\"importRouteTargets\":[\"mlree\",\"rfwss\",\"vlcwlisolntfxxc\",\"qmipfj\"],\"exportRouteTargets\":[\"ygizmshxx\",\"aizabu\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"skjto\"],\"importIpv6RouteTargets\":[\"zjsjzn\"],\"exportIpv4RouteTargets\":[\"qqmqipaydhfn\"],\"exportIpv6RouteTargets\":[\"xmtf\"]}}")
             .toObject(L3OptionBProperties.class);
-        Assertions.assertEquals("gzhogsmgbvmtd", model.importRouteTargets().get(0));
-        Assertions.assertEquals("yhizpaczmu", model.exportRouteTargets().get(0));
-        Assertions.assertEquals("kznhokhoitwhrj", model.routeTargets().importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("awkikcdgfh", model.routeTargets().importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("zzbgullcxiqqz", model.routeTargets().exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("qirvtk", model.routeTargets().exportIpv6RouteTargets().get(0));
+        Assertions.assertEquals("mlree", model.importRouteTargets().get(0));
+        Assertions.assertEquals("ygizmshxx", model.exportRouteTargets().get(0));
+        Assertions.assertEquals("skjto", model.routeTargets().importIpv4RouteTargets().get(0));
+        Assertions.assertEquals("zjsjzn", model.routeTargets().importIpv6RouteTargets().get(0));
+        Assertions.assertEquals("qqmqipaydhfn", model.routeTargets().exportIpv4RouteTargets().get(0));
+        Assertions.assertEquals("xmtf", model.routeTargets().exportIpv6RouteTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L3OptionBProperties model = new L3OptionBProperties()
-            .withImportRouteTargets(Arrays.asList("gzhogsmgbvmtd", "rqbebjnfveglab", "vkbiw", "nhtfgfi"))
-            .withExportRouteTargets(Arrays.asList("yhizpaczmu"))
-            .withRouteTargets(new RouteTargetInformation()
-                .withImportIpv4RouteTargets(Arrays.asList("kznhokhoitwhrj", "dmmazdnc", "idb", "pglhzqp"))
-                .withImportIpv6RouteTargets(Arrays.asList("awkikcdgfh", "ssdpjeyoqxded", "cfiwhagxsurejq"))
-                .withExportIpv4RouteTargets(
-                    Arrays.asList("zzbgullcxiqqz", "koxdupnamgl", "ouigdmfivjqte", "dqqigdydkghpc"))
-                .withExportIpv6RouteTargets(Arrays.asList("qirvtk", "yhhmvfxl", "pjajodmkrrwe")));
+            .withImportRouteTargets(Arrays.asList("mlree", "rfwss", "vlcwlisolntfxxc", "qmipfj"))
+            .withExportRouteTargets(Arrays.asList("ygizmshxx", "aizabu"))
+            .withRouteTargets(new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("skjto"))
+                .withImportIpv6RouteTargets(Arrays.asList("zjsjzn"))
+                .withExportIpv4RouteTargets(Arrays.asList("qqmqipaydhfn"))
+                .withExportIpv6RouteTargets(Arrays.asList("xmtf")));
         model = BinaryData.fromObject(model).toObject(L3OptionBProperties.class);
-        Assertions.assertEquals("gzhogsmgbvmtd", model.importRouteTargets().get(0));
-        Assertions.assertEquals("yhizpaczmu", model.exportRouteTargets().get(0));
-        Assertions.assertEquals("kznhokhoitwhrj", model.routeTargets().importIpv4RouteTargets().get(0));
-        Assertions.assertEquals("awkikcdgfh", model.routeTargets().importIpv6RouteTargets().get(0));
-        Assertions.assertEquals("zzbgullcxiqqz", model.routeTargets().exportIpv4RouteTargets().get(0));
-        Assertions.assertEquals("qirvtk", model.routeTargets().exportIpv6RouteTargets().get(0));
+        Assertions.assertEquals("mlree", model.importRouteTargets().get(0));
+        Assertions.assertEquals("ygizmshxx", model.exportRouteTargets().get(0));
+        Assertions.assertEquals("skjto", model.routeTargets().importIpv4RouteTargets().get(0));
+        Assertions.assertEquals("zjsjzn", model.routeTargets().importIpv6RouteTargets().get(0));
+        Assertions.assertEquals("qqmqipaydhfn", model.routeTargets().exportIpv4RouteTargets().get(0));
+        Assertions.assertEquals("xmtf", model.routeTargets().exportIpv6RouteTargets().get(0));
     }
 }

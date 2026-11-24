@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class InternalNetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-15/InternalNetworks_Delete.json
+     * x-ms-original-file: 2026-01-15-preview/InternalNetworks_Delete.json
      */
     /**
      * Sample code: InternalNetworks_Delete_MaximumSet_Gen.

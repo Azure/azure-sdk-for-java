@@ -14,24 +14,24 @@ public final class StorageAccountConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageAccountConfiguration model = BinaryData.fromString(
-            "{\"storageAccountId\":\"xclfrs\",\"storageAccountIdentity\":{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"muvwvp\"}}")
+            "{\"storageAccountId\":\"vsnvbtqdxfmj\",\"storageAccountIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"hjluqllbsupubdx\"}}")
             .toObject(StorageAccountConfiguration.class);
-        Assertions.assertEquals("xclfrs", model.storageAccountId());
-        Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
+        Assertions.assertEquals("vsnvbtqdxfmj", model.storageAccountId());
+        Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.storageAccountIdentity().identityType());
-        Assertions.assertEquals("muvwvp", model.storageAccountIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("hjluqllbsupubdx", model.storageAccountIdentity().userAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageAccountConfiguration model = new StorageAccountConfiguration().withStorageAccountId("xclfrs")
+        StorageAccountConfiguration model = new StorageAccountConfiguration().withStorageAccountId("vsnvbtqdxfmj")
             .withStorageAccountIdentity(
-                new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
-                    .withUserAssignedIdentityResourceId("muvwvp"));
+                new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId("hjluqllbsupubdx"));
         model = BinaryData.fromObject(model).toObject(StorageAccountConfiguration.class);
-        Assertions.assertEquals("xclfrs", model.storageAccountId());
-        Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
+        Assertions.assertEquals("vsnvbtqdxfmj", model.storageAccountId());
+        Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.storageAccountIdentity().identityType());
-        Assertions.assertEquals("muvwvp", model.storageAccountIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("hjluqllbsupubdx", model.storageAccountIdentity().userAssignedIdentityResourceId());
     }
 }

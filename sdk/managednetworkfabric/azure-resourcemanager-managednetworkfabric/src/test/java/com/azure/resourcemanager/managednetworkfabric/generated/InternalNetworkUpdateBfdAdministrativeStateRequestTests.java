@@ -14,22 +14,22 @@ public final class InternalNetworkUpdateBfdAdministrativeStateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternalNetworkUpdateBfdAdministrativeStateRequest model = BinaryData
-            .fromString("{\"routeType\":\"Bgp\",\"neighborAddress\":\"njhx\",\"administrativeState\":\"MAT\"}")
+            .fromString("{\"routeType\":\"Bgp\",\"neighborAddress\":\"bgiark\",\"administrativeState\":\"RMA\"}")
             .toObject(InternalNetworkUpdateBfdAdministrativeStateRequest.class);
         Assertions.assertEquals(InternalNetworkRouteType.BGP, model.routeType());
-        Assertions.assertEquals("njhx", model.neighborAddress());
-        Assertions.assertEquals(BfdAdministrativeState.MAT, model.administrativeState());
+        Assertions.assertEquals("bgiark", model.neighborAddress());
+        Assertions.assertEquals(BfdAdministrativeState.RMA, model.administrativeState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InternalNetworkUpdateBfdAdministrativeStateRequest model
             = new InternalNetworkUpdateBfdAdministrativeStateRequest().withRouteType(InternalNetworkRouteType.BGP)
-                .withNeighborAddress("njhx")
-                .withAdministrativeState(BfdAdministrativeState.MAT);
+                .withNeighborAddress("bgiark")
+                .withAdministrativeState(BfdAdministrativeState.RMA);
         model = BinaryData.fromObject(model).toObject(InternalNetworkUpdateBfdAdministrativeStateRequest.class);
         Assertions.assertEquals(InternalNetworkRouteType.BGP, model.routeType());
-        Assertions.assertEquals("njhx", model.neighborAddress());
-        Assertions.assertEquals(BfdAdministrativeState.MAT, model.administrativeState());
+        Assertions.assertEquals("bgiark", model.neighborAddress());
+        Assertions.assertEquals(BfdAdministrativeState.RMA, model.administrativeState());
     }
 }

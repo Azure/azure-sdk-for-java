@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class RoutePoliciesUpdateAdministrativeStateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/RoutePolicies_UpdateAdministrativeState.json
+     * x-ms-original-file: 2026-01-15-preview/RoutePolicies_UpdateAdministrativeState.json
      */
     /**
      * Sample code: RoutePolicies_UpdateAdministrativeState_MaximumSet_Gen.

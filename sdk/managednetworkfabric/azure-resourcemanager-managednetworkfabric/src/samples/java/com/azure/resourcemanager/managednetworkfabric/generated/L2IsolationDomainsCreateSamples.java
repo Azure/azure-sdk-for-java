@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class L2IsolationDomainsCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-15/L2IsolationDomains_Create.json
+     * x-ms-original-file: 2026-01-15-preview/L2IsolationDomains_Create.json
      */
     /**
      * Sample code: L2IsolationDomains_Create_MaximumSet_Gen.

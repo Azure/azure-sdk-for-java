@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UpgradeNetworkFabricPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpgradeNetworkFabricProperties model = BinaryData.fromString("{\"action\":\"Start\",\"version\":\"lwkyeahhh\"}")
-            .toObject(UpgradeNetworkFabricProperties.class);
-        Assertions.assertEquals("lwkyeahhh", model.version());
-        Assertions.assertEquals(NetworkFabricUpgradeAction.START, model.action());
+        UpgradeNetworkFabricProperties model
+            = BinaryData.fromString("{\"action\":\"Complete\",\"version\":\"wmehfxrttxbmsenn\"}")
+                .toObject(UpgradeNetworkFabricProperties.class);
+        Assertions.assertEquals("wmehfxrttxbmsenn", model.version());
+        Assertions.assertEquals(NetworkFabricUpgradeAction.COMPLETE, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpgradeNetworkFabricProperties model = new UpgradeNetworkFabricProperties().withVersion("lwkyeahhh")
-            .withAction(NetworkFabricUpgradeAction.START);
+        UpgradeNetworkFabricProperties model = new UpgradeNetworkFabricProperties().withVersion("wmehfxrttxbmsenn")
+            .withAction(NetworkFabricUpgradeAction.COMPLETE);
         model = BinaryData.fromObject(model).toObject(UpgradeNetworkFabricProperties.class);
-        Assertions.assertEquals("lwkyeahhh", model.version());
-        Assertions.assertEquals(NetworkFabricUpgradeAction.START, model.action());
+        Assertions.assertEquals("wmehfxrttxbmsenn", model.version());
+        Assertions.assertEquals(NetworkFabricUpgradeAction.COMPLETE, model.action());
     }
 }

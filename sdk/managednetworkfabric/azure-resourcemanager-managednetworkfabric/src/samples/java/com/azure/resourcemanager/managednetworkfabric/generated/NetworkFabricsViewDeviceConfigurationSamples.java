@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkFabricsViewDeviceConfigurationSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_ViewDeviceConfiguration.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_ViewDeviceConfiguration.json
      */
     /**
      * Sample code: NetworkFabrics_ViewDeviceConfiguration_MaximumSet.

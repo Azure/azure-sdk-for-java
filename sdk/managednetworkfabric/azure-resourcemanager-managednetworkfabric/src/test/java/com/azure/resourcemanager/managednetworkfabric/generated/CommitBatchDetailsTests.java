@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitBatchDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitBatchDetails model
-            = BinaryData.fromString("{\"failedDevices\":[\"ih\",\"swxmfurqm\",\"mwwpnt\",\"motahbqsvnk\"]}")
-                .toObject(CommitBatchDetails.class);
-        Assertions.assertEquals("ih", model.failedDevices().get(0));
+        CommitBatchDetails model = BinaryData.fromString("{\"failedDevices\":[\"bx\",\"bmwdukinhlxhgde\"]}")
+            .toObject(CommitBatchDetails.class);
+        Assertions.assertEquals("bx", model.failedDevices().get(0));
     }
 }

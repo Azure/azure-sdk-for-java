@@ -14,9 +14,9 @@ public final class ExternalNetworkUpdateBfdAdministrativeStateResponseProperties
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalNetworkUpdateBfdAdministrativeStateResponseProperties model
-            = BinaryData.fromString("{\"routeType\":\"Static\",\"administrativeState\":\"Disabled\"}")
+            = BinaryData.fromString("{\"routeType\":\"OptionA\",\"administrativeState\":\"MAT\"}")
                 .toObject(ExternalNetworkUpdateBfdAdministrativeStateResponseProperties.class);
-        Assertions.assertEquals(ExternalNetworkRouteType.STATIC, model.routeType());
-        Assertions.assertEquals(BfdAdministrativeState.DISABLED, model.administrativeState());
+        Assertions.assertEquals(ExternalNetworkRouteType.OPTIONA, model.routeType());
+        Assertions.assertEquals(BfdAdministrativeState.MAT, model.administrativeState());
     }
 }

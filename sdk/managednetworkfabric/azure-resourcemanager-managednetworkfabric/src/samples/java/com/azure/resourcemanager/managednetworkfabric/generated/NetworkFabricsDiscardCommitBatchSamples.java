@@ -11,7 +11,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.DiscardCommitBatchR
  */
 public final class NetworkFabricsDiscardCommitBatchSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkFabrics_DiscardCommitBatch.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkFabrics_DiscardCommitBatch.json
      */
     /**
      * Sample code: NetworkFabrics_DiscardCommitBatch.

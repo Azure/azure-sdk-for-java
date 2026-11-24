@@ -6,28 +6,32 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkBootstrapDevicePatchProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class NetworkBootstrapDevicePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkBootstrapDevicePatchProperties model = BinaryData.fromString(
-            "{\"annotation\":\"rzplhaljomg\",\"hostName\":\"rprraptvbjenylg\",\"serialNumber\":\"rsnvofuyzvbploa\"}")
+            "{\"annotation\":\"yvgjjpfyxhsppvj\",\"hostName\":\"uouoqtenq\",\"serialNumber\":\"muogeq\",\"controlPlaneAcls\":[\"aseqcppypfre\",\"wvzhndyvtoiqo\"]}")
             .toObject(NetworkBootstrapDevicePatchProperties.class);
-        Assertions.assertEquals("rzplhaljomg", model.annotation());
-        Assertions.assertEquals("rprraptvbjenylg", model.hostName());
-        Assertions.assertEquals("rsnvofuyzvbploa", model.serialNumber());
+        Assertions.assertEquals("yvgjjpfyxhsppvj", model.annotation());
+        Assertions.assertEquals("uouoqtenq", model.hostName());
+        Assertions.assertEquals("muogeq", model.serialNumber());
+        Assertions.assertEquals("aseqcppypfre", model.controlPlaneAcls().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkBootstrapDevicePatchProperties model
-            = new NetworkBootstrapDevicePatchProperties().withAnnotation("rzplhaljomg")
-                .withHostName("rprraptvbjenylg")
-                .withSerialNumber("rsnvofuyzvbploa");
+            = new NetworkBootstrapDevicePatchProperties().withAnnotation("yvgjjpfyxhsppvj")
+                .withHostName("uouoqtenq")
+                .withSerialNumber("muogeq")
+                .withControlPlaneAcls(Arrays.asList("aseqcppypfre", "wvzhndyvtoiqo"));
         model = BinaryData.fromObject(model).toObject(NetworkBootstrapDevicePatchProperties.class);
-        Assertions.assertEquals("rzplhaljomg", model.annotation());
-        Assertions.assertEquals("rprraptvbjenylg", model.hostName());
-        Assertions.assertEquals("rsnvofuyzvbploa", model.serialNumber());
+        Assertions.assertEquals("yvgjjpfyxhsppvj", model.annotation());
+        Assertions.assertEquals("uouoqtenq", model.hostName());
+        Assertions.assertEquals("muogeq", model.serialNumber());
+        Assertions.assertEquals("aseqcppypfre", model.controlPlaneAcls().get(0));
     }
 }

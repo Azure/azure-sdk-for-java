@@ -77,6 +77,21 @@ public final class ConfigurationState extends ExpandableStringEnum<Configuration
     public static final ConfigurationState PENDING_ADMINISTRATIVE_UPDATE = fromString("PendingAdministrativeUpdate");
 
     /**
+     * Updated configuration is pushed to the selected CE device during staged commit operation.
+     */
+    public static final ConfigurationState COMMIT_STAGED = fromString("CommitStaged");
+
+    /**
+     * Pushing the updated configuration to the selected CE device failed during staged commit operation.
+     */
+    public static final ConfigurationState COMMIT_STAGE_FAILED = fromString("CommitStageFailed");
+
+    /**
+     * Rollback of configuration failed during staged commit rollback operation.
+     */
+    public static final ConfigurationState COMMIT_ROLLBACK_FAILED = fromString("CommitRollbackFailed");
+
+    /**
      * Creates a new instance of ConfigurationState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

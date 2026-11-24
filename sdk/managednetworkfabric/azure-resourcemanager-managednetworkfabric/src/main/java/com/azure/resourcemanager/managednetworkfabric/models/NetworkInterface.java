@@ -132,6 +132,14 @@ public interface NetworkInterface {
     ConfigurationState configurationState();
 
     /**
+     * Gets the operationalState property: Operational state of networkInterface indicating if the interface is
+     * reachable.
+     * 
+     * @return the operationalState value.
+     */
+    OperationalState operationalState();
+
+    /**
      * Gets the annotation property: Switch configuration description.
      * 
      * @return the annotation value.

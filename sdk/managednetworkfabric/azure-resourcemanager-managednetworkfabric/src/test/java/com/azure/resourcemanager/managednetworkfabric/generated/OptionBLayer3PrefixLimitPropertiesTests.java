@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class OptionBLayer3PrefixLimitPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OptionBLayer3PrefixLimitProperties model = BinaryData.fromString("{\"maximumRoutes\":1531671679}")
-            .toObject(OptionBLayer3PrefixLimitProperties.class);
-        Assertions.assertEquals(1531671679, model.maximumRoutes());
+        OptionBLayer3PrefixLimitProperties model
+            = BinaryData.fromString("{\"maximumRoutes\":490778125}").toObject(OptionBLayer3PrefixLimitProperties.class);
+        Assertions.assertEquals(490778125, model.maximumRoutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OptionBLayer3PrefixLimitProperties model
-            = new OptionBLayer3PrefixLimitProperties().withMaximumRoutes(1531671679);
+            = new OptionBLayer3PrefixLimitProperties().withMaximumRoutes(490778125);
         model = BinaryData.fromObject(model).toObject(OptionBLayer3PrefixLimitProperties.class);
-        Assertions.assertEquals(1531671679, model.maximumRoutes());
+        Assertions.assertEquals(490778125, model.maximumRoutes());
     }
 }

@@ -26,7 +26,7 @@ public final class NetworkTapsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"ngyqlzozmbapj\",\"sourceTapRuleId\":\"zabl\",\"networkFabricIds\":[\"tjlzkymcg\",\"bp\",\"fbgfwjqw\",\"vse\"],\"destinations\":[{\"name\":\"kxxdrgbnqmh\",\"destinationType\":\"Direct\",\"destinationId\":\"zm\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"lqbu\"]},\"destinationTapRuleId\":\"udsmdglqrkst\"}],\"pollingType\":\"Push\",\"lastOperation\":{\"details\":\"somxwsflylols\"},\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\",\"annotation\":\"glmcgy\"},\"identity\":{\"principalId\":\"qdjxurbjx\",\"tenantId\":\"rxvguzvtw\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zptngr\":{\"principalId\":\"qnvijhdcoln\",\"clientId\":\"dppiodnntolo\"},\"u\":{\"principalId\":\"vimxacx\",\"clientId\":\"czcdkomr\"}}},\"location\":\"t\",\"tags\":{\"ywjn\":\"dq\",\"hsijxm\":\"dysky\",\"suwmbdtfetrgzy\":\"iuymfx\",\"qszqkrsnx\":\"prrapghloemqapv\"},\"id\":\"ezwr\",\"name\":\"qadtv\",\"type\":\"gug\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkPacketBrokerId\":\"zpvp\",\"sourceTapRuleId\":\"tosui\",\"networkFabricIds\":[\"emocndb\",\"e\",\"rko\"],\"destinations\":[{\"name\":\"y\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"d\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"tnbk\",\"xdafilaizcd\"]},\"destinationTapRuleId\":\"nz\"},{\"name\":\"mljgayka\",\"destinationType\":\"Direct\",\"destinationId\":\"nkxoqecjznuqg\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"wshhq\",\"jvchliezfb\",\"czzjfzjovwizjrak\"]},\"destinationTapRuleId\":\"h\"},{\"name\":\"qpukltfknroxmi\",\"destinationType\":\"Direct\",\"destinationId\":\"bz\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"tvukcfesi\",\"knhcvxflzhgrn\",\"wysdmovbvnjyqq\"]},\"destinationTapRuleId\":\"dgzlykczolnd\"},{\"name\":\"rggytyvox\",\"destinationType\":\"Direct\",\"destinationId\":\"byjg\",\"isolationDomainProperties\":{\"encapsulation\":\"GRE\",\"neighborGroupIds\":[\"kfwmhzarrf\",\"txhifrjgvhonevvv\",\"bzlmk\",\"vs\"]},\"destinationTapRuleId\":\"kjowv\"}],\"pollingType\":\"Push\",\"lastOperation\":{\"details\":\"ljtlyguoth\"},\"configurationState\":\"Succeeded\",\"provisioningState\":\"Updating\",\"administrativeState\":\"EnabledDegraded\",\"annotation\":\"ergjtprii\"},\"identity\":{\"principalId\":\"yd\",\"tenantId\":\"ahmivtu\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"omnrziwk\":{\"principalId\":\"i\",\"clientId\":\"rfxft\"},\"aypcdikkmyrs\":{\"principalId\":\"xgjmyo\",\"clientId\":\"qap\"},\"jukntknjhywgz\":{\"principalId\":\"rtxggmp\",\"clientId\":\"uvasxjzklqk\"}}},\"location\":\"cwnefdehptlnw\",\"tags\":{\"geuoihtik\":\"uwbneszxn\"},\"id\":\"iwp\",\"name\":\"xyavcb\",\"type\":\"suwct\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,22 +37,20 @@ public final class NetworkTapsListMockTests {
 
         PagedIterable<NetworkTap> response = manager.networkTaps().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("t", response.iterator().next().location());
-        Assertions.assertEquals("dq", response.iterator().next().tags().get("ywjn"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
-        Assertions.assertEquals("ngyqlzozmbapj", response.iterator().next().networkPacketBrokerId());
-        Assertions.assertEquals("kxxdrgbnqmh", response.iterator().next().destinations().get(0).name());
-        Assertions.assertEquals(DestinationType.DIRECT,
+        Assertions.assertEquals("cwnefdehptlnw", response.iterator().next().location());
+        Assertions.assertEquals("uwbneszxn", response.iterator().next().tags().get("geuoihtik"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("zpvp", response.iterator().next().networkPacketBrokerId());
+        Assertions.assertEquals("y", response.iterator().next().destinations().get(0).name());
+        Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN,
             response.iterator().next().destinations().get(0).destinationType());
-        Assertions.assertEquals("zm", response.iterator().next().destinations().get(0).destinationId());
-        Assertions.assertEquals(Encapsulation.NONE,
+        Assertions.assertEquals("d", response.iterator().next().destinations().get(0).destinationId());
+        Assertions.assertEquals(Encapsulation.GRE,
             response.iterator().next().destinations().get(0).isolationDomainProperties().encapsulation());
-        Assertions.assertEquals("lqbu",
+        Assertions.assertEquals("tnbk",
             response.iterator().next().destinations().get(0).isolationDomainProperties().neighborGroupIds().get(0));
-        Assertions.assertEquals("udsmdglqrkst",
-            response.iterator().next().destinations().get(0).destinationTapRuleId());
+        Assertions.assertEquals("nz", response.iterator().next().destinations().get(0).destinationTapRuleId());
         Assertions.assertEquals(PollingType.PUSH, response.iterator().next().pollingType());
-        Assertions.assertEquals("glmcgy", response.iterator().next().annotation());
+        Assertions.assertEquals("ergjtprii", response.iterator().next().annotation());
     }
 }

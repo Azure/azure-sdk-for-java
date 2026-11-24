@@ -21,59 +21,60 @@ public final class BgpPatchConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BgpPatchConfiguration model = BinaryData.fromString(
-            "{\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":2066989618,\"multiplier\":678222315},\"defaultRouteOriginate\":\"False\",\"allowAS\":619716025,\"allowASOverride\":\"Enable\",\"fabricASN\":8828984340020327962,\"peerASN\":2340340986521325133,\"ipv4ListenRangePrefixes\":[\"fofwan\",\"hks\"],\"ipv6ListenRangePrefixes\":[\"w\",\"zcgwdfriw\",\"ybjpozoks\",\"vgllixdgby\"],\"ipv4NeighborAddress\":[{\"address\":\"wqkjvx\",\"bfdAdministrativeState\":\"Disabled\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"ErrorProvisioning\"},{\"address\":\"hu\",\"bfdAdministrativeState\":\"Disabled\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"Provisioning\"}],\"ipv6NeighborAddress\":[{\"address\":\"uugggzlfbgrd\",\"bfdAdministrativeState\":\"RMA\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Provisioned\"}],\"bmpConfiguration\":{\"neighborIpExclusions\":[\"lperpilttjzgc\"],\"bmpConfigurationState\":\"Disabled\"},\"v4OverV6BgpSession\":\"Disabled\",\"v6OverV4BgpSession\":\"Disabled\",\"annotation\":\"ode\"}")
+            "{\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1703241541,\"multiplier\":1216756136},\"defaultRouteOriginate\":\"True\",\"allowAS\":237566379,\"allowASOverride\":\"Enable\",\"fabricASN\":195587910968791047,\"peerASN\":4892858602092646353,\"ipv4ListenRangePrefixes\":[\"cmfpfbodet\"],\"ipv6ListenRangePrefixes\":[\"rgvtsh\"],\"ipv4NeighborAddress\":[{\"address\":\"waivmuqkevzg\",\"bfdAdministrativeState\":\"MAT\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"Provisioning\"}],\"ipv6NeighborAddress\":[{\"address\":\"xxzetwwzjwotnx\",\"bfdAdministrativeState\":\"Disabled\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"Succeeded\"},{\"address\":\"foxqwecrsn\",\"bfdAdministrativeState\":\"RMA\",\"bgpAdministrativeState\":\"Disabled\",\"configurationState\":\"PendingCommit\"},{\"address\":\"ovppqibukklvzrlr\",\"bfdAdministrativeState\":\"RMA\",\"bgpAdministrativeState\":\"Enabled\",\"configurationState\":\"ErrorDeprovisioning\"}],\"bmpConfiguration\":{\"neighborIpExclusions\":[\"zivfqbqnasdsy\",\"nzsieuscplh\",\"vdgxly\"],\"bmpConfigurationState\":\"Disabled\"},\"v4OverV6BgpSession\":\"Enabled\",\"v6OverV4BgpSession\":\"Enabled\",\"annotation\":\"ezsvkolrupjov\"}")
             .toObject(BgpPatchConfiguration.class);
-        Assertions.assertEquals("ode", model.annotation());
-        Assertions.assertEquals(2066989618, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(678222315, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.defaultRouteOriginate());
-        Assertions.assertEquals(619716025, model.allowAS());
+        Assertions.assertEquals("ezsvkolrupjov", model.annotation());
+        Assertions.assertEquals(1703241541, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1216756136, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.defaultRouteOriginate());
+        Assertions.assertEquals(237566379, model.allowAS());
         Assertions.assertEquals(AllowASOverride.ENABLE, model.allowASOverride());
-        Assertions.assertEquals(2340340986521325133L, model.peerAsn());
-        Assertions.assertEquals("fofwan", model.ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("w", model.ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("wqkjvx", model.ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("uugggzlfbgrd", model.ipv6NeighborAddress().get(0).address());
-        Assertions.assertEquals("lperpilttjzgc", model.bmpConfiguration().neighborIpExclusions().get(0));
+        Assertions.assertEquals(4892858602092646353L, model.peerAsn());
+        Assertions.assertEquals("cmfpfbodet", model.ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("rgvtsh", model.ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("waivmuqkevzg", model.ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("xxzetwwzjwotnx", model.ipv6NeighborAddress().get(0).address());
+        Assertions.assertEquals("zivfqbqnasdsy", model.bmpConfiguration().neighborIpExclusions().get(0));
         Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfiguration().bmpConfigurationState());
-        Assertions.assertEquals(V4OverV6BgpSessionState.DISABLED, model.v4OverV6BgpSession());
-        Assertions.assertEquals(V6OverV4BgpSessionState.DISABLED, model.v6OverV4BgpSession());
+        Assertions.assertEquals(V4OverV6BgpSessionState.ENABLED, model.v4OverV6BgpSession());
+        Assertions.assertEquals(V6OverV4BgpSessionState.ENABLED, model.v6OverV4BgpSession());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BgpPatchConfiguration model = new BgpPatchConfiguration().withAnnotation("ode")
+        BgpPatchConfiguration model = new BgpPatchConfiguration().withAnnotation("ezsvkolrupjov")
             .withBfdConfiguration(
-                new BfdPatchConfiguration().withIntervalInMilliSeconds(2066989618).withMultiplier(678222315))
-            .withDefaultRouteOriginate(BooleanEnumProperty.FALSE)
-            .withAllowAS(619716025)
+                new BfdPatchConfiguration().withIntervalInMilliSeconds(1703241541).withMultiplier(1216756136))
+            .withDefaultRouteOriginate(BooleanEnumProperty.TRUE)
+            .withAllowAS(237566379)
             .withAllowASOverride(AllowASOverride.ENABLE)
-            .withPeerAsn(2340340986521325133L)
-            .withIpv4ListenRangePrefixes(Arrays.asList("fofwan", "hks"))
-            .withIpv6ListenRangePrefixes(Arrays.asList("w", "zcgwdfriw", "ybjpozoks", "vgllixdgby"))
-            .withIpv4NeighborAddress(Arrays.asList(new NeighborAddressPatch().withAddress("wqkjvx"),
-                new NeighborAddressPatch().withAddress("hu")))
-            .withIpv6NeighborAddress(Arrays.asList(new NeighborAddressPatch().withAddress("uugggzlfbgrd")))
-            .withBmpConfiguration(
-                new InternalNetworkBmpPatchProperties().withNeighborIpExclusions(Arrays.asList("lperpilttjzgc"))
-                    .withBmpConfigurationState(BmpConfigurationState.DISABLED))
-            .withV4OverV6BgpSession(V4OverV6BgpSessionState.DISABLED)
-            .withV6OverV4BgpSession(V6OverV4BgpSessionState.DISABLED);
+            .withPeerAsn(4892858602092646353L)
+            .withIpv4ListenRangePrefixes(Arrays.asList("cmfpfbodet"))
+            .withIpv6ListenRangePrefixes(Arrays.asList("rgvtsh"))
+            .withIpv4NeighborAddress(Arrays.asList(new NeighborAddressPatch().withAddress("waivmuqkevzg")))
+            .withIpv6NeighborAddress(Arrays.asList(new NeighborAddressPatch().withAddress("xxzetwwzjwotnx"),
+                new NeighborAddressPatch().withAddress("foxqwecrsn"),
+                new NeighborAddressPatch().withAddress("ovppqibukklvzrlr")))
+            .withBmpConfiguration(new InternalNetworkBmpPatchProperties()
+                .withNeighborIpExclusions(Arrays.asList("zivfqbqnasdsy", "nzsieuscplh", "vdgxly"))
+                .withBmpConfigurationState(BmpConfigurationState.DISABLED))
+            .withV4OverV6BgpSession(V4OverV6BgpSessionState.ENABLED)
+            .withV6OverV4BgpSession(V6OverV4BgpSessionState.ENABLED);
         model = BinaryData.fromObject(model).toObject(BgpPatchConfiguration.class);
-        Assertions.assertEquals("ode", model.annotation());
-        Assertions.assertEquals(2066989618, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(678222315, model.bfdConfiguration().multiplier());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.defaultRouteOriginate());
-        Assertions.assertEquals(619716025, model.allowAS());
+        Assertions.assertEquals("ezsvkolrupjov", model.annotation());
+        Assertions.assertEquals(1703241541, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1216756136, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.defaultRouteOriginate());
+        Assertions.assertEquals(237566379, model.allowAS());
         Assertions.assertEquals(AllowASOverride.ENABLE, model.allowASOverride());
-        Assertions.assertEquals(2340340986521325133L, model.peerAsn());
-        Assertions.assertEquals("fofwan", model.ipv4ListenRangePrefixes().get(0));
-        Assertions.assertEquals("w", model.ipv6ListenRangePrefixes().get(0));
-        Assertions.assertEquals("wqkjvx", model.ipv4NeighborAddress().get(0).address());
-        Assertions.assertEquals("uugggzlfbgrd", model.ipv6NeighborAddress().get(0).address());
-        Assertions.assertEquals("lperpilttjzgc", model.bmpConfiguration().neighborIpExclusions().get(0));
+        Assertions.assertEquals(4892858602092646353L, model.peerAsn());
+        Assertions.assertEquals("cmfpfbodet", model.ipv4ListenRangePrefixes().get(0));
+        Assertions.assertEquals("rgvtsh", model.ipv6ListenRangePrefixes().get(0));
+        Assertions.assertEquals("waivmuqkevzg", model.ipv4NeighborAddress().get(0).address());
+        Assertions.assertEquals("xxzetwwzjwotnx", model.ipv6NeighborAddress().get(0).address());
+        Assertions.assertEquals("zivfqbqnasdsy", model.bmpConfiguration().neighborIpExclusions().get(0));
         Assertions.assertEquals(BmpConfigurationState.DISABLED, model.bmpConfiguration().bmpConfigurationState());
-        Assertions.assertEquals(V4OverV6BgpSessionState.DISABLED, model.v4OverV6BgpSession());
-        Assertions.assertEquals(V6OverV4BgpSessionState.DISABLED, model.v6OverV4BgpSession());
+        Assertions.assertEquals(V4OverV6BgpSessionState.ENABLED, model.v4OverV6BgpSession());
+        Assertions.assertEquals(V6OverV4BgpSessionState.ENABLED, model.v6OverV4BgpSession());
     }
 }

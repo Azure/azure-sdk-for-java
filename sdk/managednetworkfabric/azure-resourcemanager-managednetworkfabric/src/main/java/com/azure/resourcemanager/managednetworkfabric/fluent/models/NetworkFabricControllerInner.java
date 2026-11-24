@@ -17,7 +17,9 @@ import com.azure.resourcemanager.managednetworkfabric.models.LastOperationProper
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedResourceGroupConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
+import com.azure.resourcemanager.managednetworkfabric.models.OperationalState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
+import com.azure.resourcemanager.managednetworkfabric.models.VmProfile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -404,6 +406,39 @@ public final class NetworkFabricControllerInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the operationalState property: Operational state of networkFabricController indicating if the resources of
+     * the controller are reachable and services are available.
+     * 
+     * @return the operationalState value.
+     */
+    public OperationalState operationalState() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationalState();
+    }
+
+    /**
+     * Get the vmProfile property: The VM profile configuration for the NFC's associated compute (VM) resources.
+     * 
+     * @return the vmProfile value.
+     */
+    public VmProfile vmProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmProfile();
+    }
+
+    /**
+     * Set the vmProfile property: The VM profile configuration for the NFC's associated compute (VM) resources.
+     * 
+     * @param vmProfile the vmProfile value to set.
+     * @return the NetworkFabricControllerInner object itself.
+     */
+    public NetworkFabricControllerInner withVmProfile(VmProfile vmProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricControllerProperties();
+        }
+        this.innerProperties().withVmProfile(vmProfile);
+        return this;
     }
 
     /**

@@ -12,15 +12,18 @@ public final class NetworkPacketBrokerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkPacketBrokerProperties model = BinaryData.fromString(
-            "{\"networkFabricId\":\"sunhaevlah\",\"networkDeviceIds\":[\"ywywuahwcorewcn\",\"aaxqjfda\"],\"sourceInterfaceIds\":[\"gim\"],\"networkTapIds\":[\"gewdqbxexfyzn\"],\"neighborGroupIds\":[\"suqkslwsfx\",\"yzqbye\"],\"lastOperation\":{\"details\":\"mohnrtl\"},\"provisioningState\":\"Updating\",\"configurationState\":\"ErrorProvisioning\"}")
+            "{\"networkFabricId\":\"rgyzcslazp\",\"networkDeviceIds\":[\"oyimxpggktteag\",\"gacnqp\"],\"sourceInterfaceIds\":[\"tvudeylpbybki\"],\"networkTapIds\":[\"ifm\"],\"neighborGroupIds\":[\"pwdj\",\"au\",\"fshznu\"],\"sourceNetworkTapRuleId\":\"tuhaaaxxdcdjmdk\",\"lastOperation\":{\"details\":\"frmbecxstow\"},\"provisioningState\":\"Failed\",\"configurationState\":\"Deprovisioned\"}")
             .toObject(NetworkPacketBrokerProperties.class);
-        Assertions.assertEquals("sunhaevlah", model.networkFabricId());
+        Assertions.assertEquals("rgyzcslazp", model.networkFabricId());
+        Assertions.assertEquals("tuhaaaxxdcdjmdk", model.sourceNetworkTapRuleId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokerProperties model = new NetworkPacketBrokerProperties().withNetworkFabricId("sunhaevlah");
+        NetworkPacketBrokerProperties model = new NetworkPacketBrokerProperties().withNetworkFabricId("rgyzcslazp")
+            .withSourceNetworkTapRuleId("tuhaaaxxdcdjmdk");
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokerProperties.class);
-        Assertions.assertEquals("sunhaevlah", model.networkFabricId());
+        Assertions.assertEquals("rgyzcslazp", model.networkFabricId());
+        Assertions.assertEquals("tuhaaaxxdcdjmdk", model.sourceNetworkTapRuleId());
     }
 }

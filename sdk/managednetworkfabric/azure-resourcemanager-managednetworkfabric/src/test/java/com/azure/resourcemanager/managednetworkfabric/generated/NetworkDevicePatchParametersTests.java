@@ -19,38 +19,41 @@ public final class NetworkDevicePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkDevicePatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"annotation\":\"sanmameu\",\"hostName\":\"qiqmlfvhlq\",\"serialNumber\":\"kkqjmxptueipuug\",\"identitySelector\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"mrpahuuonj\"}},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"j\":{\"principalId\":\"e\",\"clientId\":\"vpxjoegcj\"}}},\"tags\":{\"htmep\":\"uidpmtonvhg\"}}")
+            "{\"properties\":{\"annotation\":\"hrfgslglhpryjfz\",\"hostName\":\"uioaeocpaj\",\"serialNumber\":\"eyvk\",\"identitySelector\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"krhd\"}},\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"deg\":{\"principalId\":\"qutkzwtjwwguzy\",\"clientId\":\"jcxfno\"},\"hpowcnxtpzdl\":{\"principalId\":\"ydh\",\"clientId\":\"kkbjuckcatuq\"},\"qfdpf\":{\"principalId\":\"eidtoakatp\",\"clientId\":\"tgrhz\"},\"jf\":{\"principalId\":\"rptvcshtkutzcttb\",\"clientId\":\"dirdammtzjgc\"}}},\"tags\":{\"dgfttmd\":\"wjjirmu\",\"dwxmda\":\"fgeoagfuoftnx\",\"stgfczl\":\"wiygmgsevmdmzenl\"}}")
             .toObject(NetworkDevicePatchParameters.class);
-        Assertions.assertEquals("uidpmtonvhg", model.tags().get("htmep"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("sanmameu", model.annotation());
-        Assertions.assertEquals("qiqmlfvhlq", model.hostname());
-        Assertions.assertEquals("kkqjmxptueipuug", model.serialNumber());
+        Assertions.assertEquals("wjjirmu", model.tags().get("dgfttmd"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("hrfgslglhpryjfz", model.annotation());
+        Assertions.assertEquals("uioaeocpaj", model.hostname());
+        Assertions.assertEquals("eyvk", model.serialNumber());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.identitySelector().identityType());
-        Assertions.assertEquals("mrpahuuonj", model.identitySelector().userAssignedIdentityResourceId());
+        Assertions.assertEquals("krhd", model.identitySelector().userAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkDevicePatchParameters model = new NetworkDevicePatchParameters().withTags(mapOf("htmep", "uidpmtonvhg"))
-            .withIdentity(new ManagedServiceIdentityPatch().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("j", new UserAssignedIdentity())))
-            .withAnnotation("sanmameu")
-            .withHostname("qiqmlfvhlq")
-            .withSerialNumber("kkqjmxptueipuug")
+        NetworkDevicePatchParameters model = new NetworkDevicePatchParameters()
+            .withTags(mapOf("dgfttmd", "wjjirmu", "dwxmda", "fgeoagfuoftnx", "stgfczl", "wiygmgsevmdmzenl"))
+            .withIdentity(new ManagedServiceIdentityPatch()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("deg", new UserAssignedIdentity(), "hpowcnxtpzdl",
+                    new UserAssignedIdentity(), "qfdpf", new UserAssignedIdentity(), "jf", new UserAssignedIdentity())))
+            .withAnnotation("hrfgslglhpryjfz")
+            .withHostname("uioaeocpaj")
+            .withSerialNumber("eyvk")
             .withIdentitySelector(new IdentitySelectorPatch()
                 .withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
-                .withUserAssignedIdentityResourceId("mrpahuuonj"));
+                .withUserAssignedIdentityResourceId("krhd"));
         model = BinaryData.fromObject(model).toObject(NetworkDevicePatchParameters.class);
-        Assertions.assertEquals("uidpmtonvhg", model.tags().get("htmep"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("sanmameu", model.annotation());
-        Assertions.assertEquals("qiqmlfvhlq", model.hostname());
-        Assertions.assertEquals("kkqjmxptueipuug", model.serialNumber());
+        Assertions.assertEquals("wjjirmu", model.tags().get("dgfttmd"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("hrfgslglhpryjfz", model.annotation());
+        Assertions.assertEquals("uioaeocpaj", model.hostname());
+        Assertions.assertEquals("eyvk", model.serialNumber());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.identitySelector().identityType());
-        Assertions.assertEquals("mrpahuuonj", model.identitySelector().userAssignedIdentityResourceId());
+        Assertions.assertEquals("krhd", model.identitySelector().userAssignedIdentityResourceId());
     }
 
     // Use "Map.of" if available

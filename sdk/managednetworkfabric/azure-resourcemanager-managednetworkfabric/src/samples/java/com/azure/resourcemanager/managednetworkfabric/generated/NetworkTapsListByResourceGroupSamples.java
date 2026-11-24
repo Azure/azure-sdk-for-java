@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
  */
 public final class NetworkTapsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-15/NetworkTaps_ListByResourceGroup.json
+     * x-ms-original-file: 2026-01-15-preview/NetworkTaps_ListByResourceGroup.json
      */
     /**
      * Sample code: NetworkTaps_ListByResourceGroup_MaximumSet_Gen.

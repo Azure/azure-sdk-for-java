@@ -25,7 +25,7 @@ public final class RoutePoliciesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"annotation\":\"rctco\",\"defaultAction\":\"Permit\",\"statements\":[{\"sequenceNumber\":9168688154509726931,\"condition\":{\"ipCommunityIds\":[\"rbqc\"],\"ipExtendedCommunityIds\":[\"wbcycwasmrf\",\"wsicmhhvbovb\",\"xfylez\",\"dp\"],\"type\":\"And\",\"ipPrefixId\":\"emny\"},\"action\":{\"localPreference\":4440331383296213551,\"actionType\":\"Deny\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"ezszlr\"}],\"networkFabricId\":\"z\",\"addressFamilyType\":\"IPv6\",\"lastOperation\":{\"details\":\"ijnpkx\"},\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\"},\"location\":\"hj\",\"tags\":{\"jkqlruhhkkbfgrms\":\"l\"},\"id\":\"bmdrbtg\",\"name\":\"fpd\",\"type\":\"ed\"}";
+            = "{\"properties\":{\"annotation\":\"rmx\",\"defaultAction\":\"Deny\",\"statements\":[{\"sequenceNumber\":6085088176002221681,\"condition\":{\"ipCommunityIds\":[\"nmfnfatwi\",\"cuhas\",\"ielhtukhei\",\"whotjcgdpqk\"],\"ipExtendedCommunityIds\":[\"qm\",\"vrglqlvmkeseyqo\",\"mjuqq\",\"hmzlet\"],\"type\":\"And\",\"ipPrefixId\":\"uwkkvar\"},\"action\":{\"localPreference\":5044759522909689470,\"actionType\":\"Permit\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"mowq\"}],\"networkFabricId\":\"odmdrdtywa\",\"addressFamilyType\":\"IPv4\",\"lastOperation\":{\"details\":\"ciapvcsw\"},\"configurationState\":\"Provisioned\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"EnabledDegraded\"},\"location\":\"ltftaqmrimlet\",\"tags\":{\"ab\":\"ptf\",\"zxupwrizkqnbiia\":\"blhzfglpswg\"},\"id\":\"dhsj\",\"name\":\"qhaskuio\",\"type\":\"ltchcuhvdr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,23 +35,22 @@ public final class RoutePoliciesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RoutePolicy response = manager.routePolicies()
-            .getByResourceGroupWithResponse("sdnobxcdxpnrae", "dixoflxvsu", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("fdxjirfyetljrd", "g", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hj", response.location());
-        Assertions.assertEquals("l", response.tags().get("jkqlruhhkkbfgrms"));
-        Assertions.assertEquals("rctco", response.annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.defaultAction());
-        Assertions.assertEquals("ezszlr", response.statements().get(0).annotation());
-        Assertions.assertEquals(9168688154509726931L, response.statements().get(0).sequenceNumber());
-        Assertions.assertEquals("rbqc", response.statements().get(0).condition().ipCommunityIds().get(0));
-        Assertions.assertEquals("wbcycwasmrf",
-            response.statements().get(0).condition().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("ltftaqmrimlet", response.location());
+        Assertions.assertEquals("ptf", response.tags().get("ab"));
+        Assertions.assertEquals("rmx", response.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, response.defaultAction());
+        Assertions.assertEquals("mowq", response.statements().get(0).annotation());
+        Assertions.assertEquals(6085088176002221681L, response.statements().get(0).sequenceNumber());
+        Assertions.assertEquals("nmfnfatwi", response.statements().get(0).condition().ipCommunityIds().get(0));
+        Assertions.assertEquals("qm", response.statements().get(0).condition().ipExtendedCommunityIds().get(0));
         Assertions.assertEquals(RoutePolicyConditionType.AND, response.statements().get(0).condition().type());
-        Assertions.assertEquals("emny", response.statements().get(0).condition().ipPrefixId());
-        Assertions.assertEquals(4440331383296213551L, response.statements().get(0).action().localPreference());
-        Assertions.assertEquals(RoutePolicyActionType.DENY, response.statements().get(0).action().actionType());
-        Assertions.assertEquals("z", response.networkFabricId());
-        Assertions.assertEquals(AddressFamilyType.IPV6, response.addressFamilyType());
+        Assertions.assertEquals("uwkkvar", response.statements().get(0).condition().ipPrefixId());
+        Assertions.assertEquals(5044759522909689470L, response.statements().get(0).action().localPreference());
+        Assertions.assertEquals(RoutePolicyActionType.PERMIT, response.statements().get(0).action().actionType());
+        Assertions.assertEquals("odmdrdtywa", response.networkFabricId());
+        Assertions.assertEquals(AddressFamilyType.IPV4, response.addressFamilyType());
     }
 }

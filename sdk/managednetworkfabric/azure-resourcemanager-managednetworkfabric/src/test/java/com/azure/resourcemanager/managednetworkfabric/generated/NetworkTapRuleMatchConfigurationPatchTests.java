@@ -26,94 +26,133 @@ public final class NetworkTapRuleMatchConfigurationPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkTapRuleMatchConfigurationPatch model = BinaryData.fromString(
-            "{\"matchConfigurationName\":\"jxkmpe\",\"sequenceNumber\":371540504965913583,\"ipAddressType\":\"IPv6\",\"matchConditions\":[{\"encapsulationType\":\"None\",\"portCondition\":{\"portType\":\"Bidirectional\",\"layer4Protocol\":\"UDP\",\"ports\":[\"rfe\",\"zunbua\"],\"portGroupNames\":[\"ubukqmierzrnob\",\"vequzytapgzdhz\",\"jecdsysxnku\"]},\"protocolTypes\":[\"nlsevzcrrwnkk\",\"dwqymxsfqe\"],\"vlanMatchCondition\":{\"vlans\":[\"eluvmsa\"],\"innerVlans\":[\"iaw\",\"q\"],\"vlanGroupNames\":[\"hvvzfznfgpbc\"]},\"ipCondition\":{\"type\":\"DestinationIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"jieask\",\"kqclnfusr\"],\"ipGroupNames\":[\"skkhbm\",\"phlyyuahvyeikb\",\"qzrurgbqa\",\"cpckxjnohafwm\"]}}],\"actions\":[{\"type\":\"Log\",\"truncate\":\"xtugpeamet\",\"isTimestampEnabled\":\"False\",\"destinationId\":\"famtxccfegsavbgh\",\"matchConfigurationName\":\"cvka\"},{\"type\":\"Drop\",\"truncate\":\"oimazkmqfwbg\",\"isTimestampEnabled\":\"False\",\"destinationId\":\"ybfmpotal\",\"matchConfigurationName\":\"figrxxtrco\"},{\"type\":\"Goto\",\"truncate\":\"ogldmxxb\",\"isTimestampEnabled\":\"True\",\"destinationId\":\"vamsxrwq\",\"matchConfigurationName\":\"dflg\"}]}")
+            "{\"matchConfigurationName\":\"ygimiz\",\"sequenceNumber\":8794500155536300672,\"ipAddressType\":\"IPv4\",\"matchConditions\":[{\"encapsulationType\":\"None\",\"portCondition\":{\"portType\":\"SourcePort\",\"layer4Protocol\":\"SCTP\",\"ports\":[\"oeszthjtryjsk\",\"iylgzzu\",\"ixpsybqowgvmxw\"],\"portGroupNames\":[\"xdhkoex\",\"rhgnakajwscmneev\"]},\"protocolTypes\":[\"qeumz\",\"yhmgq\",\"eivjqutxr\",\"gbzgfhzdzahktxv\"],\"vlanMatchCondition\":{\"vlans\":[\"fecth\",\"tbkjw\",\"ztpxj\",\"twk\"],\"innerVlans\":[\"payxopqiwuzrgq\"],\"vlanGroupNames\":[\"fkgb\",\"qqjobsyn\"]},\"ipCondition\":{\"type\":\"DestinationIP\",\"prefixType\":\"LongestPrefix\",\"ipPrefixValues\":[\"hd\"],\"ipGroupNames\":[\"sxjwfudmpfh\",\"ypphtjtntcwgpdb\",\"glaecctokfspv\",\"rd\"]}},{\"encapsulationType\":\"None\",\"portCondition\":{\"portType\":\"DestinationPort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"yptwjwiyyeohgmc\",\"djmvphwfnu\"],\"portGroupNames\":[\"vfzzioxbgom\"]},\"protocolTypes\":[\"prpmo\",\"xnwcgzuoxixtx\"],\"vlanMatchCondition\":{\"vlans\":[\"sehbknnrnk\",\"jfawpcbsogz\",\"hczbnivco\"],\"innerVlans\":[\"vppkj\"],\"vlanGroupNames\":[\"kd\",\"ewhotvbmyzuqfdq\"]},\"ipCondition\":{\"type\":\"DestinationIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"szhh\",\"ngjn\",\"kvzmxlffqg\",\"odnkqyipgkmjt\"],\"ipGroupNames\":[\"mdzesime\",\"tgdrfzj\",\"flz\"]}},{\"encapsulationType\":\"None\",\"portCondition\":{\"portType\":\"SourcePort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"efcor\",\"bidaeb\",\"zni\"],\"portGroupNames\":[\"dfajwiylciobbp\",\"ws\",\"zeqxuecuuuexsmn\",\"eevf\"]},\"protocolTypes\":[\"fezraqs\",\"dkod\",\"gxqfkyr\"],\"vlanMatchCondition\":{\"vlans\":[\"zeg\",\"w\",\"zfss\"],\"innerVlans\":[\"gaok\"],\"vlanGroupNames\":[\"kkraj\",\"yuklxkel\",\"zpyqbwhuecx\"]},\"ipCondition\":{\"type\":\"DestinationIP\",\"prefixType\":\"LongestPrefix\",\"ipPrefixValues\":[\"pavsfgvrvqrww\"],\"ipGroupNames\":[\"wroqkljnzpqhqq\",\"arkyulfamea\",\"sjqenh\"]}}],\"actions\":[{\"type\":\"Redirect\",\"truncate\":\"geytlplslfc\",\"isTimestampEnabled\":\"True\",\"destinationId\":\"suowtolkyqf\",\"matchConfigurationName\":\"ocrh\"},{\"type\":\"Redirect\",\"truncate\":\"fvmwunrtcsraw\",\"isTimestampEnabled\":\"True\",\"destinationId\":\"fshmbydmvwnbuns\",\"matchConfigurationName\":\"tevzshqykebm\"},{\"type\":\"Goto\",\"truncate\":\"ezcldk\",\"isTimestampEnabled\":\"True\",\"destinationId\":\"ovqdmhcej\",\"matchConfigurationName\":\"fsmacjakg\"},{\"type\":\"Count\",\"truncate\":\"qdsoqzhxwdjoxwkb\",\"isTimestampEnabled\":\"True\",\"destinationId\":\"bvcnsbi\",\"matchConfigurationName\":\"znlf\"}]}")
             .toObject(NetworkTapRuleMatchConfigurationPatch.class);
-        Assertions.assertEquals("jxkmpe", model.matchConfigurationName());
-        Assertions.assertEquals(371540504965913583L, model.sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV6, model.ipAddressType());
-        Assertions.assertEquals("nlsevzcrrwnkk", model.matchConditions().get(0).protocolTypes().get(0));
-        Assertions.assertEquals("eluvmsa", model.matchConditions().get(0).vlanMatchCondition().vlans().get(0));
-        Assertions.assertEquals("iaw", model.matchConditions().get(0).vlanMatchCondition().innerVlans().get(0));
-        Assertions.assertEquals("hvvzfznfgpbc",
-            model.matchConditions().get(0).vlanMatchCondition().vlanGroupNames().get(0));
+        Assertions.assertEquals("ygimiz", model.matchConfigurationName());
+        Assertions.assertEquals(8794500155536300672L, model.sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
+        Assertions.assertEquals("qeumz", model.matchConditions().get(0).protocolTypes().get(0));
+        Assertions.assertEquals("fecth", model.matchConditions().get(0).vlanMatchCondition().vlans().get(0));
+        Assertions.assertEquals("payxopqiwuzrgq",
+            model.matchConditions().get(0).vlanMatchCondition().innerVlans().get(0));
+        Assertions.assertEquals("fkgb", model.matchConditions().get(0).vlanMatchCondition().vlanGroupNames().get(0));
         Assertions.assertEquals(SourceDestinationType.DESTINATION_IP,
             model.matchConditions().get(0).ipCondition().type());
-        Assertions.assertEquals(PrefixType.PREFIX, model.matchConditions().get(0).ipCondition().prefixType());
-        Assertions.assertEquals("jieask", model.matchConditions().get(0).ipCondition().ipPrefixValues().get(0));
-        Assertions.assertEquals("skkhbm", model.matchConditions().get(0).ipCondition().ipGroupNames().get(0));
+        Assertions.assertEquals(PrefixType.LONGEST_PREFIX, model.matchConditions().get(0).ipCondition().prefixType());
+        Assertions.assertEquals("hd", model.matchConditions().get(0).ipCondition().ipPrefixValues().get(0));
+        Assertions.assertEquals("sxjwfudmpfh", model.matchConditions().get(0).ipCondition().ipGroupNames().get(0));
         Assertions.assertEquals(EncapsulationType.NONE, model.matchConditions().get(0).encapsulationType());
-        Assertions.assertEquals(PortType.BIDIRECTIONAL, model.matchConditions().get(0).portCondition().portType());
-        Assertions.assertEquals(Layer4Protocol.UDP, model.matchConditions().get(0).portCondition().layer4Protocol());
-        Assertions.assertEquals("rfe", model.matchConditions().get(0).portCondition().ports().get(0));
-        Assertions.assertEquals("ubukqmierzrnob",
-            model.matchConditions().get(0).portCondition().portGroupNames().get(0));
-        Assertions.assertEquals(TapRuleActionType.LOG, model.actions().get(0).type());
-        Assertions.assertEquals("xtugpeamet", model.actions().get(0).truncate());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.actions().get(0).isTimestampEnabled());
-        Assertions.assertEquals("famtxccfegsavbgh", model.actions().get(0).destinationId());
-        Assertions.assertEquals("cvka", model.actions().get(0).matchConfigurationName());
+        Assertions.assertEquals(PortType.SOURCE_PORT, model.matchConditions().get(0).portCondition().portType());
+        Assertions.assertEquals(Layer4Protocol.SCTP, model.matchConditions().get(0).portCondition().layer4Protocol());
+        Assertions.assertEquals("oeszthjtryjsk", model.matchConditions().get(0).portCondition().ports().get(0));
+        Assertions.assertEquals("xdhkoex", model.matchConditions().get(0).portCondition().portGroupNames().get(0));
+        Assertions.assertEquals(TapRuleActionType.REDIRECT, model.actions().get(0).type());
+        Assertions.assertEquals("geytlplslfc", model.actions().get(0).truncate());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.actions().get(0).isTimestampEnabled());
+        Assertions.assertEquals("suowtolkyqf", model.actions().get(0).destinationId());
+        Assertions.assertEquals("ocrh", model.actions().get(0).matchConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkTapRuleMatchConfigurationPatch model
-            = new NetworkTapRuleMatchConfigurationPatch().withMatchConfigurationName("jxkmpe")
-                .withSequenceNumber(371540504965913583L)
-                .withIpAddressType(IpAddressType.IPV6)
-                .withMatchConditions(Arrays.asList(new NetworkTapRuleMatchConditionPatch()
-                    .withProtocolTypes(Arrays.asList("nlsevzcrrwnkk", "dwqymxsfqe"))
-                    .withVlanMatchCondition(new VlanMatchConditionPatch().withVlans(Arrays.asList("eluvmsa"))
-                        .withInnerVlans(Arrays.asList("iaw", "q"))
-                        .withVlanGroupNames(Arrays.asList("hvvzfznfgpbc")))
-                    .withIpCondition(new IpMatchConditionPatch().withType(SourceDestinationType.DESTINATION_IP)
-                        .withPrefixType(PrefixType.PREFIX)
-                        .withIpPrefixValues(Arrays.asList("jieask", "kqclnfusr"))
-                        .withIpGroupNames(Arrays.asList("skkhbm", "phlyyuahvyeikb", "qzrurgbqa", "cpckxjnohafwm")))
-                    .withEncapsulationType(EncapsulationType.NONE)
-                    .withPortCondition(new PortConditionPatch().withPortType(PortType.BIDIRECTIONAL)
-                        .withLayer4Protocol(Layer4Protocol.UDP)
-                        .withPorts(Arrays.asList("rfe", "zunbua"))
-                        .withPortGroupNames(Arrays.asList("ubukqmierzrnob", "vequzytapgzdhz", "jecdsysxnku")))))
+            = new NetworkTapRuleMatchConfigurationPatch().withMatchConfigurationName("ygimiz")
+                .withSequenceNumber(8794500155536300672L)
+                .withIpAddressType(IpAddressType.IPV4)
+                .withMatchConditions(
+                    Arrays.asList(
+                        new NetworkTapRuleMatchConditionPatch()
+                            .withProtocolTypes(Arrays.asList("qeumz", "yhmgq", "eivjqutxr", "gbzgfhzdzahktxv"))
+                            .withVlanMatchCondition(new VlanMatchConditionPatch()
+                                .withVlans(Arrays.asList("fecth", "tbkjw", "ztpxj", "twk"))
+                                .withInnerVlans(Arrays.asList("payxopqiwuzrgq"))
+                                .withVlanGroupNames(Arrays.asList("fkgb", "qqjobsyn")))
+                            .withIpCondition(new IpMatchConditionPatch().withType(SourceDestinationType.DESTINATION_IP)
+                                .withPrefixType(PrefixType.LONGEST_PREFIX)
+                                .withIpPrefixValues(Arrays.asList("hd"))
+                                .withIpGroupNames(
+                                    Arrays.asList("sxjwfudmpfh", "ypphtjtntcwgpdb", "glaecctokfspv", "rd")))
+                            .withEncapsulationType(EncapsulationType.NONE)
+                            .withPortCondition(new PortConditionPatch()
+                                .withPortType(PortType.SOURCE_PORT)
+                                .withLayer4Protocol(Layer4Protocol.SCTP)
+                                .withPorts(Arrays.asList("oeszthjtryjsk", "iylgzzu", "ixpsybqowgvmxw"))
+                                .withPortGroupNames(Arrays.asList("xdhkoex", "rhgnakajwscmneev"))),
+                        new NetworkTapRuleMatchConditionPatch()
+                            .withProtocolTypes(Arrays.asList("prpmo", "xnwcgzuoxixtx"))
+                            .withVlanMatchCondition(new VlanMatchConditionPatch()
+                                .withVlans(Arrays.asList("sehbknnrnk", "jfawpcbsogz", "hczbnivco"))
+                                .withInnerVlans(Arrays.asList("vppkj"))
+                                .withVlanGroupNames(Arrays.asList("kd", "ewhotvbmyzuqfdq")))
+                            .withIpCondition(new IpMatchConditionPatch()
+                                .withType(SourceDestinationType.DESTINATION_IP)
+                                .withPrefixType(PrefixType.PREFIX)
+                                .withIpPrefixValues(Arrays.asList("szhh", "ngjn", "kvzmxlffqg", "odnkqyipgkmjt"))
+                                .withIpGroupNames(Arrays.asList("mdzesime", "tgdrfzj", "flz")))
+                            .withEncapsulationType(EncapsulationType.NONE)
+                            .withPortCondition(new PortConditionPatch().withPortType(PortType.DESTINATION_PORT)
+                                .withLayer4Protocol(Layer4Protocol.UDP)
+                                .withPorts(Arrays.asList("yptwjwiyyeohgmc", "djmvphwfnu"))
+                                .withPortGroupNames(Arrays.asList("vfzzioxbgom"))),
+                        new NetworkTapRuleMatchConditionPatch()
+                            .withProtocolTypes(Arrays.asList("fezraqs", "dkod", "gxqfkyr"))
+                            .withVlanMatchCondition(
+                                new VlanMatchConditionPatch().withVlans(Arrays.asList("zeg", "w", "zfss"))
+                                    .withInnerVlans(Arrays.asList("gaok"))
+                                    .withVlanGroupNames(Arrays.asList("kkraj", "yuklxkel", "zpyqbwhuecx")))
+                            .withIpCondition(new IpMatchConditionPatch().withType(SourceDestinationType.DESTINATION_IP)
+                                .withPrefixType(PrefixType.LONGEST_PREFIX)
+                                .withIpPrefixValues(Arrays.asList("pavsfgvrvqrww"))
+                                .withIpGroupNames(Arrays.asList("wroqkljnzpqhqq", "arkyulfamea", "sjqenh")))
+                            .withEncapsulationType(EncapsulationType.NONE)
+                            .withPortCondition(new PortConditionPatch().withPortType(PortType.SOURCE_PORT)
+                                .withLayer4Protocol(Layer4Protocol.UDP)
+                                .withPorts(Arrays.asList("efcor", "bidaeb", "zni"))
+                                .withPortGroupNames(Arrays.asList("dfajwiylciobbp", "ws", "zeqxuecuuuexsmn", "eevf")))))
                 .withActions(Arrays.asList(
-                    new NetworkTapRuleActionPatch().withType(TapRuleActionType.LOG)
-                        .withTruncate("xtugpeamet")
-                        .withIsTimestampEnabled(BooleanEnumProperty.FALSE)
-                        .withDestinationId("famtxccfegsavbgh")
-                        .withMatchConfigurationName("cvka"),
-                    new NetworkTapRuleActionPatch().withType(TapRuleActionType.DROP)
-                        .withTruncate("oimazkmqfwbg")
-                        .withIsTimestampEnabled(BooleanEnumProperty.FALSE)
-                        .withDestinationId("ybfmpotal")
-                        .withMatchConfigurationName("figrxxtrco"),
-                    new NetworkTapRuleActionPatch().withType(TapRuleActionType.GOTO)
-                        .withTruncate("ogldmxxb")
+                    new NetworkTapRuleActionPatch().withType(TapRuleActionType.REDIRECT)
+                        .withTruncate("geytlplslfc")
                         .withIsTimestampEnabled(BooleanEnumProperty.TRUE)
-                        .withDestinationId("vamsxrwq")
-                        .withMatchConfigurationName("dflg")));
+                        .withDestinationId("suowtolkyqf")
+                        .withMatchConfigurationName("ocrh"),
+                    new NetworkTapRuleActionPatch().withType(TapRuleActionType.REDIRECT)
+                        .withTruncate("fvmwunrtcsraw")
+                        .withIsTimestampEnabled(BooleanEnumProperty.TRUE)
+                        .withDestinationId("fshmbydmvwnbuns")
+                        .withMatchConfigurationName("tevzshqykebm"),
+                    new NetworkTapRuleActionPatch().withType(TapRuleActionType.GOTO)
+                        .withTruncate("ezcldk")
+                        .withIsTimestampEnabled(BooleanEnumProperty.TRUE)
+                        .withDestinationId("ovqdmhcej")
+                        .withMatchConfigurationName("fsmacjakg"),
+                    new NetworkTapRuleActionPatch().withType(TapRuleActionType.COUNT)
+                        .withTruncate("qdsoqzhxwdjoxwkb")
+                        .withIsTimestampEnabled(BooleanEnumProperty.TRUE)
+                        .withDestinationId("bvcnsbi")
+                        .withMatchConfigurationName("znlf")));
         model = BinaryData.fromObject(model).toObject(NetworkTapRuleMatchConfigurationPatch.class);
-        Assertions.assertEquals("jxkmpe", model.matchConfigurationName());
-        Assertions.assertEquals(371540504965913583L, model.sequenceNumber());
-        Assertions.assertEquals(IpAddressType.IPV6, model.ipAddressType());
-        Assertions.assertEquals("nlsevzcrrwnkk", model.matchConditions().get(0).protocolTypes().get(0));
-        Assertions.assertEquals("eluvmsa", model.matchConditions().get(0).vlanMatchCondition().vlans().get(0));
-        Assertions.assertEquals("iaw", model.matchConditions().get(0).vlanMatchCondition().innerVlans().get(0));
-        Assertions.assertEquals("hvvzfznfgpbc",
-            model.matchConditions().get(0).vlanMatchCondition().vlanGroupNames().get(0));
+        Assertions.assertEquals("ygimiz", model.matchConfigurationName());
+        Assertions.assertEquals(8794500155536300672L, model.sequenceNumber());
+        Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
+        Assertions.assertEquals("qeumz", model.matchConditions().get(0).protocolTypes().get(0));
+        Assertions.assertEquals("fecth", model.matchConditions().get(0).vlanMatchCondition().vlans().get(0));
+        Assertions.assertEquals("payxopqiwuzrgq",
+            model.matchConditions().get(0).vlanMatchCondition().innerVlans().get(0));
+        Assertions.assertEquals("fkgb", model.matchConditions().get(0).vlanMatchCondition().vlanGroupNames().get(0));
         Assertions.assertEquals(SourceDestinationType.DESTINATION_IP,
             model.matchConditions().get(0).ipCondition().type());
-        Assertions.assertEquals(PrefixType.PREFIX, model.matchConditions().get(0).ipCondition().prefixType());
-        Assertions.assertEquals("jieask", model.matchConditions().get(0).ipCondition().ipPrefixValues().get(0));
-        Assertions.assertEquals("skkhbm", model.matchConditions().get(0).ipCondition().ipGroupNames().get(0));
+        Assertions.assertEquals(PrefixType.LONGEST_PREFIX, model.matchConditions().get(0).ipCondition().prefixType());
+        Assertions.assertEquals("hd", model.matchConditions().get(0).ipCondition().ipPrefixValues().get(0));
+        Assertions.assertEquals("sxjwfudmpfh", model.matchConditions().get(0).ipCondition().ipGroupNames().get(0));
         Assertions.assertEquals(EncapsulationType.NONE, model.matchConditions().get(0).encapsulationType());
-        Assertions.assertEquals(PortType.BIDIRECTIONAL, model.matchConditions().get(0).portCondition().portType());
-        Assertions.assertEquals(Layer4Protocol.UDP, model.matchConditions().get(0).portCondition().layer4Protocol());
-        Assertions.assertEquals("rfe", model.matchConditions().get(0).portCondition().ports().get(0));
-        Assertions.assertEquals("ubukqmierzrnob",
-            model.matchConditions().get(0).portCondition().portGroupNames().get(0));
-        Assertions.assertEquals(TapRuleActionType.LOG, model.actions().get(0).type());
-        Assertions.assertEquals("xtugpeamet", model.actions().get(0).truncate());
-        Assertions.assertEquals(BooleanEnumProperty.FALSE, model.actions().get(0).isTimestampEnabled());
-        Assertions.assertEquals("famtxccfegsavbgh", model.actions().get(0).destinationId());
-        Assertions.assertEquals("cvka", model.actions().get(0).matchConfigurationName());
+        Assertions.assertEquals(PortType.SOURCE_PORT, model.matchConditions().get(0).portCondition().portType());
+        Assertions.assertEquals(Layer4Protocol.SCTP, model.matchConditions().get(0).portCondition().layer4Protocol());
+        Assertions.assertEquals("oeszthjtryjsk", model.matchConditions().get(0).portCondition().ports().get(0));
+        Assertions.assertEquals("xdhkoex", model.matchConditions().get(0).portCondition().portGroupNames().get(0));
+        Assertions.assertEquals(TapRuleActionType.REDIRECT, model.actions().get(0).type());
+        Assertions.assertEquals("geytlplslfc", model.actions().get(0).truncate());
+        Assertions.assertEquals(BooleanEnumProperty.TRUE, model.actions().get(0).isTimestampEnabled());
+        Assertions.assertEquals("suowtolkyqf", model.actions().get(0).destinationId());
+        Assertions.assertEquals("ocrh", model.actions().get(0).matchConfigurationName());
     }
 }

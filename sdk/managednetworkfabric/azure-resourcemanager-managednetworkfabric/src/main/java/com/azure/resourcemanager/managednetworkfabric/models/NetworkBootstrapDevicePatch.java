@@ -10,6 +10,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkBootstrapDevicePatchProperties;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -139,6 +140,29 @@ public final class NetworkBootstrapDevicePatch extends TagsUpdate {
             this.innerProperties = new NetworkBootstrapDevicePatchProperties();
         }
         this.innerProperties().withSerialNumber(serialNumber);
+        return this;
+    }
+
+    /**
+     * Get the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @return the controlPlaneAcls value.
+     */
+    public List<String> controlPlaneAcls() {
+        return this.innerProperties() == null ? null : this.innerProperties().controlPlaneAcls();
+    }
+
+    /**
+     * Set the controlPlaneAcls property: Control Plane Access Control List ARM resource IDs.
+     * 
+     * @param controlPlaneAcls the controlPlaneAcls value to set.
+     * @return the NetworkBootstrapDevicePatch object itself.
+     */
+    public NetworkBootstrapDevicePatch withControlPlaneAcls(List<String> controlPlaneAcls) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkBootstrapDevicePatchProperties();
+        }
+        this.innerProperties().withControlPlaneAcls(controlPlaneAcls);
         return this;
     }
 

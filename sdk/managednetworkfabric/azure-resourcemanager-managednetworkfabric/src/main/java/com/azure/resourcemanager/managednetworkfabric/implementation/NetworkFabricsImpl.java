@@ -22,7 +22,7 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabri
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricRotatePasswordsResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.UpdateAdministrativeStateResponseInner;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseV2Inner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ViewDeviceConfigurationOperationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.ArmConfigurationDiffOperationResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.CommitBatchStatusOperationResponse;
@@ -40,11 +40,12 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricRotate
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricRotatePasswordsResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabrics;
 import com.azure.resourcemanager.managednetworkfabric.models.OperationStatusResult;
+import com.azure.resourcemanager.managednetworkfabric.models.RefreshConfigurationRequestProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeStateResponse;
 import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponseV2;
 import com.azure.resourcemanager.managednetworkfabric.models.ViewDeviceConfigurationOperationResponse;
 
 public final class NetworkFabricsImpl implements NetworkFabrics {
@@ -175,9 +176,9 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
     }
 
     public OperationStatusResult refreshConfiguration(String resourceGroupName, String networkFabricName,
-        Context context) {
+        RefreshConfigurationRequestProperties body, Context context) {
         OperationStatusResultInner inner
-            = this.serviceClient().refreshConfiguration(resourceGroupName, networkFabricName, context);
+            = this.serviceClient().refreshConfiguration(resourceGroupName, networkFabricName, body, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -229,23 +230,23 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String networkFabricName,
         ValidateConfigurationProperties body) {
-        ValidateConfigurationResponseInner inner
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, networkFabricName, body);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String networkFabricName,
+    public ValidateConfigurationResponseV2 validateConfiguration(String resourceGroupName, String networkFabricName,
         ValidateConfigurationProperties body, Context context) {
-        ValidateConfigurationResponseInner inner
+        ValidateConfigurationResponseV2Inner inner
             = this.serviceClient().validateConfiguration(resourceGroupName, networkFabricName, body, context);
         if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
+            return new ValidateConfigurationResponseV2Impl(inner, this.manager());
         } else {
             return null;
         }

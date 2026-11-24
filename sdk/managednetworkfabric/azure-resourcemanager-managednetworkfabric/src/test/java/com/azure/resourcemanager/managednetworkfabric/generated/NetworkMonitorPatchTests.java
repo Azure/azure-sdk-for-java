@@ -22,67 +22,65 @@ public final class NetworkMonitorPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkMonitorPatch model = BinaryData.fromString(
-            "{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Disabled\",\"scopeResourceId\":\"qcqyzmrtfdl\",\"stationName\":\"ryyjlikalbcyuwah\",\"stationIp\":\"agvaidzceph\",\"stationPort\":1247830495,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":276088276,\"probeInterval\":867682398,\"probeCount\":1584995270},\"stationNetwork\":\"mrwpe\",\"monitoredNetworks\":[\"rjbpertjpair\",\"wjmcgi\",\"sywpejt\",\"qopugrse\"],\"exportPolicy\":\"All\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\"]},\"monitoredAddressFamilies\":[\"ipv6Unicast\",\"vpnIpv4\",\"ipv4Unicast\"]}},\"tags\":{\"cbcendidhue\":\"td\",\"asgukq\":\"ikwcx\",\"kiwmqnwmytcc\":\"kiynbf\",\"mcgvjb\":\"irgyutexnzh\"}}")
+            "{\"properties\":{\"bmpConfiguration\":{\"stationConfigurationState\":\"Enabled\",\"scopeResourceId\":\"pxtsdy\",\"stationName\":\"gef\",\"stationIp\":\"gwphw\",\"stationPort\":625644465,\"stationConnectionMode\":\"Passive\",\"stationConnectionProperties\":{\"keepaliveIdleTime\":74444128,\"probeInterval\":1109318809,\"probeCount\":2110666337},\"stationNetwork\":\"uhhzwrsj\",\"monitoredNetworks\":[\"kjsvkbtmlixalph\",\"gmin\",\"e\"],\"exportPolicy\":\"Pre-Policy\",\"exportPolicyConfiguration\":{\"exportPolicies\":[\"All\",\"LocalRib\"]},\"monitoredAddressFamilies\":[\"vpnIpv6\"]}},\"tags\":{\"i\":\"uyrlk\",\"sabcylzz\":\"mmrmrjpjthi\"}}")
             .toObject(NetworkMonitorPatch.class);
-        Assertions.assertEquals("td", model.tags().get("cbcendidhue"));
-        Assertions.assertEquals(StationConfigurationState.DISABLED,
+        Assertions.assertEquals("uyrlk", model.tags().get("i"));
+        Assertions.assertEquals(StationConfigurationState.ENABLED,
             model.bmpConfiguration().stationConfigurationState());
-        Assertions.assertEquals("qcqyzmrtfdl", model.bmpConfiguration().scopeResourceId());
-        Assertions.assertEquals("ryyjlikalbcyuwah", model.bmpConfiguration().stationName());
-        Assertions.assertEquals("agvaidzceph", model.bmpConfiguration().stationIp());
-        Assertions.assertEquals(1247830495, model.bmpConfiguration().stationPort());
+        Assertions.assertEquals("pxtsdy", model.bmpConfiguration().scopeResourceId());
+        Assertions.assertEquals("gef", model.bmpConfiguration().stationName());
+        Assertions.assertEquals("gwphw", model.bmpConfiguration().stationIp());
+        Assertions.assertEquals(625644465, model.bmpConfiguration().stationPort());
         Assertions.assertEquals(StationConnectionMode.PASSIVE, model.bmpConfiguration().stationConnectionMode());
-        Assertions.assertEquals(276088276, model.bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
-        Assertions.assertEquals(867682398, model.bmpConfiguration().stationConnectionProperties().probeInterval());
-        Assertions.assertEquals(1584995270, model.bmpConfiguration().stationConnectionProperties().probeCount());
-        Assertions.assertEquals("mrwpe", model.bmpConfiguration().stationNetwork());
-        Assertions.assertEquals("rjbpertjpair", model.bmpConfiguration().monitoredNetworks().get(0));
-        Assertions.assertEquals(BmpExportPolicy.ALL, model.bmpConfiguration().exportPolicy());
+        Assertions.assertEquals(74444128, model.bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
+        Assertions.assertEquals(1109318809, model.bmpConfiguration().stationConnectionProperties().probeInterval());
+        Assertions.assertEquals(2110666337, model.bmpConfiguration().stationConnectionProperties().probeCount());
+        Assertions.assertEquals("uhhzwrsj", model.bmpConfiguration().stationNetwork());
+        Assertions.assertEquals("kjsvkbtmlixalph", model.bmpConfiguration().monitoredNetworks().get(0));
+        Assertions.assertEquals(BmpExportPolicy.PRE_POLICY, model.bmpConfiguration().exportPolicy());
         Assertions.assertEquals(BmpExportPolicy.ALL,
             model.bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(BmpMonitoredAddressFamily.IPV6UNICAST,
+        Assertions.assertEquals(BmpMonitoredAddressFamily.VPN_IPV6,
             model.bmpConfiguration().monitoredAddressFamilies().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkMonitorPatch model = new NetworkMonitorPatch()
-            .withTags(mapOf("cbcendidhue", "td", "asgukq", "ikwcx", "kiwmqnwmytcc", "kiynbf", "mcgvjb", "irgyutexnzh"))
+        NetworkMonitorPatch model = new NetworkMonitorPatch().withTags(mapOf("i", "uyrlk", "sabcylzz", "mmrmrjpjthi"))
             .withBmpConfiguration(new BmpConfigurationPatchProperties()
-                .withStationConfigurationState(StationConfigurationState.DISABLED)
-                .withScopeResourceId("qcqyzmrtfdl")
-                .withStationName("ryyjlikalbcyuwah")
-                .withStationIp("agvaidzceph")
-                .withStationPort(1247830495)
+                .withStationConfigurationState(StationConfigurationState.ENABLED)
+                .withScopeResourceId("pxtsdy")
+                .withStationName("gef")
+                .withStationIp("gwphw")
+                .withStationPort(625644465)
                 .withStationConnectionMode(StationConnectionMode.PASSIVE)
-                .withStationConnectionProperties(new StationConnectionPatchProperties().withKeepaliveIdleTime(276088276)
-                    .withProbeInterval(867682398)
-                    .withProbeCount(1584995270))
-                .withStationNetwork("mrwpe")
-                .withMonitoredNetworks(Arrays.asList("rjbpertjpair", "wjmcgi", "sywpejt", "qopugrse"))
-                .withExportPolicy(BmpExportPolicy.ALL)
-                .withExportPolicyConfiguration(
-                    new BmpExportPolicyPatchProperties().withExportPolicies(Arrays.asList(BmpExportPolicy.ALL)))
-                .withMonitoredAddressFamilies(Arrays.asList(BmpMonitoredAddressFamily.IPV6UNICAST,
-                    BmpMonitoredAddressFamily.VPN_IPV4, BmpMonitoredAddressFamily.IPV4UNICAST)));
+                .withStationConnectionProperties(new StationConnectionPatchProperties().withKeepaliveIdleTime(74444128)
+                    .withProbeInterval(1109318809)
+                    .withProbeCount(2110666337))
+                .withStationNetwork("uhhzwrsj")
+                .withMonitoredNetworks(Arrays.asList("kjsvkbtmlixalph", "gmin", "e"))
+                .withExportPolicy(BmpExportPolicy.PRE_POLICY)
+                .withExportPolicyConfiguration(new BmpExportPolicyPatchProperties()
+                    .withExportPolicies(Arrays.asList(BmpExportPolicy.ALL, BmpExportPolicy.LOCAL_RIB)))
+                .withMonitoredAddressFamilies(Arrays.asList(BmpMonitoredAddressFamily.VPN_IPV6)));
         model = BinaryData.fromObject(model).toObject(NetworkMonitorPatch.class);
-        Assertions.assertEquals("td", model.tags().get("cbcendidhue"));
-        Assertions.assertEquals(StationConfigurationState.DISABLED,
+        Assertions.assertEquals("uyrlk", model.tags().get("i"));
+        Assertions.assertEquals(StationConfigurationState.ENABLED,
             model.bmpConfiguration().stationConfigurationState());
-        Assertions.assertEquals("qcqyzmrtfdl", model.bmpConfiguration().scopeResourceId());
-        Assertions.assertEquals("ryyjlikalbcyuwah", model.bmpConfiguration().stationName());
-        Assertions.assertEquals("agvaidzceph", model.bmpConfiguration().stationIp());
-        Assertions.assertEquals(1247830495, model.bmpConfiguration().stationPort());
+        Assertions.assertEquals("pxtsdy", model.bmpConfiguration().scopeResourceId());
+        Assertions.assertEquals("gef", model.bmpConfiguration().stationName());
+        Assertions.assertEquals("gwphw", model.bmpConfiguration().stationIp());
+        Assertions.assertEquals(625644465, model.bmpConfiguration().stationPort());
         Assertions.assertEquals(StationConnectionMode.PASSIVE, model.bmpConfiguration().stationConnectionMode());
-        Assertions.assertEquals(276088276, model.bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
-        Assertions.assertEquals(867682398, model.bmpConfiguration().stationConnectionProperties().probeInterval());
-        Assertions.assertEquals(1584995270, model.bmpConfiguration().stationConnectionProperties().probeCount());
-        Assertions.assertEquals("mrwpe", model.bmpConfiguration().stationNetwork());
-        Assertions.assertEquals("rjbpertjpair", model.bmpConfiguration().monitoredNetworks().get(0));
-        Assertions.assertEquals(BmpExportPolicy.ALL, model.bmpConfiguration().exportPolicy());
+        Assertions.assertEquals(74444128, model.bmpConfiguration().stationConnectionProperties().keepaliveIdleTime());
+        Assertions.assertEquals(1109318809, model.bmpConfiguration().stationConnectionProperties().probeInterval());
+        Assertions.assertEquals(2110666337, model.bmpConfiguration().stationConnectionProperties().probeCount());
+        Assertions.assertEquals("uhhzwrsj", model.bmpConfiguration().stationNetwork());
+        Assertions.assertEquals("kjsvkbtmlixalph", model.bmpConfiguration().monitoredNetworks().get(0));
+        Assertions.assertEquals(BmpExportPolicy.PRE_POLICY, model.bmpConfiguration().exportPolicy());
         Assertions.assertEquals(BmpExportPolicy.ALL,
             model.bmpConfiguration().exportPolicyConfiguration().exportPolicies().get(0));
-        Assertions.assertEquals(BmpMonitoredAddressFamily.IPV6UNICAST,
+        Assertions.assertEquals(BmpMonitoredAddressFamily.VPN_IPV6,
             model.bmpConfiguration().monitoredAddressFamilies().get(0));
     }
 

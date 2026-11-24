@@ -172,6 +172,14 @@ public interface NetworkDevice {
     AdministrativeState administrativeState();
 
     /**
+     * Gets the operationalState property: Operational state of networkDevice indicating if the device is reachable and
+     * services are available.
+     * 
+     * @return the operationalState value.
+     */
+    OperationalState operationalState();
+
+    /**
      * Gets the secretRotationStatus property: Secret rotation status for the device's secrets.
      * 
      * @return the secretRotationStatus value.

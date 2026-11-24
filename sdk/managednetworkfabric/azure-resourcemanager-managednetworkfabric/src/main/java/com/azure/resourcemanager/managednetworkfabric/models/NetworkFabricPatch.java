@@ -446,6 +446,56 @@ public final class NetworkFabricPatch extends TagsUpdate {
     }
 
     /**
+     * Get the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchivePatchSettings secretArchiveSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretArchiveSettings();
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for a customer secret archive that may be used to hold
+     * copies of credentials for the Network Fabric.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the NetworkFabricPatch object itself.
+     */
+    public NetworkFabricPatch withSecretArchiveSettings(SecretArchivePatchSettings secretArchiveSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricPatchProperties();
+        }
+        this.innerProperties().withSecretArchiveSettings(secretArchiveSettings);
+        return this;
+    }
+
+    /**
+     * Get the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @return the upgradeProfile value.
+     */
+    public List<UpgradeProfilePropertiesPatchProperties> upgradeProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeProfile();
+    }
+
+    /**
+     * Set the upgradeProfile property: The upgrade profile to be used by devices in the network fabric during device
+     * operations.
+     * 
+     * @param upgradeProfile the upgradeProfile value to set.
+     * @return the NetworkFabricPatch object itself.
+     */
+    public NetworkFabricPatch withUpgradeProfile(List<UpgradeProfilePropertiesPatchProperties> upgradeProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkFabricPatchProperties();
+        }
+        this.innerProperties().withUpgradeProfile(upgradeProfile);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
