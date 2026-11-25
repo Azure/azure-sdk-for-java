@@ -61,10 +61,7 @@ public final class EdgeMachineVolumeImpl
     }
 
     public EdgeMachineVolume create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineVolumes()
-            .createOrUpdate(resourceGroupName, edgeMachineName, volumeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineVolume create(Context context) {
@@ -85,10 +82,7 @@ public final class EdgeMachineVolumeImpl
     }
 
     public EdgeMachineVolume apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineVolumes()
-            .createOrUpdate(resourceGroupName, edgeMachineName, volumeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineVolume apply(Context context) {
@@ -114,11 +108,7 @@ public final class EdgeMachineVolumeImpl
     }
 
     public EdgeMachineVolume refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineVolumes()
-            .getWithResponse(resourceGroupName, edgeMachineName, volumeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineVolume refresh(Context context) {

@@ -64,14 +64,7 @@ public final class GeographicHierarchiesClientImpl implements GeographicHierarch
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TrafficManagerGeographicHierarchyInner>> getDefaultWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -106,41 +99,19 @@ public final class GeographicHierarchiesClientImpl implements GeographicHierarch
         return service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrafficManagerGeographicHierarchyInner> getDefaultAsync() {
         return getDefaultWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrafficManagerGeographicHierarchyInner> getDefaultWithResponse(Context context) {
         return getDefaultWithResponseAsync(context).block();
     }
 
-    /**
-     * Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default Geographic Hierarchy used by the Geographic traffic routing method.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficManagerGeographicHierarchyInner getDefault() {
         return getDefaultWithResponse(Context.NONE).getValue();

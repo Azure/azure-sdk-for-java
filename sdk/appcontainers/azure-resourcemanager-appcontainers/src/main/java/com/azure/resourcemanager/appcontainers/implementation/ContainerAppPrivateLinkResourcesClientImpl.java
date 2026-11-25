@@ -178,12 +178,7 @@ public final class ContainerAppPrivateLinkResourcesClientImpl implements Contain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listSinglePage(String resourceGroupName, String containerAppName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, containerAppName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, containerAppName, Context.NONE);
     }
 
     /**
@@ -210,39 +205,13 @@ public final class ContainerAppPrivateLinkResourcesClientImpl implements Contain
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private link resources for a given Container App.
-     * 
-     * Lists the private link resources supported by a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private link resources for a managed environment as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, containerAppName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, containerAppName, Context.NONE);
     }
 
-    /**
-     * List private link resources for a given Container App.
-     * 
-     * Lists the private link resources supported by a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private link resources for a managed environment as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String containerAppName,
         Context context) {
@@ -300,22 +269,7 @@ public final class ContainerAppPrivateLinkResourcesClientImpl implements Contain
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a private link resource for a given Container App.
-     * 
-     * Gets the details of a private link resource supported by a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for a given Container App.
-     * 
-     * Gets the details of a private link resource supported by a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String containerAppName,
         String privateLinkResourceName, Context context) {
@@ -324,21 +278,7 @@ public final class ContainerAppPrivateLinkResourcesClientImpl implements Contain
             resourceGroupName, containerAppName, privateLinkResourceName, accept, context);
     }
 
-    /**
-     * Get a private link resource for a given Container App.
-     * 
-     * Gets the details of a private link resource supported by a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for a given Container App.
-     * 
-     * Gets the details of a private link resource supported by a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String containerAppName,
         String privateLinkResourceName) {
@@ -379,11 +319,7 @@ public final class ContainerAppPrivateLinkResourcesClientImpl implements Contain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

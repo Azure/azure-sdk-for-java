@@ -25,6 +25,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networksecurity.fluent.NetworkSecurityManagementClient;
+import com.azure.resourcemanager.networksecurity.implementation.AgentFabricsImpl;
+import com.azure.resourcemanager.networksecurity.implementation.ClusterAssociationsImpl;
+import com.azure.resourcemanager.networksecurity.implementation.EgressTrustBundlesImpl;
+import com.azure.resourcemanager.networksecurity.implementation.MembersImpl;
 import com.azure.resourcemanager.networksecurity.implementation.NetworkSecurityManagementClientBuilder;
 import com.azure.resourcemanager.networksecurity.implementation.NeuroShieldFindingsImpl;
 import com.azure.resourcemanager.networksecurity.implementation.NeuroShieldMitigationsImpl;
@@ -32,14 +36,22 @@ import com.azure.resourcemanager.networksecurity.implementation.NeuroShieldOpera
 import com.azure.resourcemanager.networksecurity.implementation.NeuroShieldProtectedResourcesImpl;
 import com.azure.resourcemanager.networksecurity.implementation.NeuroShieldSummariesImpl;
 import com.azure.resourcemanager.networksecurity.implementation.NeuroShieldsImpl;
+import com.azure.resourcemanager.networksecurity.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.networksecurity.implementation.OperationsImpl;
+import com.azure.resourcemanager.networksecurity.implementation.PolicyGroupsImpl;
+import com.azure.resourcemanager.networksecurity.models.AgentFabrics;
+import com.azure.resourcemanager.networksecurity.models.ClusterAssociations;
+import com.azure.resourcemanager.networksecurity.models.EgressTrustBundles;
+import com.azure.resourcemanager.networksecurity.models.Members;
 import com.azure.resourcemanager.networksecurity.models.NeuroShieldFindings;
 import com.azure.resourcemanager.networksecurity.models.NeuroShieldMitigations;
 import com.azure.resourcemanager.networksecurity.models.NeuroShieldOperationStatuses;
 import com.azure.resourcemanager.networksecurity.models.NeuroShieldProtectedResources;
 import com.azure.resourcemanager.networksecurity.models.NeuroShieldSummaries;
 import com.azure.resourcemanager.networksecurity.models.NeuroShields;
+import com.azure.resourcemanager.networksecurity.models.OperationStatus;
 import com.azure.resourcemanager.networksecurity.models.Operations;
+import com.azure.resourcemanager.networksecurity.models.PolicyGroups;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -66,6 +78,18 @@ public final class NetworkSecurityManager {
     private NeuroShieldFindings neuroShieldFindings;
 
     private NeuroShieldMitigations neuroShieldMitigations;
+
+    private AgentFabrics agentFabrics;
+
+    private Members members;
+
+    private PolicyGroups policyGroups;
+
+    private OperationStatus operationStatus;
+
+    private ClusterAssociations clusterAssociations;
+
+    private EgressTrustBundles egressTrustBundles;
 
     private final NetworkSecurityManagementClient clientObject;
 
@@ -367,6 +391,78 @@ public final class NetworkSecurityManager {
                 = new NeuroShieldMitigationsImpl(clientObject.getNeuroShieldMitigations(), this);
         }
         return neuroShieldMitigations;
+    }
+
+    /**
+     * Gets the resource collection API of AgentFabrics. It manages AgentFabric.
+     * 
+     * @return Resource collection API of AgentFabrics.
+     */
+    public AgentFabrics agentFabrics() {
+        if (this.agentFabrics == null) {
+            this.agentFabrics = new AgentFabricsImpl(clientObject.getAgentFabrics(), this);
+        }
+        return agentFabrics;
+    }
+
+    /**
+     * Gets the resource collection API of Members. It manages Member.
+     * 
+     * @return Resource collection API of Members.
+     */
+    public Members members() {
+        if (this.members == null) {
+            this.members = new MembersImpl(clientObject.getMembers(), this);
+        }
+        return members;
+    }
+
+    /**
+     * Gets the resource collection API of PolicyGroups. It manages PolicyGroup.
+     * 
+     * @return Resource collection API of PolicyGroups.
+     */
+    public PolicyGroups policyGroups() {
+        if (this.policyGroups == null) {
+            this.policyGroups = new PolicyGroupsImpl(clientObject.getPolicyGroups(), this);
+        }
+        return policyGroups;
+    }
+
+    /**
+     * Gets the resource collection API of OperationStatus.
+     * 
+     * @return Resource collection API of OperationStatus.
+     */
+    public OperationStatus operationStatus() {
+        if (this.operationStatus == null) {
+            this.operationStatus = new OperationStatusImpl(clientObject.getOperationStatus(), this);
+        }
+        return operationStatus;
+    }
+
+    /**
+     * Gets the resource collection API of ClusterAssociations. It manages ClusterAssociation.
+     * 
+     * @return Resource collection API of ClusterAssociations.
+     */
+    public ClusterAssociations clusterAssociations() {
+        if (this.clusterAssociations == null) {
+            this.clusterAssociations = new ClusterAssociationsImpl(clientObject.getClusterAssociations(), this);
+        }
+        return clusterAssociations;
+    }
+
+    /**
+     * Gets the resource collection API of EgressTrustBundles.
+     * 
+     * @return Resource collection API of EgressTrustBundles.
+     */
+    public EgressTrustBundles egressTrustBundles() {
+        if (this.egressTrustBundles == null) {
+            this.egressTrustBundles = new EgressTrustBundlesImpl(clientObject.getEgressTrustBundles(), this);
+        }
+        return egressTrustBundles;
     }
 
     /**

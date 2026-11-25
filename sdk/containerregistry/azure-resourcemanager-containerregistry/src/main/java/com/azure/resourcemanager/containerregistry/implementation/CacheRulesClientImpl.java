@@ -127,18 +127,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the properties of the specified cache rule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified cache rule resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CacheRuleInner>> getWithResponseAsync(String resourceGroupName, String registryName,
         String cacheRuleName) {
@@ -207,70 +196,27 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             resourceGroupName, registryName, cacheRuleName, accept, context);
     }
 
-    /**
-     * Gets the properties of the specified cache rule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified cache rule resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CacheRuleInner> getAsync(String resourceGroupName, String registryName, String cacheRuleName) {
         return getWithResponseAsync(resourceGroupName, registryName, cacheRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the specified cache rule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified cache rule resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CacheRuleInner> getWithResponse(String resourceGroupName, String registryName, String cacheRuleName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, registryName, cacheRuleName, context).block();
     }
 
-    /**
-     * Gets the properties of the specified cache rule resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified cache rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheRuleInner get(String resourceGroupName, String registryName, String cacheRuleName) {
         return getWithResponse(resourceGroupName, registryName, cacheRuleName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleCreateParameters The parameters for creating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
         String cacheRuleName, CacheRuleInner cacheRuleCreateParameters) {
@@ -355,18 +301,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             resourceGroupName, registryName, cacheRuleName, contentType, accept, cacheRuleCreateParameters, context);
     }
 
-    /**
-     * Creates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleCreateParameters The parameters for creating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CacheRuleInner>, CacheRuleInner> beginCreateAsync(String resourceGroupName,
         String registryName, String cacheRuleName, CacheRuleInner cacheRuleCreateParameters) {
@@ -399,18 +334,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             CacheRuleInner.class, CacheRuleInner.class, context);
     }
 
-    /**
-     * Creates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleCreateParameters The parameters for creating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheRuleInner>, CacheRuleInner> beginCreate(String resourceGroupName,
         String registryName, String cacheRuleName, CacheRuleInner cacheRuleCreateParameters) {
@@ -418,19 +342,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleCreateParameters The parameters for creating a cache rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheRuleInner>, CacheRuleInner> beginCreate(String resourceGroupName,
         String registryName, String cacheRuleName, CacheRuleInner cacheRuleCreateParameters, Context context) {
@@ -438,18 +350,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleCreateParameters The parameters for creating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CacheRuleInner> createAsync(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleInner cacheRuleCreateParameters) {
@@ -478,56 +379,21 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleCreateParameters The parameters for creating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheRuleInner create(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleInner cacheRuleCreateParameters) {
         return createAsync(resourceGroupName, registryName, cacheRuleName, cacheRuleCreateParameters).block();
     }
 
-    /**
-     * Creates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleCreateParameters The parameters for creating a cache rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheRuleInner create(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleInner cacheRuleCreateParameters, Context context) {
         return createAsync(resourceGroupName, registryName, cacheRuleName, cacheRuleCreateParameters, context).block();
     }
 
-    /**
-     * Updates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleUpdateParameters The parameters for updating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
         String cacheRuleName, CacheRuleUpdateParameters cacheRuleUpdateParameters) {
@@ -612,18 +478,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             resourceGroupName, registryName, cacheRuleName, contentType, accept, cacheRuleUpdateParameters, context);
     }
 
-    /**
-     * Updates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleUpdateParameters The parameters for updating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CacheRuleInner>, CacheRuleInner> beginUpdateAsync(String resourceGroupName,
         String registryName, String cacheRuleName, CacheRuleUpdateParameters cacheRuleUpdateParameters) {
@@ -657,18 +512,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             CacheRuleInner.class, CacheRuleInner.class, context);
     }
 
-    /**
-     * Updates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleUpdateParameters The parameters for updating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheRuleInner>, CacheRuleInner> beginUpdate(String resourceGroupName,
         String registryName, String cacheRuleName, CacheRuleUpdateParameters cacheRuleUpdateParameters) {
@@ -676,19 +520,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleUpdateParameters The parameters for updating a cache rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheRuleInner>, CacheRuleInner> beginUpdate(String resourceGroupName,
         String registryName, String cacheRuleName, CacheRuleUpdateParameters cacheRuleUpdateParameters,
@@ -697,18 +529,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Updates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleUpdateParameters The parameters for updating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CacheRuleInner> updateAsync(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleUpdateParameters cacheRuleUpdateParameters) {
@@ -737,54 +558,21 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleUpdateParameters The parameters for updating a cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheRuleInner update(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleUpdateParameters cacheRuleUpdateParameters) {
         return updateAsync(resourceGroupName, registryName, cacheRuleName, cacheRuleUpdateParameters).block();
     }
 
-    /**
-     * Updates a cache rule for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param cacheRuleUpdateParameters The parameters for updating a cache rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a cache rule for a container registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CacheRuleInner update(String resourceGroupName, String registryName, String cacheRuleName,
         CacheRuleUpdateParameters cacheRuleUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, registryName, cacheRuleName, cacheRuleUpdateParameters, context).block();
     }
 
-    /**
-     * Deletes a cache rule resource from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
         String cacheRuleName) {
@@ -850,17 +638,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             resourceGroupName, registryName, cacheRuleName, context);
     }
 
-    /**
-     * Deletes a cache rule resource from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
         String cacheRuleName) {
@@ -891,52 +669,21 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             context);
     }
 
-    /**
-     * Deletes a cache rule resource from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String cacheRuleName) {
         return this.beginDeleteAsync(resourceGroupName, registryName, cacheRuleName).getSyncPoller();
     }
 
-    /**
-     * Deletes a cache rule resource from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String cacheRuleName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, registryName, cacheRuleName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a cache rule resource from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String cacheRuleName) {
         return beginDeleteAsync(resourceGroupName, registryName, cacheRuleName).last()
@@ -962,32 +709,13 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a cache rule resource from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String cacheRuleName) {
         deleteAsync(resourceGroupName, registryName, cacheRuleName).block();
     }
 
-    /**
-     * Deletes a cache rule resource from a container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param cacheRuleName The name of the cache rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String cacheRuleName, Context context) {
         deleteAsync(resourceGroupName, registryName, cacheRuleName, context).block();
@@ -1069,17 +797,7 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all cache rule resources for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list cache rules for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CacheRuleInner> listAsync(String resourceGroupName, String registryName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName),
@@ -1104,34 +822,13 @@ public final class CacheRulesClientImpl implements CacheRulesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all cache rule resources for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list cache rules for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheRuleInner> list(String resourceGroupName, String registryName) {
         return new PagedIterable<>(listAsync(resourceGroupName, registryName));
     }
 
-    /**
-     * Lists all cache rule resources for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list cache rules for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CacheRuleInner> list(String resourceGroupName, String registryName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, registryName, context));

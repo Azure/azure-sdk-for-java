@@ -94,10 +94,7 @@ public final class CommunityResourceImpl
     }
 
     public CommunityResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunities()
-            .createOrUpdate(resourceGroupName, communityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CommunityResource create(Context context) {
@@ -119,10 +116,7 @@ public final class CommunityResourceImpl
     }
 
     public CommunityResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunities()
-            .update(resourceGroupName, communityName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CommunityResource apply(Context context) {
@@ -145,11 +139,7 @@ public final class CommunityResourceImpl
     }
 
     public CommunityResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommunities()
-            .getByResourceGroupWithResponse(resourceGroupName, communityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CommunityResource refresh(Context context) {

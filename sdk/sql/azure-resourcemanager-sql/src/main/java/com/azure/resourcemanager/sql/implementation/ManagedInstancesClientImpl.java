@@ -281,17 +281,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String expand) {
@@ -355,16 +345,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             this.client.getSubscriptionId(), resourceGroupName, managedInstanceName, expand, accept, context);
     }
 
-    /**
-     * Gets a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> getByResourceGroupAsync(String resourceGroupName, String managedInstanceName) {
         final String expand = null;
@@ -372,51 +353,21 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String managedInstanceName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, managedInstanceName, expand, context).block();
     }
 
-    /**
-     * Gets a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner getByResourceGroup(String resourceGroupName, String managedInstanceName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, managedInstanceName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, ManagedInstanceInner parameters) {
@@ -494,17 +445,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             context);
     }
 
-    /**
-     * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
@@ -536,35 +477,14 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             ManagedInstanceInner.class, ManagedInstanceInner.class, context);
     }
 
-    /**
-     * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner>
         beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters, Context context) {
@@ -572,17 +492,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
         ManagedInstanceInner parameters) {
@@ -609,52 +519,21 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         ManagedInstanceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
-    /**
-     * Creates or updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         ManagedInstanceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, parameters, context).block();
     }
 
-    /**
-     * Updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, ManagedInstanceUpdate parameters) {
@@ -731,17 +610,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             resourceGroupName, managedInstanceName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginUpdateAsync(String resourceGroupName,
         String managedInstanceName, ManagedInstanceUpdate parameters) {
@@ -773,52 +642,21 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             ManagedInstanceInner.class, ManagedInstanceInner.class, context);
     }
 
-    /**
-     * Updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginUpdate(String resourceGroupName,
         String managedInstanceName, ManagedInstanceUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, managedInstanceName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginUpdate(String resourceGroupName,
         String managedInstanceName, ManagedInstanceUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, managedInstanceName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> updateAsync(String resourceGroupName, String managedInstanceName,
         ManagedInstanceUpdate parameters) {
@@ -845,51 +683,21 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner update(String resourceGroupName, String managedInstanceName,
         ManagedInstanceUpdate parameters) {
         return updateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
-    /**
-     * Updates a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The requested managed instance resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner update(String resourceGroupName, String managedInstanceName,
         ManagedInstanceUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, managedInstanceName, parameters, context).block();
     }
 
-    /**
-     * Deletes a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -950,16 +758,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             resourceGroupName, managedInstanceName, context);
     }
 
-    /**
-     * Deletes a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, managedInstanceName);
@@ -988,48 +787,20 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             context);
     }
 
-    /**
-     * Deletes a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName) {
         return this.beginDeleteAsync(resourceGroupName, managedInstanceName).getSyncPoller();
     }
 
-    /**
-     * Deletes a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName) {
         return beginDeleteAsync(resourceGroupName, managedInstanceName).last()
@@ -1053,30 +824,13 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName) {
         deleteAsync(resourceGroupName, managedInstanceName).block();
     }
 
-    /**
-     * Deletes a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, Context context) {
         deleteAsync(resourceGroupName, managedInstanceName, context).block();
@@ -1153,31 +907,14 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed instances in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instances in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listByResourceGroupAsync(String resourceGroupName, String expand) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, expand),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of managed instances in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instances in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
         final String expand = null;
@@ -1203,32 +940,14 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed instances in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instances in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> listByResourceGroup(String resourceGroupName) {
         final String expand = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, expand));
     }
 
-    /**
-     * Gets a list of managed instances in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instances in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> listByResourceGroup(String resourceGroupName, String expand,
         Context context) {
@@ -1294,27 +1013,13 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all managed instances in the subscription.
-     * 
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in the subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listAsync(String expand) {
         return new PagedFlux<>(() -> listSinglePageAsync(expand), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of all managed instances in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in the subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listAsync() {
         final String expand = null;
@@ -1337,45 +1042,20 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all managed instances in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> list() {
         final String expand = null;
         return new PagedIterable<>(listAsync(expand));
     }
 
-    /**
-     * Gets a list of all managed instances in the subscription.
-     * 
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> list(String expand, Context context) {
         return new PagedIterable<>(listAsync(expand, context));
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param replicaType The type of replica to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName,
         String managedInstanceName, ReplicaType replicaType) {
@@ -1437,17 +1117,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             resourceGroupName, managedInstanceName, replicaType, context);
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param replicaType The type of replica to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String managedInstanceName,
         ReplicaType replicaType) {
@@ -1457,16 +1127,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             this.client.getContext());
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
@@ -1498,67 +1159,28 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             context);
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
         return this.beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType).getSyncPoller();
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param replicaType The type of replica to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String managedInstanceName,
         ReplicaType replicaType, Context context) {
         return this.beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType, context).getSyncPoller();
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param replicaType The type of replica to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String managedInstanceName, ReplicaType replicaType) {
         return beginFailoverAsync(resourceGroupName, managedInstanceName, replicaType).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
@@ -1585,32 +1207,14 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void failover(String resourceGroupName, String managedInstanceName) {
         final ReplicaType replicaType = null;
         failoverAsync(resourceGroupName, managedInstanceName, replicaType).block();
     }
 
-    /**
-     * Failovers a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param replicaType The type of replica to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void failover(String resourceGroupName, String managedInstanceName, ReplicaType replicaType,
         Context context) {
@@ -1699,17 +1303,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the collection of outbound network dependencies for the given managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of outbound network dependencies for the given managed instance as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OutboundEnvironmentEndpointInner>
         listOutboundNetworkDependenciesByManagedInstanceAsync(String resourceGroupName, String managedInstanceName) {
@@ -1740,17 +1334,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             nextLink -> listOutboundNetworkDependenciesByManagedInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the collection of outbound network dependencies for the given managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of outbound network dependencies for the given managed instance as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundEnvironmentEndpointInner>
         listOutboundNetworkDependenciesByManagedInstance(String resourceGroupName, String managedInstanceName) {
@@ -1758,18 +1342,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             listOutboundNetworkDependenciesByManagedInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets the collection of outbound network dependencies for the given managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of outbound network dependencies for the given managed instance as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesByManagedInstance(
         String resourceGroupName, String managedInstanceName, Context context) {
@@ -1777,16 +1350,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             listOutboundNetworkDependenciesByManagedInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>>
         reevaluateInaccessibleDatabaseStateWithResponseAsync(String resourceGroupName, String managedInstanceName) {
@@ -1848,16 +1412,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             this.client.getSubscriptionId(), resourceGroupName, managedInstanceName, context);
     }
 
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseStateAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -1888,16 +1443,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             context);
     }
 
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseState(String resourceGroupName,
         String managedInstanceName) {
@@ -1905,17 +1451,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .getSyncPoller();
     }
 
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReevaluateInaccessibleDatabaseState(String resourceGroupName,
         String managedInstanceName, Context context) {
@@ -1923,16 +1459,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .getSyncPoller();
     }
 
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reevaluateInaccessibleDatabaseStateAsync(String resourceGroupName, String managedInstanceName) {
         return beginReevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName).last()
@@ -1957,47 +1484,20 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName) {
         reevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName).block();
     }
 
-    /**
-     * Reevaluates the inaccessibility state of all managed databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reevaluateInaccessibleDatabaseState(String resourceGroupName, String managedInstanceName,
         Context context) {
         reevaluateInaccessibleDatabaseStateAsync(resourceGroupName, managedInstanceName, context).block();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshStatusWithResponseAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -2061,16 +1561,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             this.client.getSubscriptionId(), resourceGroupName, managedInstanceName, accept, context);
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<RefreshExternalGovernanceStatusOperationResultMIInner>, RefreshExternalGovernanceStatusOperationResultMIInner>
@@ -2106,16 +1597,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
                 RefreshExternalGovernanceStatusOperationResultMIInner.class, context);
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultMIInner>, RefreshExternalGovernanceStatusOperationResultMIInner>
@@ -2123,17 +1605,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
         return this.beginRefreshStatusAsync(resourceGroupName, managedInstanceName).getSyncPoller();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<RefreshExternalGovernanceStatusOperationResultMIInner>, RefreshExternalGovernanceStatusOperationResultMIInner>
@@ -2141,16 +1613,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
         return this.beginRefreshStatusAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RefreshExternalGovernanceStatusOperationResultMIInner> refreshStatusAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -2176,49 +1639,21 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultMIInner refreshStatus(String resourceGroupName,
         String managedInstanceName) {
         return refreshStatusAsync(resourceGroupName, managedInstanceName).block();
     }
 
-    /**
-     * Refresh external governance enablement status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an RefreshExternalGovernanceStatus operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RefreshExternalGovernanceStatusOperationResultMIInner refreshStatus(String resourceGroupName,
         String managedInstanceName, Context context) {
         return refreshStatusAsync(resourceGroupName, managedInstanceName, context).block();
     }
 
-    /**
-     * Starts the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -2281,16 +1716,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             resourceGroupName, managedInstanceName, accept, context);
     }
 
-    /**
-     * Starts the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStartAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -2319,49 +1745,21 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             ManagedInstanceInner.class, ManagedInstanceInner.class, context);
     }
 
-    /**
-     * Starts the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStart(String resourceGroupName,
         String managedInstanceName) {
         return this.beginStartAsync(resourceGroupName, managedInstanceName).getSyncPoller();
     }
 
-    /**
-     * Starts the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStart(String resourceGroupName,
         String managedInstanceName, Context context) {
         return this.beginStartAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
     }
 
-    /**
-     * Starts the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> startAsync(String resourceGroupName, String managedInstanceName) {
         return beginStartAsync(resourceGroupName, managedInstanceName).last()
@@ -2386,47 +1784,19 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner start(String resourceGroupName, String managedInstanceName) {
         return startAsync(resourceGroupName, managedInstanceName).block();
     }
 
-    /**
-     * Starts the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner start(String resourceGroupName, String managedInstanceName, Context context) {
         return startAsync(resourceGroupName, managedInstanceName, context).block();
     }
 
-    /**
-     * Stops the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -2489,16 +1859,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             resourceGroupName, managedInstanceName, accept, context);
     }
 
-    /**
-     * Stops the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStopAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -2527,49 +1888,21 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             ManagedInstanceInner.class, ManagedInstanceInner.class, context);
     }
 
-    /**
-     * Stops the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStop(String resourceGroupName,
         String managedInstanceName) {
         return this.beginStopAsync(resourceGroupName, managedInstanceName).getSyncPoller();
     }
 
-    /**
-     * Stops the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceInner>, ManagedInstanceInner> beginStop(String resourceGroupName,
         String managedInstanceName, Context context) {
         return this.beginStopAsync(resourceGroupName, managedInstanceName, context).getSyncPoller();
     }
 
-    /**
-     * Stops the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceInner> stopAsync(String resourceGroupName, String managedInstanceName) {
         return beginStopAsync(resourceGroupName, managedInstanceName).last()
@@ -2594,32 +1927,13 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner stop(String resourceGroupName, String managedInstanceName) {
         return stopAsync(resourceGroupName, managedInstanceName).block();
     }
 
-    /**
-     * Stops the managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceInner stop(String resourceGroupName, String managedInstanceName, Context context) {
         return stopAsync(resourceGroupName, managedInstanceName, context).block();
@@ -2726,24 +2040,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get top resource consuming queries of a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param numberOfQueries How many 'top queries' to return. Default is 5.
-     * @param databases Comma separated list of databases to be included into search. All DB's are included if this
-     * parameter is not specified.
-     * @param startTime Start time for observed period.
-     * @param endTime End time for observed period.
-     * @param interval The time step to be used to summarize the metric values. Default value is PT1H.
-     * @param aggregationFunction Aggregation function to be used, default value is 'sum'.
-     * @param observationMetric Metric to be used for ranking top queries. Default is 'cpu'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return top resource consuming queries of a managed instance as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopQueriesInner> listByManagedInstanceAsync(String resourceGroupName, String managedInstanceName,
         Integer numberOfQueries, String databases, String startTime, String endTime, QueryTimeGrainType interval,
@@ -2754,16 +2051,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get top resource consuming queries of a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return top resource consuming queries of a managed instance as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopQueriesInner> listByManagedInstanceAsync(String resourceGroupName, String managedInstanceName) {
         final Integer numberOfQueries = null;
@@ -2808,16 +2096,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get top resource consuming queries of a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return top resource consuming queries of a managed instance as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopQueriesInner> listByManagedInstance(String resourceGroupName, String managedInstanceName) {
         final Integer numberOfQueries = null;
@@ -2831,25 +2110,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             databases, startTime, endTime, interval, aggregationFunction, observationMetric));
     }
 
-    /**
-     * Get top resource consuming queries of a managed instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param numberOfQueries How many 'top queries' to return. Default is 5.
-     * @param databases Comma separated list of databases to be included into search. All DB's are included if this
-     * parameter is not specified.
-     * @param startTime Start time for observed period.
-     * @param endTime End time for observed period.
-     * @param interval The time step to be used to summarize the metric values. Default value is PT1H.
-     * @param aggregationFunction Aggregation function to be used, default value is 'sum'.
-     * @param observationMetric Metric to be used for ranking top queries. Default is 'cpu'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return top resource consuming queries of a managed instance as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopQueriesInner> listByManagedInstance(String resourceGroupName, String managedInstanceName,
         Integer numberOfQueries, String databases, String startTime, String endTime, QueryTimeGrainType interval,
@@ -2858,17 +2119,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             databases, startTime, endTime, interval, aggregationFunction, observationMetric, context));
     }
 
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> validateAzureKeyVaultEncryptionKeyWithResponseAsync(
         String resourceGroupName, String managedInstanceName,
@@ -2945,17 +2196,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             this.client.getSubscriptionId(), resourceGroupName, managedInstanceName, contentType, parameters, context);
     }
 
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName,
         String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
@@ -2988,17 +2229,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             context);
     }
 
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKey(String resourceGroupName,
         String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
@@ -3006,18 +2237,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .getSyncPoller();
     }
 
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateAzureKeyVaultEncryptionKey(String resourceGroupName,
         String managedInstanceName, ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters,
@@ -3027,17 +2247,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .getSyncPoller();
     }
 
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateAzureKeyVaultEncryptionKeyAsync(String resourceGroupName, String managedInstanceName,
         ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
@@ -3065,33 +2275,14 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
         ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters) {
         validateAzureKeyVaultEncryptionKeyAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
-    /**
-     * Validates customer managed key.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param parameters The validate azure key vault encryption key parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateAzureKeyVaultEncryptionKey(String resourceGroupName, String managedInstanceName,
         ManagedInstanceValidateAzureKeyVaultEncryptionKeyRequest parameters, Context context) {
@@ -3179,17 +2370,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all managed instances in an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in an instance pool as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName,
         String expand) {
@@ -3197,16 +2378,7 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             nextLink -> listByInstancePoolNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of all managed instances in an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in an instance pool as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceInner> listByInstancePoolAsync(String resourceGroupName, String instancePoolName) {
         final String expand = null;
@@ -3234,34 +2406,14 @@ public final class ManagedInstancesClientImpl implements InnerSupportsGet<Manage
             nextLink -> listByInstancePoolNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all managed instances in an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in an instance pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> listByInstancePool(String resourceGroupName, String instancePoolName) {
         final String expand = null;
         return new PagedIterable<>(listByInstancePoolAsync(resourceGroupName, instancePoolName, expand));
     }
 
-    /**
-     * Gets a list of all managed instances in an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all managed instances in an instance pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceInner> listByInstancePool(String resourceGroupName, String instancePoolName,
         String expand, Context context) {

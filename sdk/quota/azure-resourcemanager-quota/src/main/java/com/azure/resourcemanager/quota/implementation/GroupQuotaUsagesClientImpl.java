@@ -160,11 +160,7 @@ public final class GroupQuotaUsagesClientImpl implements GroupQuotaUsagesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceUsagesInner> listSinglePage(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location) {
-        final String accept = "application/json";
-        Response<ResourceUsageList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            managementGroupId, groupQuotaName, resourceProviderName, location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(managementGroupId, groupQuotaName, resourceProviderName, location, Context.NONE);
     }
 
     /**
@@ -191,41 +187,14 @@ public final class GroupQuotaUsagesClientImpl implements GroupQuotaUsagesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the GroupQuotas usages and limits(quota). Location is required paramter.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotas usages and limits(quota) as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceUsagesInner> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location) {
-        return new PagedIterable<>(
-            () -> listSinglePage(managementGroupId, groupQuotaName, resourceProviderName, location),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(managementGroupId, groupQuotaName, resourceProviderName, location, Context.NONE);
     }
 
-    /**
-     * Gets the GroupQuotas usages and limits(quota). Location is required paramter.
-     * 
-     * @param managementGroupId The management group ID.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GroupQuotas usages and limits(quota) as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceUsagesInner> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, Context context) {
@@ -264,11 +233,7 @@ public final class GroupQuotaUsagesClientImpl implements GroupQuotaUsagesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceUsagesInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ResourceUsageList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

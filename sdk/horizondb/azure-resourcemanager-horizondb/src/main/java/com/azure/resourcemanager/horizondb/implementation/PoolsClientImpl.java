@@ -234,17 +234,7 @@ public final class PoolsClientImpl implements PoolsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PoolInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -255,35 +245,14 @@ public final class PoolsClientImpl implements PoolsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolInner> getAsync(String resourceGroupName, String clusterName, String poolName) {
         return getWithResponseAsync(resourceGroupName, clusterName, poolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PoolInner> getWithResponse(String resourceGroupName, String clusterName, String poolName,
         Context context) {
@@ -292,57 +261,13 @@ public final class PoolsClientImpl implements PoolsClient {
             resourceGroupName, clusterName, poolName, accept, context);
     }
 
-    /**
-     * Gets information about a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner get(String resourceGroupName, String clusterName, String poolName) {
         return getWithResponse(resourceGroupName, clusterName, poolName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
-     * high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
-     * and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone
-     * and ZoneRedundant are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone
-     * placement, while ZoneRedundant requires nodes to be allocated across availability zones. Node allocation and
-     * high-availability reconfiguration are atomic: if all requested nodes or the required zonal topology cannot be
-     * provisioned, the long-running operation fails and the previous resource state is preserved. A pool name must
-     * differ from its parent cluster name because the Cluster-scoped ReadWrite Endpoint is named after the Cluster and
-     * the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects a request whose names would
-     * collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint representing that
-     * Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint cannot
-     * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
-     * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
-     * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
-     * creation. When omitted during creation, the service applies the default parameter group compatible with the
-     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
-     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
-     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
-     * pool, the request can switch its association in either direction between the corresponding default parameter
-     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
-     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
-     * resource is changed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, String poolName, PoolInner resource) {
@@ -393,11 +318,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         String poolName, PoolInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, poolName, resource, Context.NONE);
     }
 
     /**
@@ -446,41 +367,7 @@ public final class PoolsClientImpl implements PoolsClient {
             context);
     }
 
-    /**
-     * Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
-     * high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
-     * and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone
-     * and ZoneRedundant are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone
-     * placement, while ZoneRedundant requires nodes to be allocated across availability zones. Node allocation and
-     * high-availability reconfiguration are atomic: if all requested nodes or the required zonal topology cannot be
-     * provisioned, the long-running operation fails and the previous resource state is preserved. A pool name must
-     * differ from its parent cluster name because the Cluster-scoped ReadWrite Endpoint is named after the Cluster and
-     * the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects a request whose names would
-     * collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint representing that
-     * Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint cannot
-     * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
-     * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
-     * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
-     * creation. When omitted during creation, the service applies the default parameter group compatible with the
-     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
-     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
-     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
-     * pool, the request can switch its association in either direction between the corresponding default parameter
-     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
-     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
-     * resource is changed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PoolInner>, PoolInner> beginCreateOrReplaceAsync(String resourceGroupName,
         String clusterName, String poolName, PoolInner resource) {
@@ -490,84 +377,14 @@ public final class PoolsClientImpl implements PoolsClient {
             PoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
-     * high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
-     * and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone
-     * and ZoneRedundant are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone
-     * placement, while ZoneRedundant requires nodes to be allocated across availability zones. Node allocation and
-     * high-availability reconfiguration are atomic: if all requested nodes or the required zonal topology cannot be
-     * provisioned, the long-running operation fails and the previous resource state is preserved. A pool name must
-     * differ from its parent cluster name because the Cluster-scoped ReadWrite Endpoint is named after the Cluster and
-     * the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects a request whose names would
-     * collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint representing that
-     * Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint cannot
-     * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
-     * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
-     * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
-     * creation. When omitted during creation, the service applies the default parameter group compatible with the
-     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
-     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
-     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
-     * pool, the request can switch its association in either direction between the corresponding default parameter
-     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
-     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
-     * resource is changed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, String poolName, PoolInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, clusterName, poolName, resource);
-        return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, poolName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
-     * high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
-     * and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone
-     * and ZoneRedundant are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone
-     * placement, while ZoneRedundant requires nodes to be allocated across availability zones. Node allocation and
-     * high-availability reconfiguration are atomic: if all requested nodes or the required zonal topology cannot be
-     * provisioned, the long-running operation fails and the previous resource state is preserved. A pool name must
-     * differ from its parent cluster name because the Cluster-scoped ReadWrite Endpoint is named after the Cluster and
-     * the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects a request whose names would
-     * collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint representing that
-     * Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint cannot
-     * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
-     * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
-     * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
-     * creation. When omitted during creation, the service applies the default parameter group compatible with the
-     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
-     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
-     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
-     * pool, the request can switch its association in either direction between the corresponding default parameter
-     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
-     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
-     * resource is changed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, String poolName, PoolInner resource, Context context) {
@@ -576,41 +393,7 @@ public final class PoolsClientImpl implements PoolsClient {
         return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, context);
     }
 
-    /**
-     * Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
-     * high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
-     * and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone
-     * and ZoneRedundant are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone
-     * placement, while ZoneRedundant requires nodes to be allocated across availability zones. Node allocation and
-     * high-availability reconfiguration are atomic: if all requested nodes or the required zonal topology cannot be
-     * provisioned, the long-running operation fails and the previous resource state is preserved. A pool name must
-     * differ from its parent cluster name because the Cluster-scoped ReadWrite Endpoint is named after the Cluster and
-     * the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects a request whose names would
-     * collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint representing that
-     * Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint cannot
-     * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
-     * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
-     * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
-     * creation. When omitted during creation, the service applies the default parameter group compatible with the
-     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
-     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
-     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
-     * pool, the request can switch its association in either direction between the corresponding default parameter
-     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
-     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
-     * resource is changed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolInner> createOrReplaceAsync(String resourceGroupName, String clusterName, String poolName,
         PoolInner resource) {
@@ -618,116 +401,22 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
-     * high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
-     * and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone
-     * and ZoneRedundant are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone
-     * placement, while ZoneRedundant requires nodes to be allocated across availability zones. Node allocation and
-     * high-availability reconfiguration are atomic: if all requested nodes or the required zonal topology cannot be
-     * provisioned, the long-running operation fails and the previous resource state is preserved. A pool name must
-     * differ from its parent cluster name because the Cluster-scoped ReadWrite Endpoint is named after the Cluster and
-     * the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects a request whose names would
-     * collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint representing that
-     * Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint cannot
-     * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
-     * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
-     * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
-     * creation. When omitted during creation, the service applies the default parameter group compatible with the
-     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
-     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
-     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
-     * pool, the request can switch its association in either direction between the corresponding default parameter
-     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
-     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
-     * resource is changed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner createOrReplace(String resourceGroupName, String clusterName, String poolName,
         PoolInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, poolName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, poolName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new HorizonDB pool or replaces an existing pool, including its node allocation, compute model,
-     * high-availability configuration, or associated parameter group. nodeCount and highAvailability.mode are required
-     * and have no service defaults. nodeCount must be 1 through 16. Disabled is valid only when nodeCount is 1. AnyZone
-     * and ZoneRedundant are valid only when nodeCount is 2 through 16. AnyZone permits same-zone or cross-zone
-     * placement, while ZoneRedundant requires nodes to be allocated across availability zones. Node allocation and
-     * high-availability reconfiguration are atomic: if all requested nodes or the required zonal topology cannot be
-     * provisioned, the long-running operation fails and the previous resource state is preserved. A pool name must
-     * differ from its parent cluster name because the Cluster-scoped ReadWrite Endpoint is named after the Cluster and
-     * the Pool-scoped ReadOnly Endpoint is named after the Pool; the service rejects a request whose names would
-     * collide. Creating a pool also creates exactly one service-managed Pool-scoped ReadOnly Endpoint representing that
-     * Pool and its network boundary. The Endpoint's associatedResourceId identifies the Pool, and the Endpoint cannot
-     * outlive or be deleted independently from it. When the first pool is created, the service automatically designates
-     * it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one
-     * Pool before a private endpoint connection can be created or approved. This API version supports at most one pool
-     * per cluster; an attempt to create another pool is rejected with 409 Conflict. parameterGroup is optional during
-     * creation. When omitted during creation, the service applies the default parameter group compatible with the
-     * parent cluster's PostgreSQL version. When parameterGroup is supplied, parameterGroupResourceId and applyMethod
-     * are required. When creating a new pool in this API version, a supplied parameterGroupResourceId must identify the
-     * corresponding default parameter group; a customer-created parameter group is rejected. When replacing an existing
-     * pool, the request can switch its association in either direction between the corresponding default parameter
-     * group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
-     * effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and
-     * scheduled maintenance do not apply pending changes. Subtype-specific compute constraints are validated before the
-     * resource is changed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner createOrReplace(String resourceGroupName, String clusterName, String poolName, PoolInner resource,
         Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, poolName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, clusterName, poolName, resource, context));
     }
 
-    /**
-     * Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
-     * model type, high-availability configuration, or associated parameter group. Omitted nodeCount and
-     * highAvailability.mode values preserve their existing values; the service recursively merges the PATCH before
-     * atomically validating the effective tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only
-     * when the effective nodeCount is 1. AnyZone and ZoneRedundant are valid only when the effective nodeCount is 2
-     * through 16. Therefore, crossing between those node-count ranges requires nodeCount and highAvailability.mode to
-     * be changed together. AnyZone permits same-zone or cross-zone placement. Changing from AnyZone to ZoneRedundant
-     * may allocate a replacement node in another availability zone and replace a read-only node, disconnecting
-     * connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
-     * the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute
-     * without changing the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both
-     * parameterGroupResourceId and applyMethod are required. The pool can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated against the recursively merged configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, PoolForPatchUpdate properties) {
@@ -770,11 +459,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName, String poolName,
         PoolForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, poolName, properties, Context.NONE);
     }
 
     /**
@@ -815,33 +500,7 @@ public final class PoolsClientImpl implements PoolsClient {
             context);
     }
 
-    /**
-     * Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
-     * model type, high-availability configuration, or associated parameter group. Omitted nodeCount and
-     * highAvailability.mode values preserve their existing values; the service recursively merges the PATCH before
-     * atomically validating the effective tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only
-     * when the effective nodeCount is 1. AnyZone and ZoneRedundant are valid only when the effective nodeCount is 2
-     * through 16. Therefore, crossing between those node-count ranges requires nodeCount and highAvailability.mode to
-     * be changed together. AnyZone permits same-zone or cross-zone placement. Changing from AnyZone to ZoneRedundant
-     * may allocate a replacement node in another availability zone and replace a read-only node, disconnecting
-     * connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
-     * the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute
-     * without changing the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both
-     * parameterGroupResourceId and applyMethod are required. The pool can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated against the recursively merged configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PoolInner>, PoolInner> beginUpdateAsync(String resourceGroupName, String clusterName,
         String poolName, PoolForPatchUpdate properties) {
@@ -851,68 +510,14 @@ public final class PoolsClientImpl implements PoolsClient {
             PoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
-     * model type, high-availability configuration, or associated parameter group. Omitted nodeCount and
-     * highAvailability.mode values preserve their existing values; the service recursively merges the PATCH before
-     * atomically validating the effective tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only
-     * when the effective nodeCount is 1. AnyZone and ZoneRedundant are valid only when the effective nodeCount is 2
-     * through 16. Therefore, crossing between those node-count ranges requires nodeCount and highAvailability.mode to
-     * be changed together. AnyZone permits same-zone or cross-zone placement. Changing from AnyZone to ZoneRedundant
-     * may allocate a replacement node in another availability zone and replace a read-only node, disconnecting
-     * connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
-     * the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute
-     * without changing the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both
-     * parameterGroupResourceId and applyMethod are required. The pool can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated against the recursively merged configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String clusterName,
         String poolName, PoolForPatchUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, poolName, properties);
-        return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, poolName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
-     * model type, high-availability configuration, or associated parameter group. Omitted nodeCount and
-     * highAvailability.mode values preserve their existing values; the service recursively merges the PATCH before
-     * atomically validating the effective tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only
-     * when the effective nodeCount is 1. AnyZone and ZoneRedundant are valid only when the effective nodeCount is 2
-     * through 16. Therefore, crossing between those node-count ranges requires nodeCount and highAvailability.mode to
-     * be changed together. AnyZone permits same-zone or cross-zone placement. Changing from AnyZone to ZoneRedundant
-     * may allocate a replacement node in another availability zone and replace a read-only node, disconnecting
-     * connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
-     * the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute
-     * without changing the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both
-     * parameterGroupResourceId and applyMethod are required. The pool can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated against the recursively merged configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String clusterName,
         String poolName, PoolForPatchUpdate properties, Context context) {
@@ -921,33 +526,7 @@ public final class PoolsClientImpl implements PoolsClient {
         return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, context);
     }
 
-    /**
-     * Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
-     * model type, high-availability configuration, or associated parameter group. Omitted nodeCount and
-     * highAvailability.mode values preserve their existing values; the service recursively merges the PATCH before
-     * atomically validating the effective tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only
-     * when the effective nodeCount is 1. AnyZone and ZoneRedundant are valid only when the effective nodeCount is 2
-     * through 16. Therefore, crossing between those node-count ranges requires nodeCount and highAvailability.mode to
-     * be changed together. AnyZone permits same-zone or cross-zone placement. Changing from AnyZone to ZoneRedundant
-     * may allocate a replacement node in another availability zone and replace a read-only node, disconnecting
-     * connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
-     * the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute
-     * without changing the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both
-     * parameterGroupResourceId and applyMethod are required. The pool can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated against the recursively merged configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolInner> updateAsync(String resourceGroupName, String clusterName, String poolName,
         PoolForPatchUpdate properties) {
@@ -955,91 +534,22 @@ public final class PoolsClientImpl implements PoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
-     * model type, high-availability configuration, or associated parameter group. Omitted nodeCount and
-     * highAvailability.mode values preserve their existing values; the service recursively merges the PATCH before
-     * atomically validating the effective tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only
-     * when the effective nodeCount is 1. AnyZone and ZoneRedundant are valid only when the effective nodeCount is 2
-     * through 16. Therefore, crossing between those node-count ranges requires nodeCount and highAvailability.mode to
-     * be changed together. AnyZone permits same-zone or cross-zone placement. Changing from AnyZone to ZoneRedundant
-     * may allocate a replacement node in another availability zone and replace a read-only node, disconnecting
-     * connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
-     * the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute
-     * without changing the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both
-     * parameterGroupResourceId and applyMethod are required. The pool can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated against the recursively merged configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner update(String resourceGroupName, String clusterName, String poolName,
         PoolForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, clusterName, poolName, properties).getFinalResult();
+        return update(resourceGroupName, clusterName, poolName, properties, Context.NONE);
     }
 
-    /**
-     * Updates an existing HorizonDB pool, including its node allocation, selected compute model properties, compute
-     * model type, high-availability configuration, or associated parameter group. Omitted nodeCount and
-     * highAvailability.mode values preserve their existing values; the service recursively merges the PATCH before
-     * atomically validating the effective tuple. nodeCount, when supplied, must be 1 through 16. Disabled is valid only
-     * when the effective nodeCount is 1. AnyZone and ZoneRedundant are valid only when the effective nodeCount is 2
-     * through 16. Therefore, crossing between those node-count ranges requires nodeCount and highAvailability.mode to
-     * be changed together. AnyZone permits same-zone or cross-zone placement. Changing from AnyZone to ZoneRedundant
-     * may allocate a replacement node in another availability zone and replace a read-only node, disconnecting
-     * connections to the replaced node. If all requested nodes or the required zonal topology cannot be provisioned,
-     * the long-running operation fails and the previous resource state is preserved. To deallocate runtime compute
-     * without changing the configured nodeCount, use the Pool stop action. When parameterGroup is supplied, both
-     * parameterGroupResourceId and applyMethod are required. The pool can switch its association in either direction
-     * between the corresponding default parameter group and a customer-created parameter group. applyMethod controls
-     * when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-     * Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute
-     * constraints are validated against the recursively merged configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner update(String resourceGroupName, String clusterName, String poolName,
         PoolForPatchUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, poolName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, poolName, properties, context));
     }
 
-    /**
-     * Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that Pool
-     * and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its
-     * Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private
-     * endpoint connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to
-     * Rejected and providing a description that the last Pool was deleted. The HorizonDB private endpoint connection
-     * resources remain available for inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints
-     * resources are not deleted. The delete long-running operation completes only after all required private endpoint
-     * disconnections have completed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1069,8 +579,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String poolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
     /**
@@ -1099,24 +608,7 @@ public final class PoolsClientImpl implements PoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, context);
     }
 
-    /**
-     * Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that Pool
-     * and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its
-     * Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private
-     * endpoint connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to
-     * Rejected and providing a description that the last Pool was deleted. The HorizonDB private endpoint connection
-     * resources remain available for inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints
-     * resources are not deleted. The delete long-running operation completes only after all required private endpoint
-     * disconnections have completed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1125,50 +617,14 @@ public final class PoolsClientImpl implements PoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that Pool
-     * and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its
-     * Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private
-     * endpoint connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to
-     * Rejected and providing a description that the last Pool was deleted. The HorizonDB private endpoint connection
-     * resources remain available for inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints
-     * resources are not deleted. The delete long-running operation completes only after all required private endpoint
-     * disconnections have completed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String poolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, poolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that Pool
-     * and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its
-     * Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private
-     * endpoint connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to
-     * Rejected and providing a description that the last Pool was deleted. The HorizonDB private endpoint connection
-     * resources remain available for inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints
-     * resources are not deleted. The delete long-running operation completes only after all required private endpoint
-     * disconnections have completed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String poolName,
         Context context) {
@@ -1176,73 +632,23 @@ public final class PoolsClientImpl implements PoolsClient {
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that Pool
-     * and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its
-     * Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private
-     * endpoint connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to
-     * Rejected and providing a description that the last Pool was deleted. The HorizonDB private endpoint connection
-     * resources remain available for inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints
-     * resources are not deleted. The delete long-running operation completes only after all required private endpoint
-     * disconnections have completed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String poolName) {
         return beginDeleteAsync(resourceGroupName, clusterName, poolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that Pool
-     * and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its
-     * Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private
-     * endpoint connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to
-     * Rejected and providing a description that the last Pool was deleted. The HorizonDB private endpoint connection
-     * resources remain available for inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints
-     * resources are not deleted. The delete long-running operation completes only after all required private endpoint
-     * disconnections have completed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String poolName) {
-        beginDelete(resourceGroupName, clusterName, poolName).getFinalResult();
+        delete(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Deletes a HorizonDB pool together with the Pool-scoped Endpoint whose associatedResourceId identifies that Pool
-     * and all FirewallRule children of that Endpoint. The Endpoint cannot outlive or be deleted independently from its
-     * Pool. When this is the Cluster's last surviving Pool, the service also disconnects every existing private
-     * endpoint connection associated with the Cluster by setting its privateLinkServiceConnectionState.status to
-     * Rejected and providing a description that the last Pool was deleted. The HorizonDB private endpoint connection
-     * resources remain available for inspection and cleanup, and customer-owned Microsoft.Network/privateEndpoints
-     * resources are not deleted. The delete long-running operation completes only after all required private endpoint
-     * disconnections have completed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String poolName, Context context) {
-        beginDelete(resourceGroupName, clusterName, poolName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, poolName, context));
     }
 
     /**
@@ -1267,16 +673,7 @@ public final class PoolsClientImpl implements PoolsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all HorizonDB pools in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Pool list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PoolInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -1295,11 +692,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PoolInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<PoolListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -1322,57 +715,20 @@ public final class PoolsClientImpl implements PoolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all HorizonDB pools in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Pool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PoolInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists all HorizonDB pools in a cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Pool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PoolInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
             nextLink -> listNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
-     * no cluster-level start action. Start does not apply pending dynamic or static parameter changes;
-     * parameterGroup.syncStatus remains PendingReboot until a customer-initiated Restart. When the pool is already
-     * Ready, the operation succeeds as a true idempotent no-op and likewise leaves pending parameter changes pending.
-     * The operation is allowed when the pool has no allocated nodes. After the Pool is running, its Pool-scoped
-     * ReadOnly Endpoint routes only when at least one allocated node is not currently playing the read-write role. The
-     * request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible
-     * state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1403,9 +759,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String clusterName, String poolName) {
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, accept, Context.NONE);
+        return startWithResponse(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
     /**
@@ -1435,24 +789,7 @@ public final class PoolsClientImpl implements PoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, accept, context);
     }
 
-    /**
-     * Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
-     * no cluster-level start action. Start does not apply pending dynamic or static parameter changes;
-     * parameterGroup.syncStatus remains PendingReboot until a customer-initiated Restart. When the pool is already
-     * Ready, the operation succeeds as a true idempotent no-op and likewise leaves pending parameter changes pending.
-     * The operation is allowed when the pool has no allocated nodes. After the Pool is running, its Pool-scoped
-     * ReadOnly Endpoint routes only when at least one allocated node is not currently playing the read-write role. The
-     * request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible
-     * state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PoolInner>, PoolInner> beginStartAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1461,50 +798,14 @@ public final class PoolsClientImpl implements PoolsClient {
             PoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
-     * no cluster-level start action. Start does not apply pending dynamic or static parameter changes;
-     * parameterGroup.syncStatus remains PendingReboot until a customer-initiated Restart. When the pool is already
-     * Ready, the operation succeeds as a true idempotent no-op and likewise leaves pending parameter changes pending.
-     * The operation is allowed when the pool has no allocated nodes. After the Pool is running, its Pool-scoped
-     * ReadOnly Endpoint routes only when at least one allocated node is not currently playing the read-write role. The
-     * request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible
-     * state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginStart(String resourceGroupName, String clusterName,
         String poolName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, clusterName, poolName);
-        return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, Context.NONE);
+        return beginStart(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
-     * no cluster-level start action. Start does not apply pending dynamic or static parameter changes;
-     * parameterGroup.syncStatus remains PendingReboot until a customer-initiated Restart. When the pool is already
-     * Ready, the operation succeeds as a true idempotent no-op and likewise leaves pending parameter changes pending.
-     * The operation is allowed when the pool has no allocated nodes. After the Pool is running, its Pool-scoped
-     * ReadOnly Endpoint routes only when at least one allocated node is not currently playing the read-write role. The
-     * request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible
-     * state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginStart(String resourceGroupName, String clusterName,
         String poolName, Context context) {
@@ -1512,94 +813,26 @@ public final class PoolsClientImpl implements PoolsClient {
         return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, context);
     }
 
-    /**
-     * Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
-     * no cluster-level start action. Start does not apply pending dynamic or static parameter changes;
-     * parameterGroup.syncStatus remains PendingReboot until a customer-initiated Restart. When the pool is already
-     * Ready, the operation succeeds as a true idempotent no-op and likewise leaves pending parameter changes pending.
-     * The operation is allowed when the pool has no allocated nodes. After the Pool is running, its Pool-scoped
-     * ReadOnly Endpoint routes only when at least one allocated node is not currently playing the read-write role. The
-     * request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible
-     * state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolInner> startAsync(String resourceGroupName, String clusterName, String poolName) {
         return beginStartAsync(resourceGroupName, clusterName, poolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
-     * no cluster-level start action. Start does not apply pending dynamic or static parameter changes;
-     * parameterGroup.syncStatus remains PendingReboot until a customer-initiated Restart. When the pool is already
-     * Ready, the operation succeeds as a true idempotent no-op and likewise leaves pending parameter changes pending.
-     * The operation is allowed when the pool has no allocated nodes. After the Pool is running, its Pool-scoped
-     * ReadOnly Endpoint routes only when at least one allocated node is not currently playing the read-write role. The
-     * request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible
-     * state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner start(String resourceGroupName, String clusterName, String poolName) {
-        return beginStart(resourceGroupName, clusterName, poolName).getFinalResult();
+        return start(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Starts a stopped HorizonDB pool. Power operations are supported only at pool scope in this API version; there is
-     * no cluster-level start action. Start does not apply pending dynamic or static parameter changes;
-     * parameterGroup.syncStatus remains PendingReboot until a customer-initiated Restart. When the pool is already
-     * Ready, the operation succeeds as a true idempotent no-op and likewise leaves pending parameter changes pending.
-     * The operation is allowed when the pool has no allocated nodes. After the Pool is running, its Pool-scoped
-     * ReadOnly Endpoint routes only when at least one allocated node is not currently playing the read-write role. The
-     * request fails with 409 Conflict when another operation is in progress or the pool is in any other incompatible
-     * state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner start(String resourceGroupName, String clusterName, String poolName, Context context) {
-        return beginStart(resourceGroupName, clusterName, poolName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStart(resourceGroupName, clusterName, poolName, context));
     }
 
-    /**
-     * Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
-     * API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter
-     * changes; parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending
-     * changes. The operation succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the
-     * pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint remains discoverable but has no routing
-     * destination while the Pool is Stopped. The request fails with 409 Conflict when another operation is in progress
-     * or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1629,9 +862,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String clusterName, String poolName) {
-        final String accept = "application/json";
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, clusterName, poolName, accept, Context.NONE);
+        return stopWithResponse(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
     /**
@@ -1660,23 +891,7 @@ public final class PoolsClientImpl implements PoolsClient {
             resourceGroupName, clusterName, poolName, accept, context);
     }
 
-    /**
-     * Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
-     * API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter
-     * changes; parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending
-     * changes. The operation succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the
-     * pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint remains discoverable but has no routing
-     * destination while the Pool is Stopped. The request fails with 409 Conflict when another operation is in progress
-     * or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PoolInner>, PoolInner> beginStopAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1685,48 +900,14 @@ public final class PoolsClientImpl implements PoolsClient {
             PoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
-     * API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter
-     * changes; parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending
-     * changes. The operation succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the
-     * pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint remains discoverable but has no routing
-     * destination while the Pool is Stopped. The request fails with 409 Conflict when another operation is in progress
-     * or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginStop(String resourceGroupName, String clusterName,
         String poolName) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, clusterName, poolName);
-        return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, Context.NONE);
+        return beginStop(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
-     * API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter
-     * changes; parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending
-     * changes. The operation succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the
-     * pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint remains discoverable but has no routing
-     * destination while the Pool is Stopped. The request fails with 409 Conflict when another operation is in progress
-     * or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginStop(String resourceGroupName, String clusterName,
         String poolName, Context context) {
@@ -1734,92 +915,26 @@ public final class PoolsClientImpl implements PoolsClient {
         return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, context);
     }
 
-    /**
-     * Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
-     * API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter
-     * changes; parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending
-     * changes. The operation succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the
-     * pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint remains discoverable but has no routing
-     * destination while the Pool is Stopped. The request fails with 409 Conflict when another operation is in progress
-     * or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolInner> stopAsync(String resourceGroupName, String clusterName, String poolName) {
         return beginStopAsync(resourceGroupName, clusterName, poolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
-     * API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter
-     * changes; parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending
-     * changes. The operation succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the
-     * pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint remains discoverable but has no routing
-     * destination while the Pool is Stopped. The request fails with 409 Conflict when another operation is in progress
-     * or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner stop(String resourceGroupName, String clusterName, String poolName) {
-        return beginStop(resourceGroupName, clusterName, poolName).getFinalResult();
+        return stop(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Stops a running HorizonDB pool and deallocates compute. Power operations are supported only at pool scope in this
-     * API version; there is no cluster-level stop action. Stop does not apply pending dynamic or static parameter
-     * changes; parameterGroup.syncStatus remains PendingReboot. A subsequent Start also preserves those pending
-     * changes. The operation succeeds as an idempotent no-op when the pool is already Stopped. It is allowed when the
-     * pool has no allocated nodes. The Pool-scoped ReadOnly Endpoint remains discoverable but has no routing
-     * destination while the Pool is Stopped. The request fails with 409 Conflict when another operation is in progress
-     * or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner stop(String resourceGroupName, String clusterName, String poolName, Context context) {
-        return beginStop(resourceGroupName, clusterName, poolName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStop(resourceGroupName, clusterName, poolName, context));
     }
 
-    /**
-     * Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
-     * and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter
-     * changes or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled
-     * maintenance do not apply them. Power operations are supported only at pool scope in this API version; there is no
-     * cluster-level restart action. When the pool has no allocated nodes, the operation succeeds without restarting any
-     * nodes, pending changes are considered applied, parameterGroup.syncStatus becomes InSync, and the resulting
-     * configuration applies to nodes allocated later. The request fails with 409 Conflict when another operation is in
-     * progress or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1850,9 +965,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String clusterName, String poolName) {
-        final String accept = "application/json";
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, accept, Context.NONE);
+        return restartWithResponse(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
     /**
@@ -1882,24 +995,7 @@ public final class PoolsClientImpl implements PoolsClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, accept, context);
     }
 
-    /**
-     * Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
-     * and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter
-     * changes or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled
-     * maintenance do not apply them. Power operations are supported only at pool scope in this API version; there is no
-     * cluster-level restart action. When the pool has no allocated nodes, the operation succeeds without restarting any
-     * nodes, pending changes are considered applied, parameterGroup.syncStatus becomes InSync, and the resulting
-     * configuration applies to nodes allocated later. The request fails with 409 Conflict when another operation is in
-     * progress or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PoolInner>, PoolInner> beginRestartAsync(String resourceGroupName, String clusterName,
         String poolName) {
@@ -1908,50 +1004,14 @@ public final class PoolsClientImpl implements PoolsClient {
             PoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
-     * and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter
-     * changes or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled
-     * maintenance do not apply them. Power operations are supported only at pool scope in this API version; there is no
-     * cluster-level restart action. When the pool has no allocated nodes, the operation succeeds without restarting any
-     * nodes, pending changes are considered applied, parameterGroup.syncStatus becomes InSync, and the resulting
-     * configuration applies to nodes allocated later. The request fails with 409 Conflict when another operation is in
-     * progress or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginRestart(String resourceGroupName, String clusterName,
         String poolName) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, clusterName, poolName);
-        return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, Context.NONE);
+        return beginRestart(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
-     * and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter
-     * changes or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled
-     * maintenance do not apply them. Power operations are supported only at pool scope in this API version; there is no
-     * cluster-level restart action. When the pool has no allocated nodes, the operation succeeds without restarting any
-     * nodes, pending changes are considered applied, parameterGroup.syncStatus becomes InSync, and the resulting
-     * configuration applies to nodes allocated later. The request fails with 409 Conflict when another operation is in
-     * progress or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PoolInner>, PoolInner> beginRestart(String resourceGroupName, String clusterName,
         String poolName, Context context) {
@@ -1959,75 +1019,23 @@ public final class PoolsClientImpl implements PoolsClient {
         return this.client.<PoolInner, PoolInner>getLroResult(response, PoolInner.class, PoolInner.class, context);
     }
 
-    /**
-     * Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
-     * and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter
-     * changes or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled
-     * maintenance do not apply them. Power operations are supported only at pool scope in this API version; there is no
-     * cluster-level restart action. When the pool has no allocated nodes, the operation succeeds without restarting any
-     * nodes, pending changes are considered applied, parameterGroup.syncStatus becomes InSync, and the resulting
-     * configuration applies to nodes allocated later. The request fails with 409 Conflict when another operation is in
-     * progress or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PoolInner> restartAsync(String resourceGroupName, String clusterName, String poolName) {
         return beginRestartAsync(resourceGroupName, clusterName, poolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
-     * and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter
-     * changes or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled
-     * maintenance do not apply them. Power operations are supported only at pool scope in this API version; there is no
-     * cluster-level restart action. When the pool has no allocated nodes, the operation succeeds without restarting any
-     * nodes, pending changes are considered applied, parameterGroup.syncStatus becomes InSync, and the resulting
-     * configuration applies to nodes allocated later. The request fails with 409 Conflict when another operation is in
-     * progress or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner restart(String resourceGroupName, String clusterName, String poolName) {
-        return beginRestart(resourceGroupName, clusterName, poolName).getFinalResult();
+        return restart(resourceGroupName, clusterName, poolName, Context.NONE);
     }
 
-    /**
-     * Restarts the PostgreSQL container on all allocated nodes in a ready HorizonDB pool and applies pending dynamic
-     * and static parameter changes. This customer-initiated Restart is the only operation that applies static parameter
-     * changes or dynamic parameter changes requested with PendingReboot; Stop followed by Start and scheduled
-     * maintenance do not apply them. Power operations are supported only at pool scope in this API version; there is no
-     * cluster-level restart action. When the pool has no allocated nodes, the operation succeeds without restarting any
-     * nodes, pending changes are considered applied, parameterGroup.syncStatus becomes InSync, and the resulting
-     * configuration applies to nodes allocated later. The request fails with 409 Conflict when another operation is in
-     * progress or the pool is in any other incompatible state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PoolInner restart(String resourceGroupName, String clusterName, String poolName, Context context) {
-        return beginRestart(resourceGroupName, clusterName, poolName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRestart(resourceGroupName, clusterName, poolName, context));
     }
 
     /**
@@ -2060,10 +1068,7 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PoolInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PoolListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

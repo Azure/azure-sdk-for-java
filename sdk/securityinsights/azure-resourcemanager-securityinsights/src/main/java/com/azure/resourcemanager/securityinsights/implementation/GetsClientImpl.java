@@ -116,18 +116,7 @@ public final class GetsClientImpl implements GetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a recommendation by its id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param recommendationId Recommendation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommendation by its id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendationInner> singleRecommendationWithResponse(String resourceGroupName,
         String workspaceName, String recommendationId, Context context) {
@@ -136,17 +125,7 @@ public final class GetsClientImpl implements GetsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, recommendationId, accept, context);
     }
 
-    /**
-     * Gets a recommendation by its id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param recommendationId Recommendation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recommendation by its id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendationInner singleRecommendation(String resourceGroupName, String workspaceName,
         String recommendationId) {

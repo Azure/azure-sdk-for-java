@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class WebhooksGetCallbackConfigSamples {
     /*
-     * x-ms-original-file: 2026-10-15-preview/WebhookGetCallbackConfig.json
+     * x-ms-original-file: 2026-11-01/WebhookGetCallbackConfig.json
      */
     /**
      * Sample code: WebhookGetCallbackConfig.

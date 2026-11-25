@@ -179,18 +179,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the alert configuration setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param emailConfigurationName The email configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the alert configuration setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EmailConfigurationModelInner> getWithResponse(String resourceGroupName, String vaultName,
         String emailConfigurationName, Context context) {
@@ -199,17 +188,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
             resourceGroupName, vaultName, emailConfigurationName, accept, context);
     }
 
-    /**
-     * Gets the details of the alert configuration setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param emailConfigurationName The email configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the alert configuration setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EmailConfigurationModelInner get(String resourceGroupName, String vaultName, String emailConfigurationName) {
         return getWithResponse(resourceGroupName, vaultName, emailConfigurationName, Context.NONE).getValue();
@@ -258,19 +237,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates an alert configuration setting for the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param emailConfigurationName The email configuration name.
-     * @param resource EmailConfiguration model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email configuration model along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EmailConfigurationModelInner> createWithResponse(String resourceGroupName, String vaultName,
         String emailConfigurationName, EmailConfigurationModelInner resource, Context context) {
@@ -281,18 +248,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
             resource, context);
     }
 
-    /**
-     * Creates an alert configuration setting for the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param emailConfigurationName The email configuration name.
-     * @param resource EmailConfiguration model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email configuration model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EmailConfigurationModelInner create(String resourceGroupName, String vaultName,
         String emailConfigurationName, EmailConfigurationModelInner resource) {
@@ -352,12 +308,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EmailConfigurationModelInner> listSinglePage(String resourceGroupName, String vaultName) {
-        final String accept = "application/json";
-        Response<EmailConfigurationModelListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -382,35 +333,13 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of alert configuration settings for the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of alert configuration settings for the given vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmailConfigurationModelInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Gets the list of alert configuration settings for the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of alert configuration settings for the given vault as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EmailConfigurationModelInner> list(String resourceGroupName, String vaultName,
         Context context) {
@@ -448,11 +377,7 @@ public final class EmailConfigurationsClientImpl implements EmailConfigurationsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EmailConfigurationModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EmailConfigurationModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

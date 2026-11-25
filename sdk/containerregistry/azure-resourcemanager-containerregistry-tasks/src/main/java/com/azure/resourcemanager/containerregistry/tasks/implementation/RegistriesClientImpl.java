@@ -137,18 +137,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RunInner> scheduleRunWithResponse(String resourceGroupName, String registryName,
         RunRequest runRequest, Context context) {
@@ -158,17 +147,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             this.client.getSubscriptionId(), resourceGroupName, registryName, contentType, accept, runRequest, context);
     }
 
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param runRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest) {
         return scheduleRunWithResponse(resourceGroupName, registryName, runRequest, Context.NONE).getValue();
@@ -214,17 +193,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the upload location for the user to be able to upload the source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload location for the user to be able to upload the source along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SourceUploadDefinitionInner> getBuildSourceUploadUrlWithResponse(String resourceGroupName,
         String registryName, Context context) {
@@ -233,16 +202,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context);
     }
 
-    /**
-     * Get the upload location for the user to be able to upload the source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload location for the user to be able to upload the source.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceUploadDefinitionInner getBuildSourceUploadUrl(String resourceGroupName, String registryName) {
         return getBuildSourceUploadUrlWithResponse(resourceGroupName, registryName, Context.NONE).getValue();

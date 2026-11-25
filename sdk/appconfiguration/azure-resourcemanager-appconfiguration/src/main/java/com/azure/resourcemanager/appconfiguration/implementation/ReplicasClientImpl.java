@@ -206,18 +206,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the specified replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replica along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicaInner> getWithResponse(String resourceGroupName, String configStoreName, String replicaName,
         Context context) {
@@ -226,17 +215,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
             resourceGroupName, configStoreName, replicaName, accept, context);
     }
 
-    /**
-     * Gets the properties of the specified replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified replica.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner get(String resourceGroupName, String configStoreName, String replicaName) {
         return getWithResponse(resourceGroupName, configStoreName, replicaName, Context.NONE).getValue();
@@ -281,11 +260,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String configStoreName,
         String replicaName, ReplicaInner replicaCreationParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, replicaName, contentType, accept,
-            replicaCreationParameters, Context.NONE);
+        return createWithResponse(resourceGroupName, configStoreName, replicaName, replicaCreationParameters,
+            Context.NONE);
     }
 
     /**
@@ -332,40 +308,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
             ReplicaInner.class, ReplicaInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a replica with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param replicaCreationParameters The parameters for creating a replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(String resourceGroupName,
         String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, configStoreName, replicaName, replicaCreationParameters);
-        return this.client.<ReplicaInner, ReplicaInner>getLroResult(response, ReplicaInner.class, ReplicaInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, Context.NONE);
     }
 
-    /**
-     * Creates a replica with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param replicaCreationParameters The parameters for creating a replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(String resourceGroupName,
         String configStoreName, String replicaName, ReplicaInner replicaCreationParameters, Context context) {
@@ -394,42 +344,19 @@ public final class ReplicasClientImpl implements ReplicasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a replica with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param replicaCreationParameters The parameters for creating a replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner create(String resourceGroupName, String configStoreName, String replicaName,
         ReplicaInner replicaCreationParameters) {
-        return beginCreate(resourceGroupName, configStoreName, replicaName, replicaCreationParameters).getFinalResult();
+        return create(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, Context.NONE);
     }
 
-    /**
-     * Creates a replica with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param replicaCreationParameters The parameters for creating a replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replica resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner create(String resourceGroupName, String configStoreName, String replicaName,
         ReplicaInner replicaCreationParameters, Context context) {
-        return beginCreate(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context));
     }
 
     /**
@@ -466,8 +393,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
         String replicaName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, replicaName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, configStoreName, replicaName, Context.NONE);
     }
 
     /**
@@ -509,36 +435,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String replicaName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, configStoreName, replicaName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, configStoreName, replicaName, Context.NONE);
     }
 
-    /**
-     * Deletes a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String replicaName, Context context) {
@@ -563,35 +467,16 @@ public final class ReplicasClientImpl implements ReplicasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String replicaName) {
-        beginDelete(resourceGroupName, configStoreName, replicaName).getFinalResult();
+        delete(resourceGroupName, configStoreName, replicaName, Context.NONE);
     }
 
-    /**
-     * Deletes a replica.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param replicaName The name of the replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        beginDelete(resourceGroupName, configStoreName, replicaName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, configStoreName, replicaName, context));
     }
 
     /**
@@ -676,12 +561,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByConfigurationStoreSinglePage(String resourceGroupName,
         String configStoreName, String skipToken) {
-        final String accept = "application/json";
-        Response<ReplicaListResult> res
-            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, configStoreName, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, skipToken, Context.NONE);
     }
 
     /**
@@ -709,38 +589,14 @@ public final class ReplicasClientImpl implements ReplicasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the replicas for a given configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Replica list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicaInner> listByConfigurationStore(String resourceGroupName, String configStoreName) {
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, skipToken),
-            nextLink -> listByConfigurationStoreNextSinglePage(nextLink));
+        return listByConfigurationStore(resourceGroupName, configStoreName, skipToken, Context.NONE);
     }
 
-    /**
-     * Lists the replicas for a given configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
-     * parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Replica list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicaInner> listByConfigurationStore(String resourceGroupName, String configStoreName,
         String skipToken, Context context) {
@@ -781,11 +637,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByConfigurationStoreNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ReplicaListResult> res
-            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

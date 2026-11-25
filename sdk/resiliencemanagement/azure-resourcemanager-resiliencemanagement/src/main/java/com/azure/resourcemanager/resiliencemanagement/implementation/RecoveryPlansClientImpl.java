@@ -210,17 +210,7 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryPlan along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryPlanInner> getWithResponse(String serviceGroupName, String recoveryPlanName,
         Context context) {
@@ -229,16 +219,7 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             recoveryPlanName, accept, context);
     }
 
-    /**
-     * Get a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryPlan.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanInner get(String serviceGroupName, String recoveryPlanName) {
         return getWithResponse(serviceGroupName, recoveryPlanName, Context.NONE).getValue();
@@ -282,10 +263,7 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String serviceGroupName, String recoveryPlanName,
         RecoveryPlanInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            recoveryPlanName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(serviceGroupName, recoveryPlanName, resource, Context.NONE);
     }
 
     /**
@@ -331,39 +309,14 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             RecoveryPlanInner.class, RecoveryPlanInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a recovery orchestration plan resource in the Azure
-     * Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginCreateOrUpdate(String serviceGroupName,
         String recoveryPlanName, RecoveryPlanInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(serviceGroupName, recoveryPlanName, resource);
-        return this.client.<RecoveryPlanInner, RecoveryPlanInner>getLroResult(response, RecoveryPlanInner.class,
-            RecoveryPlanInner.class, Context.NONE);
+        return beginCreateOrUpdate(serviceGroupName, recoveryPlanName, resource, Context.NONE);
     }
 
-    /**
-     * Create a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a recovery orchestration plan resource in the Azure
-     * Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginCreateOrUpdate(String serviceGroupName,
         String recoveryPlanName, RecoveryPlanInner resource, Context context) {
@@ -392,39 +345,19 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanInner createOrUpdate(String serviceGroupName, String recoveryPlanName,
         RecoveryPlanInner resource) {
-        return beginCreateOrUpdate(serviceGroupName, recoveryPlanName, resource).getFinalResult();
+        return createOrUpdate(serviceGroupName, recoveryPlanName, resource, Context.NONE);
     }
 
-    /**
-     * Create a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanInner createOrUpdate(String serviceGroupName, String recoveryPlanName,
         RecoveryPlanInner resource, Context context) {
-        return beginCreateOrUpdate(serviceGroupName, recoveryPlanName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(serviceGroupName, recoveryPlanName, resource, context));
     }
 
     /**
@@ -465,10 +398,7 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String serviceGroupName, String recoveryPlanName,
         RecoveryPlanInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            recoveryPlanName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(serviceGroupName, recoveryPlanName, properties, Context.NONE);
     }
 
     /**
@@ -513,39 +443,14 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             RecoveryPlanInner.class, RecoveryPlanInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a recovery orchestration plan resource in the Azure
-     * Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginUpdate(String serviceGroupName,
         String recoveryPlanName, RecoveryPlanInner properties) {
-        Response<BinaryData> response = updateWithResponse(serviceGroupName, recoveryPlanName, properties);
-        return this.client.<RecoveryPlanInner, RecoveryPlanInner>getLroResult(response, RecoveryPlanInner.class,
-            RecoveryPlanInner.class, Context.NONE);
+        return beginUpdate(serviceGroupName, recoveryPlanName, properties, Context.NONE);
     }
 
-    /**
-     * Update a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a recovery orchestration plan resource in the Azure
-     * Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginUpdate(String serviceGroupName,
         String recoveryPlanName, RecoveryPlanInner properties, Context context) {
@@ -573,38 +478,18 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanInner update(String serviceGroupName, String recoveryPlanName, RecoveryPlanInner properties) {
-        return beginUpdate(serviceGroupName, recoveryPlanName, properties).getFinalResult();
+        return update(serviceGroupName, recoveryPlanName, properties, Context.NONE);
     }
 
-    /**
-     * Update a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recovery orchestration plan resource in the Azure Resilience Management provider namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanInner update(String serviceGroupName, String recoveryPlanName, RecoveryPlanInner properties,
         Context context) {
-        return beginUpdate(serviceGroupName, recoveryPlanName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(serviceGroupName, recoveryPlanName, properties, context));
     }
 
     /**
@@ -637,8 +522,7 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String serviceGroupName, String recoveryPlanName) {
-        return service.deleteSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            recoveryPlanName, Context.NONE);
+        return deleteWithResponse(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -675,33 +559,13 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String recoveryPlanName) {
-        Response<BinaryData> response = deleteWithResponse(serviceGroupName, recoveryPlanName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * Delete a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String recoveryPlanName,
         Context context) {
@@ -725,33 +589,16 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String recoveryPlanName) {
-        beginDelete(serviceGroupName, recoveryPlanName).getFinalResult();
+        delete(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * Delete a RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String recoveryPlanName, Context context) {
-        beginDelete(serviceGroupName, recoveryPlanName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(serviceGroupName, recoveryPlanName, context));
     }
 
     /**
@@ -825,11 +672,7 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPlanInner> listSinglePage(String serviceGroupName, String skipToken, Integer top) {
-        final String accept = "application/json";
-        Response<RecoveryPlanListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), skipToken, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, skipToken, top, Context.NONE);
     }
 
     /**
@@ -854,35 +697,15 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List RecoveryPlan resources by tenant.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryPlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPlanInner> list(String serviceGroupName) {
         final String skipToken = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, skipToken, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, skipToken, top, Context.NONE);
     }
 
-    /**
-     * List RecoveryPlan resources by tenant.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryPlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPlanInner> list(String serviceGroupName, String skipToken, Integer top,
         Context context) {
@@ -920,11 +743,7 @@ public final class RecoveryPlansClientImpl implements RecoveryPlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPlanInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryPlanListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

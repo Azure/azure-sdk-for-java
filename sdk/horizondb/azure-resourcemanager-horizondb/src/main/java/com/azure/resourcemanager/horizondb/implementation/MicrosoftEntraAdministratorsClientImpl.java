@@ -163,20 +163,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftEntraAdministratorInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName, String objectId) {
@@ -187,20 +174,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftEntraAdministratorInner> getAsync(String resourceGroupName, String clusterName,
         String objectId) {
@@ -208,21 +182,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftEntraAdministratorInner> getWithResponse(String resourceGroupName, String clusterName,
         String objectId, Context context) {
@@ -231,40 +191,13 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             resourceGroupName, clusterName, objectId, accept, context);
     }
 
-    /**
-     * Gets information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftEntraAdministratorInner get(String resourceGroupName, String clusterName, String objectId) {
         return getWithResponse(resourceGroupName, clusterName, objectId, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a PostgreSQL role that is a member of the azure_pg_admin role and is mapped to a Microsoft
-     * Entra principal along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, String objectId, MicrosoftEntraAdministratorAdd resource) {
@@ -295,11 +228,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         String objectId, MicrosoftEntraAdministratorAdd resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, objectId, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, objectId, resource, Context.NONE);
     }
 
     /**
@@ -328,21 +257,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             context);
     }
 
-    /**
-     * Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of represents a PostgreSQL role that is a member of the azure_pg_admin
-     * role and is mapped to a Microsoft Entra principal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MicrosoftEntraAdministratorInner>, MicrosoftEntraAdministratorInner>
         beginCreateOrReplaceAsync(String resourceGroupName, String clusterName, String objectId,
@@ -354,46 +269,15 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             MicrosoftEntraAdministratorInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a PostgreSQL role that is a member of the azure_pg_admin
-     * role and is mapped to a Microsoft Entra principal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MicrosoftEntraAdministratorInner>, MicrosoftEntraAdministratorInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, String objectId,
             MicrosoftEntraAdministratorAdd resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, clusterName, objectId, resource);
-        return this.client.<MicrosoftEntraAdministratorInner, MicrosoftEntraAdministratorInner>getLroResult(response,
-            MicrosoftEntraAdministratorInner.class, MicrosoftEntraAdministratorInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, objectId, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a PostgreSQL role that is a member of the azure_pg_admin
-     * role and is mapped to a Microsoft Entra principal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MicrosoftEntraAdministratorInner>, MicrosoftEntraAdministratorInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, String objectId,
@@ -404,21 +288,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             MicrosoftEntraAdministratorInner.class, MicrosoftEntraAdministratorInner.class, context);
     }
 
-    /**
-     * Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a PostgreSQL role that is a member of the azure_pg_admin role and is mapped to a Microsoft
-     * Entra principal on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftEntraAdministratorInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         String objectId, MicrosoftEntraAdministratorAdd resource) {
@@ -426,61 +296,22 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a PostgreSQL role that is a member of the azure_pg_admin role and is mapped to a Microsoft
-     * Entra principal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftEntraAdministratorInner createOrReplace(String resourceGroupName, String clusterName,
         String objectId, MicrosoftEntraAdministratorAdd resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, objectId, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, objectId, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra
-     * principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a PostgreSQL role that is a member of the azure_pg_admin role and is mapped to a Microsoft
-     * Entra principal.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftEntraAdministratorInner createOrReplace(String resourceGroupName, String clusterName,
         String objectId, MicrosoftEntraAdministratorAdd resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, objectId, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, clusterName, objectId, resource, context));
     }
 
-    /**
-     * Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String objectId) {
@@ -504,8 +335,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String objectId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, objectId, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, objectId, Context.NONE);
     }
 
     /**
@@ -528,18 +358,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             this.client.getSubscriptionId(), resourceGroupName, clusterName, objectId, context);
     }
 
-    /**
-     * Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
         String objectId) {
@@ -548,38 +367,14 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             this.client.getContext());
     }
 
-    /**
-     * Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String objectId) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, objectId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, objectId, Context.NONE);
     }
 
-    /**
-     * Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String objectId,
         Context context) {
@@ -587,55 +382,23 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String objectId) {
         return beginDeleteAsync(resourceGroupName, clusterName, objectId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String objectId) {
-        beginDelete(resourceGroupName, clusterName, objectId).getFinalResult();
+        delete(resourceGroupName, clusterName, objectId, Context.NONE);
     }
 
-    /**
-     * Deletes a PostgreSQL role that is a member of azure_pg_admin and mapped to a Microsoft Entra principal.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param objectId The Microsoft Entra object identifier of the principal mapped to the PostgreSQL role, represented
-     * as an RFC 4122 GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String objectId, Context context) {
-        beginDelete(resourceGroupName, clusterName, objectId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, objectId, context));
     }
 
     /**
@@ -662,18 +425,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the PostgreSQL roles in a cluster that are members of azure_pg_admin and mapped to Microsoft Entra
-     * principals.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MicrosoftEntraAdministrator list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftEntraAdministratorInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -694,12 +446,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MicrosoftEntraAdministratorInner> listSinglePage(String resourceGroupName,
         String clusterName) {
-        final String accept = "application/json";
-        Response<MicrosoftEntraAdministratorListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -725,37 +472,13 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the PostgreSQL roles in a cluster that are members of azure_pg_admin and mapped to Microsoft Entra
-     * principals.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MicrosoftEntraAdministrator list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftEntraAdministratorInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists the PostgreSQL roles in a cluster that are members of azure_pg_admin and mapped to Microsoft Entra
-     * principals.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MicrosoftEntraAdministrator list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftEntraAdministratorInner> list(String resourceGroupName, String clusterName,
         Context context) {
@@ -793,11 +516,7 @@ public final class MicrosoftEntraAdministratorsClientImpl implements MicrosoftEn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MicrosoftEntraAdministratorInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MicrosoftEntraAdministratorListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -224,11 +224,11 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NeuroShieldMitigationsGetResponse> getWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String mitigationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName,
-                mitigationId, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -255,47 +255,17 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a mitigation
-     * 
-     * Gets a mitigation under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param mitigationId The system-generated identifier of the mitigation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a mitigation
-     * 
-     * Gets a mitigation under a protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldMitigationsGetResponse getWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context);
     }
 
-    /**
-     * Get a mitigation
-     * 
-     * Gets a mitigation under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param mitigationId The system-generated identifier of the mitigation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a mitigation
-     * 
-     * Gets a mitigation under a protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldMitigationInner get(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId) {
@@ -322,11 +292,11 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldMitigationInner>> listSinglePageAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, top,
-                skipToken, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldMitigationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -396,12 +366,7 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<NeuroShieldMitigationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -423,53 +388,25 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Integer top, String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         Response<NeuroShieldMitigationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            = service.listSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List mitigations
-     * 
-     * Lists mitigations under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldMitigation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldMitigationInner> list(String resourceGroupName, String neuroShieldName,
         String protectedResourceName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List mitigations
-     * 
-     * Lists mitigations under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param top The maximum number of items to return.
-     * @param skipToken The continuation token used to retrieve the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldMitigation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldMitigationInner> list(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Integer top, String skipToken, Context context) {
@@ -496,9 +433,10 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeuroShieldMitigationInner>> listByNeuroShieldSinglePageAsync(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByNeuroShield(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listByNeuroShield(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context))
             .<PagedResponse<NeuroShieldMitigationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -566,12 +504,7 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listByNeuroShieldSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<NeuroShieldMitigationListResult> res = service.listByNeuroShieldSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top,
-            skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNeuroShieldSinglePage(resourceGroupName, neuroShieldName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -592,51 +525,25 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listByNeuroShieldSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         Response<NeuroShieldMitigationListResult> res
-            = service.listByNeuroShieldSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, top, skipToken, accept, context);
+            = service.listByNeuroShieldSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, neuroShieldName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List mitigations by NeuroShield
-     * 
-     * Lists mitigations across all protected resources under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldMitigation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldMitigationInner> listByNeuroShield(String resourceGroupName,
         String neuroShieldName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listByNeuroShieldSinglePage(resourceGroupName, neuroShieldName, top, skipToken),
-            nextLink -> listByNeuroShieldNextSinglePage(nextLink));
+        return listByNeuroShield(resourceGroupName, neuroShieldName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List mitigations by NeuroShield
-     * 
-     * Lists mitigations across all protected resources under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param top The maximum number of items to return.
-     * @param skipToken The continuation token used to retrieve the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldMitigation list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldMitigationInner> listByNeuroShield(String resourceGroupName, String neuroShieldName,
         Integer top, String skipToken, Context context) {
@@ -663,11 +570,12 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldMitigationInner>> executeWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String mitigationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.execute(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName,
-                mitigationId, accept, context))
+            .withContext(
+                context -> service.execute(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -693,44 +601,17 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Execute a mitigation
-     * 
-     * Approves and queues a mitigation for execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param mitigationId The system-generated identifier of the mitigation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager proxy child resource representing a mitigation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldMitigationInner> executeWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, mitigationId,
-            accept, context);
+        return service.executeSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context);
     }
 
-    /**
-     * Execute a mitigation
-     * 
-     * Approves and queues a mitigation for execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param mitigationId The system-generated identifier of the mitigation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager proxy child resource representing a mitigation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldMitigationInner execute(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId) {
@@ -756,11 +637,12 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NeuroShieldMitigationInner>> rollbackWithResponseAsync(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String mitigationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.rollback(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName,
-                mitigationId, accept, context))
+            .withContext(
+                context -> service.rollback(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -786,44 +668,17 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Roll back a mitigation
-     * 
-     * Rolls back a mitigation when rollback is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param mitigationId The system-generated identifier of the mitigation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager proxy child resource representing a mitigation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldMitigationInner> rollbackWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.rollbackSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, neuroShieldName, protectedResourceName, mitigationId,
-            accept, context);
+        return service.rollbackSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, neuroShieldName, protectedResourceName, mitigationId, accept, context);
     }
 
-    /**
-     * Roll back a mitigation
-     * 
-     * Rolls back a mitigation when rollback is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param mitigationId The system-generated identifier of the mitigation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager proxy child resource representing a mitigation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldMitigationInner rollback(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String mitigationId) {
@@ -865,11 +720,7 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldMitigationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -928,11 +779,7 @@ public final class NeuroShieldMitigationsClientImpl implements NeuroShieldMitiga
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldMitigationInner> listByNeuroShieldNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldMitigationListResult> res
-            = service.listByNeuroShieldNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNeuroShieldNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

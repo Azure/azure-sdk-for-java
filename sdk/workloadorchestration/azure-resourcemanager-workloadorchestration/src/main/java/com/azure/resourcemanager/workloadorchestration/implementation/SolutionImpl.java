@@ -73,10 +73,7 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
     }
 
     public Solution create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutions()
-            .createOrUpdate(resourceGroupName, targetName, solutionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Solution create(Context context) {
@@ -99,10 +96,7 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
     }
 
     public Solution apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutions()
-            .update(resourceGroupName, targetName, solutionName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Solution apply(Context context) {
@@ -128,11 +122,7 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
     }
 
     public Solution refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSolutions()
-            .getWithResponse(resourceGroupName, targetName, solutionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Solution refresh(Context context) {

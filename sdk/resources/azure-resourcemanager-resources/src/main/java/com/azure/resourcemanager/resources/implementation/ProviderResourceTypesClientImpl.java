@@ -68,17 +68,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * List the resource types for a specified resource provider.
-     * 
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(String resourceProviderNamespace,
         String expand) {
@@ -134,15 +124,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
             expand, resourceProviderNamespace, accept, context);
     }
 
-    /**
-     * List the resource types for a specified resource provider.
-     * 
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace) {
         final String expand = null;
@@ -150,32 +132,14 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List the resource types for a specified resource provider.
-     * 
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderResourceTypeListResultInner> listWithResponse(String resourceProviderNamespace,
         String expand, Context context) {
         return listWithResponseAsync(resourceProviderNamespace, expand, context).block();
     }
 
-    /**
-     * List the resource types for a specified resource provider.
-     * 
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderResourceTypeListResultInner list(String resourceProviderNamespace) {
         final String expand = null;

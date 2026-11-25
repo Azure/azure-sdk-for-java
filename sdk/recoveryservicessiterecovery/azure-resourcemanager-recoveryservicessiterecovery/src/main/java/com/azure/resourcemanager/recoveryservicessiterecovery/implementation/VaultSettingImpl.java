@@ -22,6 +22,15 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}",
+            "resourceName");
+        this.vaultSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}",
+            "vaultSettingName");
     }
 
     public String id() {
@@ -79,10 +88,7 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
     }
 
     public VaultSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationVaultSettings()
-            .create(resourceGroupName, resourceName, vaultSettingName, createInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VaultSetting create(Context context) {
@@ -100,11 +106,7 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
     }
 
     public VaultSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationVaultSettings()
-            .getWithResponse(resourceGroupName, resourceName, vaultSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VaultSetting refresh(Context context) {

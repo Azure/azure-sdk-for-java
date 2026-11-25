@@ -91,11 +91,7 @@ public final class DeviceSecurityGroupImpl
     }
 
     public DeviceSecurityGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeviceSecurityGroups()
-            .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeviceSecurityGroup create(Context context) {
@@ -117,11 +113,7 @@ public final class DeviceSecurityGroupImpl
     }
 
     public DeviceSecurityGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeviceSecurityGroups()
-            .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeviceSecurityGroup apply(Context context) {
@@ -144,11 +136,7 @@ public final class DeviceSecurityGroupImpl
     }
 
     public DeviceSecurityGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeviceSecurityGroups()
-            .getWithResponse(resourceId, deviceSecurityGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeviceSecurityGroup refresh(Context context) {

@@ -235,19 +235,7 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution Version Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionVersionInner> getWithResponse(String resourceGroupName, String targetName,
         String solutionName, String solutionVersionName, Context context) {
@@ -256,18 +244,7 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             resourceGroupName, targetName, solutionName, solutionVersionName, accept, context);
     }
 
-    /**
-     * Get a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner get(String resourceGroupName, String targetName, String solutionName,
         String solutionVersionName) {
@@ -316,11 +293,8 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String targetName,
         String solutionName, String solutionVersionName, SolutionVersionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, solutionName, solutionVersionName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, resource,
+            Context.NONE);
     }
 
     /**
@@ -370,43 +344,16 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             SolutionVersionInner.class, SolutionVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String targetName, String solutionName, String solutionVersionName,
         SolutionVersionInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, resource);
-        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
-            SolutionVersionInner.class, SolutionVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String targetName, String solutionName, String solutionVersionName,
@@ -438,45 +385,19 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner createOrUpdate(String resourceGroupName, String targetName, String solutionName,
         String solutionVersionName, SolutionVersionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner createOrUpdate(String resourceGroupName, String targetName, String solutionName,
         String solutionVersionName, SolutionVersionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, resource, context));
     }
 
     /**
@@ -520,11 +441,8 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String targetName, String solutionName,
         String solutionVersionName, SolutionVersionInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, solutionName, solutionVersionName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, properties,
+            Context.NONE);
     }
 
     /**
@@ -574,42 +492,14 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             SolutionVersionInner.class, SolutionVersionInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdate(String resourceGroupName,
         String targetName, String solutionName, String solutionVersionName, SolutionVersionInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, properties);
-        return this.client.<SolutionVersionInner, SolutionVersionInner>getLroResult(response,
-            SolutionVersionInner.class, SolutionVersionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionVersionInner>, SolutionVersionInner> beginUpdate(String resourceGroupName,
         String targetName, String solutionName, String solutionVersionName, SolutionVersionInner properties,
@@ -640,45 +530,19 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner update(String resourceGroupName, String targetName, String solutionName,
         String solutionVersionName, SolutionVersionInner properties) {
-        return beginUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, properties)
-            .getFinalResult();
+        return update(resourceGroupName, targetName, solutionName, solutionVersionName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution Version Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionVersionInner update(String resourceGroupName, String targetName, String solutionName,
         String solutionVersionName, SolutionVersionInner properties, Context context) {
-        return beginUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, targetName, solutionName, solutionVersionName, properties, context));
     }
 
     /**
@@ -716,9 +580,7 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String targetName, String solutionName,
         String solutionVersionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, targetName, solutionName, solutionVersionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, Context.NONE);
     }
 
     /**
@@ -762,39 +624,14 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName,
         String solutionName, String solutionVersionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, targetName, solutionName, solutionVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String targetName,
         String solutionName, String solutionVersionName, Context context) {
@@ -822,38 +659,18 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String targetName, String solutionName, String solutionVersionName) {
-        beginDelete(resourceGroupName, targetName, solutionName, solutionVersionName).getFinalResult();
+        delete(resourceGroupName, targetName, solutionName, solutionVersionName, Context.NONE);
     }
 
-    /**
-     * Delete a Solution Version Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param solutionVersionName Name of the solution version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String targetName, String solutionName, String solutionVersionName,
         Context context) {
-        beginDelete(resourceGroupName, targetName, solutionName, solutionVersionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, targetName, solutionName, solutionVersionName, context));
     }
 
     /**
@@ -912,12 +729,7 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionVersionInner> listBySolutionSinglePage(String resourceGroupName, String targetName,
         String solutionName) {
-        final String accept = "application/json";
-        Response<SolutionVersionListResult> res
-            = service.listBySolutionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, targetName, solutionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionSinglePage(resourceGroupName, targetName, solutionName, Context.NONE);
     }
 
     /**
@@ -943,36 +755,14 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Solution Version Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionVersionInner> listBySolution(String resourceGroupName, String targetName,
         String solutionName) {
-        return new PagedIterable<>(() -> listBySolutionSinglePage(resourceGroupName, targetName, solutionName),
-            nextLink -> listBySolutionNextSinglePage(nextLink));
+        return listBySolution(resourceGroupName, targetName, solutionName, Context.NONE);
     }
 
-    /**
-     * List Solution Version Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param targetName Name of the target.
-     * @param solutionName Name of the solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SolutionVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SolutionVersionInner> listBySolution(String resourceGroupName, String targetName,
         String solutionName, Context context) {
@@ -1011,11 +801,7 @@ public final class SolutionVersionsClientImpl implements SolutionVersionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SolutionVersionInner> listBySolutionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SolutionVersionListResult> res
-            = service.listBySolutionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySolutionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

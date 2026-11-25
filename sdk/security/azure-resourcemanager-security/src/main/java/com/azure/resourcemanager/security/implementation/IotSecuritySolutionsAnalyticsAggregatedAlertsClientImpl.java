@@ -207,37 +207,14 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
-     * performed by alert name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedAlertName Identifier of the aggregated alert.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Solution Aggregated Alert information along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IoTSecurityAggregatedAlertInner> getWithResponse(String resourceGroupName, String solutionName,
         String aggregatedAlertName, Context context) {
         return getWithResponseAsync(resourceGroupName, solutionName, aggregatedAlertName, context).block();
     }
 
-    /**
-     * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
-     * performed by alert name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedAlertName Identifier of the aggregated alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Solution Aggregated Alert information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IoTSecurityAggregatedAlertInner get(String resourceGroupName, String solutionName,
         String aggregatedAlertName) {
@@ -379,34 +356,14 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Use this method to get the aggregated alert list of yours IoT Security solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated alert data as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecurityAggregatedAlertInner> list(String resourceGroupName, String solutionName) {
         final Integer top = null;
         return new PagedIterable<>(listAsync(resourceGroupName, solutionName, top));
     }
 
-    /**
-     * Use this method to get the aggregated alert list of yours IoT Security solution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param top Number of results to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solution aggregated alert data as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IoTSecurityAggregatedAlertInner> list(String resourceGroupName, String solutionName,
         Integer top, Context context) {
@@ -510,34 +467,14 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsClientImpl
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Use this method to dismiss an aggregated IoT Security Solution Alert.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedAlertName Identifier of the aggregated alert.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> dismissWithResponse(String resourceGroupName, String solutionName, String aggregatedAlertName,
         Context context) {
         return dismissWithResponseAsync(resourceGroupName, solutionName, aggregatedAlertName, context).block();
     }
 
-    /**
-     * Use this method to dismiss an aggregated IoT Security Solution Alert.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param aggregatedAlertName Identifier of the aggregated alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void dismiss(String resourceGroupName, String solutionName, String aggregatedAlertName) {
         dismissWithResponse(resourceGroupName, solutionName, aggregatedAlertName, Context.NONE);

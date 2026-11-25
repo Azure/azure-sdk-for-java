@@ -46,8 +46,7 @@ public final class AccountQuotasImpl implements AccountQuotas {
     }
 
     public PagedIterable<AccountQuota> listByAccount(String resourceGroupName, String accountName) {
-        PagedIterable<AccountQuotaInner> inner = this.serviceClient().listByAccount(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountQuotaImpl(inner1, this.manager()));
+        return this.listByAccount(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<AccountQuota> listByAccount(String resourceGroupName, String accountName, Context context) {

@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"bfaxyxzlbc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sexroqrndkt\",\"actionsRequired\":\"vonfeeqgpkr\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"nixxo\",\"wzkyf\",\"nwpiwxeiicrm\",\"e\"]},\"etag\":\"ldmaxxijvskwsdgk\",\"location\":\"yacwrasekwefc\",\"id\":\"inwoqartwyxq\",\"name\":\"cladvatdavuqmcb\",\"type\":\"msfobjlquvj\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"qs\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"s\",\"actionsRequired\":\"sqosecxlngou\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"b\"]},\"etag\":\"xzspfy\",\"location\":\"la\",\"id\":\"pplxgtdumjtyc\",\"name\":\"ldrznlaxo\",\"type\":\"qthkwxfugfz\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"duyjnqzbr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"mfckviyju\",\"actionsRequired\":\"mnsbq\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"mucjiuh\",\"xy\"]},\"etag\":\"hyklelyqdvpqf\",\"location\":\"gycudusdmt\",\"id\":\"lefnoheywvfo\",\"name\":\"kyllreye\",\"type\":\"jpwdmsfwtwrsvev\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"swxhqhgkhtbzv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"vvjncpmyhtxgdmv\",\"actionsRequired\":\"cmixmlwkfefbcyjr\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"ebudfyim\"]},\"etag\":\"aezktomsgoihlqw\",\"location\":\"waazbaeeek\",\"id\":\"t\",\"name\":\"n\",\"type\":\"bfb\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"noljdkxhmewy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"lzxkrdpuyyt\",\"actionsRequired\":\"krpkhqetpoene\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"pcnrx\"]},\"etag\":\"rxowvhufcmuajwb\",\"location\":\"p\",\"id\":\"ozfrfawtnnsv\",\"name\":\"fajynihtibufg\",\"type\":\"qzhluctblfehbg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionListResult response = manager.privateEndpointConnections()
-            .listWithResponse("h", "whlpuzjpceezn", com.azure.core.util.Context.NONE)
+            .listWithResponse("orzolxosgih", "rxueqbmxq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("sexroqrndkt",
+        Assertions.assertEquals("s",
             response.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("vonfeeqgpkr",
+        Assertions.assertEquals("sqosecxlngou",
             response.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("nixxo", response.value().get(0).properties().groupIds().get(0));
-        Assertions.assertEquals("yacwrasekwefc", response.value().get(0).location());
+        Assertions.assertEquals("b", response.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("la", response.value().get(0).location());
     }
 }

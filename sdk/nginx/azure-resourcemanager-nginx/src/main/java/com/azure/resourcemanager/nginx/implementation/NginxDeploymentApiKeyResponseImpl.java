@@ -68,11 +68,7 @@ public final class NginxDeploymentApiKeyResponseImpl implements NginxDeploymentA
     }
 
     public NginxDeploymentApiKeyResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApiKeys()
-            .createOrUpdateWithResponse(resourceGroupName, deploymentName, apiKeyName, createBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxDeploymentApiKeyResponse create(Context context) {
@@ -95,11 +91,7 @@ public final class NginxDeploymentApiKeyResponseImpl implements NginxDeploymentA
     }
 
     public NginxDeploymentApiKeyResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApiKeys()
-            .createOrUpdateWithResponse(resourceGroupName, deploymentName, apiKeyName, updateBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NginxDeploymentApiKeyResponse apply(Context context) {
@@ -126,11 +118,7 @@ public final class NginxDeploymentApiKeyResponseImpl implements NginxDeploymentA
     }
 
     public NginxDeploymentApiKeyResponse refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApiKeys()
-            .getWithResponse(resourceGroupName, deploymentName, apiKeyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxDeploymentApiKeyResponse refresh(Context context) {

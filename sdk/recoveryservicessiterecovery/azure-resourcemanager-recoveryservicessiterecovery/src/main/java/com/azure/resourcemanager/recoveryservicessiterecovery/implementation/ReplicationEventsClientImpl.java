@@ -179,22 +179,7 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the details of an Azure Site recovery event.
-     * 
-     * The operation to get the details of an Azure Site recovery event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param eventName The name of the Azure Site Recovery event.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Azure Site recovery event.
-     * 
-     * The operation to get the details of an Azure Site recovery event along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventInner> getWithResponse(String resourceGroupName, String resourceName, String eventName,
         Context context) {
@@ -225,21 +210,7 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
             resourceGroupName, resourceName, eventName, accept, context);
     }
 
-    /**
-     * Get the details of an Azure Site recovery event.
-     * 
-     * The operation to get the details of an Azure Site recovery event.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param eventName The name of the Azure Site Recovery event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Azure Site recovery event.
-     * 
-     * The operation to get the details of an Azure Site recovery event.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventInner get(String resourceGroupName, String resourceName, String eventName) {
         return getWithResponse(resourceGroupName, resourceName, eventName, Context.NONE).getValue();
@@ -347,29 +318,7 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listSinglePage(String resourceGroupName, String resourceName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EventCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, filter, Context.NONE);
     }
 
     /**
@@ -416,43 +365,14 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of Azure Site Recovery events.
-     * 
-     * Gets the list of Azure Site Recovery events for the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Azure Site Recovery events.
-     * 
-     * Gets the list of Azure Site Recovery events for the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> list(String resourceGroupName, String resourceName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, filter, Context.NONE);
     }
 
-    /**
-     * Gets the list of Azure Site Recovery events.
-     * 
-     * Gets the list of Azure Site Recovery events for the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Azure Site Recovery events.
-     * 
-     * Gets the list of Azure Site Recovery events for the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> list(String resourceGroupName, String resourceName, String filter,
         Context context) {
@@ -505,19 +425,7 @@ public final class ReplicationEventsClientImpl implements ReplicationEventsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EventInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<EventCollection> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

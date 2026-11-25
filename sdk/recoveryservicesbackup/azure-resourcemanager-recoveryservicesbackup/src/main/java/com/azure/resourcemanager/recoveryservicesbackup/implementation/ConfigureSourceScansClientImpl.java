@@ -132,11 +132,8 @@ public final class ConfigureSourceScansClientImpl implements ConfigureSourceScan
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> executeWithResponse(String resourceGroupName, String vaultName, String fabricName,
         String containerName, String protectedItemName, ProtectedItemConfigureSourceScanRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.executeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
-            contentType, accept, body, Context.NONE);
+        return executeWithResponse(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body,
+            Context.NONE);
     }
 
     /**
@@ -190,46 +187,16 @@ public final class ConfigureSourceScansClientImpl implements ConfigureSourceScan
             this.client.getContext());
     }
 
-    /**
-     * Configures source scan for a protected item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String vaultName,
         String fabricName, String containerName, String protectedItemName,
         ProtectedItemConfigureSourceScanRequest body) {
-        Response<BinaryData> response
-            = executeWithResponse(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginExecute(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body,
+            Context.NONE);
     }
 
-    /**
-     * Configures source scan for a protected item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String vaultName,
         String fabricName, String containerName, String protectedItemName, ProtectedItemConfigureSourceScanRequest body,
@@ -262,45 +229,18 @@ public final class ConfigureSourceScansClientImpl implements ConfigureSourceScan
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Configures source scan for a protected item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String resourceGroupName, String vaultName, String fabricName, String containerName,
         String protectedItemName, ProtectedItemConfigureSourceScanRequest body) {
-        beginExecute(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body).getFinalResult();
+        execute(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body, Context.NONE);
     }
 
-    /**
-     * Configures source scan for a protected item. This is an asynchronous operation. To know the status of the
-     * operation, call GetProtectedItemOperationResult API.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void execute(String resourceGroupName, String vaultName, String fabricName, String containerName,
         String protectedItemName, ProtectedItemConfigureSourceScanRequest body, Context context) {
-        beginExecute(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginExecute(resourceGroupName, vaultName, fabricName, containerName, protectedItemName, body, context));
     }
 }

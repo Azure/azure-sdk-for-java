@@ -17,9 +17,9 @@ public final class LdapServerType extends ExpandableStringEnum<LdapServerType> {
     public static final LdapServerType ACTIVE_DIRECTORY = fromString("ActiveDirectory");
 
     /**
-     * The volume should use OpenLDAP for LDAP connections.
+     * The volume should use OpenLdap for LDAP connections.
      */
-    public static final LdapServerType OPEN_LDAP = fromString("OpenLDAP");
+    public static final LdapServerType OPEN_LDAP = fromString("OpenLdap");
 
     /**
      * Creates a new instance of LdapServerType value.

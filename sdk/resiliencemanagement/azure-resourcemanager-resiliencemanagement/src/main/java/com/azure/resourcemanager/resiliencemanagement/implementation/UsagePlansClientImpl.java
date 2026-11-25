@@ -248,17 +248,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a UsagePlan along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UsagePlanInner> getByResourceGroupWithResponse(String resourceGroupName, String usagePlanName,
         Context context) {
@@ -267,16 +257,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             this.client.getSubscriptionId(), resourceGroupName, usagePlanName, accept, context);
     }
 
-    /**
-     * Get a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a UsagePlan.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsagePlanInner getByResourceGroup(String resourceGroupName, String usagePlanName) {
         return getByResourceGroupWithResponse(resourceGroupName, usagePlanName, Context.NONE).getValue();
@@ -320,11 +301,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String usagePlanName,
         UsagePlanInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, usagePlanName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, usagePlanName, resource, Context.NONE);
     }
 
     /**
@@ -368,37 +345,14 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             UsagePlanInner.class, UsagePlanInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UsagePlanInner>, UsagePlanInner> beginCreateOrUpdate(String resourceGroupName,
         String usagePlanName, UsagePlanInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, usagePlanName, resource);
-        return this.client.<UsagePlanInner, UsagePlanInner>getLroResult(response, UsagePlanInner.class,
-            UsagePlanInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, usagePlanName, resource, Context.NONE);
     }
 
-    /**
-     * Create a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UsagePlanInner>, UsagePlanInner> beginCreateOrUpdate(String resourceGroupName,
         String usagePlanName, UsagePlanInner resource, Context context) {
@@ -425,38 +379,18 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsagePlanInner createOrUpdate(String resourceGroupName, String usagePlanName, UsagePlanInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, usagePlanName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, usagePlanName, resource, Context.NONE);
     }
 
-    /**
-     * Create a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsagePlanInner createOrUpdate(String resourceGroupName, String usagePlanName, UsagePlanInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, usagePlanName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, usagePlanName, resource, context));
     }
 
     /**
@@ -497,11 +431,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String usagePlanName,
         UsagePlanTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, usagePlanName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, usagePlanName, properties, Context.NONE);
     }
 
     /**
@@ -545,37 +475,14 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             UsagePlanInner.class, UsagePlanInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UsagePlanInner>, UsagePlanInner> beginUpdate(String resourceGroupName,
         String usagePlanName, UsagePlanTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, usagePlanName, properties);
-        return this.client.<UsagePlanInner, UsagePlanInner>getLroResult(response, UsagePlanInner.class,
-            UsagePlanInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, usagePlanName, properties, Context.NONE);
     }
 
-    /**
-     * Update a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UsagePlanInner>, UsagePlanInner> beginUpdate(String resourceGroupName,
         String usagePlanName, UsagePlanTagsUpdate properties, Context context) {
@@ -602,38 +509,17 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsagePlanInner update(String resourceGroupName, String usagePlanName, UsagePlanTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, usagePlanName, properties).getFinalResult();
+        return update(resourceGroupName, usagePlanName, properties, Context.NONE);
     }
 
-    /**
-     * Update a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a usage plan resource for Resiliency feature billing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsagePlanInner update(String resourceGroupName, String usagePlanName, UsagePlanTagsUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, usagePlanName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, usagePlanName, properties, context));
     }
 
     /**
@@ -666,8 +552,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String usagePlanName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, usagePlanName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, usagePlanName, Context.NONE);
     }
 
     /**
@@ -704,33 +589,13 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String usagePlanName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, usagePlanName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, usagePlanName, Context.NONE);
     }
 
-    /**
-     * Delete a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String usagePlanName,
         Context context) {
@@ -753,33 +618,16 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
         return beginDeleteAsync(resourceGroupName, usagePlanName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String usagePlanName) {
-        beginDelete(resourceGroupName, usagePlanName).getFinalResult();
+        delete(resourceGroupName, usagePlanName, Context.NONE);
     }
 
-    /**
-     * Delete a UsagePlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param usagePlanName The name of the usage plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String usagePlanName, Context context) {
-        beginDelete(resourceGroupName, usagePlanName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, usagePlanName, context));
     }
 
     /**
@@ -829,11 +677,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsagePlanInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<UsagePlanListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -855,31 +699,13 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List UsagePlan resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UsagePlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsagePlanInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List UsagePlan resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UsagePlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsagePlanInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -927,11 +753,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsagePlanInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<UsagePlanListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -952,27 +774,13 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List UsagePlan resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UsagePlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsagePlanInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List UsagePlan resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UsagePlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsagePlanInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1011,11 +819,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsagePlanInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UsagePlanListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1069,11 +873,7 @@ public final class UsagePlansClientImpl implements UsagePlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsagePlanInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UsagePlanListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

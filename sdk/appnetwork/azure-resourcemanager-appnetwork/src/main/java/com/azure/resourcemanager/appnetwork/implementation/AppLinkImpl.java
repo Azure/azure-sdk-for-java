@@ -90,10 +90,7 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     }
 
     public AppLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinks()
-            .createOrUpdate(resourceGroupName, appLinkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AppLink create(Context context) {
@@ -115,10 +112,7 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     }
 
     public AppLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinks()
-            .update(resourceGroupName, appLinkName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AppLink apply(Context context) {
@@ -140,11 +134,7 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
     }
 
     public AppLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAppLinks()
-            .getByResourceGroupWithResponse(resourceGroupName, appLinkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AppLink refresh(Context context) {

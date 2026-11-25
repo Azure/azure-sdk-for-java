@@ -93,10 +93,7 @@ public final class FlowProfileImpl implements FlowProfile, FlowProfile.Definitio
     }
 
     public FlowProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFlowProfiles()
-            .createOrUpdate(resourceGroupName, pipelineName, flowProfileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FlowProfile create(Context context) {
@@ -118,10 +115,7 @@ public final class FlowProfileImpl implements FlowProfile, FlowProfile.Definitio
     }
 
     public FlowProfile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFlowProfiles()
-            .update(resourceGroupName, pipelineName, flowProfileName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FlowProfile apply(Context context) {
@@ -147,11 +141,7 @@ public final class FlowProfileImpl implements FlowProfile, FlowProfile.Definitio
     }
 
     public FlowProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFlowProfiles()
-            .getWithResponse(resourceGroupName, pipelineName, flowProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FlowProfile refresh(Context context) {

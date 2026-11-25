@@ -197,18 +197,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyModelInner> getWithResponse(String resourceGroupName, String vaultName, String policyName,
         Context context) {
@@ -217,17 +206,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
             resourceGroupName, vaultName, policyName, accept, context);
     }
 
-    /**
-     * Gets the details of the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyModelInner get(String resourceGroupName, String vaultName, String policyName) {
         return getWithResponse(resourceGroupName, vaultName, policyName, Context.NONE).getValue();
@@ -272,11 +251,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String vaultName, String policyName,
         PolicyModelInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, policyName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, vaultName, policyName, resource, Context.NONE);
     }
 
     /**
@@ -323,39 +298,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             PolicyModelInner.class, PolicyModelInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @param resource Policy model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of policy model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyModelInner>, PolicyModelInner> beginCreate(String resourceGroupName,
         String vaultName, String policyName, PolicyModelInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, vaultName, policyName, resource);
-        return this.client.<PolicyModelInner, PolicyModelInner>getLroResult(response, PolicyModelInner.class,
-            PolicyModelInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, vaultName, policyName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @param resource Policy model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of policy model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyModelInner>, PolicyModelInner> beginCreate(String resourceGroupName,
         String vaultName, String policyName, PolicyModelInner resource, Context context) {
@@ -383,41 +333,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @param resource Policy model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyModelInner create(String resourceGroupName, String vaultName, String policyName,
         PolicyModelInner resource) {
-        return beginCreate(resourceGroupName, vaultName, policyName, resource).getFinalResult();
+        return create(resourceGroupName, vaultName, policyName, resource, Context.NONE);
     }
 
-    /**
-     * Creates the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @param resource Policy model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyModelInner create(String resourceGroupName, String vaultName, String policyName,
         PolicyModelInner resource, Context context) {
-        return beginCreate(resourceGroupName, vaultName, policyName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, vaultName, policyName, resource, context));
     }
 
     /**
@@ -453,8 +381,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String vaultName, String policyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, policyName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, vaultName, policyName, Context.NONE);
     }
 
     /**
@@ -495,36 +422,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             this.client.getContext());
     }
 
-    /**
-     * Removes the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
         String policyName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, vaultName, policyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, vaultName, policyName, Context.NONE);
     }
 
-    /**
-     * Removes the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName, String policyName,
         Context context) {
@@ -549,35 +454,16 @@ public final class PoliciesClientImpl implements PoliciesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String policyName) {
-        beginDelete(resourceGroupName, vaultName, policyName).getFinalResult();
+        delete(resourceGroupName, vaultName, policyName, Context.NONE);
     }
 
-    /**
-     * Removes the policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param policyName The policy name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName, String policyName, Context context) {
-        beginDelete(resourceGroupName, vaultName, policyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, vaultName, policyName, context));
     }
 
     /**
@@ -630,11 +516,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyModelInner> listSinglePage(String resourceGroupName, String vaultName) {
-        final String accept = "application/json";
-        Response<PolicyModelListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -658,33 +540,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of policies in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policies in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyModelInner> list(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Gets the list of policies in the given vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The vault name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policies in the given vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyModelInner> list(String resourceGroupName, String vaultName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, vaultName, context),
@@ -721,11 +583,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

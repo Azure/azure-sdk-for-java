@@ -89,12 +89,11 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void delete(String resourceGroupName, String environmentName, String certificateName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, certificateName);
+        this.deleteWithResponse(resourceGroupName, environmentName, certificateName, Context.NONE);
     }
 
     public PagedIterable<Certificate> list(String resourceGroupName, String environmentName) {
-        PagedIterable<CertificateInner> inner = this.serviceClient().list(resourceGroupName, environmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, environmentName, Context.NONE);
     }
 
     public PagedIterable<Certificate> list(String resourceGroupName, String environmentName, Context context) {

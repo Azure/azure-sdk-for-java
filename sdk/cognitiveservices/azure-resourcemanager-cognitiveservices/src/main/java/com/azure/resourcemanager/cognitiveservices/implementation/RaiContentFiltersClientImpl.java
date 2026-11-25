@@ -147,17 +147,7 @@ public final class RaiContentFiltersClientImpl implements RaiContentFiltersClien
         return getWithResponseAsync(location, filterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Content Filters by Name.
-     * 
-     * @param location The name of the Azure region.
-     * @param filterName The name of the RAI Content Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return content Filters by Name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiContentFilterInner> getWithResponse(String location, String filterName, Context context) {
         final String accept = "application/json";
@@ -165,16 +155,7 @@ public final class RaiContentFiltersClientImpl implements RaiContentFiltersClien
             location, filterName, accept, context);
     }
 
-    /**
-     * Get Content Filters by Name.
-     * 
-     * @param location The name of the Azure region.
-     * @param filterName The name of the RAI Content Filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return content Filters by Name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiContentFilterInner get(String location, String filterName) {
         return getWithResponse(location, filterName, Context.NONE).getValue();
@@ -225,11 +206,7 @@ public final class RaiContentFiltersClientImpl implements RaiContentFiltersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiContentFilterInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<RaiContentFilterListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -251,30 +228,13 @@ public final class RaiContentFiltersClientImpl implements RaiContentFiltersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Content Filters types.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Content Filters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiContentFilterInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * List Content Filters types.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Content Filters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiContentFilterInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -310,11 +270,7 @@ public final class RaiContentFiltersClientImpl implements RaiContentFiltersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiContentFilterInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RaiContentFilterListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

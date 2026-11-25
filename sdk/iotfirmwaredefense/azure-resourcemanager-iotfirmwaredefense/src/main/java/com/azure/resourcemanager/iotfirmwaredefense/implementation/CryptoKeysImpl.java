@@ -27,9 +27,7 @@ public final class CryptoKeysImpl implements CryptoKeys {
 
     public PagedIterable<CryptoKeyResource> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        PagedIterable<CryptoKeyResourceInner> inner
-            = this.serviceClient().listByFirmware(resourceGroupName, workspaceName, firmwareId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CryptoKeyResourceImpl(inner1, this.manager()));
+        return this.listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public PagedIterable<CryptoKeyResource> listByFirmware(String resourceGroupName, String workspaceName,

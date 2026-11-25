@@ -12,6 +12,8 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
 import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ApiKeys;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesRequest;
+import com.azure.resourcemanager.cognitiveservices.models.EvaluateDeploymentPoliciesResponse;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
@@ -102,10 +104,7 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .create(resourceGroupName, accountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Account create(Context context) {
@@ -126,10 +125,7 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .update(resourceGroupName, accountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Account apply(Context context) {
@@ -152,11 +148,7 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
     }
 
     public Account refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Account refresh(Context context) {
@@ -181,6 +173,16 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
 
     public ApiKeys regenerateKey(RegenerateKeyParameters parameters) {
         return serviceManager.accounts().regenerateKey(resourceGroupName, accountName, parameters);
+    }
+
+    public Response<EvaluateDeploymentPoliciesResponse>
+        evaluateDeploymentPoliciesWithResponse(EvaluateDeploymentPoliciesRequest body, Context context) {
+        return serviceManager.accounts()
+            .evaluateDeploymentPoliciesWithResponse(resourceGroupName, accountName, body, context);
+    }
+
+    public EvaluateDeploymentPoliciesResponse evaluateDeploymentPolicies(EvaluateDeploymentPoliciesRequest body) {
+        return serviceManager.accounts().evaluateDeploymentPolicies(resourceGroupName, accountName, body);
     }
 
     public AccountImpl withRegion(Region location) {

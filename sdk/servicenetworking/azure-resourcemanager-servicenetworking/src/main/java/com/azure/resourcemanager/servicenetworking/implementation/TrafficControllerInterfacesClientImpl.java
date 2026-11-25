@@ -255,17 +255,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TrafficController along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrafficControllerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String trafficControllerName, Context context) {
@@ -274,16 +264,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context);
     }
 
-    /**
-     * Get a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TrafficController.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficControllerInner getByResourceGroup(String resourceGroupName, String trafficControllerName) {
         return getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, Context.NONE).getValue();
@@ -328,11 +309,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trafficControllerName,
         TrafficControllerInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, trafficControllerName, resource, Context.NONE);
     }
 
     /**
@@ -380,39 +357,14 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             this.client.getContext());
     }
 
-    /**
-     * Create a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner>
         beginCreateOrUpdate(String resourceGroupName, String trafficControllerName, TrafficControllerInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, trafficControllerName, resource);
-        return this.client.<TrafficControllerInner, TrafficControllerInner>getLroResult(response,
-            TrafficControllerInner.class, TrafficControllerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrafficControllerInner>, TrafficControllerInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, TrafficControllerInner resource, Context context) {
@@ -441,39 +393,19 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficControllerInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         TrafficControllerInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, trafficControllerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficControllerInner createOrUpdate(String resourceGroupName, String trafficControllerName,
         TrafficControllerInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, trafficControllerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, trafficControllerName, resource, context));
     }
 
     /**
@@ -519,19 +451,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrafficControllerInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
         TrafficControllerUpdate properties, Context context) {
@@ -542,17 +462,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             context);
     }
 
-    /**
-     * Update a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficControllerInner update(String resourceGroupName, String trafficControllerName,
         TrafficControllerUpdate properties) {
@@ -590,8 +500,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trafficControllerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     /**
@@ -630,33 +539,13 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             this.client.getContext());
     }
 
-    /**
-     * Delete a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trafficControllerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
-    /**
-     * Delete a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
         Context context) {
@@ -680,33 +569,16 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName) {
-        beginDelete(resourceGroupName, trafficControllerName).getFinalResult();
+        delete(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
-    /**
-     * Delete a TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trafficControllerName, Context context) {
-        beginDelete(resourceGroupName, trafficControllerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, trafficControllerName, context));
     }
 
     /**
@@ -756,11 +628,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrafficControllerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<TrafficControllerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -783,31 +651,13 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List TrafficController resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List TrafficController resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -855,11 +705,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrafficControllerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<TrafficControllerListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -880,27 +726,13 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List TrafficController resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List TrafficController resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrafficControllerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -939,11 +771,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrafficControllerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TrafficControllerListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -997,11 +825,7 @@ public final class TrafficControllerInterfacesClientImpl implements TrafficContr
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrafficControllerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TrafficControllerListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

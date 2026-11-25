@@ -26,13 +26,7 @@ public final class AutoUpgradeProfileOperationsImpl implements AutoUpgradeProfil
 
     public GenerateResponse generateUpdateRun(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName) {
-        GenerateResponseInner inner
-            = this.serviceClient().generateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName);
-        if (inner != null) {
-            return new GenerateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName, Context.NONE);
     }
 
     public GenerateResponse generateUpdateRun(String resourceGroupName, String fleetName, String autoUpgradeProfileName,

@@ -85,14 +85,7 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserMetricsModelInner>> getWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -136,53 +129,25 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             accept, context);
     }
 
-    /**
-     * Get the subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserMetricsModelInner> getAsync() {
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the subscription-level key used for Real User Metrics collection.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserMetricsModelInner> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
     }
 
-    /**
-     * Get the subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription-level key used for Real User Metrics collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserMetricsModelInner get() {
         return getWithResponse(Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserMetricsModelInner>> createOrUpdateWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -226,52 +191,25 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Create or update a subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserMetricsModelInner> createOrUpdateAsync() {
         return createOrUpdateWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a subscription-level key used for Real User Metrics collection.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserMetricsModelInner> createOrUpdateWithResponse(Context context) {
         return createOrUpdateWithResponseAsync(context).block();
     }
 
-    /**
-     * Create or update a subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Traffic Manager User Metrics.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserMetricsModelInner createOrUpdate() {
         return createOrUpdateWithResponse(Context.NONE).getValue();
     }
 
-    /**
-     * Delete a subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
@@ -315,39 +253,19 @@ public final class TrafficManagerUserMetricsKeysClientImpl implements TrafficMan
             accept, context);
     }
 
-    /**
-     * Delete a subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteOperationResultInner> deleteAsync() {
         return deleteWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Delete a subscription-level key used for Real User Metrics collection.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeleteOperationResultInner> deleteWithResponse(Context context) {
         return deleteWithResponseAsync(context).block();
     }
 
-    /**
-     * Delete a subscription-level key used for Real User Metrics collection.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteOperationResultInner delete() {
         return deleteWithResponse(Context.NONE).getValue();

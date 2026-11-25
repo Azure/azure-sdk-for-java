@@ -79,12 +79,7 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
     }
 
     public IssueResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIssues()
-            .createWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, this.innerModel(),
-                createRelated, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IssueResource create(Context context) {
@@ -110,11 +105,7 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
     }
 
     public IssueResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIssues()
-            .updateWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IssueResource apply(Context context) {
@@ -141,11 +132,7 @@ public final class IssueResourceImpl implements IssueResource, IssueResource.Def
     }
 
     public IssueResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIssues()
-            .getWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IssueResource refresh(Context context) {

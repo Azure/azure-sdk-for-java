@@ -172,21 +172,7 @@ public final class AIModelsClientImpl implements AIModelsClient {
         return getWithResponseAsync(location, aiModelName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AIModel.
-     * 
-     * @param location The name of the Azure region.
-     * @param aiModelName The name of the AI model resource. A stable, format-defined identifier derived from `modelId`
-     * as the lowercase hex of the first 8 bytes (16 characters) of `SHA-256(modelId)` (e.g. upstream
-     * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
-     * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
-     * provider and does not depend on any upstream naming policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AIModel along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AIModelInner> getWithResponse(String location, String aiModelName, Context context) {
         final String accept = "application/json";
@@ -194,20 +180,7 @@ public final class AIModelsClientImpl implements AIModelsClient {
             location, aiModelName, accept, context);
     }
 
-    /**
-     * Get a AIModel.
-     * 
-     * @param location The name of the Azure region.
-     * @param aiModelName The name of the AI model resource. A stable, format-defined identifier derived from `modelId`
-     * as the lowercase hex of the first 8 bytes (16 characters) of `SHA-256(modelId)` (e.g. upstream
-     * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
-     * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
-     * provider and does not depend on any upstream naming policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AIModel.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIModelInner get(String location, String aiModelName) {
         return getWithResponse(location, aiModelName, Context.NONE).getValue();
@@ -259,11 +232,7 @@ public final class AIModelsClientImpl implements AIModelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIModelInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<AIModelListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -285,30 +254,13 @@ public final class AIModelsClientImpl implements AIModelsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AIModel resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIModel list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIModelInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * List AIModel resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIModel list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIModelInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -363,23 +315,7 @@ public final class AIModelsClientImpl implements AIModelsClient {
         return calculateCostWithResponseAsync(location, aiModelName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a ranked list of GPU SKU pricing plans for deploying this model in the target region, each annotated with
-     * feasibility, per-replica hourly cost, and estimated relative performance. No Azure or Kubernetes resources are
-     * provisioned.
-     * 
-     * @param location The name of the Azure region.
-     * @param aiModelName The name of the AI model resource. A stable, format-defined identifier derived from `modelId`
-     * as the lowercase hex of the first 8 bytes (16 characters) of `SHA-256(modelId)` (e.g. upstream
-     * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
-     * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
-     * provider and does not depend on any upstream naming policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for the AI model `calculateCost` action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CalculateCostResponseInner> calculateCostWithResponse(String location, String aiModelName,
         Context context) {
@@ -388,22 +324,7 @@ public final class AIModelsClientImpl implements AIModelsClient {
             this.client.getSubscriptionId(), location, aiModelName, accept, context);
     }
 
-    /**
-     * Returns a ranked list of GPU SKU pricing plans for deploying this model in the target region, each annotated with
-     * feasibility, per-replica hourly cost, and estimated relative performance. No Azure or Kubernetes resources are
-     * provisioned.
-     * 
-     * @param location The name of the Azure region.
-     * @param aiModelName The name of the AI model resource. A stable, format-defined identifier derived from `modelId`
-     * as the lowercase hex of the first 8 bytes (16 characters) of `SHA-256(modelId)` (e.g. upstream
-     * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
-     * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
-     * provider and does not depend on any upstream naming policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for the AI model `calculateCost` action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CalculateCostResponseInner calculateCost(String location, String aiModelName) {
         return calculateCostWithResponse(location, aiModelName, Context.NONE).getValue();
@@ -439,11 +360,7 @@ public final class AIModelsClientImpl implements AIModelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AIModelListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

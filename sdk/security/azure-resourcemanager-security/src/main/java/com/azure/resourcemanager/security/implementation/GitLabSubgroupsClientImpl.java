@@ -171,35 +171,14 @@ public final class GitLabSubgroupsClientImpl implements GitLabSubgroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets nested subgroups of given GitLab Group which are onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nested subgroups of given GitLab Group which are onboarded to the connector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitLabGroupListResponseInner> listWithResponse(String resourceGroupName,
         String securityConnectorName, String groupFQName, Context context) {
         return listWithResponseAsync(resourceGroupName, securityConnectorName, groupFQName, context).block();
     }
 
-    /**
-     * Gets nested subgroups of given GitLab Group which are onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nested subgroups of given GitLab Group which are onboarded to the connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GitLabGroupListResponseInner list(String resourceGroupName, String securityConnectorName,
         String groupFQName) {

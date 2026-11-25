@@ -45,8 +45,7 @@ public final class HcpOpenShiftVersionsImpl implements HcpOpenShiftVersions {
     }
 
     public PagedIterable<HcpOpenShiftVersion> list(String location) {
-        PagedIterable<HcpOpenShiftVersionInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HcpOpenShiftVersionImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<HcpOpenShiftVersion> list(String location, Context context) {

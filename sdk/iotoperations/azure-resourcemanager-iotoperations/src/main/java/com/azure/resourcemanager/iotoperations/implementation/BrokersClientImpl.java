@@ -199,18 +199,7 @@ public final class BrokersClientImpl implements BrokersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BrokerResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BrokerResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String brokerName, Context context) {
@@ -219,17 +208,7 @@ public final class BrokersClientImpl implements BrokersClient {
             resourceGroupName, instanceName, brokerName, accept, context);
     }
 
-    /**
-     * Get a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BrokerResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerResourceInner get(String resourceGroupName, String instanceName, String brokerName) {
         return getWithResponse(resourceGroupName, instanceName, brokerName, Context.NONE).getValue();
@@ -274,11 +253,7 @@ public final class BrokersClientImpl implements BrokersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
         String brokerName, BrokerResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, instanceName, brokerName, resource, Context.NONE);
     }
 
     /**
@@ -325,40 +300,14 @@ public final class BrokersClientImpl implements BrokersClient {
             BrokerResourceInner.class, BrokerResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance broker resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BrokerResourceInner>, BrokerResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String brokerName, BrokerResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, instanceName, brokerName, resource);
-        return this.client.<BrokerResourceInner, BrokerResourceInner>getLroResult(response, BrokerResourceInner.class,
-            BrokerResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of instance broker resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BrokerResourceInner>, BrokerResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String brokerName, BrokerResourceInner resource,
@@ -388,41 +337,19 @@ public final class BrokersClientImpl implements BrokersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance broker resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerResourceInner createOrUpdate(String resourceGroupName, String instanceName, String brokerName,
         BrokerResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, instanceName, brokerName, resource, Context.NONE);
     }
 
-    /**
-     * Create a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance broker resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BrokerResourceInner createOrUpdate(String resourceGroupName, String instanceName, String brokerName,
         BrokerResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, instanceName, brokerName, resource, context));
     }
 
     /**
@@ -458,8 +385,7 @@ public final class BrokersClientImpl implements BrokersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName, String brokerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, brokerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
     /**
@@ -500,36 +426,14 @@ public final class BrokersClientImpl implements BrokersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String brokerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, instanceName, brokerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
-    /**
-     * Delete a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String brokerName, Context context) {
@@ -554,35 +458,16 @@ public final class BrokersClientImpl implements BrokersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String brokerName) {
-        beginDelete(resourceGroupName, instanceName, brokerName).getFinalResult();
+        delete(resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
-    /**
-     * Delete a BrokerResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param brokerName Name of broker.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String brokerName, Context context) {
-        beginDelete(resourceGroupName, instanceName, brokerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, instanceName, brokerName, context));
     }
 
     /**
@@ -637,12 +522,7 @@ public final class BrokersClientImpl implements BrokersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
         String instanceName) {
-        final String accept = "application/json";
-        Response<BrokerResourceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, instanceName, Context.NONE);
     }
 
     /**
@@ -667,33 +547,13 @@ public final class BrokersClientImpl implements BrokersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List BrokerResource resources by InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BrokerResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BrokerResourceInner> listByResourceGroup(String resourceGroupName, String instanceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, instanceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, instanceName, Context.NONE);
     }
 
-    /**
-     * List BrokerResource resources by InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BrokerResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BrokerResourceInner> listByResourceGroup(String resourceGroupName, String instanceName,
         Context context) {
@@ -733,11 +593,7 @@ public final class BrokersClientImpl implements BrokersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BrokerResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BrokerResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

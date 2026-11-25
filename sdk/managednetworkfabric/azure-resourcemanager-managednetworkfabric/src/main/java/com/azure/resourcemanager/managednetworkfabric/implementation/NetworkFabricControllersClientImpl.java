@@ -256,17 +256,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Shows the provisioning status of Network Fabric Controller.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric Controller resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkFabricControllerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkFabricControllerName, Context context) {
@@ -275,16 +265,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             this.client.getSubscriptionId(), resourceGroupName, networkFabricControllerName, accept, context);
     }
 
-    /**
-     * Shows the provisioning status of Network Fabric Controller.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner getByResourceGroup(String resourceGroupName,
         String networkFabricControllerName) {
@@ -329,11 +310,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkFabricControllerName,
         NetworkFabricControllerInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricControllerName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, networkFabricControllerName, body, Context.NONE);
     }
 
     /**
@@ -379,37 +356,14 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             this.client.getContext());
     }
 
-    /**
-     * Creates a Network Fabric Controller.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner>
         beginCreate(String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, networkFabricControllerName, body);
-        return this.client.<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(response,
-            NetworkFabricControllerInner.class, NetworkFabricControllerInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkFabricControllerName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Fabric Controller.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreate(
         String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerInner body,
@@ -438,39 +392,19 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a Network Fabric Controller.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner create(String resourceGroupName, String networkFabricControllerName,
         NetworkFabricControllerInner body) {
-        return beginCreate(resourceGroupName, networkFabricControllerName, body).getFinalResult();
+        return create(resourceGroupName, networkFabricControllerName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Fabric Controller.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner create(String resourceGroupName, String networkFabricControllerName,
         NetworkFabricControllerInner body, Context context) {
-        return beginCreate(resourceGroupName, networkFabricControllerName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, networkFabricControllerName, body, context));
     }
 
     /**
@@ -511,11 +445,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkFabricControllerName,
         NetworkFabricControllerPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricControllerName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkFabricControllerName, body, Context.NONE);
     }
 
     /**
@@ -561,37 +491,14 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             this.client.getContext());
     }
 
-    /**
-     * Updates are currently not supported for the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Network Fabric Controller properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner>
         beginUpdate(String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkFabricControllerName, body);
-        return this.client.<NetworkFabricControllerInner, NetworkFabricControllerInner>getLroResult(response,
-            NetworkFabricControllerInner.class, NetworkFabricControllerInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkFabricControllerName, body, Context.NONE);
     }
 
-    /**
-     * Updates are currently not supported for the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Network Fabric Controller properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdate(
         String resourceGroupName, String networkFabricControllerName, NetworkFabricControllerPatch body,
@@ -620,39 +527,19 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates are currently not supported for the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Network Fabric Controller properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner update(String resourceGroupName, String networkFabricControllerName,
         NetworkFabricControllerPatch body) {
-        return beginUpdate(resourceGroupName, networkFabricControllerName, body).getFinalResult();
+        return update(resourceGroupName, networkFabricControllerName, body, Context.NONE);
     }
 
-    /**
-     * Updates are currently not supported for the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param body Network Fabric Controller properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric Controller resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner update(String resourceGroupName, String networkFabricControllerName,
         NetworkFabricControllerPatch body, Context context) {
-        return beginUpdate(resourceGroupName, networkFabricControllerName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, networkFabricControllerName, body, context));
     }
 
     /**
@@ -686,8 +573,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkFabricControllerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkFabricControllerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkFabricControllerName, Context.NONE);
     }
 
     /**
@@ -726,34 +612,14 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             this.client.getContext());
     }
 
-    /**
-     * Deletes the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String networkFabricControllerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkFabricControllerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkFabricControllerName, Context.NONE);
     }
 
-    /**
-     * Deletes the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFabricControllerName,
         Context context) {
@@ -777,33 +643,16 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkFabricControllerName) {
-        beginDelete(resourceGroupName, networkFabricControllerName).getFinalResult();
+        delete(resourceGroupName, networkFabricControllerName, Context.NONE);
     }
 
-    /**
-     * Deletes the Network Fabric Controller resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the Network Fabric Controller.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkFabricControllerName, Context context) {
-        beginDelete(resourceGroupName, networkFabricControllerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkFabricControllerName, context));
     }
 
     /**
@@ -854,11 +703,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkFabricControllerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkFabricControllersListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -881,31 +726,13 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the NetworkFabricControllers thats available in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkFabricController items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all the NetworkFabricControllers thats available in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkFabricController items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -953,11 +780,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkFabricControllerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkFabricControllersListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -978,27 +801,13 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the NetworkFabricControllers by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkFabricController items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all the NetworkFabricControllers by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkFabricController items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1037,11 +846,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkFabricControllerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkFabricControllersListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1096,11 +901,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkFabricControllerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkFabricControllersListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

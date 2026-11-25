@@ -13,8 +13,6 @@ import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
-import com.azure.resourcemanager.netapp.models.EntraIdConfig;
-import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
@@ -81,10 +79,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
-    public EntraIdConfig entraIdConfig() {
-        return this.innerModel().entraIdConfig();
-    }
-
     public AccountEncryption encryption() {
         return this.innerModel().encryption();
     }
@@ -137,10 +131,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetAppAccount create(Context context) {
@@ -162,10 +153,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .update(resourceGroupName, accountName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetAppAccount apply(Context context) {
@@ -187,11 +175,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetAppAccount refresh(Context context) {
@@ -282,11 +266,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfig entraIdConfig) {
-        this.innerModel().withEntraIdConfig(entraIdConfig);
-        return this;
-    }
-
     public NetAppAccountImpl withEncryption(AccountEncryption encryption) {
         this.innerModel().withEncryption(encryption);
         return this;
@@ -309,11 +288,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public NetAppAccountImpl withEncryption(AccountEncryptionPatch encryption) {
         this.updateBody.withEncryption(encryption);
-        return this;
-    }
-
-    public NetAppAccountImpl withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        this.updateBody.withEntraIdConfig(entraIdConfig);
         return this;
     }
 

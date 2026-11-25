@@ -272,6 +272,12 @@
   ],
   "overrides": [
     {
+      "filename": ".github/agents/management-autopr-*.agent.md",
+      "words": [
+        "autopr"
+      ]
+    },
+    {
       "filename": ".github/skills/management-autopr-review/**",
       "words": [
         "autopr",

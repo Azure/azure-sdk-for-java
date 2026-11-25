@@ -64,10 +64,7 @@ public final class SchemaVersionImpl implements SchemaVersion, SchemaVersion.Def
     }
 
     public SchemaVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaVersions()
-            .createOrUpdate(resourceGroupName, schemaName, schemaVersionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SchemaVersion create(Context context) {
@@ -89,11 +86,7 @@ public final class SchemaVersionImpl implements SchemaVersion, SchemaVersion.Def
     }
 
     public SchemaVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaVersions()
-            .updateWithResponse(resourceGroupName, schemaName, schemaVersionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SchemaVersion apply(Context context) {
@@ -120,11 +113,7 @@ public final class SchemaVersionImpl implements SchemaVersion, SchemaVersion.Def
     }
 
     public SchemaVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemaVersions()
-            .getWithResponse(resourceGroupName, schemaName, schemaVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SchemaVersion refresh(Context context) {

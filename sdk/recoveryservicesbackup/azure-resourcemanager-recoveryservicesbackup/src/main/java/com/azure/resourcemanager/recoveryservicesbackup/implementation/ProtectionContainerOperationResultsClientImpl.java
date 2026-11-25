@@ -124,20 +124,7 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the result of any operation on the container.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName backupFabrics.
-     * @param containerName The name of the ProtectionContainerResource.
-     * @param operationId The name of the ProtectionContainerResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionContainerResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String operationId, Context context) {
@@ -146,19 +133,7 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
             resourceGroupName, vaultName, fabricName, containerName, operationId, accept, context);
     }
 
-    /**
-     * Fetches the result of any operation on the container.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName backupFabrics.
-     * @param containerName The name of the ProtectionContainerResource.
-     * @param operationId The name of the ProtectionContainerResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for container with backup items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerResourceInner get(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String operationId) {

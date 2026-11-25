@@ -265,17 +265,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided trunked network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrunkedNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
         String trunkedNetworkName, Context context) {
@@ -284,16 +274,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, accept, context);
     }
 
-    /**
-     * Get properties of the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided trunked network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrunkedNetworkInner getByResourceGroup(String resourceGroupName, String trunkedNetworkName) {
         return getByResourceGroupWithResponse(resourceGroupName, trunkedNetworkName, Context.NONE).getValue();
@@ -346,11 +327,8 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String trunkedNetworkName,
         TrunkedNetworkInner trunkedNetworkParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, contentType,
-            accept, trunkedNetworkParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -449,52 +427,21 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
     private SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, trunkedNetworkName,
-            trunkedNetworkParameters, ifMatch, ifNoneMatch);
-        return this.client.<TrunkedNetworkInner, TrunkedNetworkInner>getLroResult(response, TrunkedNetworkInner.class,
-            TrunkedNetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new trunked network or update the properties of the existing trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param trunkedNetworkParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trunkedNetwork represents a network that utilizes multiple
-     * isolation domains and specified VLANs to create a trunked network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, trunkedNetworkName,
-            trunkedNetworkParameters, ifMatch, ifNoneMatch);
-        return this.client.<TrunkedNetworkInner, TrunkedNetworkInner>getLroResult(response, TrunkedNetworkInner.class,
-            TrunkedNetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new trunked network or update the properties of the existing trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param trunkedNetworkParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of trunkedNetwork represents a network that utilizes multiple
-     * isolation domains and specified VLANs to create a trunked network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters,
@@ -549,49 +496,22 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new trunked network or update the properties of the existing trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param trunkedNetworkParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     * create a trunked network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
         TrunkedNetworkInner trunkedNetworkParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a new trunked network or update the properties of the existing trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param trunkedNetworkParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     * create a trunked network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
         TrunkedNetworkInner trunkedNetworkParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, trunkedNetworkName,
+            trunkedNetworkParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -642,23 +562,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             trunkedNetworkUpdateParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update tags associated with the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param trunkedNetworkUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     * create a trunked network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrunkedNetworkInner> updateWithResponse(String resourceGroupName, String trunkedNetworkName,
         String ifMatch, String ifNoneMatch, TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters,
@@ -669,17 +573,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             trunkedNetworkUpdateParameters, context);
     }
 
-    /**
-     * Update tags associated with the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     * create a trunked network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrunkedNetworkInner update(String resourceGroupName, String trunkedNetworkName) {
         final String ifMatch = null;
@@ -729,8 +623,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String trunkedNetworkName, String ifMatch,
         String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -815,43 +708,18 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName,
         String ifMatch, String ifNoneMatch, Context context) {
@@ -899,40 +767,20 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trunkedNetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided trunked network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trunkedNetworkName The name of the trunked network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String trunkedNetworkName, String ifMatch, String ifNoneMatch,
         Context context) {
-        beginDelete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, trunkedNetworkName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1011,12 +859,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrunkedNetworkInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
         String skipToken) {
-        final String accept = "application/json";
-        Response<TrunkedNetworkList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1043,38 +886,15 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of trunked networks in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of trunked networks in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1150,11 +970,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrunkedNetworkInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<TrunkedNetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1178,33 +994,15 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of trunked networks in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrunkedNetworkInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of trunked networks in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrunkedNetworkInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1243,11 +1041,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrunkedNetworkInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TrunkedNetworkList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1301,11 +1095,7 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TrunkedNetworkInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TrunkedNetworkList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

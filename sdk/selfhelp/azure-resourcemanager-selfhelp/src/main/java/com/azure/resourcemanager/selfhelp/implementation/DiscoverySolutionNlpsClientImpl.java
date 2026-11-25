@@ -128,16 +128,7 @@ public final class DiscoverySolutionNlpsClientImpl implements DiscoverySolutionN
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Search for relevant Azure Diagnostics, Solutions and Troubleshooters using a natural language issue summary.
-     * 
-     * @param discoverSolutionRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return successfully fetched list of solution metadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoveryNlpResponseInner>
         discoverSolutionsWithResponse(DiscoveryNlpRequest discoverSolutionRequest, Context context) {
@@ -146,13 +137,7 @@ public final class DiscoverySolutionNlpsClientImpl implements DiscoverySolutionN
             discoverSolutionRequest, context);
     }
 
-    /**
-     * Search for relevant Azure Diagnostics, Solutions and Troubleshooters using a natural language issue summary.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return successfully fetched list of solution metadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoveryNlpResponseInner discoverSolutions() {
         final DiscoveryNlpRequest discoverSolutionRequest = null;
@@ -198,18 +183,7 @@ public final class DiscoverySolutionNlpsClientImpl implements DiscoverySolutionN
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Search for relevant Azure Diagnostics, Solutions and Troubleshooters using a natural language issue summary and
-     * subscription.
-     * 
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
-     * @param discoverSolutionRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return successfully fetched list of solution metadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoveryNlpResponseInner> discoverSolutionsBySubscriptionWithResponse(String subscriptionId,
         DiscoveryNlpRequest discoverSolutionRequest, Context context) {
@@ -218,16 +192,7 @@ public final class DiscoverySolutionNlpsClientImpl implements DiscoverySolutionN
             subscriptionId, accept, discoverSolutionRequest, context);
     }
 
-    /**
-     * Search for relevant Azure Diagnostics, Solutions and Troubleshooters using a natural language issue summary and
-     * subscription.
-     * 
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return successfully fetched list of solution metadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoveryNlpResponseInner discoverSolutionsBySubscription(String subscriptionId) {
         final DiscoveryNlpRequest discoverSolutionRequest = null;

@@ -159,18 +159,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get exposure control feature for specific factory.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param exposureControlRequest The exposure control request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific factory along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExposureControlResponseInner> getFeatureValueByFactoryWithResponse(String resourceGroupName,
         String factoryName, ExposureControlRequest exposureControlRequest, Context context) {
@@ -181,17 +170,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             exposureControlRequest, context);
     }
 
-    /**
-     * Get exposure control feature for specific factory.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param exposureControlRequest The exposure control request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific factory.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExposureControlResponseInner getFeatureValueByFactory(String resourceGroupName, String factoryName,
         ExposureControlRequest exposureControlRequest) {
@@ -241,18 +220,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get list of exposure control features for specific factory.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param exposureControlBatchRequest The exposure control request for list of features.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of exposure control features for specific factory along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryWithResponse(String resourceGroupName,
         String factoryName, ExposureControlBatchRequest exposureControlBatchRequest, Context context) {
@@ -263,17 +231,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             exposureControlBatchRequest, context);
     }
 
-    /**
-     * Get list of exposure control features for specific factory.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param exposureControlBatchRequest The exposure control request for list of features.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of exposure control features for specific factory.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExposureControlBatchResponseInner queryFeatureValuesByFactory(String resourceGroupName, String factoryName,
         ExposureControlBatchRequest exposureControlBatchRequest) {
@@ -320,17 +278,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get exposure control feature for specific location.
-     * 
-     * @param locationId The location identifier.
-     * @param exposureControlRequest The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExposureControlResponseInner> getFeatureValueWithResponse(String locationId,
         ExposureControlRequest exposureControlRequest, Context context) {
@@ -340,16 +288,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             this.client.getSubscriptionId(), locationId, contentType, accept, exposureControlRequest, context);
     }
 
-    /**
-     * Get exposure control feature for specific location.
-     * 
-     * @param locationId The location identifier.
-     * @param exposureControlRequest The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExposureControlResponseInner getFeatureValue(String locationId,
         ExposureControlRequest exposureControlRequest) {

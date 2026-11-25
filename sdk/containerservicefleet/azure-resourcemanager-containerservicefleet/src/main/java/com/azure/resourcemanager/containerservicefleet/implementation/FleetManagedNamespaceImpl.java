@@ -128,11 +128,7 @@ public final class FleetManagedNamespaceImpl
     }
 
     public FleetManagedNamespace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetManagedNamespaces()
-            .createOrUpdate(resourceGroupName, fleetName, managedNamespaceName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FleetManagedNamespace create(Context context) {
@@ -159,10 +155,7 @@ public final class FleetManagedNamespaceImpl
     }
 
     public FleetManagedNamespace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetManagedNamespaces()
-            .update(resourceGroupName, fleetName, managedNamespaceName, updateProperties, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FleetManagedNamespace apply(Context context) {
@@ -188,11 +181,7 @@ public final class FleetManagedNamespaceImpl
     }
 
     public FleetManagedNamespace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetManagedNamespaces()
-            .getWithResponse(resourceGroupName, fleetName, managedNamespaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FleetManagedNamespace refresh(Context context) {

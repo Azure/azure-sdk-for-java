@@ -204,18 +204,7 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeDeviceJob along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeDeviceJobInner> getWithResponse(String resourceUri, String edgeDeviceName, String jobsName,
         Context context) {
@@ -224,17 +213,7 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
             jobsName, accept, context);
     }
 
-    /**
-     * Get a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EdgeDeviceJob.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeDeviceJobInner get(String resourceUri, String edgeDeviceName, String jobsName) {
         return getWithResponse(resourceUri, edgeDeviceName, jobsName, Context.NONE).getValue();
@@ -278,10 +257,7 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String edgeDeviceName, String jobsName,
         EdgeDeviceJobInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-            edgeDeviceName, jobsName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceUri, edgeDeviceName, jobsName, resource, Context.NONE);
     }
 
     /**
@@ -327,39 +303,14 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
             EdgeDeviceJobInner.class, EdgeDeviceJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edgeDevice Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeDeviceJobInner>, EdgeDeviceJobInner> beginCreateOrUpdate(String resourceUri,
         String edgeDeviceName, String jobsName, EdgeDeviceJobInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, edgeDeviceName, jobsName, resource);
-        return this.client.<EdgeDeviceJobInner, EdgeDeviceJobInner>getLroResult(response, EdgeDeviceJobInner.class,
-            EdgeDeviceJobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceUri, edgeDeviceName, jobsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edgeDevice Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeDeviceJobInner>, EdgeDeviceJobInner> beginCreateOrUpdate(String resourceUri,
         String edgeDeviceName, String jobsName, EdgeDeviceJobInner resource, Context context) {
@@ -388,41 +339,19 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edgeDevice Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeDeviceJobInner createOrUpdate(String resourceUri, String edgeDeviceName, String jobsName,
         EdgeDeviceJobInner resource) {
-        return beginCreateOrUpdate(resourceUri, edgeDeviceName, jobsName, resource).getFinalResult();
+        return createOrUpdate(resourceUri, edgeDeviceName, jobsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edgeDevice Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeDeviceJobInner createOrUpdate(String resourceUri, String edgeDeviceName, String jobsName,
         EdgeDeviceJobInner resource, Context context) {
-        return beginCreateOrUpdate(resourceUri, edgeDeviceName, jobsName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceUri, edgeDeviceName, jobsName, resource, context));
     }
 
     /**
@@ -458,8 +387,7 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceUri, String edgeDeviceName, String jobsName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, edgeDeviceName,
-            jobsName, Context.NONE);
+        return deleteWithResponse(resourceUri, edgeDeviceName, jobsName, Context.NONE);
     }
 
     /**
@@ -500,35 +428,13 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String edgeDeviceName, String jobsName) {
-        Response<BinaryData> response = deleteWithResponse(resourceUri, edgeDeviceName, jobsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceUri, edgeDeviceName, jobsName, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceUri, String edgeDeviceName, String jobsName,
         Context context) {
@@ -553,35 +459,16 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String edgeDeviceName, String jobsName) {
-        beginDelete(resourceUri, edgeDeviceName, jobsName).getFinalResult();
+        delete(resourceUri, edgeDeviceName, jobsName, Context.NONE);
     }
 
-    /**
-     * Delete a EdgeDeviceJob.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param jobsName Name of EdgeDevice Job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceUri, String edgeDeviceName, String jobsName, Context context) {
-        beginDelete(resourceUri, edgeDeviceName, jobsName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceUri, edgeDeviceName, jobsName, context));
     }
 
     /**
@@ -635,11 +522,7 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeDeviceJobInner> listByEdgeDeviceSinglePage(String resourceUri, String edgeDeviceName) {
-        final String accept = "application/json";
-        Response<EdgeDeviceJobListResult> res = service.listByEdgeDeviceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, edgeDeviceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeDeviceSinglePage(resourceUri, edgeDeviceName, Context.NONE);
     }
 
     /**
@@ -663,33 +546,13 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EdgeDeviceJob resources by EdgeDevice.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeDeviceJob list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeDeviceJobInner> listByEdgeDevice(String resourceUri, String edgeDeviceName) {
-        return new PagedIterable<>(() -> listByEdgeDeviceSinglePage(resourceUri, edgeDeviceName),
-            nextLink -> listByEdgeDeviceNextSinglePage(nextLink));
+        return listByEdgeDevice(resourceUri, edgeDeviceName, Context.NONE);
     }
 
-    /**
-     * List EdgeDeviceJob resources by EdgeDevice.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param edgeDeviceName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeDeviceJob list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeDeviceJobInner> listByEdgeDevice(String resourceUri, String edgeDeviceName,
         Context context) {
@@ -728,11 +591,7 @@ public final class EdgeDeviceJobsClientImpl implements EdgeDeviceJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeDeviceJobInner> listByEdgeDeviceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeDeviceJobListResult> res
-            = service.listByEdgeDeviceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeDeviceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -160,32 +160,13 @@ public final class CompliancesClientImpl implements CompliancesClient {
         return getWithResponseAsync(scope, complianceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Details of a specific Compliance.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param complianceName name of the Compliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compliance of a scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComplianceInner> getWithResponse(String scope, String complianceName, Context context) {
         return getWithResponseAsync(scope, complianceName, context).block();
     }
 
-    /**
-     * Details of a specific Compliance.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param complianceName name of the Compliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compliance of a scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComplianceInner get(String scope, String complianceName) {
         return getWithResponse(scope, complianceName, Context.NONE).getValue();
@@ -277,30 +258,13 @@ public final class CompliancesClientImpl implements CompliancesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The Compliance scores of the specific management group.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Compliance objects response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComplianceInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * The Compliance scores of the specific management group.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Compliance objects response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComplianceInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));
