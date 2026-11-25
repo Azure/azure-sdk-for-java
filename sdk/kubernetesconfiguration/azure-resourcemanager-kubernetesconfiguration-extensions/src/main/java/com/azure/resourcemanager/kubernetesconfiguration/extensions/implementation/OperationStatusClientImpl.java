@@ -130,23 +130,7 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
             operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Async Operation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     * Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     * provisionedClusters, appliances.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param extensionName Name of the Extension.
-     * @param operationId The operationId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return async Operation status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String resourceGroupName, String clusterRp,
         String clusterResourceName, String clusterName, String extensionName, String operationId, Context context) {
@@ -156,22 +140,7 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
             context);
     }
 
-    /**
-     * Get Async Operation status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterRp The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes,
-     * Microsoft.HybridContainerService.
-     * @param clusterResourceName The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters,
-     * provisionedClusters, appliances.
-     * @param clusterName The name of the kubernetes cluster.
-     * @param extensionName Name of the Extension.
-     * @param operationId The operationId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return async Operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
         String clusterName, String extensionName, String operationId) {

@@ -113,20 +113,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param endpointName The platform-assigned name of the HorizonDB endpoint. A Cluster-scoped ReadWrite Endpoint has
-     * exactly the same name as its associated Cluster. A Pool-scoped Endpoint has exactly the same name as its
-     * associated Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String endpointName) {
@@ -137,41 +124,14 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param endpointName The platform-assigned name of the HorizonDB endpoint. A Cluster-scoped ReadWrite Endpoint has
-     * exactly the same name as its associated Cluster. A Pool-scoped Endpoint has exactly the same name as its
-     * associated Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EndpointInner> getAsync(String resourceGroupName, String clusterName, String endpointName) {
         return getWithResponseAsync(resourceGroupName, clusterName, endpointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param endpointName The platform-assigned name of the HorizonDB endpoint. A Cluster-scoped ReadWrite Endpoint has
-     * exactly the same name as its associated Cluster. A Pool-scoped Endpoint has exactly the same name as its
-     * associated Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> getWithResponse(String resourceGroupName, String clusterName, String endpointName,
         Context context) {
@@ -180,19 +140,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             resourceGroupName, clusterName, endpointName, accept, context);
     }
 
-    /**
-     * Gets information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param endpointName The platform-assigned name of the HorizonDB endpoint. A Cluster-scoped ReadWrite Endpoint has
-     * exactly the same name as its associated Cluster. A Pool-scoped Endpoint has exactly the same name as its
-     * associated Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a service-generated HorizonDB Cluster- or Pool-scoped Endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointInner get(String resourceGroupName, String clusterName, String endpointName) {
         return getWithResponse(resourceGroupName, clusterName, endpointName, Context.NONE).getValue();
@@ -221,17 +169,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the service-generated Endpoints in a cluster. The collection contains the Cluster-scoped Endpoint named
-     * cluster and one Pool-scoped Endpoint for each pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Endpoint list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EndpointInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -251,11 +189,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<EndpointListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -279,35 +213,13 @@ public final class EndpointsClientImpl implements EndpointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the service-generated Endpoints in a cluster. The collection contains the Cluster-scoped Endpoint named
-     * cluster and one Pool-scoped Endpoint for each pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Endpoint list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists the service-generated Endpoints in a cluster. The collection contains the Cluster-scoped Endpoint named
-     * cluster and one Pool-scoped Endpoint for each pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Endpoint list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EndpointInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
@@ -344,11 +256,7 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EndpointListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

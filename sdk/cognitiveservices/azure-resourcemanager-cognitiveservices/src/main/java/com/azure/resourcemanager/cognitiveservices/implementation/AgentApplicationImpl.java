@@ -66,10 +66,7 @@ public final class AgentApplicationImpl
     }
 
     public AgentApplication create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentApplications()
-            .createOrUpdate(resourceGroupName, accountName, projectName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AgentApplication create(Context context) {
@@ -91,10 +88,7 @@ public final class AgentApplicationImpl
     }
 
     public AgentApplication apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentApplications()
-            .createOrUpdate(resourceGroupName, accountName, projectName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AgentApplication apply(Context context) {
@@ -123,11 +117,7 @@ public final class AgentApplicationImpl
     }
 
     public AgentApplication refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentApplications()
-            .getWithResponse(resourceGroupName, accountName, projectName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AgentApplication refresh(Context context) {

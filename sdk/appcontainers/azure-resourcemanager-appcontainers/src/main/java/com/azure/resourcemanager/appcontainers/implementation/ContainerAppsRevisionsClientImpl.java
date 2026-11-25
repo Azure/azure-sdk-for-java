@@ -219,18 +219,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a revision of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RevisionInner> getRevisionWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, Context context) {
@@ -239,17 +228,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, revisionName, accept, context);
     }
 
-    /**
-     * Get a revision of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RevisionInner getRevision(String resourceGroupName, String containerAppName, String revisionName) {
         return getRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE).getValue();
@@ -328,12 +307,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RevisionInner> listRevisionsSinglePage(String resourceGroupName, String containerAppName,
         String filter) {
-        final String accept = "application/json";
-        Response<RevisionCollection> res
-            = service.listRevisionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, containerAppName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRevisionsSinglePage(resourceGroupName, containerAppName, filter, Context.NONE);
     }
 
     /**
@@ -359,35 +333,14 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Revisions for a given Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(String resourceGroupName, String containerAppName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listRevisionsSinglePage(resourceGroupName, containerAppName, filter),
-            nextLink -> listRevisionsNextSinglePage(nextLink));
+        return listRevisions(resourceGroupName, containerAppName, filter, Context.NONE);
     }
 
-    /**
-     * Get the Revisions for a given Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param filter The filter to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(String resourceGroupName, String containerAppName, String filter,
         Context context) {
@@ -432,18 +385,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Activates a revision for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> activateRevisionWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, Context context) {
@@ -451,16 +393,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, revisionName, context);
     }
 
-    /**
-     * Activates a revision for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void activateRevision(String resourceGroupName, String containerAppName, String revisionName) {
         activateRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE);
@@ -503,18 +436,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deactivates a revision for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deactivateRevisionWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, Context context) {
@@ -522,16 +444,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, revisionName, context);
     }
 
-    /**
-     * Deactivates a revision for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deactivateRevision(String resourceGroupName, String containerAppName, String revisionName) {
         deactivateRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE);
@@ -574,18 +487,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Restarts a revision for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restartRevisionWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, Context context) {
@@ -593,16 +495,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, revisionName, context);
     }
 
-    /**
-     * Restarts a revision for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restartRevision(String resourceGroupName, String containerAppName, String revisionName) {
         restartRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE);
@@ -643,11 +536,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RevisionInner> listRevisionsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RevisionCollection> res
-            = service.listRevisionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listRevisionsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -13,10 +13,10 @@ public final class IotHubSkuDescriptionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubSkuDescriptionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"qsgzvahapj\",\"sku\":{\"name\":\"S3\",\"tier\":\"Standard\",\"capacity\":6168011718713142792},\"capacity\":{\"minimum\":7849186680726700556,\"maximum\":7002127645254942410,\"default\":5341138585693543198,\"scaleType\":\"Manual\"}}],\"nextLink\":\"lxkvu\"}")
+            "{\"value\":[{\"resourceType\":\"plgmgsxnk\",\"sku\":{\"name\":\"S3\",\"tier\":\"Basic\",\"capacity\":7741996277190264341},\"capacity\":{\"minimum\":2456470958890412171,\"maximum\":6216827827800062431,\"default\":7152845958063232892,\"scaleType\":\"None\"}},{\"resourceType\":\"pkdwzbai\",\"sku\":{\"name\":\"B2\",\"tier\":\"Free\",\"capacity\":5886117061287023849},\"capacity\":{\"minimum\":7484019295322681584,\"maximum\":2681761157876331154,\"default\":7248167592869869161,\"scaleType\":\"Manual\"}},{\"resourceType\":\"bckhsmtxpsi\",\"sku\":{\"name\":\"B2\",\"tier\":\"Basic\",\"capacity\":8275840171295511395},\"capacity\":{\"minimum\":6164423870158921069,\"maximum\":465204548122910973,\"default\":3931920039433301426,\"scaleType\":\"Manual\"}}],\"nextLink\":\"jdhtldwkyzxu\"}")
             .toObject(IotHubSkuDescriptionListResult.class);
         Assertions.assertEquals(IotHubSku.S3, model.value().get(0).sku().name());
-        Assertions.assertEquals(6168011718713142792L, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("lxkvu", model.nextLink());
+        Assertions.assertEquals(7741996277190264341L, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("jdhtldwkyzxu", model.nextLink());
     }
 }

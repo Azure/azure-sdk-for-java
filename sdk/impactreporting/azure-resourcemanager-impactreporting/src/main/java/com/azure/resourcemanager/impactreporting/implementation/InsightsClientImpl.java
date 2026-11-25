@@ -188,17 +188,7 @@ public final class InsightsClientImpl implements InsightsClient {
         return getWithResponseAsync(workloadImpactName, insightName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Insight resources by workloadImpactName and insightName.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insight resources by workloadImpactName and insightName along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InsightInner> getWithResponse(String workloadImpactName, String insightName, Context context) {
         final String accept = "application/json";
@@ -206,16 +196,7 @@ public final class InsightsClientImpl implements InsightsClient {
             workloadImpactName, insightName, accept, context);
     }
 
-    /**
-     * Get Insight resources by workloadImpactName and insightName.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insight resources by workloadImpactName and insightName.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InsightInner get(String workloadImpactName, String insightName) {
         return getWithResponse(workloadImpactName, insightName, Context.NONE).getValue();
@@ -268,11 +249,7 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InsightInner> listBySubscriptionSinglePage(String workloadImpactName) {
-        final String accept = "application/json";
-        Response<InsightListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), workloadImpactName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(workloadImpactName, Context.NONE);
     }
 
     /**
@@ -294,31 +271,13 @@ public final class InsightsClientImpl implements InsightsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Insight resources by workloadImpactName.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Insight list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InsightInner> listBySubscription(String workloadImpactName) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(workloadImpactName),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(workloadImpactName, Context.NONE);
     }
 
-    /**
-     * List Insight resources by workloadImpactName.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Insight list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InsightInner> listBySubscription(String workloadImpactName, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(workloadImpactName, context),
@@ -363,18 +322,7 @@ public final class InsightsClientImpl implements InsightsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create Insight resource, This is Admin only operation.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insight resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InsightInner> createWithResponse(String workloadImpactName, String insightName,
         InsightInner resource, Context context) {
@@ -384,17 +332,7 @@ public final class InsightsClientImpl implements InsightsClient {
             this.client.getSubscriptionId(), workloadImpactName, insightName, contentType, accept, resource, context);
     }
 
-    /**
-     * Create Insight resource, This is Admin only operation.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return insight resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InsightInner create(String workloadImpactName, String insightName, InsightInner resource) {
         return createWithResponse(workloadImpactName, insightName, resource, Context.NONE).getValue();
@@ -433,32 +371,14 @@ public final class InsightsClientImpl implements InsightsClient {
         return deleteWithResponseAsync(workloadImpactName, insightName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete Insight resource, This is Admin only operation.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String workloadImpactName, String insightName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), workloadImpactName, insightName, context);
     }
 
-    /**
-     * Delete Insight resource, This is Admin only operation.
-     * 
-     * @param workloadImpactName workloadImpact resource.
-     * @param insightName Name of the insight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String workloadImpactName, String insightName) {
         deleteWithResponse(workloadImpactName, insightName, Context.NONE);
@@ -496,11 +416,7 @@ public final class InsightsClientImpl implements InsightsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<InsightInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<InsightListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

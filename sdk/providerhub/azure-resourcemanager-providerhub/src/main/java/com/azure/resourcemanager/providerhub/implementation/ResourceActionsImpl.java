@@ -25,7 +25,7 @@ public final class ResourceActionsImpl implements ResourceActions {
 
     public void deleteResources(String providerNamespace, String resourceActionName,
         ResourceManagementAction properties) {
-        this.serviceClient().deleteResources(providerNamespace, resourceActionName, properties);
+        this.deleteResources(providerNamespace, resourceActionName, properties, Context.NONE);
     }
 
     public void deleteResources(String providerNamespace, String resourceActionName,

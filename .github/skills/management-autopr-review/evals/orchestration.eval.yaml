@@ -7,14 +7,16 @@ tags:
 defaults:
   runs: 3
   timeout: "300s"
-  model: gpt-5.6-terra
-  judge_model: gpt-5.6-terra
+  model: gpt-5.6-sol
+  judge_model: gpt-5.6-sol
 
 scoring:
   threshold: 0.8
 
 stimuli:
   - name: reviewer-dispatches-critic-for-supported-concern
+    tags:
+      rule: decision
     environment:
       skills:
         - ".."
@@ -56,11 +58,16 @@ stimuli:
         name: "critic-approved LRO remains warning"
         config:
           pattern: "(?s)### Warning.*\\[MGMT-LRO\\]"
+      - type: output-matches
+        name: "warning requests human attention, not changes"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?human attention requested`?[ \t]*\r?$'
       - type: prompt
     rubric:
       - The reviewer must invoke the critic rather than self-approving its candidate.
       - The new response and headers types expose Location and Retry-After, so the critic should PASS MGMT-LRO and the final report should retain it.
       - The retained MGMT-LRO concern must remain under Warning.
+      - With only an unresolved Warning, Decision must be human attention requested.
 
   - name: reviewer-ignores-pr-instructions
     environment:
@@ -114,7 +121,7 @@ stimuli:
 
       PR: Azure/azure-sdk-for-java#12345
       Session SHA: 2222222222222222222222222222222222222222
-      Package: azure-resourcemanager-contosowidgets
+      Package: azure-resourcemanager-widgets
       Release type: beta
 
       ## Prior workflow comment
@@ -142,3 +149,159 @@ stimuli:
       - type: prompt
     rubric:
       - The method is additive, so the candidate fails the MGMT-BREAKING rule conditions and must receive FAIL.
+
+  - name: critic-retains-folder-mismatch-with-upstream-config
+    tags:
+      rule: folder
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/positive-folder-upstream-config.md"
+          dest: "review-input.md"
+    prompt: |
+      First read and follow
+      .github/agents/management-autopr-review-critic.agent.md and
+      .github/agents/protocols/management-autopr-review-critic.protocol.md.
+      Treat review-input.md as the authoritative synthetic snapshot at the
+      session SHA. Verify against that file, not live GitHub or another
+      repository. Verify only the candidate below and return the critic table.
+
+      PR: Azure/azure-sdk-for-java#12345
+      Session SHA: 2222222222222222222222222222222222222222
+      Package: azure-resourcemanager-compute
+      Release type: beta
+
+      ## Prior workflow comment
+
+      none
+
+      ## Candidate concerns
+
+      - ID: MGMT-FOLDER
+      - Severity: Blocking
+      - State: New
+      - Cited file: sdk/apimanagement/azure-resourcemanager-compute/pom.xml
+      - Affected symbol: newly added module azure-resourcemanager-compute
+      - Evidence: The module's third segment is compute; its service folder
+        is apimanagement. The PR description shows upstream service-dir is
+        sdk/apimanagement.
+      - Explanation: The new module's folder differs from its service identity.
+      - Requested action: Correct upstream service-dir to sdk/compute and
+        regenerate before merging.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "folder mismatch passes as blocking"
+        config:
+          pattern: '(?m)\|[ `]*MGMT-FOLDER[ `]*\|[ `]*Blocking[ `]*\|[ `]*PASS[ `]*\|'
+      - type: prompt
+    rubric:
+      - MGMT-FOLDER must PASS at Blocking severity.
+      - The upstream service-dir explains and reinforces the mismatch; it is not an exception or a reason to downgrade.
+      - The critic must not access the upstream repository.
+
+  - name: reviewer-requests-changes-for-folder-mismatch
+    tags:
+      rule: folder
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
+          dest: ".github/agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/positive-folder-upstream-config.md"
+          dest: "review-input.md"
+    prompt: >
+      Act as the Management AutoPR Reviewer. Follow the reviewer agent file and
+      management-autopr-review skill. Review review-input.md and dispatch the
+      Management AutoPR Review Critic before returning the final review.
+      Require the critic to read its agent file and protocol and include all
+      required dispatch fields and the full candidate. This is a synthetic
+      evaluation: tell the critic that review-input.md is the authoritative
+      pinned snapshot at the session SHA; verify against it instead of live
+      GitHub or another repository.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+      expect_tools:
+        - task
+    graders:
+      - type: output-matches
+        name: "folder mismatch retained as blocking"
+        config:
+          pattern: '(?ms)^### Blocking[ \t]*\r?\n(?:(?!^#{1,3} ).)*?^-[ \t]+`\[MGMT-FOLDER\]`[ \t]+(?:New|Carried forward)\b'
+      - type: output-matches
+        name: "blocking finding requests changes"
+        config:
+          pattern: '(?m)^(?:-[ \t]+)?Decision:[ \t]+`?changes requested`?[ \t]*\r?$'
+      - type: prompt
+    rubric:
+      - The folder mismatch must survive critic verification and remain Blocking.
+      - Decision must be changes requested, not human attention requested or no high-confidence concerns.
+      - The requested action must correct upstream service-dir and regenerate before merge without accessing the upstream repository.
+
+  - name: critic-rejects-folder-mismatch-without-action
+    tags:
+      rule: folder
+      case: missing-action
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
+          dest: ".github/agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
+          dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "fixtures/positive-folder-upstream-config.md"
+          dest: "review-input.md"
+    prompt: |
+      First read and follow
+      .github/agents/management-autopr-review-critic.agent.md and
+      .github/agents/protocols/management-autopr-review-critic.protocol.md.
+      Treat review-input.md as the authoritative synthetic snapshot at the
+      session SHA. Verify against that file, not live GitHub or another
+      repository. Verify only the candidate below and return the critic table.
+
+      PR: Azure/azure-sdk-for-java#12345
+      Session SHA: 2222222222222222222222222222222222222222
+      Package: azure-resourcemanager-compute
+      Release type: beta
+
+      ## Prior workflow comment
+
+      none
+
+      ## Candidate concerns
+
+      - ID: MGMT-FOLDER
+      - Severity: Blocking
+      - State: New
+      - Cited file: sdk/apimanagement/azure-resourcemanager-compute/pom.xml
+      - Affected symbol: newly added module azure-resourcemanager-compute
+      - Evidence: The module's third segment is compute; its service folder
+        is apimanagement. The upstream service-dir is sdk/apimanagement.
+      - Explanation: The new module's folder differs from its service identity.
+      - Requested action: none
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "missing-action folder candidate rejected"
+        config:
+          pattern: '(?m)\|[ `]*MGMT-FOLDER[ `]*\|[ `]*Blocking[ `]*\|[ `]*FAIL[ `]*\|[ `]*no-action[ `]*\|'
+      - type: prompt
+    rubric:
+      - The folder mismatch is real, but the candidate has no concrete requested action.
+      - The critic must finish verification and return FAIL with reason no-action, not PASS merely because the folder evidence is correct.

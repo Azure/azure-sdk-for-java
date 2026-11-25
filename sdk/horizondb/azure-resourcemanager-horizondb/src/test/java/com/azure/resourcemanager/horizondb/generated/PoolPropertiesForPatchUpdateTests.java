@@ -21,16 +21,16 @@ public final class PoolPropertiesForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolPropertiesForPatchUpdate model = BinaryData.fromString(
-            "{\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":805352848,\"vCores\":292042706},\"nodeCount\":2146697807,\"highAvailability\":{\"mode\":\"Disabled\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"ojnxqbzvdd\",\"applyMethod\":\"PendingReboot\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"System\"}}")
+            "{\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":1684749712,\"vCores\":132549399},\"nodeCount\":1116116329,\"highAvailability\":{\"mode\":\"AnyZone\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"gstxgcp\",\"applyMethod\":\"Immediate\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"System\"}}")
             .toObject(PoolPropertiesForPatchUpdate.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, model.computeModel().computeProcessor());
-        Assertions.assertEquals(805352848, model.computeModel().computeGeneration());
-        Assertions.assertEquals(292042706, model.computeModel().vCores());
-        Assertions.assertEquals(2146697807, model.nodeCount());
-        Assertions.assertEquals(PoolHighAvailabilityMode.DISABLED, model.highAvailability().mode());
-        Assertions.assertEquals("ojnxqbzvdd", model.parameterGroup().parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT, model.parameterGroup().applyMethod());
+        Assertions.assertEquals(1684749712, model.computeModel().computeGeneration());
+        Assertions.assertEquals(132549399, model.computeModel().vCores());
+        Assertions.assertEquals(1116116329, model.nodeCount());
+        Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, model.highAvailability().mode());
+        Assertions.assertEquals("gstxgcp", model.parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.parameterGroup().applyMethod());
         Assertions.assertEquals(ScheduledMaintenanceManagementType.SYSTEM,
             model.scheduledMaintenance().maintenanceManagementType());
     }
@@ -40,24 +40,23 @@ public final class PoolPropertiesForPatchUpdateTests {
         PoolPropertiesForPatchUpdate model = new PoolPropertiesForPatchUpdate()
             .withComputeModel(new PoolComputeModelForPatchUpdate().withType(PoolComputeModelType.PROVISIONED)
                 .withComputeProcessor(ComputeProcessorType.INTEL)
-                .withComputeGeneration(805352848)
-                .withVCores(292042706))
-            .withNodeCount(2146697807)
-            .withHighAvailability(new PoolHighAvailabilityPatch().withMode(PoolHighAvailabilityMode.DISABLED))
-            .withParameterGroup(
-                new PoolParameterGroupReferenceForPatchUpdate().withParameterGroupResourceId("ojnxqbzvdd")
-                    .withApplyMethod(ParameterApplyMethod.PENDING_REBOOT))
+                .withComputeGeneration(1684749712)
+                .withVCores(132549399))
+            .withNodeCount(1116116329)
+            .withHighAvailability(new PoolHighAvailabilityPatch().withMode(PoolHighAvailabilityMode.ANY_ZONE))
+            .withParameterGroup(new PoolParameterGroupReferenceForPatchUpdate().withParameterGroupResourceId("gstxgcp")
+                .withApplyMethod(ParameterApplyMethod.IMMEDIATE))
             .withScheduledMaintenance(new ScheduledMaintenancePropertiesForPatchUpdate()
                 .withMaintenanceManagementType(ScheduledMaintenanceManagementType.SYSTEM));
         model = BinaryData.fromObject(model).toObject(PoolPropertiesForPatchUpdate.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, model.computeModel().computeProcessor());
-        Assertions.assertEquals(805352848, model.computeModel().computeGeneration());
-        Assertions.assertEquals(292042706, model.computeModel().vCores());
-        Assertions.assertEquals(2146697807, model.nodeCount());
-        Assertions.assertEquals(PoolHighAvailabilityMode.DISABLED, model.highAvailability().mode());
-        Assertions.assertEquals("ojnxqbzvdd", model.parameterGroup().parameterGroupResourceId());
-        Assertions.assertEquals(ParameterApplyMethod.PENDING_REBOOT, model.parameterGroup().applyMethod());
+        Assertions.assertEquals(1684749712, model.computeModel().computeGeneration());
+        Assertions.assertEquals(132549399, model.computeModel().vCores());
+        Assertions.assertEquals(1116116329, model.nodeCount());
+        Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, model.highAvailability().mode());
+        Assertions.assertEquals("gstxgcp", model.parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.parameterGroup().applyMethod());
         Assertions.assertEquals(ScheduledMaintenanceManagementType.SYSTEM,
             model.scheduledMaintenance().maintenanceManagementType());
     }

@@ -421,6 +421,13 @@ public interface AsyncDocumentClient {
     }
 
     /**
+     * Adds an explicitly enabled user-agent feature or configuration flag.
+     *
+     * @param userAgentFeatureFlag the flag to add
+     */
+    void addUserAgentFeatureFlag(UserAgentFeatureFlags userAgentFeatureFlag);
+
+    /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      * <p>

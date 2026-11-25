@@ -113,18 +113,7 @@ public final class ThreatIntelligenceIndicatorMetricsClientImpl implements Threa
         return listWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get threat intelligence indicators metrics (Indicators counts by Type, Threat Type, Source).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence indicators metrics (Indicators counts by Type, Threat Type, Source) along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThreatIntelligenceMetricsListInner> listWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
@@ -133,16 +122,7 @@ public final class ThreatIntelligenceIndicatorMetricsClientImpl implements Threa
             resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Get threat intelligence indicators metrics (Indicators counts by Type, Threat Type, Source).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return threat intelligence indicators metrics (Indicators counts by Type, Threat Type, Source).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThreatIntelligenceMetricsListInner list(String resourceGroupName, String workspaceName) {
         return listWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();

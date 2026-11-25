@@ -45,7 +45,7 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
     }
 
     public void delete(String resourceGroupName, String containerAppName, String sourceControlName) {
-        this.serviceClient().delete(resourceGroupName, containerAppName, sourceControlName);
+        this.delete(resourceGroupName, containerAppName, sourceControlName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
@@ -53,9 +53,7 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
     }
 
     public PagedIterable<SourceControl> listByContainerApp(String resourceGroupName, String containerAppName) {
-        PagedIterable<SourceControlInner> inner
-            = this.serviceClient().listByContainerApp(resourceGroupName, containerAppName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SourceControlImpl(inner1, this.manager()));
+        return this.listByContainerApp(resourceGroupName, containerAppName, Context.NONE);
     }
 
     public PagedIterable<SourceControl> listByContainerApp(String resourceGroupName, String containerAppName,
@@ -66,102 +64,36 @@ public final class ContainerAppsSourceControlsImpl implements ContainerAppsSourc
     }
 
     public SourceControl getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
-        String sourceControlName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "sourceControlName");
-        if (sourceControlName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, containerAppName, sourceControlName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SourceControl> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String containerAppName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
-        String sourceControlName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "containerAppName", "containerApps", LOGGER);
+        String sourceControlName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "sourceControlName");
-        if (sourceControlName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
-        }
+            "sourceControlName", "sourcecontrols", LOGGER);
         return this.getWithResponse(resourceGroupName, containerAppName, sourceControlName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
-        String sourceControlName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "sourceControlName");
-        if (sourceControlName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
-        }
-        this.delete(resourceGroupName, containerAppName, sourceControlName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String containerAppName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String containerAppName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "containerAppName");
-        if (containerAppName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
-        }
-        String sourceControlName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "containerAppName", "containerApps", LOGGER);
+        String sourceControlName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}",
-            "sourceControlName");
-        if (sourceControlName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sourcecontrols'.", id)));
-        }
+            "sourceControlName", "sourcecontrols", LOGGER);
         this.delete(resourceGroupName, containerAppName, sourceControlName, context);
     }
 

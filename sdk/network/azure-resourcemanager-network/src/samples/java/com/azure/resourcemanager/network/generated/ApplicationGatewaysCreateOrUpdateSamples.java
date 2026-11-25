@@ -60,7 +60,7 @@ import java.util.Map;
  */
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ApplicationGatewayCreateBasicV2.json
+     * x-ms-original-file: 2026-05-01/ApplicationGatewayCreateBasicV2.json
      */
     /**
      * Sample code: Create Basic_v2 Application Gateway.
@@ -184,7 +184,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/ApplicationGatewayCreate.json
+     * x-ms-original-file: 2026-05-01/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
@@ -348,6 +348,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                                         .withIgnoreCase(true)
                                                         .withNegate(false)))))
                                 .withName("advancedRoutingConditionSet1")))
+                .withEnableConfidentialCompute(true)
                 .withEntraJWTValidationConfigs(
                     Arrays.asList(new ApplicationGatewayEntraJwtValidationConfig().withName("entraJWTValidationConfig1")
                         .withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction.DENY)
@@ -359,7 +360,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/ApplicationGatewayCreateBasicWafV2.json
+     * x-ms-original-file: 2026-05-01/ApplicationGatewayCreateBasicWafV2.json
      */
     /**
      * Sample code: Create Basic_WAF_v2 Application Gateway.

@@ -185,18 +185,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DbNode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param dbnodeocid DbNode OCID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbNode along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DbNodeInner> getWithResponse(String resourceGroupName, String cloudvmclustername, String dbnodeocid,
         Context context) {
@@ -205,17 +194,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
             resourceGroupName, cloudvmclustername, dbnodeocid, accept, context);
     }
 
-    /**
-     * Get a DbNode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param dbnodeocid DbNode OCID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DbNode.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbNodeInner get(String resourceGroupName, String cloudvmclustername, String dbnodeocid) {
         return getWithResponse(resourceGroupName, cloudvmclustername, dbnodeocid, Context.NONE).getValue();
@@ -273,12 +252,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbNodeInner> listByCloudVmClusterSinglePage(String resourceGroupName,
         String cloudvmclustername) {
-        final String accept = "application/json";
-        Response<DbNodeListResult> res
-            = service.listByCloudVmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudVmClusterSinglePage(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
     /**
@@ -303,33 +277,13 @@ public final class DbNodesClientImpl implements DbNodesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DbNode resources by CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbNode list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbNodeInner> listByCloudVmCluster(String resourceGroupName, String cloudvmclustername) {
-        return new PagedIterable<>(() -> listByCloudVmClusterSinglePage(resourceGroupName, cloudvmclustername),
-            nextLink -> listByCloudVmClusterNextSinglePage(nextLink));
+        return listByCloudVmCluster(resourceGroupName, cloudvmclustername, Context.NONE);
     }
 
-    /**
-     * List DbNode resources by CloudVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DbNode list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DbNodeInner> listByCloudVmCluster(String resourceGroupName, String cloudvmclustername,
         Context context) {
@@ -377,11 +331,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String cloudvmclustername,
         String dbnodeocid, DbNodeAction body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudvmclustername, dbnodeocid, contentType, accept,
-            body, Context.NONE);
+        return actionWithResponse(resourceGroupName, cloudvmclustername, dbnodeocid, body, Context.NONE);
     }
 
     /**
@@ -428,39 +378,14 @@ public final class DbNodesClientImpl implements DbNodesClient {
             DbNodeInner.class, DbNodeInner.class, this.client.getContext());
     }
 
-    /**
-     * VM actions on DbNode of VM Cluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param dbnodeocid DbNode OCID.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName,
         String cloudvmclustername, String dbnodeocid, DbNodeAction body) {
-        Response<BinaryData> response = actionWithResponse(resourceGroupName, cloudvmclustername, dbnodeocid, body);
-        return this.client.<DbNodeInner, DbNodeInner>getLroResult(response, DbNodeInner.class, DbNodeInner.class,
-            Context.NONE);
+        return beginAction(resourceGroupName, cloudvmclustername, dbnodeocid, body, Context.NONE);
     }
 
-    /**
-     * VM actions on DbNode of VM Cluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param dbnodeocid DbNode OCID.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName,
         String cloudvmclustername, String dbnodeocid, DbNodeAction body, Context context) {
@@ -489,41 +414,19 @@ public final class DbNodesClientImpl implements DbNodesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * VM actions on DbNode of VM Cluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param dbnodeocid DbNode OCID.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DbNode resource belonging to vmCluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid,
         DbNodeAction body) {
-        return beginAction(resourceGroupName, cloudvmclustername, dbnodeocid, body).getFinalResult();
+        return action(resourceGroupName, cloudvmclustername, dbnodeocid, body, Context.NONE);
     }
 
-    /**
-     * VM actions on DbNode of VM Cluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudvmclustername CloudVmCluster name.
-     * @param dbnodeocid DbNode OCID.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the DbNode resource belonging to vmCluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid, DbNodeAction body,
         Context context) {
-        return beginAction(resourceGroupName, cloudvmclustername, dbnodeocid, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginAction(resourceGroupName, cloudvmclustername, dbnodeocid, body, context));
     }
 
     /**
@@ -558,11 +461,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbNodeInner> listByCloudVmClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DbNodeListResult> res
-            = service.listByCloudVmClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudVmClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

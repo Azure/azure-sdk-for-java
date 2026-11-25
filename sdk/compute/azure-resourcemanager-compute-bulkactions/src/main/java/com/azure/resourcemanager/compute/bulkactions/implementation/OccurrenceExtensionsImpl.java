@@ -26,9 +26,7 @@ public final class OccurrenceExtensionsImpl implements OccurrenceExtensions {
     }
 
     public PagedIterable<OccurrenceExtensionResource> listOccurrenceByVms(String resourceUri) {
-        PagedIterable<OccurrenceExtensionResourceInner> inner = this.serviceClient().listOccurrenceByVms(resourceUri);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new OccurrenceExtensionResourceImpl(inner1, this.manager()));
+        return this.listOccurrenceByVms(resourceUri, Context.NONE);
     }
 
     public PagedIterable<OccurrenceExtensionResource> listOccurrenceByVms(String resourceUri, Context context) {

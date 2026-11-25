@@ -295,18 +295,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AmlFilesystemInner> getByResourceGroupWithResponse(String resourceGroupName,
         String amlFilesystemName, Context context) {
@@ -315,17 +304,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, accept, context);
     }
 
-    /**
-     * Returns an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner getByResourceGroup(String resourceGroupName, String amlFilesystemName) {
         return getByResourceGroupWithResponse(resourceGroupName, amlFilesystemName, Context.NONE).getValue();
@@ -372,11 +351,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemInner amlFilesystem) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, contentType, accept, amlFilesystem,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem, Context.NONE);
     }
 
     /**
@@ -425,41 +400,14 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             AmlFilesystemInner.class, AmlFilesystemInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemInner amlFilesystem) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem);
-        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(response, AmlFilesystemInner.class,
-            AmlFilesystemInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, Context.NONE);
     }
 
-    /**
-     * Create or update an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemInner amlFilesystem, Context context) {
@@ -489,43 +437,19 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner createOrUpdate(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemInner amlFilesystem) {
-        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, amlFilesystem).getFinalResult();
+        return createOrUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, Context.NONE);
     }
 
-    /**
-     * Create or update an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner createOrUpdate(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemInner amlFilesystem, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, context));
     }
 
     /**
@@ -569,11 +493,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemUpdate amlFilesystem) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, contentType, accept, amlFilesystem,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem, Context.NONE);
     }
 
     /**
@@ -622,41 +542,14 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             AmlFilesystemInner.class, AmlFilesystemInner.class, this.client.getContext());
     }
 
-    /**
-     * Update an AML file system instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemUpdate amlFilesystem) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem);
-        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(response, AmlFilesystemInner.class,
-            AmlFilesystemInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, Context.NONE);
     }
 
-    /**
-     * Update an AML file system instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemUpdate amlFilesystem, Context context) {
@@ -686,43 +579,19 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an AML file system instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner update(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemUpdate amlFilesystem) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, amlFilesystem).getFinalResult();
+        return update(resourceGroupName, amlFilesystemName, amlFilesystem, Context.NONE);
     }
 
-    /**
-     * Update an AML file system instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner update(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemUpdate amlFilesystem, Context context) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, context));
     }
 
     /**
@@ -758,8 +627,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
     /**
@@ -799,35 +667,13 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             this.client.getContext());
     }
 
-    /**
-     * Schedules an AML file system for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, amlFilesystemName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
-    /**
-     * Schedules an AML file system for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         Context context) {
@@ -852,35 +698,16 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Schedules an AML file system for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName) {
-        beginDelete(resourceGroupName, amlFilesystemName).getFinalResult();
+        delete(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
-    /**
-     * Schedules an AML file system for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, Context context) {
-        beginDelete(resourceGroupName, amlFilesystemName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, amlFilesystemName, context));
     }
 
     /**
@@ -930,11 +757,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlFilesystemInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AmlFilesystemsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -956,31 +779,13 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all AML file systems the user has access to under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Returns all AML file systems the user has access to under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1027,11 +832,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlFilesystemInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AmlFilesystemsListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1052,27 +853,13 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all AML file systems the user has access to under a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Returns all AML file systems the user has access to under a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1117,19 +904,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Archive data from the AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param archiveInfo Information about the archive operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> archiveWithResponse(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemArchiveInfo archiveInfo, Context context) {
@@ -1137,16 +912,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, archiveInfo, context);
     }
 
-    /**
-     * Archive data from the AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void archive(String resourceGroupName, String amlFilesystemName) {
         final AmlFilesystemArchiveInfo archiveInfo = null;
@@ -1188,18 +954,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
         return cancelArchiveWithResponseAsync(resourceGroupName, amlFilesystemName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancel archiving data from the AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelArchiveWithResponse(String resourceGroupName, String amlFilesystemName,
         Context context) {
@@ -1207,16 +962,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, context);
     }
 
-    /**
-     * Cancel archiving data from the AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelArchive(String resourceGroupName, String amlFilesystemName) {
         cancelArchiveWithResponse(resourceGroupName, amlFilesystemName, Context.NONE);
@@ -1254,11 +1000,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlFilesystemInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AmlFilesystemsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1310,11 +1052,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlFilesystemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AmlFilesystemsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

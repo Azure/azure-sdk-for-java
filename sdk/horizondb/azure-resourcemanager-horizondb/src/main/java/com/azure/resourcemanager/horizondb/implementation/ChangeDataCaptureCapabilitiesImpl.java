@@ -47,13 +47,7 @@ public final class ChangeDataCaptureCapabilitiesImpl implements ChangeDataCaptur
 
     public ChangeDataCaptureCapability createOrReplace(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityInner resource) {
-        ChangeDataCaptureCapabilityInner inner
-            = this.serviceClient().createOrReplace(resourceGroupName, clusterName, resource);
-        if (inner != null) {
-            return new ChangeDataCaptureCapabilityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrReplace(resourceGroupName, clusterName, resource, Context.NONE);
     }
 
     public ChangeDataCaptureCapability createOrReplace(String resourceGroupName, String clusterName,
@@ -69,13 +63,7 @@ public final class ChangeDataCaptureCapabilitiesImpl implements ChangeDataCaptur
 
     public ChangeDataCaptureCapability update(String resourceGroupName, String clusterName,
         ChangeDataCaptureCapabilityForPatchUpdate properties) {
-        ChangeDataCaptureCapabilityInner inner
-            = this.serviceClient().update(resourceGroupName, clusterName, properties);
-        if (inner != null) {
-            return new ChangeDataCaptureCapabilityImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, clusterName, properties, Context.NONE);
     }
 
     public ChangeDataCaptureCapability update(String resourceGroupName, String clusterName,
@@ -90,7 +78,7 @@ public final class ChangeDataCaptureCapabilitiesImpl implements ChangeDataCaptur
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String clusterName) {
-        this.serviceClient().delete(resourceGroupName, clusterName);
+        this.delete(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, Context context) {
@@ -98,10 +86,7 @@ public final class ChangeDataCaptureCapabilitiesImpl implements ChangeDataCaptur
     }
 
     public PagedIterable<ChangeDataCaptureCapability> list(String resourceGroupName, String clusterName) {
-        PagedIterable<ChangeDataCaptureCapabilityInner> inner
-            = this.serviceClient().list(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ChangeDataCaptureCapabilityImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<ChangeDataCaptureCapability> list(String resourceGroupName, String clusterName,

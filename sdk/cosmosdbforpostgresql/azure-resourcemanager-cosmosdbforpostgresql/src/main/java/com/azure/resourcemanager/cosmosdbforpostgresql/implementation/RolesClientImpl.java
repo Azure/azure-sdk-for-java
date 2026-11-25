@@ -195,18 +195,7 @@ public final class RolesClientImpl implements RolesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a cluster role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a cluster role along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleInner> getWithResponse(String resourceGroupName, String clusterName, String roleName,
         Context context) {
@@ -215,17 +204,7 @@ public final class RolesClientImpl implements RolesClient {
             resourceGroupName, clusterName, roleName, accept, context);
     }
 
-    /**
-     * Gets information about a cluster role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a cluster role.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleInner get(String resourceGroupName, String clusterName, String roleName) {
         return getWithResponse(resourceGroupName, clusterName, roleName, Context.NONE).getValue();
@@ -270,11 +249,7 @@ public final class RolesClientImpl implements RolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String clusterName, String roleName,
         RoleInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, roleName, contentType, accept, parameters,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, clusterName, roleName, parameters, Context.NONE);
     }
 
     /**
@@ -321,38 +296,14 @@ public final class RolesClientImpl implements RolesClient {
             RoleInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new role or updates an existing role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @param parameters The required parameters for creating or updating a role.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a cluster role.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleInner>, RoleInner> beginCreate(String resourceGroupName, String clusterName,
         String roleName, RoleInner parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, clusterName, roleName, parameters);
-        return this.client.<RoleInner, RoleInner>getLroResult(response, RoleInner.class, RoleInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, clusterName, roleName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new role or updates an existing role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @param parameters The required parameters for creating or updating a role.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a cluster role.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleInner>, RoleInner> beginCreate(String resourceGroupName, String clusterName,
         String roleName, RoleInner parameters, Context context) {
@@ -380,40 +331,18 @@ public final class RolesClientImpl implements RolesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new role or updates an existing role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @param parameters The required parameters for creating or updating a role.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a cluster role.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleInner create(String resourceGroupName, String clusterName, String roleName, RoleInner parameters) {
-        return beginCreate(resourceGroupName, clusterName, roleName, parameters).getFinalResult();
+        return create(resourceGroupName, clusterName, roleName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates a new role or updates an existing role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @param parameters The required parameters for creating or updating a role.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a cluster role.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleInner create(String resourceGroupName, String clusterName, String roleName, RoleInner parameters,
         Context context) {
-        return beginCreate(resourceGroupName, clusterName, roleName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, clusterName, roleName, parameters, context));
     }
 
     /**
@@ -449,8 +378,7 @@ public final class RolesClientImpl implements RolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String roleName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, roleName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, roleName, Context.NONE);
     }
 
     /**
@@ -491,36 +419,14 @@ public final class RolesClientImpl implements RolesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a cluster role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String roleName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, roleName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, roleName, Context.NONE);
     }
 
-    /**
-     * Deletes a cluster role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String roleName,
         Context context) {
@@ -545,35 +451,16 @@ public final class RolesClientImpl implements RolesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a cluster role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String roleName) {
-        beginDelete(resourceGroupName, clusterName, roleName).getFinalResult();
+        delete(resourceGroupName, clusterName, roleName, Context.NONE);
     }
 
-    /**
-     * Deletes a cluster role.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param roleName The name of the cluster role.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String roleName, Context context) {
-        beginDelete(resourceGroupName, clusterName, roleName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, roleName, context));
     }
 
     /**
@@ -626,11 +513,7 @@ public final class RolesClientImpl implements RolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoleInner> listByClusterSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<RoleListResult> res = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -654,33 +537,13 @@ public final class RolesClientImpl implements RolesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the roles in a given cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Role list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleInner> listByCluster(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName),
-            nextLink -> listByClusterNextSinglePage(nextLink));
+        return listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * List all the roles in a given cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Role list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleInner> listByCluster(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, context),
@@ -718,11 +581,7 @@ public final class RolesClientImpl implements RolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RoleInner> listByClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RoleListResult> res
-            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

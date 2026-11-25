@@ -18,7 +18,7 @@ import java.util.List;
 @Fluent
 public final class MongoClusterUpdateProperties implements JsonSerializable<MongoClusterUpdateProperties> {
     /*
-     * The local administrator properties for the mongo cluster.
+     * The local administrator properties for the DocumentDB cluster.
      */
     private AdministratorProperties administrator;
 
@@ -28,37 +28,37 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     private String serverVersion;
 
     /*
-     * Whether or not public endpoint access is allowed for this mongo cluster.
+     * Whether or not public endpoint access is allowed for this DocumentDB cluster.
      */
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The high availability properties of the mongo cluster.
+     * The high availability properties of the DocumentDB cluster.
      */
     private HighAvailabilityProperties highAvailability;
 
     /*
-     * The storage properties of the mongo cluster.
+     * The storage properties of the DocumentDB cluster.
      */
     private StorageProperties storage;
 
     /*
-     * The sharding properties of the mongo cluster.
+     * The sharding properties of the DocumentDB cluster.
      */
     private ShardingProperties sharding;
 
     /*
-     * The compute properties of the mongo cluster.
+     * The compute properties of the DocumentDB cluster.
      */
     private ComputeProperties compute;
 
     /*
-     * The backup properties of the mongo cluster.
+     * The backup properties of the DocumentDB cluster.
      */
     private BackupProperties backup;
 
     /*
-     * The Data API properties of the mongo cluster.
+     * The Data API properties of the DocumentDB cluster.
      */
     private DataApiProperties dataApi;
 
@@ -78,7 +78,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     private EncryptionProperties encryption;
 
     /*
-     * The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows Azure Cosmos DB service to bypass
+     * The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows the Azure Cosmos DB service to bypass
      * network restrictions.
      */
     private NetworkBypassMode networkBypassMode;
@@ -90,7 +90,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the administrator property: The local administrator properties for the mongo cluster.
+     * Get the administrator property: The local administrator properties for the DocumentDB cluster.
      * 
      * @return the administrator value.
      */
@@ -99,7 +99,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the administrator property: The local administrator properties for the mongo cluster.
+     * Set the administrator property: The local administrator properties for the DocumentDB cluster.
      * 
      * @param administrator the administrator value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -132,7 +132,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this mongo cluster.
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this DocumentDB
+     * cluster.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -141,7 +142,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this mongo cluster.
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this DocumentDB
+     * cluster.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -152,7 +154,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the highAvailability property: The high availability properties of the mongo cluster.
+     * Get the highAvailability property: The high availability properties of the DocumentDB cluster.
      * 
      * @return the highAvailability value.
      */
@@ -161,7 +163,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the highAvailability property: The high availability properties of the mongo cluster.
+     * Set the highAvailability property: The high availability properties of the DocumentDB cluster.
      * 
      * @param highAvailability the highAvailability value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -172,7 +174,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the storage property: The storage properties of the mongo cluster.
+     * Get the storage property: The storage properties of the DocumentDB cluster.
      * 
      * @return the storage value.
      */
@@ -181,7 +183,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the storage property: The storage properties of the mongo cluster.
+     * Set the storage property: The storage properties of the DocumentDB cluster.
      * 
      * @param storage the storage value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -192,7 +194,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the sharding property: The sharding properties of the mongo cluster.
+     * Get the sharding property: The sharding properties of the DocumentDB cluster.
      * 
      * @return the sharding value.
      */
@@ -201,7 +203,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the sharding property: The sharding properties of the mongo cluster.
+     * Set the sharding property: The sharding properties of the DocumentDB cluster.
      * 
      * @param sharding the sharding value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -212,7 +214,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the compute property: The compute properties of the mongo cluster.
+     * Get the compute property: The compute properties of the DocumentDB cluster.
      * 
      * @return the compute value.
      */
@@ -221,7 +223,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the compute property: The compute properties of the mongo cluster.
+     * Set the compute property: The compute properties of the DocumentDB cluster.
      * 
      * @param compute the compute value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -232,7 +234,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the backup property: The backup properties of the mongo cluster.
+     * Get the backup property: The backup properties of the DocumentDB cluster.
      * 
      * @return the backup value.
      */
@@ -241,7 +243,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the backup property: The backup properties of the mongo cluster.
+     * Set the backup property: The backup properties of the DocumentDB cluster.
      * 
      * @param backup the backup value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -252,7 +254,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the dataApi property: The Data API properties of the mongo cluster.
+     * Get the dataApi property: The Data API properties of the DocumentDB cluster.
      * 
      * @return the dataApi value.
      */
@@ -261,7 +263,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the dataApi property: The Data API properties of the mongo cluster.
+     * Set the dataApi property: The Data API properties of the DocumentDB cluster.
      * 
      * @param dataApi the dataApi value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -333,7 +335,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
 
     /**
      * Get the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
-     * Azure Cosmos DB service to bypass network restrictions.
+     * the Azure Cosmos DB service to bypass network restrictions.
      * 
      * @return the networkBypassMode value.
      */
@@ -343,7 +345,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
 
     /**
      * Set the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
-     * Azure Cosmos DB service to bypass network restrictions.
+     * the Azure Cosmos DB service to bypass network restrictions.
      * 
      * @param networkBypassMode the networkBypassMode value to set.
      * @return the MongoClusterUpdateProperties object itself.

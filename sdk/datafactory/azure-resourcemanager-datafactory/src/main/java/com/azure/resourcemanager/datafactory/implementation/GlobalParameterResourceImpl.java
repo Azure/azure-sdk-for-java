@@ -72,12 +72,7 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalParameters()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, globalParameterName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GlobalParameterResource create(Context context) {
@@ -99,12 +94,7 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalParameters()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, globalParameterName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public GlobalParameterResource apply(Context context) {
@@ -131,11 +121,7 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGlobalParameters()
-            .getWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GlobalParameterResource refresh(Context context) {

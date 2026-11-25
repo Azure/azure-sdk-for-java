@@ -44,12 +44,7 @@ public final class ReplicationVaultHealthsImpl implements ReplicationVaultHealth
     }
 
     public VaultHealthDetails refresh(String resourceGroupName, String resourceName) {
-        VaultHealthDetailsInner inner = this.serviceClient().refresh(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new VaultHealthDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.refresh(resourceGroupName, resourceName, Context.NONE);
     }
 
     public VaultHealthDetails refresh(String resourceGroupName, String resourceName, Context context) {

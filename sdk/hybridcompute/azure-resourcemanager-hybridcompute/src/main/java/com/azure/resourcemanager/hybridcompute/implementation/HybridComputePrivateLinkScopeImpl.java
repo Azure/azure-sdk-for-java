@@ -85,11 +85,7 @@ public final class HybridComputePrivateLinkScopeImpl implements HybridComputePri
     }
 
     public HybridComputePrivateLinkScope create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateLinkScopes()
-            .createOrUpdateWithResponse(resourceGroupName, scopeName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HybridComputePrivateLinkScope create(Context context) {
@@ -113,11 +109,7 @@ public final class HybridComputePrivateLinkScopeImpl implements HybridComputePri
     }
 
     public HybridComputePrivateLinkScope apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateLinkScopes()
-            .updateTagsWithResponse(resourceGroupName, scopeName, updatePrivateLinkScopeTags, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HybridComputePrivateLinkScope apply(Context context) {
@@ -141,11 +133,7 @@ public final class HybridComputePrivateLinkScopeImpl implements HybridComputePri
     }
 
     public HybridComputePrivateLinkScope refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateLinkScopes()
-            .getByResourceGroupWithResponse(resourceGroupName, scopeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HybridComputePrivateLinkScope refresh(Context context) {

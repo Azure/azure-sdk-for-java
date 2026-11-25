@@ -268,17 +268,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get properties of the provided cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided cloud services network along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudServicesNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
         String cloudServicesNetworkName, Context context) {
@@ -287,16 +277,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, accept, context);
     }
 
-    /**
-     * Get properties of the provided cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided cloud services network.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner getByResourceGroup(String resourceGroupName, String cloudServicesNetworkName) {
         return getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, Context.NONE).getValue();
@@ -350,11 +331,8 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
-            contentType, accept, cloudServicesNetworkParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -453,56 +431,25 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * platform will be allocated and represented in the status of this resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudServicesNetworkName,
-            cloudServicesNetworkParameters, ifMatch, ifNoneMatch);
-        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(response,
-            CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new cloud services network or update the properties of the existing cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param cloudServicesNetworkParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of upon creation, the additional services that are provided by the
-     * platform will be allocated and represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudServicesNetworkName,
-            cloudServicesNetworkParameters, ifMatch, ifNoneMatch);
-        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(response,
-            CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new cloud services network or update the properties of the existing cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param cloudServicesNetworkParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of upon creation, the additional services that are provided by the
-     * platform will be allocated and represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudServicesNetworkName,
@@ -558,49 +505,22 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new cloud services network or update the properties of the existing cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param cloudServicesNetworkParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upon creation, the additional services that are provided by the platform will be allocated and
-     * represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, ifMatch,
-            ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a new cloud services network or update the properties of the existing cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param cloudServicesNetworkParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upon creation, the additional services that are provided by the platform will be allocated and
-     * represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
         CloudServicesNetworkInner cloudServicesNetworkParameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudServicesNetworkName, cloudServicesNetworkParameters, ifMatch,
-            ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, cloudServicesNetworkName,
+            cloudServicesNetworkParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -652,9 +572,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudServicesNetworkName,
         String ifMatch, String ifNoneMatch, CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, accept,
+        return updateWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
             cloudServicesNetworkUpdateParameters, Context.NONE);
     }
 
@@ -757,57 +675,25 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * platform will be allocated and represented in the status of this resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
+    private SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
         String resourceGroupName, String cloudServicesNetworkName, String ifMatch, String ifNoneMatch,
         CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch,
-            ifNoneMatch, cloudServicesNetworkUpdateParameters);
-        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(response,
-            CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
+            cloudServicesNetworkUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of upon creation, the additional services that are provided by the
-     * platform will be allocated and represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner>
         beginUpdate(String resourceGroupName, String cloudServicesNetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch,
-            ifNoneMatch, cloudServicesNetworkUpdateParameters);
-        return this.client.<CloudServicesNetworkInner, CloudServicesNetworkInner>getLroResult(response,
-            CloudServicesNetworkInner.class, CloudServicesNetworkInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
+            cloudServicesNetworkUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param cloudServicesNetworkUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of upon creation, the additional services that are provided by the
-     * platform will be allocated and represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
         String resourceGroupName, String cloudServicesNetworkName, String ifMatch, String ifNoneMatch,
@@ -863,50 +749,22 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             cloudServicesNetworkUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upon creation, the additional services that are provided by the platform will be allocated and
-     * represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters = null;
-        return beginUpdate(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
-            cloudServicesNetworkUpdateParameters).getFinalResult();
+        return update(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
+            cloudServicesNetworkUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
-     * tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param cloudServicesNetworkUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upon creation, the additional services that are provided by the platform will be allocated and
-     * represented in the status of this resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName, String ifMatch,
         String ifNoneMatch, CloudServicesNetworkPatchParameters cloudServicesNetworkUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
-            cloudServicesNetworkUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, cloudServicesNetworkName, ifMatch,
+            ifNoneMatch, cloudServicesNetworkUpdateParameters, context));
     }
 
     /**
@@ -950,9 +808,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudServicesNetworkName,
         String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -1037,47 +893,20 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
         String ifMatch, String ifNoneMatch, Context context) {
@@ -1125,40 +954,20 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the provided cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudServicesNetworkName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the provided cloud services network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServicesNetworkName The name of the cloud services network.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudServicesNetworkName, String ifMatch, String ifNoneMatch,
         Context context) {
-        beginDelete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1239,12 +1048,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudServicesNetworkInner> listByResourceGroupSinglePage(String resourceGroupName,
         Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<CloudServicesNetworkList> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1271,38 +1075,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of cloud services networks in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of cloud services networks in the provided resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1380,11 +1161,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudServicesNetworkInner> listSinglePage(Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<CloudServicesNetworkList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(top, skipToken, Context.NONE);
     }
 
     /**
@@ -1408,35 +1185,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of cloud services networks in the provided subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> list() {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of cloud services networks in the provided subscription.
-     * 
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
@@ -1475,11 +1232,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudServicesNetworkInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudServicesNetworkList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1534,11 +1287,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudServicesNetworkInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudServicesNetworkList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

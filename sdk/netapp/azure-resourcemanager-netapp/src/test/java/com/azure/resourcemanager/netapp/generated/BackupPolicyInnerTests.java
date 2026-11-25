@@ -14,31 +14,32 @@ public final class BackupPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"backupPolicyId\":\"cvinvkjjxdxrbuuk\",\"provisioningState\":\"lewyhmlwpaz\",\"dailyBackupsToKeep\":1765730251,\"weeklyBackupsToKeep\":437728645,\"monthlyBackupsToKeep\":1425896475,\"volumesAssigned\":2098727625,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"whxxbuyqax\",\"volumeResourceId\":\"eqz\",\"backupsCount\":1372310139,\"policyEnabled\":false},{\"volumeName\":\"lxorjaltolmncws\",\"volumeResourceId\":\"qwcsdbnwdcfhuc\",\"backupsCount\":895561091,\"policyEnabled\":true},{\"volumeName\":\"glsbjjc\",\"volumeResourceId\":\"vxb\",\"backupsCount\":152007455,\"policyEnabled\":false},{\"volumeName\":\"tncormrlxqtvco\",\"volumeResourceId\":\"dflvkg\",\"backupsCount\":1902610413,\"policyEnabled\":true}]},\"etag\":\"nnqvsa\",\"location\":\"qntorudsgsahmkyc\",\"tags\":{\"s\":\"uwjuetaeburuvdmo\",\"tpuqujmq\":\"zlxwabmqoefkifr\",\"jcntuj\":\"gkfbtndoaong\"},\"id\":\"tcje\",\"name\":\"ftwwaezkojvdc\",\"type\":\"zfoqouicybxar\"}")
+            "{\"properties\":{\"backupPolicyId\":\"irels\",\"provisioningState\":\"aenwabf\",\"dailyBackupsToKeep\":305850570,\"weeklyBackupsToKeep\":1282502415,\"monthlyBackupsToKeep\":1993086714,\"volumesAssigned\":863801878,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"nozj\",\"volumeResourceId\":\"ph\",\"backupsCount\":1172987793,\"policyEnabled\":false},{\"volumeName\":\"rvxaglrvimjwosy\",\"volumeResourceId\":\"itc\",\"backupsCount\":992939840,\"policyEnabled\":false},{\"volumeName\":\"qumiek\",\"volumeResourceId\":\"zzikhlyfjhdg\",\"backupsCount\":757390701,\"policyEnabled\":true},{\"volumeName\":\"unygaeqid\",\"volumeResourceId\":\"fatpxllrxcyjmoa\",\"backupsCount\":1120671201,\"policyEnabled\":false}]},\"etag\":\"m\",\"location\":\"dmjsjqb\",\"tags\":{\"kxkgymareqna\":\"yxxrwlycoduh\",\"ssofwqmzqa\":\"xqugjhkycubedd\",\"nbyxbaaabjyv\":\"krmnjijpxacqqud\",\"xnevfdnwn\":\"yffimrzrtuzqogs\"},\"id\":\"mewzsyyc\",\"name\":\"uzsoi\",\"type\":\"judpfrxt\"}")
             .toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("qntorudsgsahmkyc", model.location());
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.tags().get("s"));
-        Assertions.assertEquals(1765730251, model.dailyBackupsToKeep());
-        Assertions.assertEquals(437728645, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1425896475, model.monthlyBackupsToKeep());
-        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("dmjsjqb", model.location());
+        Assertions.assertEquals("yxxrwlycoduh", model.tags().get("kxkgymareqna"));
+        Assertions.assertEquals(305850570, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1282502415, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1993086714, model.monthlyBackupsToKeep());
+        Assertions.assertFalse(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyInner model = new BackupPolicyInner().withLocation("qntorudsgsahmkyc")
-            .withTags(mapOf("s", "uwjuetaeburuvdmo", "tpuqujmq", "zlxwabmqoefkifr", "jcntuj", "gkfbtndoaong"))
-            .withDailyBackupsToKeep(1765730251)
-            .withWeeklyBackupsToKeep(437728645)
-            .withMonthlyBackupsToKeep(1425896475)
-            .withEnabled(true);
+        BackupPolicyInner model = new BackupPolicyInner().withLocation("dmjsjqb")
+            .withTags(mapOf("kxkgymareqna", "yxxrwlycoduh", "ssofwqmzqa", "xqugjhkycubedd", "nbyxbaaabjyv",
+                "krmnjijpxacqqud", "xnevfdnwn", "yffimrzrtuzqogs"))
+            .withDailyBackupsToKeep(305850570)
+            .withWeeklyBackupsToKeep(1282502415)
+            .withMonthlyBackupsToKeep(1993086714)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("qntorudsgsahmkyc", model.location());
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.tags().get("s"));
-        Assertions.assertEquals(1765730251, model.dailyBackupsToKeep());
-        Assertions.assertEquals(437728645, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1425896475, model.monthlyBackupsToKeep());
-        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("dmjsjqb", model.location());
+        Assertions.assertEquals("yxxrwlycoduh", model.tags().get("kxkgymareqna"));
+        Assertions.assertEquals(305850570, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1282502415, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1993086714, model.monthlyBackupsToKeep());
+        Assertions.assertFalse(model.enabled());
     }
 
     // Use "Map.of" if available

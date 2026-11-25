@@ -170,10 +170,7 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStore create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurationStores()
-            .create(resourceGroupName, configStoreName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ConfigurationStore create(Context context) {
@@ -196,10 +193,7 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStore apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurationStores()
-            .update(resourceGroupName, configStoreName, updateConfigStoreUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ConfigurationStore apply(Context context) {
@@ -222,11 +216,7 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStore refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurationStores()
-            .getByResourceGroupWithResponse(resourceGroupName, configStoreName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ConfigurationStore refresh(Context context) {

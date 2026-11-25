@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.SharePointConnectorAppRegistration;
 import java.io.IOException;
 import java.util.List;
 
@@ -312,6 +313,7 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("graphProfile", this.graphProfile);
         jsonWriter.writeArrayField("scoringProfiles", this.scoringProfiles,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("defaultScoringProfile", this.defaultScoringProfile);
@@ -329,6 +331,8 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
         jsonWriter.writeStringField("permissionFilterOption",
             this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
         jsonWriter.writeBooleanField("purviewEnabled", this.purviewEnabled);
+        jsonWriter.writeJsonField("sharePointConnectorAppRegistration", this.sharePointConnectorAppRegistration);
+        jsonWriter.writeJsonField("oneLakeSecuritySource", this.oneLakeSecuritySource);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -348,6 +352,7 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             String name = null;
             String description = null;
             List<SearchField> fields = null;
+            GraphProfile graphProfile = null;
             List<ScoringProfile> scoringProfiles = null;
             String defaultScoringProfile = null;
             CorsOptions corsOptions = null;
@@ -363,6 +368,8 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             VectorSearch vectorSearch = null;
             SearchIndexPermissionFilterOption permissionFilterOption = null;
             Boolean purviewEnabled = null;
+            SharePointConnectorAppRegistration sharePointConnectorAppRegistration = null;
+            OneLakeSecuritySource oneLakeSecuritySource = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -373,6 +380,8 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
                     description = reader.getString();
                 } else if ("fields".equals(fieldName)) {
                     fields = reader.readArray(reader1 -> SearchField.fromJson(reader1));
+                } else if ("graphProfile".equals(fieldName)) {
+                    graphProfile = GraphProfile.fromJson(reader);
                 } else if ("scoringProfiles".equals(fieldName)) {
                     scoringProfiles = reader.readArray(reader1 -> ScoringProfile.fromJson(reader1));
                 } else if ("defaultScoringProfile".equals(fieldName)) {
@@ -403,6 +412,10 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
                     permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
                 } else if ("purviewEnabled".equals(fieldName)) {
                     purviewEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sharePointConnectorAppRegistration".equals(fieldName)) {
+                    sharePointConnectorAppRegistration = SharePointConnectorAppRegistration.fromJson(reader);
+                } else if ("oneLakeSecuritySource".equals(fieldName)) {
+                    oneLakeSecuritySource = OneLakeSecuritySource.fromJson(reader);
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else {
@@ -412,6 +425,7 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             SearchIndexResponse deserializedSearchIndexResponse = new SearchIndexResponse(name);
             deserializedSearchIndexResponse.description = description;
             deserializedSearchIndexResponse.fields = fields;
+            deserializedSearchIndexResponse.graphProfile = graphProfile;
             deserializedSearchIndexResponse.scoringProfiles = scoringProfiles;
             deserializedSearchIndexResponse.defaultScoringProfile = defaultScoringProfile;
             deserializedSearchIndexResponse.corsOptions = corsOptions;
@@ -427,6 +441,8 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
             deserializedSearchIndexResponse.vectorSearch = vectorSearch;
             deserializedSearchIndexResponse.permissionFilterOption = permissionFilterOption;
             deserializedSearchIndexResponse.purviewEnabled = purviewEnabled;
+            deserializedSearchIndexResponse.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
+            deserializedSearchIndexResponse.oneLakeSecuritySource = oneLakeSecuritySource;
             deserializedSearchIndexResponse.eTag = eTag;
             return deserializedSearchIndexResponse;
         });
@@ -479,5 +495,59 @@ public final class SearchIndexResponse implements JsonSerializable<SearchIndexRe
     @Generated
     public Boolean isPurviewEnabled() {
         return this.purviewEnabled;
+    }
+
+    /*
+     * The persisted edge-list graph mapping, when the index supports graph queries.
+     */
+    @Generated
+    private GraphProfile graphProfile;
+
+    /*
+     * Configures a SharePoint connector app registration for the index, enabling document-level permissions from
+     * SharePoint. If provided, the applicationId and federatedCredentialId properties are required.
+     */
+    @Generated
+    private SharePointConnectorAppRegistration sharePointConnectorAppRegistration;
+
+    /*
+     * Identifies the Microsoft Fabric OneLake lakehouse that the index's documents originate from. Required when any
+     * field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId' permission filter.
+     */
+    @Generated
+    private OneLakeSecuritySource oneLakeSecuritySource;
+
+    /**
+     * Get the graphProfile property: The persisted edge-list graph mapping, when the index supports graph queries.
+     *
+     * @return the graphProfile value.
+     */
+    @Generated
+    public GraphProfile getGraphProfile() {
+        return this.graphProfile;
+    }
+
+    /**
+     * Get the sharePointConnectorAppRegistration property: Configures a SharePoint connector app registration for the
+     * index, enabling document-level permissions from SharePoint. If provided, the applicationId and
+     * federatedCredentialId properties are required.
+     *
+     * @return the sharePointConnectorAppRegistration value.
+     */
+    @Generated
+    public SharePointConnectorAppRegistration getSharePointConnectorAppRegistration() {
+        return this.sharePointConnectorAppRegistration;
+    }
+
+    /**
+     * Get the oneLakeSecuritySource property: Identifies the Microsoft Fabric OneLake lakehouse that the index's
+     * documents originate from. Required when any field uses the 'oneLakeParentFolders' or 'oneLakeLakehouseId'
+     * permission filter.
+     *
+     * @return the oneLakeSecuritySource value.
+     */
+    @Generated
+    public OneLakeSecuritySource getOneLakeSecuritySource() {
+        return this.oneLakeSecuritySource;
     }
 }

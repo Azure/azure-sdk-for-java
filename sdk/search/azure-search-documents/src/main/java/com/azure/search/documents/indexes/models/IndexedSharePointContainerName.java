@@ -60,4 +60,22 @@ public final class IndexedSharePointContainerName extends ExpandableStringEnum<I
     public static Collection<IndexedSharePointContainerName> values() {
         return values(IndexedSharePointContainerName.class);
     }
+
+    /**
+     * Index content from every list in the site.
+     */
+    @Generated
+    public static final IndexedSharePointContainerName ALL_SITE_LISTS = fromString("allSiteLists");
+
+    /**
+     * Index content from every page in the site.
+     */
+    @Generated
+    public static final IndexedSharePointContainerName ALL_SITE_PAGES = fromString("allSitePages");
+
+    /**
+     * Index content from all supported libraries, lists, and pages in the site.
+     */
+    @Generated
+    public static final IndexedSharePointContainerName ALL_SITE_CONTENT = fromString("allSiteContent");
 }

@@ -70,11 +70,7 @@ public final class AkriConnectorResourceImpl
     }
 
     public AkriConnectorResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriConnectors()
-            .createOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AkriConnectorResource create(Context context) {
@@ -97,11 +93,7 @@ public final class AkriConnectorResourceImpl
     }
 
     public AkriConnectorResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriConnectors()
-            .createOrUpdate(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AkriConnectorResource apply(Context context) {
@@ -131,11 +123,7 @@ public final class AkriConnectorResourceImpl
     }
 
     public AkriConnectorResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAkriConnectors()
-            .getWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AkriConnectorResource refresh(Context context) {

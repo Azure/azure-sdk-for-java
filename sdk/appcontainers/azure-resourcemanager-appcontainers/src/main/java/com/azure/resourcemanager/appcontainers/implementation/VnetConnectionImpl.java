@@ -60,12 +60,7 @@ public final class VnetConnectionImpl implements VnetConnection, VnetConnection.
     }
 
     public VnetConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVnetConnections()
-            .createOrUpdateWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VnetConnection create(Context context) {
@@ -88,12 +83,7 @@ public final class VnetConnectionImpl implements VnetConnection, VnetConnection.
     }
 
     public VnetConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVnetConnections()
-            .createOrUpdateWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VnetConnection apply(Context context) {
@@ -121,11 +111,7 @@ public final class VnetConnectionImpl implements VnetConnection, VnetConnection.
     }
 
     public VnetConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVnetConnections()
-            .getWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VnetConnection refresh(Context context) {

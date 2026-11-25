@@ -148,17 +148,7 @@ public final class AutonomousDatabaseCharacterSetsClientImpl implements Autonomo
         return getWithResponseAsync(location, adbscharsetname).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AutonomousDatabaseCharacterSet.
-     * 
-     * @param location The name of the Azure region.
-     * @param adbscharsetname AutonomousDatabaseCharacterSet name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutonomousDatabaseCharacterSet along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutonomousDatabaseCharacterSetInner> getWithResponse(String location, String adbscharsetname,
         Context context) {
@@ -167,16 +157,7 @@ public final class AutonomousDatabaseCharacterSetsClientImpl implements Autonomo
             location, adbscharsetname, accept, context);
     }
 
-    /**
-     * Get a AutonomousDatabaseCharacterSet.
-     * 
-     * @param location The name of the Azure region.
-     * @param adbscharsetname AutonomousDatabaseCharacterSet name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AutonomousDatabaseCharacterSet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutonomousDatabaseCharacterSetInner get(String location, String adbscharsetname) {
         return getWithResponse(location, adbscharsetname, Context.NONE).getValue();
@@ -230,11 +211,7 @@ public final class AutonomousDatabaseCharacterSetsClientImpl implements Autonomo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseCharacterSetInner> listByLocationSinglePage(String location) {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseCharacterSetListResult> res = service.listByLocationSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationSinglePage(location, Context.NONE);
     }
 
     /**
@@ -257,33 +234,13 @@ public final class AutonomousDatabaseCharacterSetsClientImpl implements Autonomo
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AutonomousDatabaseCharacterSet resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabaseCharacterSet list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseCharacterSetInner> listByLocation(String location) {
-        return new PagedIterable<>(() -> listByLocationSinglePage(location),
-            nextLink -> listByLocationNextSinglePage(nextLink));
+        return listByLocation(location, Context.NONE);
     }
 
-    /**
-     * List AutonomousDatabaseCharacterSet resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AutonomousDatabaseCharacterSet list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutonomousDatabaseCharacterSetInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(() -> listByLocationSinglePage(location, context),
@@ -322,11 +279,7 @@ public final class AutonomousDatabaseCharacterSetsClientImpl implements Autonomo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutonomousDatabaseCharacterSetInner> listByLocationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AutonomousDatabaseCharacterSetListResult> res
-            = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

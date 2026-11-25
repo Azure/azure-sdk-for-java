@@ -145,21 +145,7 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KubeEnvironmentInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String name) {
@@ -225,80 +211,27 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Get the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KubeEnvironmentInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KubeEnvironmentInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Get the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Kubernetes Environment.
-     * 
-     * Description for Get the properties of a Kubernetes Environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubeEnvironmentInner getByResourceGroup(String resourceGroupName, String name) {
         return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
         KubeEnvironmentInner kubeEnvironmentEnvelope) {
@@ -379,20 +312,7 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             context);
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a Kubernetes cluster specialized for web workloads by Azure App
-     * Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
@@ -427,61 +347,21 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             KubeEnvironmentInner.class, KubeEnvironmentInner.class, context);
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Kubernetes cluster specialized for web workloads by Azure App
-     * Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner>
         beginCreateOrUpdate(String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Kubernetes cluster specialized for web workloads by Azure App
-     * Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KubeEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name,
         KubeEnvironmentInner kubeEnvironmentEnvelope) {
@@ -511,59 +391,21 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubeEnvironmentInner createOrUpdate(String resourceGroupName, String name,
         KubeEnvironmentInner kubeEnvironmentEnvelope) {
         return createOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope).block();
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubeEnvironmentInner createOrUpdate(String resourceGroupName, String name,
         KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
         return createOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context).block();
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KubeEnvironmentInner>> updateWithResponseAsync(String resourceGroupName, String name,
         KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
@@ -643,20 +485,7 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             resourceGroupName, name, contentType, accept, kubeEnvironmentEnvelope, context);
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KubeEnvironmentInner> updateAsync(String resourceGroupName, String name,
         KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
@@ -664,57 +493,21 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KubeEnvironmentInner> updateWithResponse(String resourceGroupName, String name,
         KubeEnvironmentPatchResource kubeEnvironmentEnvelope, Context context) {
         return updateWithResponseAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context).block();
     }
 
-    /**
-     * Creates or updates a Kubernetes Environment.
-     * 
-     * Description for Creates or updates a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KubeEnvironmentInner update(String resourceGroupName, String name,
         KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
         return updateWithResponse(resourceGroupName, name, kubeEnvironmentEnvelope, Context.NONE).getValue();
     }
 
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
@@ -774,18 +567,7 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             resourceGroupName, name, context);
     }
 
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
@@ -815,53 +597,19 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             context);
     }
 
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
@@ -885,34 +633,13 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
         return beginDeleteAsync(resourceGroupName, name, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
         deleteAsync(resourceGroupName, name).block();
     }
 
-    /**
-     * Delete a Kubernetes Environment.
-     * 
-     * Description for Delete a Kubernetes Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Name of the Kubernetes Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, Context context) {
         deleteAsync(resourceGroupName, name, context).block();
@@ -994,20 +721,7 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all the Kubernetes Environments in a resource group.
-     * 
-     * Description for Get all the Kubernetes Environments in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Kubernetes Environments in a resource group.
-     * 
-     * Description for Get all the Kubernetes Environments in a resource group as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KubeEnvironmentInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1035,40 +749,13 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all the Kubernetes Environments in a resource group.
-     * 
-     * Description for Get all the Kubernetes Environments in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Kubernetes Environments in a resource group.
-     * 
-     * Description for Get all the Kubernetes Environments in a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubeEnvironmentInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Get all the Kubernetes Environments in a resource group.
-     * 
-     * Description for Get all the Kubernetes Environments in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Kubernetes Environments in a resource group.
-     * 
-     * Description for Get all the Kubernetes Environments in a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubeEnvironmentInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1138,17 +825,7 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get all Kubernetes Environments for a subscription.
-     * 
-     * Description for Get all Kubernetes Environments for a subscription.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Kubernetes Environments for a subscription.
-     * 
-     * Description for Get all Kubernetes Environments for a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KubeEnvironmentInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -1174,37 +851,13 @@ public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEn
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get all Kubernetes Environments for a subscription.
-     * 
-     * Description for Get all Kubernetes Environments for a subscription.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Kubernetes Environments for a subscription.
-     * 
-     * Description for Get all Kubernetes Environments for a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubeEnvironmentInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Get all Kubernetes Environments for a subscription.
-     * 
-     * Description for Get all Kubernetes Environments for a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Kubernetes Environments for a subscription.
-     * 
-     * Description for Get all Kubernetes Environments for a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubeEnvironmentInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

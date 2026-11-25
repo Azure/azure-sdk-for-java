@@ -151,20 +151,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create confluent clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param body Confluent Cluster resource model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of cluster record along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SCClusterRecordInner> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, SCClusterRecordInner body, Context context) {
@@ -174,18 +161,7 @@ public final class ClustersClientImpl implements ClustersClient {
             body, context);
     }
 
-    /**
-     * Create confluent clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of cluster record.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SCClusterRecordInner createOrUpdate(String resourceGroupName, String organizationName, String environmentId,
         String clusterId) {
@@ -229,9 +205,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, environmentId, clusterId,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, environmentId, clusterId, Context.NONE);
     }
 
     /**
@@ -275,39 +249,14 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete confluent cluster by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String clusterId) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, organizationName, environmentId, clusterId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, environmentId, clusterId, Context.NONE);
     }
 
-    /**
-     * Delete confluent cluster by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, Context context) {
@@ -335,37 +284,17 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete confluent cluster by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId) {
-        beginDelete(resourceGroupName, organizationName, environmentId, clusterId).getFinalResult();
+        delete(resourceGroupName, organizationName, environmentId, clusterId, Context.NONE);
     }
 
-    /**
-     * Delete confluent cluster by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Organization resource name.
-     * @param environmentId Confluent environment id.
-     * @param clusterId Confluent kafka or schema registry cluster id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String environmentId, String clusterId,
         Context context) {
-        beginDelete(resourceGroupName, organizationName, environmentId, clusterId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, organizationName, environmentId, clusterId, context));
     }
 }

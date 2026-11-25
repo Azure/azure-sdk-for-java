@@ -150,17 +150,7 @@ public final class ValidationTestVersionsClientImpl implements ValidationTestVer
         return getWithResponseAsync(validationTestName, version).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a validation test version catalog entry.
-     * 
-     * @param validationTestName The name of the ValidationTest.
-     * @param version The name of the ValidationTestVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test version catalog entry along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidationTestVersionInner> getWithResponse(String validationTestName, String version,
         Context context) {
@@ -169,16 +159,7 @@ public final class ValidationTestVersionsClientImpl implements ValidationTestVer
             validationTestName, version, accept, context);
     }
 
-    /**
-     * Get a validation test version catalog entry.
-     * 
-     * @param validationTestName The name of the ValidationTest.
-     * @param version The name of the ValidationTestVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a validation test version catalog entry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidationTestVersionInner get(String validationTestName, String version) {
         return getWithResponse(validationTestName, version, Context.NONE).getValue();
@@ -251,12 +232,7 @@ public final class ValidationTestVersionsClientImpl implements ValidationTestVer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestVersionInner> listSinglePage(String validationTestName, String filter) {
-        final String accept = "application/json";
-        Response<ValidationTestVersionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                validationTestName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(validationTestName, filter, Context.NONE);
     }
 
     /**
@@ -280,33 +256,14 @@ public final class ValidationTestVersionsClientImpl implements ValidationTestVer
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List validation test version catalog entries.
-     * 
-     * @param validationTestName The name of the ValidationTest.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTestVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestVersionInner> list(String validationTestName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(validationTestName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(validationTestName, filter, Context.NONE);
     }
 
-    /**
-     * List validation test version catalog entries.
-     * 
-     * @param validationTestName The name of the ValidationTest.
-     * @param filter Filter expression used to constrain the returned items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ValidationTestVersion list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ValidationTestVersionInner> list(String validationTestName, String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(validationTestName, filter, context),
@@ -343,11 +300,7 @@ public final class ValidationTestVersionsClientImpl implements ValidationTestVer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ValidationTestVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ValidationTestVersionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

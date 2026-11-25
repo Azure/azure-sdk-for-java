@@ -146,16 +146,7 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
         return getWithResponseAsync(networkFabricSkuName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements Network Fabric SKU GET method.
-     * 
-     * @param networkFabricSkuName Name of the Network Fabric SKU.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric SKU resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkFabricSkuInner> getWithResponse(String networkFabricSkuName, Context context) {
         final String accept = "application/json";
@@ -163,15 +154,7 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
             networkFabricSkuName, accept, context);
     }
 
-    /**
-     * Implements Network Fabric SKU GET method.
-     * 
-     * @param networkFabricSkuName Name of the Network Fabric SKU.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Fabric SKU resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricSkuInner get(String networkFabricSkuName) {
         return getWithResponse(networkFabricSkuName, Context.NONE).getValue();
@@ -218,11 +201,7 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkFabricSkuInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkFabricSkusListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -243,27 +222,13 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements Network Fabric SKUs list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkFabricSku items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricSkuInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Implements Network Fabric SKUs list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkFabricSku items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricSkuInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -302,11 +267,7 @@ public final class NetworkFabricSkusClientImpl implements NetworkFabricSkusClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkFabricSkuInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkFabricSkusListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

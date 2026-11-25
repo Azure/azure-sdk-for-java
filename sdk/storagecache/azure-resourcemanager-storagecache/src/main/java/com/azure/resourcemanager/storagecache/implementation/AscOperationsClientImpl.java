@@ -111,17 +111,7 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
         return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status of an asynchronous operation for the Azure HPC Cache.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous operation for the Azure HPC Cache along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AscOperationInner> getWithResponse(String location, String operationId, Context context) {
         final String accept = "application/json";
@@ -129,16 +119,7 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
             location, operationId, accept, context);
     }
 
-    /**
-     * Gets the status of an asynchronous operation for the Azure HPC Cache.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous operation for the Azure HPC Cache.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AscOperationInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();

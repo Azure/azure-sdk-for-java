@@ -261,18 +261,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log Analytics workspace Summary rules along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SummaryLogsInner> getWithResponse(String resourceGroupName, String workspaceName,
         String summaryLogsName, Context context) {
@@ -281,17 +270,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             resourceGroupName, workspaceName, summaryLogsName, accept, context);
     }
 
-    /**
-     * Gets Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log Analytics workspace Summary rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SummaryLogsInner get(String resourceGroupName, String workspaceName, String summaryLogsName) {
         return getWithResponse(resourceGroupName, workspaceName, summaryLogsName, Context.NONE).getValue();
@@ -337,11 +316,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String summaryLogsName, SummaryLogsInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, summaryLogsName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, summaryLogsName, parameters, Context.NONE);
     }
 
     /**
@@ -388,40 +363,14 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             SummaryLogsInner.class, SummaryLogsInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to update summary rules properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workspace data summary rules definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SummaryLogsInner>, SummaryLogsInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String summaryLogsName, SummaryLogsInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, summaryLogsName, parameters);
-        return this.client.<SummaryLogsInner, SummaryLogsInner>getLroResult(response, SummaryLogsInner.class,
-            SummaryLogsInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, summaryLogsName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to update summary rules properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workspace data summary rules definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SummaryLogsInner>, SummaryLogsInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, String summaryLogsName, SummaryLogsInner parameters, Context context) {
@@ -450,42 +399,19 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to update summary rules properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace data summary rules definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SummaryLogsInner createOrUpdate(String resourceGroupName, String workspaceName, String summaryLogsName,
         SummaryLogsInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, summaryLogsName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, summaryLogsName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to update summary rules properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace data summary rules definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SummaryLogsInner createOrUpdate(String resourceGroupName, String workspaceName, String summaryLogsName,
         SummaryLogsInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, summaryLogsName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, summaryLogsName, parameters, context));
     }
 
     /**
@@ -522,8 +448,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String summaryLogsName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
     }
 
     /**
@@ -565,36 +490,14 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             this.client.getContext());
     }
 
-    /**
-     * Deletes Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String summaryLogsName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, summaryLogsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
     }
 
-    /**
-     * Deletes Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String summaryLogsName, Context context) {
@@ -619,35 +522,16 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String summaryLogsName) {
-        beginDelete(resourceGroupName, workspaceName, summaryLogsName).getFinalResult();
+        delete(resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
     }
 
-    /**
-     * Deletes Log Analytics workspace Summary rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String summaryLogsName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, summaryLogsName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, summaryLogsName, context));
     }
 
     /**
@@ -701,12 +585,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SummaryLogsInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<SummaryLogsListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -731,35 +610,13 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all summary rules for the specified Log Analytics workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all summary rules for the specified Log Analytics workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SummaryLogsInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all summary rules for the specified Log Analytics workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all summary rules for the specified Log Analytics workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SummaryLogsInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -801,8 +658,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String workspaceName,
         String summaryLogsName) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
+        return startWithResponse(resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
     }
 
     /**
@@ -844,36 +700,14 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             this.client.getContext());
     }
 
-    /**
-     * Starts an inactive Summary rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String workspaceName,
         String summaryLogsName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, workspaceName, summaryLogsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
     }
 
-    /**
-     * Starts an inactive Summary rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String workspaceName,
         String summaryLogsName, Context context) {
@@ -898,35 +732,16 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts an inactive Summary rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String workspaceName, String summaryLogsName) {
-        beginStart(resourceGroupName, workspaceName, summaryLogsName).getFinalResult();
+        start(resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
     }
 
-    /**
-     * Starts an inactive Summary rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String workspaceName, String summaryLogsName, Context context) {
-        beginStart(resourceGroupName, workspaceName, summaryLogsName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, workspaceName, summaryLogsName, context));
     }
 
     /**
@@ -966,18 +781,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Stops an active Summary rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWithResponse(String resourceGroupName, String workspaceName, String summaryLogsName,
         Context context) {
@@ -985,16 +789,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             resourceGroupName, workspaceName, summaryLogsName, context);
     }
 
-    /**
-     * Stops an active Summary rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String workspaceName, String summaryLogsName) {
         stopWithResponse(resourceGroupName, workspaceName, summaryLogsName, Context.NONE);
@@ -1038,10 +833,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> retryBinWithResponse(String resourceGroupName, String workspaceName,
         String summaryLogsName, SummaryLogsRetryBin parameters) {
-        final String contentType = "application/json";
-        return service.retryBinSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, summaryLogsName, contentType, parameters,
-            Context.NONE);
+        return retryBinWithResponse(resourceGroupName, workspaceName, summaryLogsName, parameters, Context.NONE);
     }
 
     /**
@@ -1087,39 +879,14 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             this.client.getContext());
     }
 
-    /**
-     * Retries a failed Summary rule bin.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to retry a Summary rule bin.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetryBin(String resourceGroupName, String workspaceName,
         String summaryLogsName, SummaryLogsRetryBin parameters) {
-        Response<BinaryData> response
-            = retryBinWithResponse(resourceGroupName, workspaceName, summaryLogsName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRetryBin(resourceGroupName, workspaceName, summaryLogsName, parameters, Context.NONE);
     }
 
-    /**
-     * Retries a failed Summary rule bin.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to retry a Summary rule bin.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetryBin(String resourceGroupName, String workspaceName,
         String summaryLogsName, SummaryLogsRetryBin parameters, Context context) {
@@ -1147,39 +914,19 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Retries a failed Summary rule bin.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to retry a Summary rule bin.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void retryBin(String resourceGroupName, String workspaceName, String summaryLogsName,
         SummaryLogsRetryBin parameters) {
-        beginRetryBin(resourceGroupName, workspaceName, summaryLogsName, parameters).getFinalResult();
+        retryBin(resourceGroupName, workspaceName, summaryLogsName, parameters, Context.NONE);
     }
 
-    /**
-     * Retries a failed Summary rule bin.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param summaryLogsName The name of the summary logs. Must not contain '/'.
-     * @param parameters The parameters required to retry a Summary rule bin.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void retryBin(String resourceGroupName, String workspaceName, String summaryLogsName,
         SummaryLogsRetryBin parameters, Context context) {
-        beginRetryBin(resourceGroupName, workspaceName, summaryLogsName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginRetryBin(resourceGroupName, workspaceName, summaryLogsName, parameters, context));
     }
 
     /**
@@ -1213,11 +960,7 @@ public final class SummaryLogsOperationsClientImpl implements SummaryLogsOperati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SummaryLogsInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SummaryLogsListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

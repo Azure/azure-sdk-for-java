@@ -207,21 +207,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PartitionMetricInner> listMetricsAsync(String resourceGroupName, String accountName,
         String databaseRid, String collectionRid, String filter) {
@@ -253,21 +239,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             collectionRid, filter, context), nextLink -> listMetricsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionMetricInner> listMetrics(String resourceGroupName, String accountName,
         String databaseRid, String collectionRid, String filter) {
@@ -275,22 +247,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             listMetricsAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 
-    /**
-     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     * filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     * timeGrain. The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionMetricInner> listMetrics(String resourceGroupName, String accountName,
         String databaseRid, String collectionRid, String filter, Context context) {
@@ -396,20 +353,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     * name.value (name of the metric, can have an or of multiple names).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PartitionUsageInner> listUsagesAsync(String resourceGroupName, String accountName,
         String databaseRid, String collectionRid, String filter) {
@@ -418,18 +362,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             nextLink -> listUsagesNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PartitionUsageInner> listUsagesAsync(String resourceGroupName, String accountName,
         String databaseRid, String collectionRid) {
@@ -461,18 +394,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             collectionRid, filter, context), nextLink -> listUsagesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionUsageInner> listUsages(String resourceGroupName, String accountName,
         String databaseRid, String collectionRid) {
@@ -480,21 +402,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 
-    /**
-     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     * name.value (name of the metric, can have an or of multiple names).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionUsageInner> listUsages(String resourceGroupName, String accountName,
         String databaseRid, String collectionRid, String filter, Context context) {

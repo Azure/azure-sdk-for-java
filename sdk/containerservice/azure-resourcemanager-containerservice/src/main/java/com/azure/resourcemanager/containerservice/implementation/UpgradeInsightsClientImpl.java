@@ -102,25 +102,7 @@ public final class UpgradeInsightsClientImpl implements UpgradeInsightsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information. It does not regenerate
-     * the evaluation. If no non-expired evaluation exists for the name, it returns 404.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param upgradeInsightName The name of the UpgradeInsight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpgradeInsightInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String upgradeInsightName) {
@@ -198,24 +180,7 @@ public final class UpgradeInsightsClientImpl implements UpgradeInsightsClient {
             resourceGroupName, resourceName, upgradeInsightName, accept, context);
     }
 
-    /**
-     * Gets a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information. It does not regenerate
-     * the evaluation. If no non-expired evaluation exists for the name, it returns 404.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param upgradeInsightName The name of the UpgradeInsight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpgradeInsightInner> getAsync(String resourceGroupName, String resourceName,
         String upgradeInsightName) {
@@ -223,49 +188,14 @@ public final class UpgradeInsightsClientImpl implements UpgradeInsightsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information. It does not regenerate
-     * the evaluation. If no non-expired evaluation exists for the name, it returns 404.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param upgradeInsightName The name of the UpgradeInsight.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpgradeInsightInner> getWithResponse(String resourceGroupName, String resourceName,
         String upgradeInsightName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, upgradeInsightName, context).block();
     }
 
-    /**
-     * Gets a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information. It does not regenerate
-     * the evaluation. If no non-expired evaluation exists for the name, it returns 404.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param upgradeInsightName The name of the UpgradeInsight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a stored upgrade insight for the managed cluster by its server-generated name.
-     * This is a read-only operation: it returns the most recently generated readiness
-     * evaluation for that scope from the data store, including the detected
-     * upgrade-blocking issues and contextual upgrade information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpgradeInsightInner get(String resourceGroupName, String resourceName, String upgradeInsightName) {
         return getWithResponse(resourceGroupName, resourceName, upgradeInsightName, Context.NONE).getValue();
@@ -352,18 +282,7 @@ public final class UpgradeInsightsClientImpl implements UpgradeInsightsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the stored upgrade insights for the specified managed cluster, one entry per
-     * scope that has been generated and not yet expired. This is a read-only operation and
-     * does not regenerate any evaluation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpgradeInsight list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UpgradeInsightInner> listAsync(String resourceGroupName, String resourceName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
@@ -389,60 +308,19 @@ public final class UpgradeInsightsClientImpl implements UpgradeInsightsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the stored upgrade insights for the specified managed cluster, one entry per
-     * scope that has been generated and not yet expired. This is a read-only operation and
-     * does not regenerate any evaluation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpgradeInsight list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpgradeInsightInner> list(String resourceGroupName, String resourceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
-    /**
-     * Lists the stored upgrade insights for the specified managed cluster, one entry per
-     * scope that has been generated and not yet expired. This is a read-only operation and
-     * does not regenerate any evaluation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UpgradeInsight list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UpgradeInsightInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
-    /**
-     * Generates (or refreshes) an upgrade readiness evaluation for the managed cluster.
-     * The requested scope and target version(s) are supplied in the request body; the
-     * server runs the readiness checks — the control plane Kubernetes version upgrade, a
-     * single agent pool Kubernetes version upgrade, a single agent pool node OS image
-     * upgrade, or the combined control plane and agent pools upgrade — persists the result
-     * as an UpgradeInsight resource with a server-generated name, and returns that
-     * resource. The response body is identical to a subsequent GET of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an upgrade insight for a managed cluster: an on-demand readiness evaluation for an
-     * upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
-     * and addressable by a server-generated name along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpgradeInsightInner>> generateWithResponseAsync(String resourceGroupName, String resourceName,
         GenerateUpgradeInsightsContent body) {
@@ -524,25 +402,7 @@ public final class UpgradeInsightsClientImpl implements UpgradeInsightsClient {
             resourceGroupName, resourceName, contentType, accept, body, context);
     }
 
-    /**
-     * Generates (or refreshes) an upgrade readiness evaluation for the managed cluster.
-     * The requested scope and target version(s) are supplied in the request body; the
-     * server runs the readiness checks — the control plane Kubernetes version upgrade, a
-     * single agent pool Kubernetes version upgrade, a single agent pool node OS image
-     * upgrade, or the combined control plane and agent pools upgrade — persists the result
-     * as an UpgradeInsight resource with a server-generated name, and returns that
-     * resource. The response body is identical to a subsequent GET of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an upgrade insight for a managed cluster: an on-demand readiness evaluation for an
-     * upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
-     * and addressable by a server-generated name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpgradeInsightInner> generateAsync(String resourceGroupName, String resourceName,
         GenerateUpgradeInsightsContent body) {
@@ -550,51 +410,14 @@ public final class UpgradeInsightsClientImpl implements UpgradeInsightsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates (or refreshes) an upgrade readiness evaluation for the managed cluster.
-     * The requested scope and target version(s) are supplied in the request body; the
-     * server runs the readiness checks — the control plane Kubernetes version upgrade, a
-     * single agent pool Kubernetes version upgrade, a single agent pool node OS image
-     * upgrade, or the combined control plane and agent pools upgrade — persists the result
-     * as an UpgradeInsight resource with a server-generated name, and returns that
-     * resource. The response body is identical to a subsequent GET of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an upgrade insight for a managed cluster: an on-demand readiness evaluation for an
-     * upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
-     * and addressable by a server-generated name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpgradeInsightInner> generateWithResponse(String resourceGroupName, String resourceName,
         GenerateUpgradeInsightsContent body, Context context) {
         return generateWithResponseAsync(resourceGroupName, resourceName, body, context).block();
     }
 
-    /**
-     * Generates (or refreshes) an upgrade readiness evaluation for the managed cluster.
-     * The requested scope and target version(s) are supplied in the request body; the
-     * server runs the readiness checks — the control plane Kubernetes version upgrade, a
-     * single agent pool Kubernetes version upgrade, a single agent pool node OS image
-     * upgrade, or the combined control plane and agent pools upgrade — persists the result
-     * as an UpgradeInsight resource with a server-generated name, and returns that
-     * resource. The response body is identical to a subsequent GET of the resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an upgrade insight for a managed cluster: an on-demand readiness evaluation for an
-     * upgrade scope, produced by the generateUpgradeInsights action on the managed cluster
-     * and addressable by a server-generated name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpgradeInsightInner generate(String resourceGroupName, String resourceName,
         GenerateUpgradeInsightsContent body) {

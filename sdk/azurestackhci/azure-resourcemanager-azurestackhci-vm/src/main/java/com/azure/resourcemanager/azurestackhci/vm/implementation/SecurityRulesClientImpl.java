@@ -212,18 +212,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified security rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityRuleInner> getWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, Context context) {
@@ -232,17 +221,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             resourceGroupName, networkSecurityGroupName, securityRuleName, accept, context);
     }
 
-    /**
-     * Gets the specified security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified security rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
         return getWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE).getValue();
@@ -287,11 +266,8 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, SecurityRuleInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, securityRuleName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, resource,
+            Context.NONE);
     }
 
     /**
@@ -339,40 +315,15 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             SecurityRuleInner.class, SecurityRuleInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a security rule in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String networkSecurityGroupName, String securityRuleName, SecurityRuleInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, resource);
-        return this.client.<SecurityRuleInner, SecurityRuleInner>getLroResult(response, SecurityRuleInner.class,
-            SecurityRuleInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Creates or updates a security rule in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(String resourceGroupName,
         String networkSecurityGroupName, String securityRuleName, SecurityRuleInner resource, Context context) {
@@ -401,43 +352,19 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a security rule in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, SecurityRuleInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a security rule in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Rule resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, SecurityRuleInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, resource, context));
     }
 
     /**
@@ -473,9 +400,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, securityRuleName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE);
     }
 
     /**
@@ -517,37 +442,14 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName,
         String securityRuleName, Context context) {
@@ -573,36 +475,18 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {
-        beginDelete(resourceGroupName, networkSecurityGroupName, securityRuleName).getFinalResult();
+        delete(resourceGroupName, networkSecurityGroupName, securityRuleName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified security rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param securityRuleName Name of the security rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName,
         Context context) {
-        beginDelete(resourceGroupName, networkSecurityGroupName, securityRuleName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, networkSecurityGroupName, securityRuleName, context));
     }
 
     /**
@@ -660,12 +544,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityRuleInner> listByNetworkSecurityGroupSinglePage(String resourceGroupName,
         String networkSecurityGroupName) {
-        final String accept = "application/json";
-        Response<SecurityRuleListResult> res
-            = service.listByNetworkSecurityGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNetworkSecurityGroupSinglePage(resourceGroupName, networkSecurityGroupName, Context.NONE);
     }
 
     /**
@@ -690,35 +569,14 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all security rules in a Network Security Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security rules in a Network Security Group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityRuleInner> listByNetworkSecurityGroup(String resourceGroupName,
         String networkSecurityGroupName) {
-        return new PagedIterable<>(
-            () -> listByNetworkSecurityGroupSinglePage(resourceGroupName, networkSecurityGroupName),
-            nextLink -> listByNetworkSecurityGroupNextSinglePage(nextLink));
+        return listByNetworkSecurityGroup(resourceGroupName, networkSecurityGroupName, Context.NONE);
     }
 
-    /**
-     * Gets all security rules in a Network Security Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all security rules in a Network Security Group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityRuleInner> listByNetworkSecurityGroup(String resourceGroupName,
         String networkSecurityGroupName, Context context) {
@@ -759,11 +617,7 @@ public final class SecurityRulesClientImpl implements SecurityRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecurityRuleInner> listByNetworkSecurityGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SecurityRuleListResult> res
-            = service.listByNetworkSecurityGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNetworkSecurityGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

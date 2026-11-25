@@ -170,11 +170,7 @@ public final class BareMetalMachineKeySetImpl
     }
 
     public BareMetalMachineKeySet create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachineKeySets()
-            .createOrUpdate(resourceGroupName, clusterName, bareMetalMachineKeySetName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BareMetalMachineKeySet create(Context context) {
@@ -201,11 +197,7 @@ public final class BareMetalMachineKeySetImpl
     }
 
     public BareMetalMachineKeySet apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachineKeySets()
-            .update(resourceGroupName, clusterName, bareMetalMachineKeySetName, updateIfMatch, updateIfNoneMatch,
-                updateBareMetalMachineKeySetUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BareMetalMachineKeySet apply(Context context) {
@@ -232,11 +224,7 @@ public final class BareMetalMachineKeySetImpl
     }
 
     public BareMetalMachineKeySet refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBareMetalMachineKeySets()
-            .getWithResponse(resourceGroupName, clusterName, bareMetalMachineKeySetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BareMetalMachineKeySet refresh(Context context) {

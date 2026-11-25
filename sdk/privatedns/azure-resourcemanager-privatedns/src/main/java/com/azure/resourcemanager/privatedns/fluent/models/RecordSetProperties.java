@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,6 +14,7 @@ import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
 import com.azure.resourcemanager.privatedns.models.CnameRecord;
 import com.azure.resourcemanager.privatedns.models.MxRecord;
+import com.azure.resourcemanager.privatedns.models.ProvisioningState;
 import com.azure.resourcemanager.privatedns.models.PtrRecord;
 import com.azure.resourcemanager.privatedns.models.SoaRecord;
 import com.azure.resourcemanager.privatedns.models.SrvRecord;
@@ -85,6 +87,18 @@ public final class RecordSetProperties implements JsonSerializable<RecordSetProp
      * The list of TXT records in the record set.
      */
     private List<TxtRecord> txtRecords;
+
+    /*
+     * A reference to an azure private traffic manager profile resource from where the record set value is taken. Cannot
+     * be combined with aRecords, aaaaRecords, or cnameRecord.
+     */
+    private SubResource trafficManagementProfile;
+
+    /*
+     * The provisioning state of the record set. This is a read-only property and any attempt to set this value will be
+     * ignored.
+     */
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of RecordSetProperties class.
@@ -312,6 +326,38 @@ public final class RecordSetProperties implements JsonSerializable<RecordSetProp
     }
 
     /**
+     * Get the trafficManagementProfile property: A reference to an azure private traffic manager profile resource from
+     * where the record set value is taken. Cannot be combined with aRecords, aaaaRecords, or cnameRecord.
+     * 
+     * @return the trafficManagementProfile value.
+     */
+    public SubResource trafficManagementProfile() {
+        return this.trafficManagementProfile;
+    }
+
+    /**
+     * Set the trafficManagementProfile property: A reference to an azure private traffic manager profile resource from
+     * where the record set value is taken. Cannot be combined with aRecords, aaaaRecords, or cnameRecord.
+     * 
+     * @param trafficManagementProfile the trafficManagementProfile value to set.
+     * @return the RecordSetProperties object itself.
+     */
+    public RecordSetProperties withTrafficManagementProfile(SubResource trafficManagementProfile) {
+        this.trafficManagementProfile = trafficManagementProfile;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the record set. This is a read-only property and
+     * any attempt to set this value will be ignored.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -359,6 +405,7 @@ public final class RecordSetProperties implements JsonSerializable<RecordSetProp
         jsonWriter.writeJsonField("soaRecord", this.soaRecord);
         jsonWriter.writeArrayField("srvRecords", this.srvRecords, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("txtRecords", this.txtRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("trafficManagementProfile", this.trafficManagementProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -408,6 +455,11 @@ public final class RecordSetProperties implements JsonSerializable<RecordSetProp
                 } else if ("txtRecords".equals(fieldName)) {
                     List<TxtRecord> txtRecords = reader.readArray(reader1 -> TxtRecord.fromJson(reader1));
                     deserializedRecordSetProperties.txtRecords = txtRecords;
+                } else if ("trafficManagementProfile".equals(fieldName)) {
+                    deserializedRecordSetProperties.trafficManagementProfile = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRecordSetProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

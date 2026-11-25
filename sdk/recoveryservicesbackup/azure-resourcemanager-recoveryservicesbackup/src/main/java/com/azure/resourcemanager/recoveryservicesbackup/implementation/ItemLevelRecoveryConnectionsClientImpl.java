@@ -188,25 +188,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
             recoveryPointId, parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a file
-     * explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the status
-     * of
-     * provisioning, call GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters resource ILR request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> provisionWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String recoveryPointId, IlrRequestResource parameters,
@@ -217,23 +199,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
             recoveryPointId, contentType, parameters, context);
     }
 
-    /**
-     * Provisions a script which invokes an iSCSI connection to the backup data. Executing this script opens a file
-     * explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the status
-     * of
-     * provisioning, call GetProtectedItemOperationResult API.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters resource ILR request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void provision(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, IlrRequestResource parameters) {
@@ -288,22 +254,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
             recoveryPointId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer
-     * displaying all recoverable files and folders. This is an asynchronous operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String recoveryPointId, Context context) {
@@ -312,20 +263,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
             recoveryPointId, context);
     }
 
-    /**
-     * Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer
-     * displaying all recoverable files and folders. This is an asynchronous operation.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revoke(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId) {
@@ -389,24 +327,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
             containerName, protectedItemName, recoveryPointId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
-     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
-     * the operationsStatus (ILR provision) response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return target details for file / folder restore along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultWithResponse(
         String resourceGroupName, String vaultName, String fabricName, String containerName, String protectedItemName,
@@ -418,23 +339,7 @@ public final class ItemLevelRecoveryConnectionsClientImpl implements ItemLevelRe
             containerName, protectedItemName, recoveryPointId, contentType, accept, body, context);
     }
 
-    /**
-     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
-     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
-     * the operationsStatus (ILR provision) response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return target details for file / folder restore.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstantItemRecoveryTarget listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,

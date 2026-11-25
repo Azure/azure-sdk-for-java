@@ -12,8 +12,8 @@ public final class TuningOptionsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TuningOptionsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"bn\"},\"id\":\"pxynenlsvxeizzg\",\"name\":\"klnsrmffey\",\"type\":\"xcktpiymerteeamm\"},{\"properties\":{\"state\":\"ekkkzd\"},\"id\":\"tkgdojbmxva\",\"name\":\"refdee\",\"type\":\"vecuijpx\"},{\"properties\":{\"state\":\"uwprtujwsawd\"},\"id\":\"ibabxvititvtzeex\",\"name\":\"vo\",\"type\":\"tfgle\"}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"qnvb\"},\"id\":\"ylaxxulcdi\",\"name\":\"dosfjbjsvgjrw\",\"type\":\"r\"},{\"properties\":{\"state\":\"cytdclxgccknfnwm\"},\"id\":\"mvpdvjdhttzaef\",\"name\":\"dxihc\",\"type\":\"rphkmcrjdqnsdfz\"},{\"properties\":{\"state\":\"tg\"},\"id\":\"lkdghr\",\"name\":\"euutlwxezwzh\",\"type\":\"kvbwnhhtqlgeh\"},{\"properties\":{\"state\":\"ipifhpfeoajvg\"},\"id\":\"txjcsheafidlt\",\"name\":\"gsresmkssj\",\"type\":\"oiftxfkfwegprh\"}],\"nextLink\":\"ill\"}")
             .toObject(TuningOptionsList.class);
-        Assertions.assertEquals("m", model.nextLink());
+        Assertions.assertEquals("ill", model.nextLink());
     }
 }

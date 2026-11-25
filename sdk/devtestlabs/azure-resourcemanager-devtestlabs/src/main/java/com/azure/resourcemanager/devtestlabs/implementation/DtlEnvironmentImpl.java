@@ -110,10 +110,7 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
     }
 
     public DtlEnvironment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .createOrUpdate(resourceGroupName, labName, userName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DtlEnvironment create(Context context) {
@@ -135,11 +132,7 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
     }
 
     public DtlEnvironment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .updateWithResponse(resourceGroupName, labName, userName, name, updateDtlEnvironment, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DtlEnvironment apply(Context context) {
@@ -169,12 +162,7 @@ public final class DtlEnvironmentImpl implements DtlEnvironment, DtlEnvironment.
     }
 
     public DtlEnvironment refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironments()
-            .getWithResponse(resourceGroupName, labName, userName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DtlEnvironment refresh(Context context) {

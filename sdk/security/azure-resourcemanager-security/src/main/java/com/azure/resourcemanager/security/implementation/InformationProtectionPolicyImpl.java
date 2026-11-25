@@ -81,11 +81,7 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInformationProtectionPolicies()
-            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InformationProtectionPolicy create(Context context) {
@@ -108,11 +104,7 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInformationProtectionPolicies()
-            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InformationProtectionPolicy apply(Context context) {
@@ -137,11 +129,7 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInformationProtectionPolicies()
-            .getWithResponse(scope, informationProtectionPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InformationProtectionPolicy refresh(Context context) {

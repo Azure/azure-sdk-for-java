@@ -25,6 +25,7 @@ import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -424,6 +425,8 @@ public final class AppendBlobClient extends BlobClientBase {
      * contains the {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status
      * code is 201, a new append blob was successfully created. If status code is 409, an append blob already existed at
      * this location.
+     * @throws BlobStorageException If the blob could not be created for any other reason, for example when a blob of a
+     * different type already exists at this location (status code 409, error code InvalidBlobType).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,
@@ -434,7 +437,7 @@ public final class AppendBlobClient extends BlobClientBase {
         try {
             return createWithResponse(finalOptions, timeout, context);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409) {
+            if (ModelHelper.isConflictWithErrorCode(e, BlobErrorCode.BLOB_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {

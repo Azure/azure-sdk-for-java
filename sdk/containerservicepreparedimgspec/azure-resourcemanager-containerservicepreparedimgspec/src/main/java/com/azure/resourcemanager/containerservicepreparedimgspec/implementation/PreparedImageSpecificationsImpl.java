@@ -68,10 +68,7 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
     }
 
     public PagedIterable<PreparedImageSpecification> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PreparedImageSpecificationInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PreparedImageSpecificationImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<PreparedImageSpecification> listByResourceGroup(String resourceGroupName, Context context) {
@@ -82,9 +79,7 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
     }
 
     public PagedIterable<PreparedImageSpecification> list() {
-        PagedIterable<PreparedImageSpecificationInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PreparedImageSpecificationImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<PreparedImageSpecification> list(Context context) {
@@ -114,10 +109,7 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
 
     public PagedIterable<PreparedImageSpecificationVersion> listVersions(String resourceGroupName,
         String preparedImageSpecificationName) {
-        PagedIterable<PreparedImageSpecificationVersionInner> inner
-            = this.serviceClient().listVersions(resourceGroupName, preparedImageSpecificationName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PreparedImageSpecificationVersionImpl(inner1, this.manager()));
+        return this.listVersions(resourceGroupName, preparedImageSpecificationName, Context.NONE);
     }
 
     public PagedIterable<PreparedImageSpecificationVersion> listVersions(String resourceGroupName,
@@ -129,76 +121,31 @@ public final class PreparedImageSpecificationsImpl implements PreparedImageSpeci
     }
 
     public PreparedImageSpecification getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "preparedImageSpecificationName");
-        if (preparedImageSpecificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, preparedImageSpecificationName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PreparedImageSpecification> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String preparedImageSpecificationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "preparedImageSpecificationName");
-        if (preparedImageSpecificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));
-        }
+            "preparedImageSpecificationName", "preparedImageSpecifications", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, preparedImageSpecificationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "preparedImageSpecificationName");
-        if (preparedImageSpecificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));
-        }
         String localIfMatch = null;
-        this.delete(resourceGroupName, preparedImageSpecificationName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String preparedImageSpecificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String preparedImageSpecificationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}",
-            "preparedImageSpecificationName");
-        if (preparedImageSpecificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'preparedImageSpecifications'.", id)));
-        }
+            "preparedImageSpecificationName", "preparedImageSpecifications", LOGGER);
         this.delete(resourceGroupName, preparedImageSpecificationName, ifMatch, context);
     }
 

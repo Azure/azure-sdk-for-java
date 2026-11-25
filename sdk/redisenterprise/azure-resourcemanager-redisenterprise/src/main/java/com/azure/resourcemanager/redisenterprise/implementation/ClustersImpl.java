@@ -23,7 +23,7 @@ public final class ClustersImpl implements Clusters {
     }
 
     public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName) {
-        this.serviceClient().unlinkMigratedEndpoint(resourceGroupName, clusterName);
+        this.unlinkMigratedEndpoint(resourceGroupName, clusterName, Context.NONE);
     }
 
     public void unlinkMigratedEndpoint(String resourceGroupName, String clusterName, Context context) {

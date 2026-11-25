@@ -78,7 +78,9 @@ public class KnowledgeSourceVectorizer implements JsonSerializable<KnowledgeSour
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("azureOpenAI".equals(discriminatorValue)) {
+                if ("openAICompatible".equals(discriminatorValue)) {
+                    return KnowledgeSourceOpenAICompatibleVectorizer.fromJson(readerToUse.reset());
+                } else if ("azureOpenAI".equals(discriminatorValue)) {
                     return KnowledgeSourceAzureOpenAIVectorizer.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());

@@ -155,10 +155,7 @@ public final class FirewallResourceImpl
     }
 
     public FirewallResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewalls()
-            .createOrUpdate(resourceGroupName, firewallName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FirewallResource create(Context context) {
@@ -181,11 +178,7 @@ public final class FirewallResourceImpl
     }
 
     public FirewallResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewalls()
-            .updateWithResponse(resourceGroupName, firewallName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FirewallResource apply(Context context) {
@@ -209,11 +202,7 @@ public final class FirewallResourceImpl
     }
 
     public FirewallResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFirewalls()
-            .getByResourceGroupWithResponse(resourceGroupName, firewallName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FirewallResource refresh(Context context) {

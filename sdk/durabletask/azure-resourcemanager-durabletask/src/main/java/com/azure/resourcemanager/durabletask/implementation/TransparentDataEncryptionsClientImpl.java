@@ -195,17 +195,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         return getWithResponseAsync(resourceGroupName, schedulerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Transparent Data Encryption along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransparentDataEncryptionInner> getWithResponse(String resourceGroupName, String schedulerName,
         Context context) {
@@ -214,16 +204,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             resourceGroupName, schedulerName, accept, context);
     }
 
-    /**
-     * Get a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Transparent Data Encryption.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransparentDataEncryptionInner get(String resourceGroupName, String schedulerName) {
         return getWithResponse(resourceGroupName, schedulerName, Context.NONE).getValue();
@@ -267,11 +248,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String schedulerName,
         TransparentDataEncryptionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
     /**
@@ -317,37 +294,14 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             this.client.getContext());
     }
 
-    /**
-     * Create or Update a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a transparent data encryption resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>
         beginCreateOrReplace(String resourceGroupName, String schedulerName, TransparentDataEncryptionInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, schedulerName, resource);
-        return this.client.<TransparentDataEncryptionInner, TransparentDataEncryptionInner>getLroResult(response,
-            TransparentDataEncryptionInner.class, TransparentDataEncryptionInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or Update a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a transparent data encryption resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TransparentDataEncryptionInner>, TransparentDataEncryptionInner> beginCreateOrReplace(
         String resourceGroupName, String schedulerName, TransparentDataEncryptionInner resource, Context context) {
@@ -376,39 +330,19 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a transparent data encryption resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransparentDataEncryptionInner createOrReplace(String resourceGroupName, String schedulerName,
         TransparentDataEncryptionInner resource) {
-        return beginCreateOrReplace(resourceGroupName, schedulerName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or Update a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a transparent data encryption resource belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransparentDataEncryptionInner createOrReplace(String resourceGroupName, String schedulerName,
         TransparentDataEncryptionInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, schedulerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, schedulerName, resource, context));
     }
 
     /**
@@ -441,8 +375,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schedulerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -479,33 +412,13 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             this.client.getContext());
     }
 
-    /**
-     * Delete a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, schedulerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName,
         Context context) {
@@ -528,33 +441,16 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
         return beginDeleteAsync(resourceGroupName, schedulerName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName) {
-        beginDelete(resourceGroupName, schedulerName).getFinalResult();
+        delete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Transparent Data Encryption.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName, Context context) {
-        beginDelete(resourceGroupName, schedulerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, schedulerName, context));
     }
 
     /**
@@ -610,12 +506,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TransparentDataEncryptionInner> listBySchedulerSinglePage(String resourceGroupName,
         String schedulerName) {
-        final String accept = "application/json";
-        Response<TransparentDataEncryptionListResult> res
-            = service.listBySchedulerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerSinglePage(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -640,36 +531,14 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Transparent Data Encryptions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TransparentDataEncryption list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransparentDataEncryptionInner> listByScheduler(String resourceGroupName,
         String schedulerName) {
-        return new PagedIterable<>(() -> listBySchedulerSinglePage(resourceGroupName, schedulerName),
-            nextLink -> listBySchedulerNextSinglePage(nextLink));
+        return listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * List Transparent Data Encryptions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TransparentDataEncryption list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransparentDataEncryptionInner> listByScheduler(String resourceGroupName, String schedulerName,
         Context context) {
@@ -708,11 +577,7 @@ public final class TransparentDataEncryptionsClientImpl implements TransparentDa
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TransparentDataEncryptionInner> listBySchedulerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TransparentDataEncryptionListResult> res
-            = service.listBySchedulerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

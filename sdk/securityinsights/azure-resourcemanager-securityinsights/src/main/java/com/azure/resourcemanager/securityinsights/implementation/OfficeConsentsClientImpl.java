@@ -170,18 +170,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an office365 consent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param consentId consent ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an office365 consent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OfficeConsentInner> getWithResponse(String resourceGroupName, String workspaceName,
         String consentId, Context context) {
@@ -190,17 +179,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
             resourceGroupName, workspaceName, consentId, accept, context);
     }
 
-    /**
-     * Gets an office365 consent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param consentId consent ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an office365 consent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OfficeConsentInner get(String resourceGroupName, String workspaceName, String consentId) {
         return getWithResponse(resourceGroupName, workspaceName, consentId, Context.NONE).getValue();
@@ -242,18 +221,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, consentId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the office365 consent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param consentId consent ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String consentId,
         Context context) {
@@ -261,16 +229,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, consentId, context);
     }
 
-    /**
-     * Delete the office365 consent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param consentId consent ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String consentId) {
         deleteWithResponse(resourceGroupName, workspaceName, consentId, Context.NONE);
@@ -326,11 +285,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OfficeConsentInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<OfficeConsentList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -354,33 +309,13 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all office365 consents.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all office365 consents as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OfficeConsentInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all office365 consents.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all office365 consents as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OfficeConsentInner> list(String resourceGroupName, String workspaceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, context),
@@ -416,11 +351,7 @@ public final class OfficeConsentsClientImpl implements OfficeConsentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OfficeConsentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OfficeConsentList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

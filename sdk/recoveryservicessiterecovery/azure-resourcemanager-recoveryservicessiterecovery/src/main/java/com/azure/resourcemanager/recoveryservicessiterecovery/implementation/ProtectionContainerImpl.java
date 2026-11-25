@@ -25,6 +25,18 @@ public final class ProtectionContainerImpl implements ProtectionContainer, Prote
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}",
+            "resourceName");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}",
+            "fabricName");
+        this.protectionContainerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}",
+            "protectionContainerName");
     }
 
     public String id() {
@@ -86,11 +98,7 @@ public final class ProtectionContainerImpl implements ProtectionContainer, Prote
     }
 
     public ProtectionContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionContainers()
-            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, createCreationInput,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionContainer create(Context context) {
@@ -108,11 +116,7 @@ public final class ProtectionContainerImpl implements ProtectionContainer, Prote
     }
 
     public ProtectionContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionContainers()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionContainer refresh(Context context) {

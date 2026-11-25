@@ -70,11 +70,7 @@ public final class BrokerAuthorizationResourceImpl
     }
 
     public BrokerAuthorizationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthorizations()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, authorizationName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BrokerAuthorizationResource create(Context context) {
@@ -96,11 +92,7 @@ public final class BrokerAuthorizationResourceImpl
     }
 
     public BrokerAuthorizationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthorizations()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, authorizationName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BrokerAuthorizationResource apply(Context context) {
@@ -129,11 +121,7 @@ public final class BrokerAuthorizationResourceImpl
     }
 
     public BrokerAuthorizationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthorizations()
-            .getWithResponse(resourceGroupName, instanceName, brokerName, authorizationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BrokerAuthorizationResource refresh(Context context) {

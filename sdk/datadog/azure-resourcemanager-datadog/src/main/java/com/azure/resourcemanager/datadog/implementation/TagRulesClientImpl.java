@@ -175,18 +175,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a tag rule set for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Rule set name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitoringTagRulesInner> getWithResponse(String resourceGroupName, String monitorName,
         String ruleSetName, Context context) {
@@ -195,17 +184,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             resourceGroupName, monitorName, ruleSetName, accept, context);
     }
 
-    /**
-     * Get a tag rule set for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Rule set name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoringTagRulesInner get(String resourceGroupName, String monitorName, String ruleSetName) {
         return getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
@@ -253,19 +232,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a tag rule set for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Rule set name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitoringTagRulesInner> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
         String ruleSetName, MonitoringTagRulesInner body, Context context) {
@@ -274,17 +241,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
             this.client.getSubscriptionId(), resourceGroupName, monitorName, ruleSetName, accept, body, context);
     }
 
-    /**
-     * Create or update a tag rule set for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Rule set name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoringTagRulesInner createOrUpdate(String resourceGroupName, String monitorName, String ruleSetName) {
         final MonitoringTagRulesInner body = null;
@@ -341,12 +298,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoringTagRulesInner> listSinglePage(String resourceGroupName, String monitorName) {
-        final String accept = "application/json";
-        Response<MonitoringTagRulesListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -371,33 +323,13 @@ public final class TagRulesClientImpl implements TagRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the tag rules for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoringTagRulesInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List the tag rules for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoringTagRulesInner> list(String resourceGroupName, String monitorName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName, context),
@@ -437,11 +369,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MonitoringTagRulesInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MonitoringTagRulesListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -37,6 +37,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState PROVISIONING = fromString("Provisioning");
 
     /**
+     * The resource is being updated.
+     */
+    public static final ProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of ProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

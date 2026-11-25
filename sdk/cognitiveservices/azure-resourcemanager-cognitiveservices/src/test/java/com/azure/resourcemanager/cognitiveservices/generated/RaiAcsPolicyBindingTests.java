@@ -17,35 +17,32 @@ public final class RaiAcsPolicyBindingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiAcsPolicyBinding model = BinaryData.fromString(
-            "{\"id\":\"rttikteusqc\",\"query\":\"vyklxuby\",\"aacs_moderation\":{\"subject_format\":\"text\",\"harm_configs\":[{\"category\":\"PromptInjection\",\"harm_config_id\":\"fblcq\"},{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"bgq\"},{\"category\":\"Violence\",\"harm_config_id\":\"talmett\"}]}}")
+            "{\"id\":\"cxnafbwqrooh\",\"query\":\"ovmaonurjtum\",\"aacs_moderation\":{\"subject_format\":\"canonical_json\",\"harm_configs\":[{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"ecmslclbl\"}]}}")
             .toObject(RaiAcsPolicyBinding.class);
-        Assertions.assertEquals("rttikteusqc", model.id());
-        Assertions.assertEquals("vyklxuby", model.query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT, model.aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+        Assertions.assertEquals("cxnafbwqrooh", model.id());
+        Assertions.assertEquals("ovmaonurjtum", model.query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON, model.aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
             model.aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("fblcq", model.aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("ecmslclbl", model.aacsModeration().harmConfigs().get(0).harmConfigId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiAcsPolicyBinding model = new RaiAcsPolicyBinding().withId("rttikteusqc")
-            .withQuery("vyklxuby")
-            .withAacsModeration(
-                new RaiAcsModerationBindingExtension().withSubjectFormat(RaiAcsModerationSubjectFormat.TEXT)
-                    .withHarmConfigs(Arrays.asList(
-                        new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
-                            .withHarmConfigId("fblcq"),
-                        new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
-                            .withHarmConfigId("bgq"),
-                        new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.VIOLENCE)
-                            .withHarmConfigId("talmett"))));
+        RaiAcsPolicyBinding model
+            = new RaiAcsPolicyBinding().withId("cxnafbwqrooh")
+                .withQuery("ovmaonurjtum")
+                .withAacsModeration(new RaiAcsModerationBindingExtension()
+                    .withSubjectFormat(RaiAcsModerationSubjectFormat.CANONICAL_JSON)
+                    .withHarmConfigs(Arrays
+                        .asList(new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
+                            .withHarmConfigId("ecmslclbl"))));
         model = BinaryData.fromObject(model).toObject(RaiAcsPolicyBinding.class);
-        Assertions.assertEquals("rttikteusqc", model.id());
-        Assertions.assertEquals("vyklxuby", model.query());
-        Assertions.assertEquals(RaiAcsModerationSubjectFormat.TEXT, model.aacsModeration().subjectFormat());
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION,
+        Assertions.assertEquals("cxnafbwqrooh", model.id());
+        Assertions.assertEquals("ovmaonurjtum", model.query());
+        Assertions.assertEquals(RaiAcsModerationSubjectFormat.CANONICAL_JSON, model.aacsModeration().subjectFormat());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT,
             model.aacsModeration().harmConfigs().get(0).category());
-        Assertions.assertEquals("fblcq", model.aacsModeration().harmConfigs().get(0).harmConfigId());
+        Assertions.assertEquals("ecmslclbl", model.aacsModeration().harmConfigs().get(0).harmConfigId());
     }
 }

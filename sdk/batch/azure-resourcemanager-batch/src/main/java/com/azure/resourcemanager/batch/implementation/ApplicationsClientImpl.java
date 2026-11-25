@@ -242,21 +242,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> getWithResponse(String resourceGroupName, String accountName,
         String applicationName, Context context) {
@@ -287,20 +273,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             resourceGroupName, accountName, applicationName, accept, context);
     }
 
-    /**
-     * Gets information about the specified application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified application.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner get(String resourceGroupName, String accountName, String applicationName) {
         return getWithResponse(resourceGroupName, accountName, applicationName, Context.NONE).getValue();
@@ -376,22 +349,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Adds an application to the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param parameters The parameters for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> createWithResponse(String resourceGroupName, String accountName,
         String applicationName, ApplicationInner parameters, Context context) {
@@ -426,20 +384,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             context);
     }
 
-    /**
-     * Adds an application to the specified Batch account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner create(String resourceGroupName, String accountName, String applicationName) {
         final ApplicationInner parameters = null;
@@ -520,22 +465,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates settings for the specified application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param parameters The parameters for the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInner> updateWithResponse(String resourceGroupName, String accountName,
         String applicationName, ApplicationInner parameters, Context context) {
@@ -574,21 +504,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             parameters, context);
     }
 
-    /**
-     * Updates settings for the specified application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about an application in a Batch account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner update(String resourceGroupName, String accountName, String applicationName,
         ApplicationInner parameters) {
@@ -657,21 +573,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String applicationName,
         Context context) {
@@ -701,19 +603,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, applicationName, context);
     }
 
-    /**
-     * Deletes an application.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param applicationName The name of the application. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String applicationName) {
         deleteWithResponse(resourceGroupName, accountName, applicationName, Context.NONE);
@@ -818,29 +708,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInner> listSinglePage(String resourceGroupName, String accountName,
         Integer maxresults) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListApplicationsResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, maxresults, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, maxresults, Context.NONE);
     }
 
     /**
@@ -886,41 +754,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the applications in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of performing list applications as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(String resourceGroupName, String accountName) {
         final Integer maxresults = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, maxresults),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, maxresults, Context.NONE);
     }
 
-    /**
-     * Lists all of the applications in the specified account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName A name for the Batch account which must be unique within the region. Batch account names must
-     * be between 3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as
-     * part of the DNS name that is used to access the Batch service in the region in which the account is created. For
-     * example: http://accountname.region.batch.azure.com/.
-     * @param maxresults The maximum number of items to return in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of performing list applications as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(String resourceGroupName, String accountName, Integer maxresults,
         Context context) {
@@ -965,20 +806,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ListApplicationsResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

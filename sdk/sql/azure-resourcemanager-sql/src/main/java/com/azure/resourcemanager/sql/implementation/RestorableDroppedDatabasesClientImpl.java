@@ -92,19 +92,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a restorable dropped database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param expand The child resources to include in the response.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped database along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestorableDroppedDatabaseInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String restorableDroppedDatabaseId, String expand, String filter) {
@@ -177,17 +165,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             resourceGroupName, serverName, restorableDroppedDatabaseId, expand, filter, accept, context);
     }
 
-    /**
-     * Gets a restorable dropped database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped database on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorableDroppedDatabaseInner> getAsync(String resourceGroupName, String serverName,
         String restorableDroppedDatabaseId) {
@@ -197,20 +175,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a restorable dropped database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @param expand The child resources to include in the response.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorableDroppedDatabaseInner> getWithResponse(String resourceGroupName, String serverName,
         String restorableDroppedDatabaseId, String expand, String filter, Context context) {
@@ -218,17 +183,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             .block();
     }
 
-    /**
-     * Gets a restorable dropped database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param restorableDroppedDatabaseId The restorableDroppedDatabaseId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restorable dropped database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestorableDroppedDatabaseInner get(String resourceGroupName, String serverName,
         String restorableDroppedDatabaseId) {
@@ -319,18 +274,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of restorable dropped databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param skiptoken An opaque token that identifies a starting point in the collection.
-     * @param top The number of elements to return from the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped databases as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDroppedDatabaseInner> listByServerAsync(String resourceGroupName, String serverName,
         String skiptoken, Long top) {
@@ -338,16 +282,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of restorable dropped databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped databases as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDroppedDatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
         final String skiptoken = null;
@@ -377,16 +312,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of restorable dropped databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDroppedDatabaseInner> listByServer(String resourceGroupName, String serverName) {
         final String skiptoken = null;
@@ -394,19 +320,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, skiptoken, top));
     }
 
-    /**
-     * Gets a list of restorable dropped databases.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param skiptoken An opaque token that identifies a starting point in the collection.
-     * @param top The number of elements to return from the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of restorable dropped databases as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDroppedDatabaseInner> listByServer(String resourceGroupName, String serverName,
         String skiptoken, Long top, Context context) {

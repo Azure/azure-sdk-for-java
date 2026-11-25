@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.ListRegionsSuccessResponse;
@@ -16,6 +17,7 @@ import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
+import com.azure.resourcemanager.confluent.models.SaaSData;
 import com.azure.resourcemanager.confluent.models.UserDetail;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -116,10 +118,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .create(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OrganizationResource create(Context context) {
@@ -141,11 +140,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .updateWithResponse(resourceGroupName, organizationName, updateBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OrganizationResource apply(Context context) {
@@ -169,11 +164,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OrganizationResource refresh(Context context) {
@@ -191,6 +182,23 @@ public final class OrganizationResourceImpl
 
     public ListRegionsSuccessResponse listRegions(ListAccessRequestModel body) {
         return serviceManager.organizations().listRegions(resourceGroupName, organizationName, body);
+    }
+
+    public OrganizationResource linkSaaS(SaaSData body) {
+        return serviceManager.organizations().linkSaaS(resourceGroupName, organizationName, body);
+    }
+
+    public OrganizationResource linkSaaS(SaaSData body, Context context) {
+        return serviceManager.organizations().linkSaaS(resourceGroupName, organizationName, body, context);
+    }
+
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(Context context) {
+        return serviceManager.organizations()
+            .latestLinkedSaaSWithResponse(resourceGroupName, organizationName, context);
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS() {
+        return serviceManager.organizations().latestLinkedSaaS(resourceGroupName, organizationName);
     }
 
     public OrganizationResourceImpl withRegion(Region location) {

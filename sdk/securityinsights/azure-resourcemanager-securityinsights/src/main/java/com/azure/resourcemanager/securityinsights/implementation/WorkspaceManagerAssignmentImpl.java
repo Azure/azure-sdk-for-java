@@ -86,12 +86,7 @@ public final class WorkspaceManagerAssignmentImpl
     }
 
     public WorkspaceManagerAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerAssignmentName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceManagerAssignment create(Context context) {
@@ -115,12 +110,7 @@ public final class WorkspaceManagerAssignmentImpl
     }
 
     public WorkspaceManagerAssignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, workspaceManagerAssignmentName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceManagerAssignment apply(Context context) {
@@ -148,11 +138,7 @@ public final class WorkspaceManagerAssignmentImpl
     }
 
     public WorkspaceManagerAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceManagerAssignments()
-            .getWithResponse(resourceGroupName, workspaceName, workspaceManagerAssignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceManagerAssignment refresh(Context context) {

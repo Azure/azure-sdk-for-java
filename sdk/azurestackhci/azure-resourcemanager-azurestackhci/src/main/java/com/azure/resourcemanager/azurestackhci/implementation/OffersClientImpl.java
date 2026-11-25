@@ -194,21 +194,7 @@ public final class OffersClientImpl implements OffersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Offer resource details within a publisher of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @param offerName The name of the offer available within HCI cluster.
-     * @param expand Specify $expand=content,contentVersion to populate additional fields related to the marketplace
-     * offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return offer resource details within a publisher of HCI Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OfferInner> getWithResponse(String resourceGroupName, String clusterName, String publisherName,
         String offerName, String expand, Context context) {
@@ -217,18 +203,7 @@ public final class OffersClientImpl implements OffersClient {
             resourceGroupName, clusterName, publisherName, offerName, expand, accept, context);
     }
 
-    /**
-     * Get Offer resource details within a publisher of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @param offerName The name of the offer available within HCI cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return offer resource details within a publisher of HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OfferInner get(String resourceGroupName, String clusterName, String publisherName, String offerName) {
         final String expand = null;
@@ -320,12 +295,7 @@ public final class OffersClientImpl implements OffersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OfferInner> listByPublisherSinglePage(String resourceGroupName, String clusterName,
         String publisherName, String expand) {
-        final String accept = "application/json";
-        Response<OfferList> res = service.listByPublisherSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, publisherName, expand, accept,
-            Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPublisherSinglePage(resourceGroupName, clusterName, publisherName, expand, Context.NONE);
     }
 
     /**
@@ -352,40 +322,15 @@ public final class OffersClientImpl implements OffersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Offers available for a publisher within the HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Offer proxy resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OfferInner> listByPublisher(String resourceGroupName, String clusterName,
         String publisherName) {
         final String expand = null;
-        return new PagedIterable<>(
-            () -> listByPublisherSinglePage(resourceGroupName, clusterName, publisherName, expand),
-            nextLink -> listByPublisherNextSinglePage(nextLink));
+        return listByPublisher(resourceGroupName, clusterName, publisherName, expand, Context.NONE);
     }
 
-    /**
-     * List Offers available for a publisher within the HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @param expand Specify $expand=content,contentVersion to populate additional fields related to the marketplace
-     * offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Offer proxy resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OfferInner> listByPublisher(String resourceGroupName, String clusterName, String publisherName,
         String expand, Context context) {
@@ -469,11 +414,7 @@ public final class OffersClientImpl implements OffersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OfferInner> listByClusterSinglePage(String resourceGroupName, String clusterName,
         String expand) {
-        final String accept = "application/json";
-        Response<OfferList> res = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, expand, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterSinglePage(resourceGroupName, clusterName, expand, Context.NONE);
     }
 
     /**
@@ -499,36 +440,14 @@ public final class OffersClientImpl implements OffersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Offers available across publishers for the HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Offer proxy resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OfferInner> listByCluster(String resourceGroupName, String clusterName) {
         final String expand = null;
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, expand),
-            nextLink -> listByClusterNextSinglePage(nextLink));
+        return listByCluster(resourceGroupName, clusterName, expand, Context.NONE);
     }
 
-    /**
-     * List Offers available across publishers for the HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param expand Specify $expand=content,contentVersion to populate additional fields related to the marketplace
-     * offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Offer proxy resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OfferInner> listByCluster(String resourceGroupName, String clusterName, String expand,
         Context context) {
@@ -567,11 +486,7 @@ public final class OffersClientImpl implements OffersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OfferInner> listByPublisherNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OfferList> res
-            = service.listByPublisherNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPublisherNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -623,11 +538,7 @@ public final class OffersClientImpl implements OffersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OfferInner> listByClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OfferList> res
-            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

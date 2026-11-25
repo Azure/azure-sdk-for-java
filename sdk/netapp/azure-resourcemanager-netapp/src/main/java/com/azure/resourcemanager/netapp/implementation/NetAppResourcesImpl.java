@@ -119,12 +119,7 @@ public final class NetAppResourcesImpl implements NetAppResources {
     }
 
     public NetworkSiblingSet updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body) {
-        NetworkSiblingSetInner inner = this.serviceClient().updateNetworkSiblingSet(location, body);
-        if (inner != null) {
-            return new NetworkSiblingSetImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateNetworkSiblingSet(location, body, Context.NONE);
     }
 
     public NetworkSiblingSet updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body,

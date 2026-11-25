@@ -92,10 +92,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     }
 
     public ScheduledAction create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScheduledActions()
-            .createOrUpdate(resourceGroupName, scheduledActionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ScheduledAction create(Context context) {
@@ -117,11 +114,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     }
 
     public ScheduledAction apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScheduledActions()
-            .updateWithResponse(resourceGroupName, scheduledActionName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ScheduledAction apply(Context context) {
@@ -145,11 +138,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     }
 
     public ScheduledAction refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getScheduledActions()
-            .getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ScheduledAction refresh(Context context) {

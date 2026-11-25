@@ -125,6 +125,8 @@ public final class EndpointBasedEvaluatorDefinition extends EvaluatorDefinition 
         jsonWriter.writeMapField("metrics", getMetrics(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("connection_name", this.connectionName);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("schema_version",
+            this.schemaVersion == null ? null : this.schemaVersion.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -145,6 +147,7 @@ public final class EndpointBasedEvaluatorDefinition extends EvaluatorDefinition 
             Map<String, EvaluatorMetric> metrics = null;
             String connectionName = null;
             EvaluatorDefinitionType type = EvaluatorDefinitionType.ENDPOINT;
+            EndpointEvaluatorSchemaVersion schemaVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -160,6 +163,8 @@ public final class EndpointBasedEvaluatorDefinition extends EvaluatorDefinition 
                     connectionName = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = EvaluatorDefinitionType.fromString(reader.getString());
+                } else if ("schema_version".equals(fieldName)) {
+                    schemaVersion = EndpointEvaluatorSchemaVersion.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -170,7 +175,48 @@ public final class EndpointBasedEvaluatorDefinition extends EvaluatorDefinition 
             deserializedEndpointBasedEvaluatorDefinition.setDataSchema(dataSchema);
             deserializedEndpointBasedEvaluatorDefinition.setMetrics(metrics);
             deserializedEndpointBasedEvaluatorDefinition.type = type;
+            deserializedEndpointBasedEvaluatorDefinition.schemaVersion = schemaVersion;
             return deserializedEndpointBasedEvaluatorDefinition;
         });
+    }
+
+    /*
+     * Version of the contract between the service and the evaluator endpoint. Optional on create; if omitted, the
+     * service uses `0.0.1`, so existing clients that do not send this property are unaffected. Stored evaluator
+     * versions keep the value they were created with. Registration rejects values the service does not support; the
+     * type stays extensible so responses can return newer versions. Version `0.0.2` requires `metrics` to contain
+     * exactly one metric, of type `ordinal` or `continuous`.
+     */
+    @Generated
+    private EndpointEvaluatorSchemaVersion schemaVersion;
+
+    /**
+     * Get the schemaVersion property: Version of the contract between the service and the evaluator endpoint. Optional
+     * on create; if omitted, the service uses `0.0.1`, so existing clients that do not send this property are
+     * unaffected. Stored evaluator versions keep the value they were created with. Registration rejects values the
+     * service does not support; the type stays extensible so responses can return newer versions. Version `0.0.2`
+     * requires `metrics` to contain exactly one metric, of type `ordinal` or `continuous`.
+     *
+     * @return the schemaVersion value.
+     */
+    @Generated
+    public EndpointEvaluatorSchemaVersion getSchemaVersion() {
+        return this.schemaVersion;
+    }
+
+    /**
+     * Set the schemaVersion property: Version of the contract between the service and the evaluator endpoint. Optional
+     * on create; if omitted, the service uses `0.0.1`, so existing clients that do not send this property are
+     * unaffected. Stored evaluator versions keep the value they were created with. Registration rejects values the
+     * service does not support; the type stays extensible so responses can return newer versions. Version `0.0.2`
+     * requires `metrics` to contain exactly one metric, of type `ordinal` or `continuous`.
+     *
+     * @param schemaVersion the schemaVersion value to set.
+     * @return the EndpointBasedEvaluatorDefinition object itself.
+     */
+    @Generated
+    public EndpointBasedEvaluatorDefinition setSchemaVersion(EndpointEvaluatorSchemaVersion schemaVersion) {
+        this.schemaVersion = schemaVersion;
+        return this;
     }
 }

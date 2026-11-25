@@ -67,16 +67,7 @@ public final class AsyncOperationStatusClientImpl implements AsyncOperationStatu
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * For checking the ongoing status of an operation.
-     * 
-     * @param location The location at which operation was triggered.
-     * @param operationId The ID of asynchronous operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asynchronous operation status along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationStatusInner>> getWithResponseAsync(String location, String operationId) {
         if (this.client.getEndpoint() == null) {
@@ -134,47 +125,19 @@ public final class AsyncOperationStatusClientImpl implements AsyncOperationStatu
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * For checking the ongoing status of an operation.
-     * 
-     * @param location The location at which operation was triggered.
-     * @param operationId The ID of asynchronous operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asynchronous operation status on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperationStatusInner> getAsync(String location, String operationId) {
         return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * For checking the ongoing status of an operation.
-     * 
-     * @param location The location at which operation was triggered.
-     * @param operationId The ID of asynchronous operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asynchronous operation status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
     }
 
-    /**
-     * For checking the ongoing status of an operation.
-     * 
-     * @param location The location at which operation was triggered.
-     * @param operationId The ID of asynchronous operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return asynchronous operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();

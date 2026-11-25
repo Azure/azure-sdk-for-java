@@ -90,11 +90,7 @@ public final class ValidationExecutionPlanImpl
     }
 
     public ValidationExecutionPlan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationExecutionPlans()
-            .createOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ValidationExecutionPlan create(Context context) {
@@ -118,11 +114,7 @@ public final class ValidationExecutionPlanImpl
     }
 
     public ValidationExecutionPlan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationExecutionPlans()
-            .update(resourceGroupName, cloudValidationName, validationExecutionPlanName, updateProperties,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ValidationExecutionPlan apply(Context context) {
@@ -148,11 +140,7 @@ public final class ValidationExecutionPlanImpl
     }
 
     public ValidationExecutionPlan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getValidationExecutionPlans()
-            .getWithResponse(resourceGroupName, cloudValidationName, validationExecutionPlanName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ValidationExecutionPlan refresh(Context context) {

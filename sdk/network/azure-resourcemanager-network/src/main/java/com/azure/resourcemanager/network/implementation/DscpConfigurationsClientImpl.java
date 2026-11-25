@@ -137,16 +137,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DSCP Configuration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DscpConfigurationInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String dscpConfigurationName) {
@@ -166,7 +157,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono
                 .error(new IllegalArgumentException("Parameter dscpConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -204,23 +195,14 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono
                 .error(new IllegalArgumentException("Parameter dscpConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, dscpConfigurationName, accept, context);
     }
 
-    /**
-     * Gets a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DSCP Configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DscpConfigurationInner> getByResourceGroupAsync(String resourceGroupName,
         String dscpConfigurationName) {
@@ -228,50 +210,20 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DSCP Configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DscpConfigurationInner> getByResourceGroupWithResponse(String resourceGroupName,
         String dscpConfigurationName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, dscpConfigurationName, context).block();
     }
 
-    /**
-     * Gets a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DSCP Configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DscpConfigurationInner getByResourceGroup(String resourceGroupName, String dscpConfigurationName) {
         return getByResourceGroupWithResponse(resourceGroupName, dscpConfigurationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param parameters Parameters supplied to the create or update DscpConfiguration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return differentiated Services Code Point configuration for any given network interface along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String dscpConfigurationName, DscpConfigurationInner parameters) {
@@ -296,7 +248,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -343,7 +295,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -351,18 +303,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             resourceGroupName, dscpConfigurationName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param parameters Parameters supplied to the create or update DscpConfiguration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of differentiated Services Code Point configuration for any given
-     * network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters) {
@@ -396,37 +337,14 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             this.client.getHttpPipeline(), DscpConfigurationInner.class, DscpConfigurationInner.class, context);
     }
 
-    /**
-     * Creates or updates a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param parameters Parameters supplied to the create or update DscpConfiguration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of differentiated Services Code Point configuration for any given
-     * network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param parameters Parameters supplied to the create or update DscpConfiguration operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of differentiated Services Code Point configuration for any given
-     * network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters, Context context) {
@@ -434,18 +352,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param parameters Parameters supplied to the create or update DscpConfiguration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return differentiated Services Code Point configuration for any given network interface on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DscpConfigurationInner> createOrUpdateAsync(String resourceGroupName, String dscpConfigurationName,
         DscpConfigurationInner parameters) {
@@ -473,51 +380,21 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param parameters Parameters supplied to the create or update DscpConfiguration operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return differentiated Services Code Point configuration for any given network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DscpConfigurationInner createOrUpdate(String resourceGroupName, String dscpConfigurationName,
         DscpConfigurationInner parameters) {
         return createOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters).block();
     }
 
-    /**
-     * Creates or updates a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param parameters Parameters supplied to the create or update DscpConfiguration operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return differentiated Services Code Point configuration for any given network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DscpConfigurationInner createOrUpdate(String resourceGroupName, String dscpConfigurationName,
         DscpConfigurationInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters, context).block();
     }
 
-    /**
-     * Deletes a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String dscpConfigurationName) {
@@ -537,7 +414,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono
                 .error(new IllegalArgumentException("Parameter dscpConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, dscpConfigurationName, context))
@@ -574,22 +451,13 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono
                 .error(new IllegalArgumentException("Parameter dscpConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             dscpConfigurationName, context);
     }
 
-    /**
-     * Deletes a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dscpConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, dscpConfigurationName);
@@ -618,48 +486,20 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             context);
     }
 
-    /**
-     * Deletes a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dscpConfigurationName) {
         return this.beginDeleteAsync(resourceGroupName, dscpConfigurationName).getSyncPoller();
     }
 
-    /**
-     * Deletes a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dscpConfigurationName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, dscpConfigurationName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String dscpConfigurationName) {
         return beginDeleteAsync(resourceGroupName, dscpConfigurationName).last()
@@ -683,30 +523,13 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dscpConfigurationName) {
         deleteAsync(resourceGroupName, dscpConfigurationName).block();
     }
 
-    /**
-     * Deletes a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dscpConfigurationName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dscpConfigurationName, Context context) {
         deleteAsync(resourceGroupName, dscpConfigurationName, context).block();
@@ -735,7 +558,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -770,7 +593,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -780,15 +603,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DSCP Configuration as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DscpConfigurationInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -811,30 +626,13 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DSCP Configuration as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscpConfigurationInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets a DSCP Configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DSCP Configuration as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscpConfigurationInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -858,7 +656,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -888,7 +686,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -896,13 +694,7 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all dscp configurations in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all dscp configurations in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DscpConfigurationInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -923,27 +715,13 @@ public final class DscpConfigurationsClientImpl implements InnerSupportsGet<Dscp
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all dscp configurations in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all dscp configurations in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscpConfigurationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all dscp configurations in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all dscp configurations in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscpConfigurationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

@@ -218,18 +218,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Metadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataModelInner> getWithResponse(String resourceGroupName, String workspaceName,
         String metadataName, Context context) {
@@ -238,17 +227,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
             resourceGroupName, workspaceName, metadataName, accept, context);
     }
 
-    /**
-     * Get a Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Metadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetadataModelInner get(String resourceGroupName, String workspaceName, String metadataName) {
         return getWithResponse(resourceGroupName, workspaceName, metadataName, Context.NONE).getValue();
@@ -297,19 +276,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @param metadata Metadata resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataModelInner> createWithResponse(String resourceGroupName, String workspaceName,
         String metadataName, MetadataModelInner metadata, Context context) {
@@ -320,18 +287,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
             metadata, context);
     }
 
-    /**
-     * Create a Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @param metadata Metadata resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetadataModelInner create(String resourceGroupName, String workspaceName, String metadataName,
         MetadataModelInner metadata) {
@@ -381,19 +337,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update an existing Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @param metadataPatch Partial metadata request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataModelInner> updateWithResponse(String resourceGroupName, String workspaceName,
         String metadataName, MetadataPatch metadataPatch, Context context) {
@@ -404,18 +348,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
             metadataPatch, context);
     }
 
-    /**
-     * Update an existing Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @param metadataPatch Partial metadata request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetadataModelInner update(String resourceGroupName, String workspaceName, String metadataName,
         MetadataPatch metadataPatch) {
@@ -459,18 +392,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, metadataName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String metadataName,
         Context context) {
@@ -478,16 +400,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, metadataName, context);
     }
 
-    /**
-     * Delete a Metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param metadataName The Metadata name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String metadataName) {
         deleteWithResponse(resourceGroupName, workspaceName, metadataName, Context.NONE);
@@ -581,12 +494,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetadataModelInner> listSinglePage(String resourceGroupName, String workspaceName,
         String filter, String orderby, Integer top, Integer skip) {
-        final String accept = "application/json";
-        Response<MetadataList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, filter, orderby, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, filter, orderby, top, skip, Context.NONE);
     }
 
     /**
@@ -616,42 +524,17 @@ public final class MetadatasClientImpl implements MetadatasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List of all metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the metadata as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataModelInner> list(String resourceGroupName, String workspaceName) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, filter, orderby, top, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, filter, orderby, top, skip, Context.NONE);
     }
 
-    /**
-     * List of all metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skip Used to skip n elements in the OData query (offset). Returns a nextLink to the next page of results
-     * if there are any left.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the metadata as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataModelInner> list(String resourceGroupName, String workspaceName, String filter,
         String orderby, Integer top, Integer skip, Context context) {
@@ -689,10 +572,7 @@ public final class MetadatasClientImpl implements MetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetadataModelInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MetadataList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

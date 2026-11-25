@@ -16,24 +16,24 @@ public final class SmbSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SmbSettings model = BinaryData.fromString(
-            "{\"smbEncryption\":\"Disabled\",\"smbAccessBasedEnumeration\":\"Disabled\",\"smbNonBrowsable\":\"Enabled\",\"smbOplocks\":\"Enabled\"}")
+            "{\"smbEncryption\":\"Disabled\",\"smbAccessBasedEnumeration\":\"Disabled\",\"smbNonBrowsable\":\"Disabled\",\"smbOplocks\":\"Disabled\"}")
             .toObject(SmbSettings.class);
         Assertions.assertEquals(SmbEncryptionState.DISABLED, model.smbEncryption());
         Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumeration());
-        Assertions.assertEquals(SmbNonBrowsable.ENABLED, model.smbNonBrowsable());
-        Assertions.assertEquals(SmbOplocks.ENABLED, model.smbOplocks());
+        Assertions.assertEquals(SmbNonBrowsable.DISABLED, model.smbNonBrowsable());
+        Assertions.assertEquals(SmbOplocks.DISABLED, model.smbOplocks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SmbSettings model = new SmbSettings().withSmbEncryption(SmbEncryptionState.DISABLED)
             .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
-            .withSmbNonBrowsable(SmbNonBrowsable.ENABLED)
-            .withSmbOplocks(SmbOplocks.ENABLED);
+            .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+            .withSmbOplocks(SmbOplocks.DISABLED);
         model = BinaryData.fromObject(model).toObject(SmbSettings.class);
         Assertions.assertEquals(SmbEncryptionState.DISABLED, model.smbEncryption());
         Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumeration());
-        Assertions.assertEquals(SmbNonBrowsable.ENABLED, model.smbNonBrowsable());
-        Assertions.assertEquals(SmbOplocks.ENABLED, model.smbOplocks());
+        Assertions.assertEquals(SmbNonBrowsable.DISABLED, model.smbNonBrowsable());
+        Assertions.assertEquals(SmbOplocks.DISABLED, model.smbOplocks());
     }
 }

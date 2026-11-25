@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class AgentFabricMembershipsListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-08-02-preview/AgentFabricMemberships_ListByManagedCluster.json
+     * x-ms-original-file: 2026-09-02-preview/AgentFabricMemberships_ListByManagedCluster.json
      */
     /**
      * Sample code: List AgentFabric Memberships by Managed Cluster.

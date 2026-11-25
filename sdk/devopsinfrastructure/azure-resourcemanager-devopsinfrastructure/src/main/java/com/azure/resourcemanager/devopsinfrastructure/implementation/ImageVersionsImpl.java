@@ -26,8 +26,7 @@ public final class ImageVersionsImpl implements ImageVersions {
     }
 
     public PagedIterable<ImageVersion> listByImage(String resourceGroupName, String imageName) {
-        PagedIterable<ImageVersionInner> inner = this.serviceClient().listByImage(resourceGroupName, imageName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageVersionImpl(inner1, this.manager()));
+        return this.listByImage(resourceGroupName, imageName, Context.NONE);
     }
 
     public PagedIterable<ImageVersion> listByImage(String resourceGroupName, String imageName, Context context) {
