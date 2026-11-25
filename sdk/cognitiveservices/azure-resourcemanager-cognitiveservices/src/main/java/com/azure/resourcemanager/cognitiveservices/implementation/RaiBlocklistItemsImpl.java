@@ -52,7 +52,7 @@ public final class RaiBlocklistItemsImpl implements RaiBlocklistItems {
 
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName,
         String raiBlocklistItemName) {
-        this.serviceClient().delete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName);
+        this.delete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String raiBlocklistName,
@@ -61,9 +61,7 @@ public final class RaiBlocklistItemsImpl implements RaiBlocklistItems {
     }
 
     public PagedIterable<RaiBlocklistItem> list(String resourceGroupName, String accountName, String raiBlocklistName) {
-        PagedIterable<RaiBlocklistItemInner> inner
-            = this.serviceClient().list(resourceGroupName, accountName, raiBlocklistName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RaiBlocklistItemImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, raiBlocklistName, Context.NONE);
     }
 
     public PagedIterable<RaiBlocklistItem> list(String resourceGroupName, String accountName, String raiBlocklistName,
@@ -100,104 +98,47 @@ public final class RaiBlocklistItemsImpl implements RaiBlocklistItems {
 
     public void batchDelete(String resourceGroupName, String accountName, String raiBlocklistName,
         List<String> raiBlocklistItemsNames) {
-        this.serviceClient().batchDelete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemsNames);
+        this.batchDeleteWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemsNames,
+            Context.NONE);
     }
 
     public RaiBlocklistItem getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBlocklistName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklists");
-        if (raiBlocklistName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklists'.", id)));
-        }
-        String raiBlocklistItemName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklistItems");
-        if (raiBlocklistItemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklistItems'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RaiBlocklistItem> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBlocklistName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklists");
-        if (raiBlocklistName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklists'.", id)));
-        }
-        String raiBlocklistItemName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklistItems");
-        if (raiBlocklistItemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklistItems'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "accountName", "accounts", LOGGER);
+        String raiBlocklistName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "raiBlocklistName", "raiBlocklists", LOGGER);
+        String raiBlocklistItemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "raiBlocklistItemName", "raiBlocklistItems", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBlocklistName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklists");
-        if (raiBlocklistName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklists'.", id)));
-        }
-        String raiBlocklistItemName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklistItems");
-        if (raiBlocklistItemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklistItems'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiBlocklistName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklists");
-        if (raiBlocklistName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklists'.", id)));
-        }
-        String raiBlocklistItemName = ResourceManagerUtils.getValueFromIdByName(id, "raiBlocklistItems");
-        if (raiBlocklistItemName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiBlocklistItems'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "accountName", "accounts", LOGGER);
+        String raiBlocklistName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "raiBlocklistName", "raiBlocklists", LOGGER);
+        String raiBlocklistItemName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "raiBlocklistItemName", "raiBlocklistItems", LOGGER);
         this.delete(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, context);
     }
 

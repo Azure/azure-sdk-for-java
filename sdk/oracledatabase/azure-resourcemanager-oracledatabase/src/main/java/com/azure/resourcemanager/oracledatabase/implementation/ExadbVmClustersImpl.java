@@ -29,8 +29,7 @@ public final class ExadbVmClustersImpl implements ExadbVmClusters {
     }
 
     public PagedIterable<ExadbVmCluster> list() {
-        PagedIterable<ExadbVmClusterInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExadbVmClusterImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ExadbVmCluster> list(Context context) {
@@ -56,7 +55,7 @@ public final class ExadbVmClustersImpl implements ExadbVmClusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String exadbVmClusterName) {
-        this.serviceClient().delete(resourceGroupName, exadbVmClusterName);
+        this.delete(resourceGroupName, exadbVmClusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String exadbVmClusterName, Context context) {
@@ -64,8 +63,7 @@ public final class ExadbVmClustersImpl implements ExadbVmClusters {
     }
 
     public PagedIterable<ExadbVmCluster> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ExadbVmClusterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExadbVmClusterImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ExadbVmCluster> listByResourceGroup(String resourceGroupName, Context context) {
@@ -75,12 +73,7 @@ public final class ExadbVmClustersImpl implements ExadbVmClusters {
 
     public ExadbVmCluster removeVms(String resourceGroupName, String exadbVmClusterName,
         RemoveVirtualMachineFromExadbVmClusterDetails body) {
-        ExadbVmClusterInner inner = this.serviceClient().removeVms(resourceGroupName, exadbVmClusterName, body);
-        if (inner != null) {
-            return new ExadbVmClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.removeVms(resourceGroupName, exadbVmClusterName, body, Context.NONE);
     }
 
     public ExadbVmCluster removeVms(String resourceGroupName, String exadbVmClusterName,
@@ -95,58 +88,30 @@ public final class ExadbVmClustersImpl implements ExadbVmClusters {
     }
 
     public ExadbVmCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exadbVmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "exadbVmClusters");
-        if (exadbVmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'exadbVmClusters'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, exadbVmClusterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ExadbVmCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exadbVmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "exadbVmClusters");
-        if (exadbVmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'exadbVmClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String exadbVmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}",
+            "exadbVmClusterName", "exadbVmClusters", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, exadbVmClusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exadbVmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "exadbVmClusters");
-        if (exadbVmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'exadbVmClusters'.", id)));
-        }
-        this.delete(resourceGroupName, exadbVmClusterName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String exadbVmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "exadbVmClusters");
-        if (exadbVmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'exadbVmClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String exadbVmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}",
+            "exadbVmClusterName", "exadbVmClusters", LOGGER);
         this.delete(resourceGroupName, exadbVmClusterName, context);
     }
 

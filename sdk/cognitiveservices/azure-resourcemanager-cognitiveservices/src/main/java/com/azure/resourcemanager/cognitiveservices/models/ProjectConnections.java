@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 
 /**
  * Resource collection API of ProjectConnections.
@@ -41,6 +42,71 @@ public interface ProjectConnections {
      * @return connection base resource schema.
      */
     ConnectionPropertiesV2BasicResource get(String resourceGroupName, String accountName, String projectName,
+        String connectionName);
+
+    /**
+     * Create or update Cognitive Services project connection under the specified project.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param projectName The name of Cognitive Services account's project.
+     * @param connectionName Friendly name of the connection.
+     * @param connection The object for creating or updating a new account connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return connection base resource schema along with {@link Response}.
+     */
+    Response<ConnectionPropertiesV2BasicResource> createWithResponse(String resourceGroupName, String accountName,
+        String projectName, String connectionName, ConnectionPropertiesV2BasicResourceInner connection,
+        Context context);
+
+    /**
+     * Create or update Cognitive Services project connection under the specified project.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param projectName The name of Cognitive Services account's project.
+     * @param connectionName Friendly name of the connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return connection base resource schema.
+     */
+    ConnectionPropertiesV2BasicResource create(String resourceGroupName, String accountName, String projectName,
+        String connectionName);
+
+    /**
+     * Update Cognitive Services project connection under the specified project.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param projectName The name of Cognitive Services account's project.
+     * @param connectionName Friendly name of the connection.
+     * @param connection Parameters for account connection update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return connection base resource schema along with {@link Response}.
+     */
+    Response<ConnectionPropertiesV2BasicResource> updateWithResponse(String resourceGroupName, String accountName,
+        String projectName, String connectionName, ConnectionUpdateContent connection, Context context);
+
+    /**
+     * Update Cognitive Services project connection under the specified project.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param projectName The name of Cognitive Services account's project.
+     * @param connectionName Friendly name of the connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return connection base resource schema.
+     */
+    ConnectionPropertiesV2BasicResource update(String resourceGroupName, String accountName, String projectName,
         String connectionName);
 
     /**
@@ -104,57 +170,4 @@ public interface ProjectConnections {
      */
     PagedIterable<ConnectionPropertiesV2BasicResource> list(String resourceGroupName, String accountName,
         String projectName, String target, String category, Boolean includeAll, Context context);
-
-    /**
-     * Lists Cognitive Services project connection by name.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema along with {@link Response}.
-     */
-    ConnectionPropertiesV2BasicResource getById(String id);
-
-    /**
-     * Lists Cognitive Services project connection by name.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection base resource schema along with {@link Response}.
-     */
-    Response<ConnectionPropertiesV2BasicResource> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete Cognitive Services project connection by name.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Delete Cognitive Services project connection by name.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new ConnectionPropertiesV2BasicResource resource.
-     * 
-     * @param name resource name.
-     * @return the first stage of the new ConnectionPropertiesV2BasicResource definition.
-     */
-    ConnectionPropertiesV2BasicResource.DefinitionStages.Blank define(String name);
 }

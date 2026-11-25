@@ -131,18 +131,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves information about a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GalleryInVMAccessControlProfileInner>> getWithResponseAsync(String resourceGroupName,
         String galleryName, String inVMAccessControlProfileName) {
@@ -165,7 +154,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             return Mono.error(
                 new IllegalArgumentException("Parameter inVMAccessControlProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -208,25 +197,14 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             return Mono.error(
                 new IllegalArgumentException("Parameter inVMAccessControlProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             galleryName, inVMAccessControlProfileName, accept, context);
     }
 
-    /**
-     * Retrieves information about a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryInVMAccessControlProfileInner> getAsync(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName) {
@@ -234,56 +212,21 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GalleryInVMAccessControlProfileInner> getWithResponse(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, Context context) {
         return getWithResponseAsync(resourceGroupName, galleryName, inVMAccessControlProfileName, context).block();
     }
 
-    /**
-     * Retrieves information about a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInVMAccessControlProfileInner get(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName) {
         return getWithResponse(resourceGroupName, galleryName, inVMAccessControlProfileName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the create or update gallery
-     * inVMAccessControlProfile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String galleryName, String inVMAccessControlProfileName,
@@ -313,7 +256,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
         } else {
             galleryInVMAccessControlProfile.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -367,7 +310,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
         } else {
             galleryInVMAccessControlProfile.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -376,20 +319,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryInVMAccessControlProfile, context);
     }
 
-    /**
-     * Create or update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the create or update gallery
-     * inVMAccessControlProfile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the gallery inVMAccessControlProfile
-     * that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryInVMAccessControlProfileInner>, GalleryInVMAccessControlProfileInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String galleryName, String inVMAccessControlProfileName,
@@ -428,20 +358,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             GalleryInVMAccessControlProfileInner.class, context);
     }
 
-    /**
-     * Create or update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the create or update gallery
-     * inVMAccessControlProfile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery inVMAccessControlProfile
-     * that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInVMAccessControlProfileInner>, GalleryInVMAccessControlProfileInner>
         beginCreateOrUpdate(String resourceGroupName, String galleryName, String inVMAccessControlProfileName,
@@ -452,21 +369,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             .getSyncPoller();
     }
 
-    /**
-     * Create or update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the create or update gallery
-     * inVMAccessControlProfile operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery inVMAccessControlProfile
-     * that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInVMAccessControlProfileInner>, GalleryInVMAccessControlProfileInner>
         beginCreateOrUpdate(String resourceGroupName, String galleryName, String inVMAccessControlProfileName,
@@ -477,20 +380,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             .getSyncPoller();
     }
 
-    /**
-     * Create or update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the create or update gallery
-     * inVMAccessControlProfile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryInVMAccessControlProfileInner> createOrUpdateAsync(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, GalleryInVMAccessControlProfileInner galleryInVMAccessControlProfile) {
@@ -521,19 +411,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryInVMAccessControlProfile, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the create or update gallery
-     * inVMAccessControlProfile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInVMAccessControlProfileInner createOrUpdate(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, GalleryInVMAccessControlProfileInner galleryInVMAccessControlProfile) {
@@ -541,20 +419,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryInVMAccessControlProfile).block();
     }
 
-    /**
-     * Create or update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the create or update gallery
-     * inVMAccessControlProfile operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInVMAccessControlProfileInner createOrUpdate(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, GalleryInVMAccessControlProfileInner galleryInVMAccessControlProfile,
@@ -563,20 +428,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryInVMAccessControlProfile, context).block();
     }
 
-    /**
-     * Update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the update gallery inVMAccessControlProfile
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, GalleryInVMAccessControlProfileUpdate galleryInVMAccessControlProfile) {
@@ -605,7 +457,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
         } else {
             galleryInVMAccessControlProfile.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -659,7 +511,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
         } else {
             galleryInVMAccessControlProfile.validate();
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -667,20 +519,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryName, inVMAccessControlProfileName, contentType, accept, galleryInVMAccessControlProfile, context);
     }
 
-    /**
-     * Update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the update gallery inVMAccessControlProfile
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the gallery inVMAccessControlProfile
-     * that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryInVMAccessControlProfileInner>, GalleryInVMAccessControlProfileInner>
         beginUpdateAsync(String resourceGroupName, String galleryName, String inVMAccessControlProfileName,
@@ -719,20 +558,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             GalleryInVMAccessControlProfileInner.class, context);
     }
 
-    /**
-     * Update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the update gallery inVMAccessControlProfile
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery inVMAccessControlProfile
-     * that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInVMAccessControlProfileInner>, GalleryInVMAccessControlProfileInner>
         beginUpdate(String resourceGroupName, String galleryName, String inVMAccessControlProfileName,
@@ -743,21 +569,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             .getSyncPoller();
     }
 
-    /**
-     * Update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the update gallery inVMAccessControlProfile
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the gallery inVMAccessControlProfile
-     * that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryInVMAccessControlProfileInner>, GalleryInVMAccessControlProfileInner>
         beginUpdate(String resourceGroupName, String galleryName, String inVMAccessControlProfileName,
@@ -768,20 +580,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             .getSyncPoller();
     }
 
-    /**
-     * Update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the update gallery inVMAccessControlProfile
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryInVMAccessControlProfileInner> updateAsync(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, GalleryInVMAccessControlProfileUpdate galleryInVMAccessControlProfile) {
@@ -812,19 +611,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryInVMAccessControlProfile, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the update gallery inVMAccessControlProfile
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInVMAccessControlProfileInner update(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, GalleryInVMAccessControlProfileUpdate galleryInVMAccessControlProfile) {
@@ -832,20 +619,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryInVMAccessControlProfile).block();
     }
 
-    /**
-     * Update a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param galleryInVMAccessControlProfile Parameters supplied to the update gallery inVMAccessControlProfile
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery inVMAccessControlProfile that you want to create or update.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryInVMAccessControlProfileInner update(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, GalleryInVMAccessControlProfileUpdate galleryInVMAccessControlProfile,
@@ -854,17 +628,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             galleryInVMAccessControlProfile, context).block();
     }
 
-    /**
-     * Delete a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName) {
@@ -887,7 +651,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             return Mono.error(
                 new IllegalArgumentException("Parameter inVMAccessControlProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, galleryName, inVMAccessControlProfileName, context))
@@ -928,23 +692,13 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             return Mono.error(
                 new IllegalArgumentException("Parameter inVMAccessControlProfileName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             galleryName, inVMAccessControlProfileName, context);
     }
 
-    /**
-     * Delete a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName) {
@@ -976,35 +730,14 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             context);
     }
 
-    /**
-     * Delete a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName) {
         return this.beginDeleteAsync(resourceGroupName, galleryName, inVMAccessControlProfileName).getSyncPoller();
     }
 
-    /**
-     * Delete a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName,
         String inVMAccessControlProfileName, Context context) {
@@ -1012,17 +745,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             .getSyncPoller();
     }
 
-    /**
-     * Delete a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String inVMAccessControlProfileName) {
         return beginDeleteAsync(resourceGroupName, galleryName, inVMAccessControlProfileName).last()
@@ -1048,32 +771,13 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, String inVMAccessControlProfileName) {
         deleteAsync(resourceGroupName, galleryName, inVMAccessControlProfileName).block();
     }
 
-    /**
-     * Delete a gallery inVMAccessControlProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param inVMAccessControlProfileName The name of the gallery inVMAccessControlProfile to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryName, String inVMAccessControlProfileName,
         Context context) {
@@ -1109,7 +813,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByGallery(this.client.getEndpoint(), apiVersion,
@@ -1149,7 +853,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1159,17 +863,7 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List gallery inVMAccessControlProfiles in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery InVMAccessControlProfiles operation response as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GalleryInVMAccessControlProfileInner> listByGalleryAsync(String resourceGroupName,
         String galleryName) {
@@ -1196,35 +890,14 @@ public final class GalleryInVMAccessControlProfilesClientImpl implements Gallery
             nextLink -> listByGalleryNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List gallery inVMAccessControlProfiles in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery InVMAccessControlProfiles operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryInVMAccessControlProfileInner> listByGallery(String resourceGroupName,
         String galleryName) {
         return new PagedIterable<>(listByGalleryAsync(resourceGroupName, galleryName));
     }
 
-    /**
-     * List gallery inVMAccessControlProfiles in a gallery.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery InVMAccessControlProfiles operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryInVMAccessControlProfileInner> listByGallery(String resourceGroupName,
         String galleryName, Context context) {

@@ -14,7 +14,7 @@ import java.io.IOException;
  * Computer use preview
  *
  * A tool that controls a virtual computer. Learn more about the [computer
- * tool](https://platform.openai.com/docs/guides/tools-computer-use).
+ * tool](https://developers.openai.com/api/docs/guides/tools-computer-use).
  */
 @Immutable
 public final class ComputerUsePreviewTool extends Tool {
@@ -42,6 +42,20 @@ public final class ComputerUsePreviewTool extends Tool {
      */
     @Generated
     private final long displayHeight;
+
+    /**
+     * Creates an instance of ComputerUsePreviewTool class.
+     *
+     * @param environment the environment value to set.
+     * @param displayWidth the displayWidth value to set.
+     * @param displayHeight the displayHeight value to set.
+     */
+    @Generated
+    public ComputerUsePreviewTool(ComputerEnvironment environment, long displayWidth, long displayHeight) {
+        this.environment = environment;
+        this.displayWidth = displayWidth;
+        this.displayHeight = displayHeight;
+    }
 
     /**
      * Get the type property: The type property.
@@ -134,19 +148,5 @@ public final class ComputerUsePreviewTool extends Tool {
             deserializedComputerUsePreviewTool.type = type;
             return deserializedComputerUsePreviewTool;
         });
-    }
-
-    /**
-     * Creates an instance of ComputerUsePreviewTool class.
-     *
-     * @param environment the environment value to set.
-     * @param displayWidth the displayWidth value to set.
-     * @param displayHeight the displayHeight value to set.
-     */
-    @Generated
-    public ComputerUsePreviewTool(ComputerEnvironment environment, long displayWidth, long displayHeight) {
-        this.environment = environment;
-        this.displayWidth = displayWidth;
-        this.displayHeight = displayHeight;
     }
 }

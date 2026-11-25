@@ -290,17 +290,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves details of this Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Tap resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkTapInner> getByResourceGroupWithResponse(String resourceGroupName, String networkTapName,
         Context context) {
@@ -309,16 +299,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             this.client.getSubscriptionId(), resourceGroupName, networkTapName, accept, context);
     }
 
-    /**
-     * Retrieves details of this Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkTapInner getByResourceGroup(String resourceGroupName, String networkTapName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkTapName, Context.NONE).getValue();
@@ -360,11 +341,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkTapName,
         NetworkTapInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkTapName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
     /**
@@ -407,37 +384,14 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             NetworkTapInner.class, NetworkTapInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(String resourceGroupName,
         String networkTapName, NetworkTapInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, networkTapName, body);
-        return this.client.<NetworkTapInner, NetworkTapInner>getLroResult(response, NetworkTapInner.class,
-            NetworkTapInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginCreate(String resourceGroupName,
         String networkTapName, NetworkTapInner body, Context context) {
@@ -463,38 +417,17 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkTapInner create(String resourceGroupName, String networkTapName, NetworkTapInner body) {
-        return beginCreate(resourceGroupName, networkTapName, body).getFinalResult();
+        return create(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkTapInner create(String resourceGroupName, String networkTapName, NetworkTapInner body,
         Context context) {
-        return beginCreate(resourceGroupName, networkTapName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, networkTapName, body, context));
     }
 
     /**
@@ -533,11 +466,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkTapName,
         NetworkTapPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkTapName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
     /**
@@ -580,37 +509,14 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             NetworkTapInner.class, NetworkTapInner.class, this.client.getContext());
     }
 
-    /**
-     * API to update certain properties of the Network Tap resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Network Tap properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(String resourceGroupName,
         String networkTapName, NetworkTapPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkTapName, body);
-        return this.client.<NetworkTapInner, NetworkTapInner>getLroResult(response, NetworkTapInner.class,
-            NetworkTapInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the Network Tap resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Network Tap properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkTapInner>, NetworkTapInner> beginUpdate(String resourceGroupName,
         String networkTapName, NetworkTapPatch body, Context context) {
@@ -636,38 +542,17 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * API to update certain properties of the Network Tap resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Network Tap properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkTapInner update(String resourceGroupName, String networkTapName, NetworkTapPatch body) {
-        return beginUpdate(resourceGroupName, networkTapName, body).getFinalResult();
+        return update(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the Network Tap resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Network Tap properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Tap resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkTapInner update(String resourceGroupName, String networkTapName, NetworkTapPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, networkTapName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, networkTapName, body, context));
     }
 
     /**
@@ -700,8 +585,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkTapName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkTapName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkTapName, Context.NONE);
     }
 
     /**
@@ -738,33 +622,13 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkTapName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkTapName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkTapName, Context.NONE);
     }
 
-    /**
-     * Deletes Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkTapName,
         Context context) {
@@ -788,33 +652,16 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkTapName) {
-        beginDelete(resourceGroupName, networkTapName).getFinalResult();
+        delete(resourceGroupName, networkTapName, Context.NONE);
     }
 
-    /**
-     * Deletes Network Tap.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkTapName, Context context) {
-        beginDelete(resourceGroupName, networkTapName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkTapName, context));
     }
 
     /**
@@ -864,11 +711,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkTapInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkTapsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -890,31 +733,13 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays Network Taps list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkTap items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkTapInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Displays Network Taps list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkTap items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkTapInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -962,11 +787,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkTapInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkTapsListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -987,27 +808,13 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays Network Taps list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkTap items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkTapInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Displays Network Taps list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkTap items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkTapInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1052,11 +859,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName, String networkTapName,
         UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkTapName, contentType, accept, body,
-            Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
     /**
@@ -1102,39 +905,15 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             UpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkTapName,
             UpdateAdministrativeState body) {
-        Response<BinaryData> response = updateAdministrativeStateWithResponse(resourceGroupName, networkTapName, body);
-        return this.client.<UpdateAdministrativeStateResponseInner, UpdateAdministrativeStateResponseInner>getLroResult(
-            response, UpdateAdministrativeStateResponseInner.class, UpdateAdministrativeStateResponseInner.class,
-            Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateAdministrativeStateResponseInner>, UpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkTapName, UpdateAdministrativeState body,
@@ -1164,39 +943,19 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String networkTapName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkTapName, body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, networkTapName, body, Context.NONE);
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return update Administrative State Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String networkTapName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkTapName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdateAdministrativeState(resourceGroupName, networkTapName, body, context));
     }
 
     /**
@@ -1231,9 +990,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncWithResponse(String resourceGroupName, String networkTapName) {
-        final String accept = "application/json";
-        return service.resyncSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkTapName, accept, Context.NONE);
+        return resyncWithResponse(resourceGroupName, networkTapName, Context.NONE);
     }
 
     /**
@@ -1273,35 +1030,14 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             this.client.getContext());
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for NetworkTap Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkTapResyncResponseInner>, NetworkTapResyncResponseInner>
         beginResync(String resourceGroupName, String networkTapName) {
-        Response<BinaryData> response = resyncWithResponse(resourceGroupName, networkTapName);
-        return this.client.<NetworkTapResyncResponseInner, NetworkTapResyncResponseInner>getLroResult(response,
-            NetworkTapResyncResponseInner.class, NetworkTapResyncResponseInner.class, Context.NONE);
+        return beginResync(resourceGroupName, networkTapName, Context.NONE);
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for NetworkTap Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkTapResyncResponseInner>, NetworkTapResyncResponseInner>
         beginResync(String resourceGroupName, String networkTapName, Context context) {
@@ -1326,35 +1062,16 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for NetworkTap Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkTapResyncResponseInner resync(String resourceGroupName, String networkTapName) {
-        return beginResync(resourceGroupName, networkTapName).getFinalResult();
+        return resync(resourceGroupName, networkTapName, Context.NONE);
     }
 
-    /**
-     * Implements the operation to the underlying resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkTapName Name of the Network Tap.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for NetworkTap Resync operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkTapResyncResponseInner resync(String resourceGroupName, String networkTapName, Context context) {
-        return beginResync(resourceGroupName, networkTapName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginResync(resourceGroupName, networkTapName, context));
     }
 
     /**
@@ -1389,11 +1106,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkTapInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkTapsListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1447,11 +1160,7 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkTapInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkTapsListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

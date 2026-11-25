@@ -50,7 +50,7 @@ public final class PoliciesImpl implements Policies {
     }
 
     public void delete(String resourceGroupName, String labName, String policySetName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, policySetName, name);
+        this.deleteWithResponse(resourceGroupName, labName, policySetName, name, Context.NONE);
     }
 
     public PagedIterable<Policy> list(String resourceGroupName, String labName, String policySetName) {
@@ -66,100 +66,43 @@ public final class PoliciesImpl implements Policies {
     }
 
     public Policy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String policySetName = ResourceManagerUtils.getValueFromIdByName(id, "policysets");
-        if (policySetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
         String localExpand = null;
-        return this.getWithResponse(resourceGroupName, labName, policySetName, name, localExpand, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, localExpand, Context.NONE).getValue();
     }
 
     public Response<Policy> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String policySetName = ResourceManagerUtils.getValueFromIdByName(id, "policysets");
-        if (policySetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String labName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "labName", "labs", LOGGER);
+        String policySetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "policySetName", "policysets", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "name", "policies", LOGGER);
         return this.getWithResponse(resourceGroupName, labName, policySetName, name, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String policySetName = ResourceManagerUtils.getValueFromIdByName(id, "policysets");
-        if (policySetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, labName, policySetName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String policySetName = ResourceManagerUtils.getValueFromIdByName(id, "policysets");
-        if (policySetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policysets'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "policies");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'policies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String labName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "labName", "labs", LOGGER);
+        String policySetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "policySetName", "policysets", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/policysets/{policySetName}/policies/{name}",
+            "name", "policies", LOGGER);
         return this.deleteWithResponse(resourceGroupName, labName, policySetName, name, context);
     }
 

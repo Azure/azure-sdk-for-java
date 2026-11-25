@@ -7,6 +7,8 @@ package com.azure.resourcemanager.chaos.generated;
 import com.azure.resourcemanager.chaos.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import com.azure.resourcemanager.chaos.models.UserAssignedIdentity;
+import com.azure.resourcemanager.chaos.models.WorkspaceCustomerManagedKeyEncryption;
+import com.azure.resourcemanager.chaos.models.WorkspaceEncryption;
 import com.azure.resourcemanager.chaos.models.WorkspaceProperties;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Workspaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-01/Workspaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a workspace in a resource group.
@@ -36,6 +38,109 @@ public final class WorkspacesCreateOrUpdateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity",
                     new UserAssignedIdentity())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_CreateOrUpdate_WithCustomerKey.json
+     */
+    /**
+     * Sample code: Create or update a Workspace with a customer-managed key.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void
+        createOrUpdateAWorkspaceWithACustomerManagedKey(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .define("exampleWorkspace")
+            .withRegion("westus2")
+            .withExistingResourceGroup("exampleRG")
+            .withProperties(new WorkspaceProperties()
+                .withScopes(
+                    Arrays.asList("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"))
+                .withEncryption(new WorkspaceEncryption().withCustomerManagedKeyEncryption(
+                    new WorkspaceCustomerManagedKeyEncryption().withKeyEncryptionKeyUrl("fakeTokenPlaceholder")
+                        .withKeyVaultResourceId("fakeTokenPlaceholder"))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_CreateOrUpdate_EmptyEncryption.json
+     */
+    /**
+     * Sample code: Create or update a Microsoft-managed Workspace with empty encryption settings.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void createOrUpdateAMicrosoftManagedWorkspaceWithEmptyEncryptionSettings(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .define("exampleWorkspace")
+            .withRegion("westus2")
+            .withExistingResourceGroup("exampleRG")
+            .withProperties(new WorkspaceProperties()
+                .withScopes(
+                    Arrays.asList("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"))
+                .withEncryption(new WorkspaceEncryption()))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_CreateOrUpdate_OmitEncryption.json
+     */
+    /**
+     * Sample code: Create or update a Microsoft-managed Workspace without encryption settings.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void createOrUpdateAMicrosoftManagedWorkspaceWithoutEncryptionSettings(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .define("exampleWorkspace")
+            .withRegion("westus2")
+            .withExistingResourceGroup("exampleRG")
+            .withProperties(new WorkspaceProperties().withScopes(
+                Arrays.asList("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_CreateOrUpdate_CreateOnly.json
+     */
+    /**
+     * Sample code: Create a workspace only when absent, or return 412 when it already exists.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void createAWorkspaceOnlyWhenAbsentOrReturn412WhenItAlreadyExists(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .define("exampleWorkspace")
+            .withRegion("westus2")
+            .withExistingResourceGroup("exampleRG")
+            .withProperties(new WorkspaceProperties().withScopes(
+                Arrays.asList("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG")))
+            .withIfNoneMatch("*")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_CreateOrUpdate_UpdateOnly.json
+     */
+    /**
+     * Sample code: Update a workspace only when present, or return 412 when it does not exist.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void updateAWorkspaceOnlyWhenPresentOrReturn412WhenItDoesNotExist(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces()
+            .define("exampleWorkspace")
+            .withRegion("westus2")
+            .withExistingResourceGroup("exampleRG")
+            .withProperties(new WorkspaceProperties().withScopes(
+                Arrays.asList("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG")))
+            .withIfMatch("*")
             .create();
     }
 

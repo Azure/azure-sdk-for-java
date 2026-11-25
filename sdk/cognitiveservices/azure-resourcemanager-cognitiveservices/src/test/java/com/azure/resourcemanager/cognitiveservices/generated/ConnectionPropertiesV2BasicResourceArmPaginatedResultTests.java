@@ -16,19 +16,19 @@ public final class ConnectionPropertiesV2BasicResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionPropertiesV2BasicResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"twvc\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Spark\",\"createdByWorkspaceArmId\":\"cvejyfdvlvhbwrn\",\"error\":\"tgddpqthehnmnaoy\",\"expiryTime\":\"2021-10-27T17:47:39Z\",\"group\":\"File\",\"isSharedToAll\":true,\"metadata\":{\"droznn\":\"ankltytm\",\"csgguxhemlw\":\"drlktg\",\"kklelssxblycs\":\"waeeczgfb\",\"plpvm\":\"zujksrlsmdes\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"idyvteow\",\"vgp\"],\"target\":\"deugf\",\"useWorkspaceManagedIdentity\":false},\"id\":\"c\",\"name\":\"axwk\",\"type\":\"fykhvuhxepmru\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"OpenAI\",\"createdByWorkspaceArmId\":\"baobn\",\"error\":\"ujdjltymkmvg\",\"expiryTime\":\"2021-05-16T09:26:28Z\",\"group\":\"AzureAI\",\"isSharedToAll\":true,\"metadata\":{\"j\":\"pphkixkykxds\",\"kkflrmymyincqlhr\":\"emmucfxh\"},\"peRequirement\":\"Required\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"iiovgqcgxu\",\"gqkctotiowlxte\",\"dptjgwdtgukranb\",\"wphqlkccuzgygqw\"],\"target\":\"oiulwgniipr\",\"useWorkspaceManagedIdentity\":true},\"id\":\"w\",\"name\":\"wzdufypivlsbb\",\"type\":\"pmcubkmifoxxkub\"}]}")
+            "{\"nextLink\":\"b\",\"value\":[{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Couchbase\",\"createdByWorkspaceArmId\":\"xhaclcdosqkptjq\",\"error\":\"ifmmainwh\",\"expiryTime\":\"2020-12-30T04:00:37Z\",\"group\":\"Azure\",\"isSharedToAll\":false,\"metadata\":{\"z\":\"ntobu\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"vydjufbnk\",\"blaxpegj\",\"dabalfdxaglzfytl\",\"tlqh\"],\"target\":\"xouvmrs\",\"useWorkspaceManagedIdentity\":true},\"id\":\"kyypzkgxfxfmy\",\"name\":\"qsdb\",\"type\":\"oksz\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"Cassandra\",\"createdByWorkspaceArmId\":\"wgpterdiuw\",\"error\":\"rkskwztsdetjy\",\"expiryTime\":\"2021-01-06T04:25:16Z\",\"group\":\"GenericProtocol\",\"isSharedToAll\":false,\"metadata\":{\"lvoc\":\"lzkgysdgzyybzo\",\"gmlilwzghjhjvmab\":\"tvdxxhe\"},\"peRequirement\":\"NotApplicable\",\"peStatus\":\"Inactive\",\"sharedUserList\":[\"fmdafbgymqtnap\"],\"target\":\"ojxrjnbsconxavi\",\"useWorkspaceManagedIdentity\":false},\"id\":\"chbj\",\"name\":\"zqfsgnwdxzed\",\"type\":\"q\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"AmazonRdsForSqlServer\",\"createdByWorkspaceArmId\":\"orxipmlnfyzavfr\",\"error\":\"picdbk\",\"expiryTime\":\"2021-01-17T21:24:35Z\",\"group\":\"ServicesAndApps\",\"isSharedToAll\":true,\"metadata\":{\"zpdgonjhxshthmgp\":\"q\",\"pxtzhigqqbtimpk\":\"zqulptkbv\",\"hudsmusuaa\":\"blornsih\"},\"peRequirement\":\"NotRequired\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"nfczmnniixyxvq\",\"anosj\",\"gir\"],\"target\":\"gmgmdd\",\"useWorkspaceManagedIdentity\":false},\"id\":\"y\",\"name\":\"ltwmpftmf\",\"type\":\"e\"},{\"properties\":{\"authType\":\"ConnectionPropertiesV2\",\"category\":\"ManagedOnlineEndpoint\",\"createdByWorkspaceArmId\":\"syxwetamfdd\",\"error\":\"lkpzwbhnrecchd\",\"expiryTime\":\"2021-06-27T10:20:17Z\",\"group\":\"NoSQL\",\"isSharedToAll\":true,\"metadata\":{\"vkhhwm\":\"mjedbiu\",\"rihufoihppiybxv\":\"pjbweunxcq\",\"bgk\":\"nzuz\"},\"peRequirement\":\"Required\",\"peStatus\":\"NotApplicable\",\"sharedUserList\":[\"zvkunhdi\",\"juktirzkaugpucd\",\"cfqp\",\"wgofmhx\"],\"target\":\"jlvzklk\",\"useWorkspaceManagedIdentity\":true},\"id\":\"kyjtkakvl\",\"name\":\"ishj\",\"type\":\"pzaptuosk\"}]}")
             .toObject(ConnectionPropertiesV2BasicResourceArmPaginatedResult.class);
-        Assertions.assertEquals("twvc", model.nextLink());
-        Assertions.assertEquals(ConnectionCategory.SPARK, model.value().get(0).properties().category());
-        Assertions.assertEquals("tgddpqthehnmnaoy", model.value().get(0).properties().error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-27T17:47:39Z"),
+        Assertions.assertEquals("b", model.nextLink());
+        Assertions.assertEquals(ConnectionCategory.COUCHBASE, model.value().get(0).properties().category());
+        Assertions.assertEquals("ifmmainwh", model.value().get(0).properties().error());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-30T04:00:37Z"),
             model.value().get(0).properties().expiryTime());
-        Assertions.assertTrue(model.value().get(0).properties().isSharedToAll());
-        Assertions.assertEquals("ankltytm", model.value().get(0).properties().metadata().get("droznn"));
+        Assertions.assertFalse(model.value().get(0).properties().isSharedToAll());
+        Assertions.assertEquals("ntobu", model.value().get(0).properties().metadata().get("z"));
         Assertions.assertEquals(ManagedPERequirement.NOT_REQUIRED, model.value().get(0).properties().peRequirement());
-        Assertions.assertEquals(ManagedPEStatus.NOT_APPLICABLE, model.value().get(0).properties().peStatus());
-        Assertions.assertEquals("idyvteow", model.value().get(0).properties().sharedUserList().get(0));
-        Assertions.assertEquals("deugf", model.value().get(0).properties().target());
-        Assertions.assertFalse(model.value().get(0).properties().useWorkspaceManagedIdentity());
+        Assertions.assertEquals(ManagedPEStatus.INACTIVE, model.value().get(0).properties().peStatus());
+        Assertions.assertEquals("vydjufbnk", model.value().get(0).properties().sharedUserList().get(0));
+        Assertions.assertEquals("xouvmrs", model.value().get(0).properties().target());
+        Assertions.assertTrue(model.value().get(0).properties().useWorkspaceManagedIdentity());
     }
 }

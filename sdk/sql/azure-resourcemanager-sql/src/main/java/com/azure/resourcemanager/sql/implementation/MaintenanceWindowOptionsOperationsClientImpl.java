@@ -69,19 +69,7 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a list of available maintenance windows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowOptionsName Maintenance window options name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available maintenance windows along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, String maintenanceWindowOptionsName) {
@@ -160,18 +148,7 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
             resourceGroupName, serverName, databaseName, maintenanceWindowOptionsName, accept, context);
     }
 
-    /**
-     * Gets a list of available maintenance windows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowOptionsName Maintenance window options name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available maintenance windows on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceWindowOptionsInner> getAsync(String resourceGroupName, String serverName,
         String databaseName, String maintenanceWindowOptionsName) {
@@ -179,19 +156,7 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of available maintenance windows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowOptionsName Maintenance window options name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available maintenance windows along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowOptionsInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String maintenanceWindowOptionsName, Context context) {
@@ -199,18 +164,7 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
             .block();
     }
 
-    /**
-     * Gets a list of available maintenance windows.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param maintenanceWindowOptionsName Maintenance window options name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available maintenance windows.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowOptionsInner get(String resourceGroupName, String serverName, String databaseName,
         String maintenanceWindowOptionsName) {

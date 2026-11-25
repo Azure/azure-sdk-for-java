@@ -76,60 +76,32 @@ public final class L3NetworksImpl implements L3Networks {
     }
 
     public L3Network getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3NetworkName = ResourceManagerUtils.getValueFromIdByName(id, "l3Networks");
-        if (l3NetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<L3Network> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3NetworkName = ResourceManagerUtils.getValueFromIdByName(id, "l3Networks");
-        if (l3NetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3NetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}",
+            "l3NetworkName", "l3Networks", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3NetworkName = ResourceManagerUtils.getValueFromIdByName(id, "l3Networks");
-        if (l3NetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
-        }
         String localIfMatch = null;
         String localIfNoneMatch = null;
-        this.delete(resourceGroupName, l3NetworkName, localIfMatch, localIfNoneMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3NetworkName = ResourceManagerUtils.getValueFromIdByName(id, "l3Networks");
-        if (l3NetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3NetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}",
+            "l3NetworkName", "l3Networks", LOGGER);
         this.delete(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, context);
     }
 

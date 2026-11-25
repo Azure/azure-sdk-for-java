@@ -90,10 +90,7 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
     }
 
     public StorageTask create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTasks()
-            .create(resourceGroupName, storageTaskName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageTask create(Context context) {
@@ -115,10 +112,7 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
     }
 
     public StorageTask apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTasks()
-            .update(resourceGroupName, storageTaskName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageTask apply(Context context) {
@@ -132,16 +126,16 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
         com.azure.resourcemanager.storageactions.StorageActionsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageTaskName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageTasks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "resourceGroupName");
+        this.storageTaskName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}",
+            "storageTaskName");
     }
 
     public StorageTask refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTasks()
-            .getByResourceGroupWithResponse(resourceGroupName, storageTaskName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageTask refresh(Context context) {

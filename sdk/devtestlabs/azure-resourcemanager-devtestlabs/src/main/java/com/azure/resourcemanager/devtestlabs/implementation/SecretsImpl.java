@@ -50,7 +50,7 @@ public final class SecretsImpl implements Secrets {
     }
 
     public void delete(String resourceGroupName, String labName, String userName, String name) {
-        this.serviceClient().delete(resourceGroupName, labName, userName, name);
+        this.deleteWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
     }
 
     public PagedIterable<Secret> list(String resourceGroupName, String labName, String userName) {
@@ -66,99 +66,43 @@ public final class SecretsImpl implements Secrets {
     }
 
     public Secret getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String userName = ResourceManagerUtils.getValueFromIdByName(id, "users");
-        if (userName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "secrets");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));
-        }
         String localExpand = null;
-        return this.getWithResponse(resourceGroupName, labName, userName, name, localExpand, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, localExpand, Context.NONE).getValue();
     }
 
     public Response<Secret> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String userName = ResourceManagerUtils.getValueFromIdByName(id, "users");
-        if (userName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "secrets");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String labName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "labName", "labs", LOGGER);
+        String userName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "userName", "users", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "name", "secrets", LOGGER);
         return this.getWithResponse(resourceGroupName, labName, userName, name, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String userName = ResourceManagerUtils.getValueFromIdByName(id, "users");
-        if (userName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "secrets");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, labName, userName, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String labName = ResourceManagerUtils.getValueFromIdByName(id, "labs");
-        if (labName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
-        }
-        String userName = ResourceManagerUtils.getValueFromIdByName(id, "users");
-        if (userName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "secrets");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'secrets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String labName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "labName", "labs", LOGGER);
+        String userName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "userName", "users", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/secrets/{name}",
+            "name", "secrets", LOGGER);
         return this.deleteWithResponse(resourceGroupName, labName, userName, name, context);
     }
 

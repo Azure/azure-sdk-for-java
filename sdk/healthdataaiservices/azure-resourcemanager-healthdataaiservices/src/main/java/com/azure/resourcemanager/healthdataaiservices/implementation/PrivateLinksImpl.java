@@ -26,9 +26,7 @@ public final class PrivateLinksImpl implements PrivateLinks {
     }
 
     public PagedIterable<PrivateLinkResource> listByDeidService(String resourceGroupName, String deidServiceName) {
-        PagedIterable<PrivateLinkResourceInner> inner
-            = this.serviceClient().listByDeidService(resourceGroupName, deidServiceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByDeidService(resourceGroupName, deidServiceName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> listByDeidService(String resourceGroupName, String deidServiceName,

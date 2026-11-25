@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasEntity;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
+import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
 import com.azure.analytics.purview.datamap.models.ContactInfo;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
 import com.azure.analytics.purview.datamap.models.EntityStatus;
@@ -25,26 +26,30 @@ public final class EntityCreateTests extends DataMapClientTestBase {
     public void testEntityCreateTests() {
         // method invocation
         EntityMutationResult response
-            = entityClient.createOrUpdate(new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
-                .setEntity(new AtlasEntity()
-                    .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
-                        "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
-                        BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
-                        BinaryData
-                            .fromBytes("https://exampleaccount.core.windows.net".getBytes(StandardCharsets.UTF_8)),
-                        "name", BinaryData.fromBytes("ExampleStorageAccount".getBytes(StandardCharsets.UTF_8)),
-                        "description", null, "publicAccessLevel", null))
-                    .setTypeName("azure_storage_account")
-                    .setCreatedBy("ExampleCreator")
-                    .setStatus(EntityStatus.ACTIVE)
-                    .setUpdatedBy("ExampleUpdator")
-                    .setVersion(0L)
-                    .setContacts(mapOf("Expert",
-                        Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                            .setInfo("Example Expert Info")),
-                        "Owner", Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                            .setInfo("Example Owner Info"))))),
-                null, null);
+            = entityClient
+                .createOrUpdate(
+                    new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
+                        .setEntity(new AtlasEntity()
+                            .setAttributes(mapOf("owner",
+                                BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)), "modifiedTime",
+                                BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
+                                BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
+                                BinaryData.fromBytes(
+                                    "https://exampleaccount.core.windows.net".getBytes(StandardCharsets.UTF_8)),
+                                "name", BinaryData.fromBytes("ExampleStorageAccount".getBytes(StandardCharsets.UTF_8)),
+                                "description", null, "publicAccessLevel", null))
+                            .setTypeName("azure_storage_account")
+                            .setCreatedBy("ExampleCreator")
+                            .setStatus(EntityStatus.ACTIVE)
+                            .setUpdatedBy("ExampleUpdator")
+                            .setVersion(0L)
+                            .setContacts(mapOf("Expert",
+                                Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                                    .setInfo("Example Expert Info")),
+                                "Owner",
+                                Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                                    .setInfo("Example Owner Info"))))),
+                    (BusinessAttributeUpdateBehavior) null, (String) null);
 
         // response assertion
         Assertions.assertNotNull(response);

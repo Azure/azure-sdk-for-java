@@ -23,7 +23,7 @@ public final class FabricCapacitiesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"state\":\"Deleting\",\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":844718571},\"administration\":{\"members\":[\"btoqcjmkljavbqid\",\"qajzyulpkudjkr\",\"khbzhfepgzg\"]}},\"sku\":{\"name\":\"e\",\"tier\":\"Fabric\"},\"location\":\"ocxscpaierhhbcs\",\"tags\":{\"bnbdxkqpxokajion\":\"mmajtjaodx\",\"jrmvdjwzrlo\":\"imexgstxgcpodgma\",\"hijco\":\"mcl\"},\"id\":\"jctbza\",\"name\":\"s\",\"type\":\"sycbkbfk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Suspended\",\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":69430164},\"administration\":{\"members\":[\"npvswjdkirso\",\"dqxhcrmnohjtckwh\",\"soifiyipjxsqw\",\"gr\"]}},\"sku\":{\"name\":\"bznorcjxvsnby\",\"tier\":\"Fabric\"},\"location\":\"bnmo\",\"tags\":{\"rzafbljjgpbtoqcj\":\"ysh\",\"vbqid\":\"klj\",\"khbzhfepgzg\":\"qajzyulpkudjkr\",\"zloc\":\"e\"},\"id\":\"scpai\",\"name\":\"rhhbcs\",\"type\":\"l\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class FabricCapacitiesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FabricCapacity response = manager.fabricCapacities()
-            .getByResourceGroupWithResponse("vsnb", "xqabnmocpcysh", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("mdwzjeiachboo", "flnrosfqpteehzz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ocxscpaierhhbcs", response.location());
-        Assertions.assertEquals("mmajtjaodx", response.tags().get("bnbdxkqpxokajion"));
+        Assertions.assertEquals("bnmo", response.location());
+        Assertions.assertEquals("ysh", response.tags().get("rzafbljjgpbtoqcj"));
         Assertions.assertEquals(CapacityOverageState.DISABLED, response.properties().overage().state());
-        Assertions.assertEquals(844718571, response.properties().overage().thresholdCapacityUnitHours());
-        Assertions.assertEquals("btoqcjmkljavbqid", response.properties().administration().members().get(0));
-        Assertions.assertEquals("e", response.sku().name());
+        Assertions.assertEquals(69430164, response.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("npvswjdkirso", response.properties().administration().members().get(0));
+        Assertions.assertEquals("bznorcjxvsnby", response.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, response.sku().tier());
     }
 }

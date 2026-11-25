@@ -49,12 +49,11 @@ public final class DefaultRolloutsImpl implements DefaultRollouts {
     }
 
     public void deleteByResourceGroup(String providerNamespace, String rolloutName) {
-        this.serviceClient().delete(providerNamespace, rolloutName);
+        this.deleteByResourceGroupWithResponse(providerNamespace, rolloutName, Context.NONE);
     }
 
     public PagedIterable<DefaultRollout> listByProviderRegistration(String providerNamespace) {
-        PagedIterable<DefaultRolloutInner> inner = this.serviceClient().listByProviderRegistration(providerNamespace);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DefaultRolloutImpl(inner1, this.manager()));
+        return this.listByProviderRegistration(providerNamespace, Context.NONE);
     }
 
     public PagedIterable<DefaultRollout> listByProviderRegistration(String providerNamespace, Context context) {
@@ -68,62 +67,34 @@ public final class DefaultRolloutsImpl implements DefaultRollouts {
     }
 
     public void stop(String providerNamespace, String rolloutName) {
-        this.serviceClient().stop(providerNamespace, rolloutName);
+        this.stopWithResponse(providerNamespace, rolloutName, Context.NONE);
     }
 
     public DefaultRollout getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByName(id, "defaultRollouts");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'defaultRollouts'.", id)));
-        }
-        return this.getWithResponse(providerNamespace, rolloutName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DefaultRollout> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByName(id, "defaultRollouts");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'defaultRollouts'.", id)));
-        }
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}",
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String rolloutName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}",
+            "rolloutName", "defaultRollouts", LOGGER);
         return this.getWithResponse(providerNamespace, rolloutName, context);
     }
 
     public void deleteById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByName(id, "defaultRollouts");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'defaultRollouts'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(providerNamespace, rolloutName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String rolloutName = ResourceManagerUtils.getValueFromIdByName(id, "defaultRollouts");
-        if (rolloutName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'defaultRollouts'.", id)));
-        }
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}",
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String rolloutName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}",
+            "rolloutName", "defaultRollouts", LOGGER);
         return this.deleteByResourceGroupWithResponse(providerNamespace, rolloutName, context);
     }
 

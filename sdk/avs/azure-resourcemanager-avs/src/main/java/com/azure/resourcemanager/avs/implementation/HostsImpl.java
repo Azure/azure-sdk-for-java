@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.HostsClient;
 import com.azure.resourcemanager.avs.fluent.models.HostModelInner;
 import com.azure.resourcemanager.avs.models.HostModel;
+import com.azure.resourcemanager.avs.models.HostUpdate;
 import com.azure.resourcemanager.avs.models.Hosts;
 
 public final class HostsImpl implements Hosts {
@@ -27,9 +28,7 @@ public final class HostsImpl implements Hosts {
     }
 
     public PagedIterable<HostModel> list(String resourceGroupName, String privateCloudName, String clusterName) {
-        PagedIterable<HostModelInner> inner
-            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HostModelImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, clusterName, Context.NONE);
     }
 
     public PagedIterable<HostModel> list(String resourceGroupName, String privateCloudName, String clusterName,
@@ -49,6 +48,25 @@ public final class HostsImpl implements Hosts {
 
     public HostModel get(String resourceGroupName, String privateCloudName, String clusterName, String hostId) {
         HostModelInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, hostId);
+        if (inner != null) {
+            return new HostModelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<HostModel> updateWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
+        String hostId, HostUpdate properties, Context context) {
+        Response<HostModelInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, privateCloudName, clusterName, hostId, properties, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HostModelImpl(inner.getValue(), this.manager()));
+    }
+
+    public HostModel update(String resourceGroupName, String privateCloudName, String clusterName, String hostId,
+        HostUpdate properties) {
+        HostModelInner inner
+            = this.serviceClient().update(resourceGroupName, privateCloudName, clusterName, hostId, properties);
         if (inner != null) {
             return new HostModelImpl(inner, this.manager());
         } else {

@@ -108,17 +108,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerConnectionPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName) {
@@ -188,17 +178,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             resourceGroupName, serverName, connectionPolicyName, accept, context);
     }
 
-    /**
-     * Gets a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerConnectionPolicyInner> getAsync(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName) {
@@ -206,53 +186,21 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerConnectionPolicyInner> getWithResponse(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, connectionPolicyName, context).block();
     }
 
-    /**
-     * Gets a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConnectionPolicyInner get(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName) {
         return getWithResponse(resourceGroupName, serverName, connectionPolicyName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param parameters The required parameters for updating a server connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName, ServerConnectionPolicyInner parameters) {
@@ -338,18 +286,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             parameters, context);
     }
 
-    /**
-     * Updates a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param parameters The required parameters for updating a server connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a server connection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerConnectionPolicyInner>, ServerConnectionPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName,
@@ -386,18 +323,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             context);
     }
 
-    /**
-     * Updates a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param parameters The required parameters for updating a server connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server connection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerConnectionPolicyInner>, ServerConnectionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName,
@@ -406,19 +332,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             .getSyncPoller();
     }
 
-    /**
-     * Updates a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param parameters The required parameters for updating a server connection policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server connection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerConnectionPolicyInner>, ServerConnectionPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ConnectionPolicyName connectionPolicyName,
@@ -427,18 +341,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             .getSyncPoller();
     }
 
-    /**
-     * Updates a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param parameters The required parameters for updating a server connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerConnectionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName, ServerConnectionPolicyInner parameters) {
@@ -466,37 +369,14 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param parameters The required parameters for updating a server connection policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConnectionPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName, ServerConnectionPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, connectionPolicyName, parameters).block();
     }
 
-    /**
-     * Updates a server connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param connectionPolicyName The name of the connection policy.
-     * @param parameters The required parameters for updating a server connection policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server connection policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerConnectionPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         ConnectionPolicyName connectionPolicyName, ServerConnectionPolicyInner parameters, Context context) {
@@ -580,16 +460,7 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServerConnectionPolicy list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerConnectionPolicyInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -614,32 +485,13 @@ public final class ServerConnectionPoliciesClientImpl implements ServerConnectio
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServerConnectionPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerConnectionPolicyInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Lists connection policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServerConnectionPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerConnectionPolicyInner> listByServer(String resourceGroupName, String serverName,
         Context context) {

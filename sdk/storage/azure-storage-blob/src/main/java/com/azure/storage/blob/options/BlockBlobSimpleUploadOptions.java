@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import reactor.core.publisher.Flux;
@@ -21,7 +22,7 @@ import java.util.Map;
 /**
  * Extended options that may be passed when uploading a Block Blob in a single request.
  */
-public class BlockBlobSimpleUploadOptions {
+public class BlockBlobSimpleUploadOptions implements ValidatableContent {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
     private final BinaryData data;
@@ -303,6 +304,7 @@ public class BlockBlobSimpleUploadOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -314,6 +316,7 @@ public class BlockBlobSimpleUploadOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public BlockBlobSimpleUploadOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

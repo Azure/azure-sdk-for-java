@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllerPatch.json
+     * x-ms-original-file: 2026-03-01/TrafficControllerPatch.json
      */
     /**
      * Sample code: Patch Traffic Controller.

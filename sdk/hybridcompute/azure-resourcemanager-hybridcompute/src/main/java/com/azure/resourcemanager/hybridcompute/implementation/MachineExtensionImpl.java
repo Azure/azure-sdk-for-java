@@ -88,10 +88,7 @@ public final class MachineExtensionImpl
     }
 
     public MachineExtension create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineExtensions()
-            .createOrUpdate(resourceGroupName, machineName, extensionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MachineExtension create(Context context) {
@@ -113,10 +110,7 @@ public final class MachineExtensionImpl
     }
 
     public MachineExtension apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineExtensions()
-            .update(resourceGroupName, machineName, extensionName, updateExtensionParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MachineExtension apply(Context context) {
@@ -130,17 +124,19 @@ public final class MachineExtensionImpl
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.machineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "machines");
-        this.extensionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "extensions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions/{extensionName}",
+            "resourceGroupName");
+        this.machineName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions/{extensionName}",
+            "machineName");
+        this.extensionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/extensions/{extensionName}",
+            "extensionName");
     }
 
     public MachineExtension refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMachineExtensions()
-            .getWithResponse(resourceGroupName, machineName, extensionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MachineExtension refresh(Context context) {

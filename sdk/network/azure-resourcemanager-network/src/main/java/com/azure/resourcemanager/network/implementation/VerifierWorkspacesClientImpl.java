@@ -135,17 +135,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verifier Workspace along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VerifierWorkspaceInner>> getWithResponseAsync(String resourceGroupName,
         String networkManagerName, String workspaceName) {
@@ -168,7 +158,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -210,24 +200,14 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, workspaceName, accept, context);
     }
 
-    /**
-     * Gets Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verifier Workspace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifierWorkspaceInner> getAsync(String resourceGroupName, String networkManagerName,
         String workspaceName) {
@@ -235,54 +215,20 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verifier Workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VerifierWorkspaceInner> getWithResponse(String resourceGroupName, String networkManagerName,
         String workspaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, workspaceName, context).block();
     }
 
-    /**
-     * Gets Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verifier Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifierWorkspaceInner get(String resourceGroupName, String networkManagerName, String workspaceName) {
         return getWithResponse(resourceGroupName, networkManagerName, workspaceName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param body Verifier Workspace object to create/update.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VerifierWorkspaceInner>> createWithResponseAsync(String resourceGroupName,
         String networkManagerName, String workspaceName, VerifierWorkspaceInner body, String ifMatch) {
@@ -310,7 +256,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         } else {
             body.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -362,7 +308,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         } else {
             body.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -370,18 +316,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             networkManagerName, workspaceName, ifMatch, contentType, accept, body, context);
     }
 
-    /**
-     * Creates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param body Verifier Workspace object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifierWorkspaceInner> createAsync(String resourceGroupName, String networkManagerName,
         String workspaceName, VerifierWorkspaceInner body) {
@@ -390,21 +325,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param body Verifier Workspace object to create/update.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VerifierWorkspaceInner> createWithResponse(String resourceGroupName, String networkManagerName,
         String workspaceName, VerifierWorkspaceInner body, String ifMatch, Context context) {
@@ -412,18 +333,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .block();
     }
 
-    /**
-     * Creates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param body Verifier Workspace object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifierWorkspaceInner create(String resourceGroupName, String networkManagerName, String workspaceName,
         VerifierWorkspaceInner body) {
@@ -432,20 +342,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .getValue();
     }
 
-    /**
-     * Updates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param body Verifier Workspace object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VerifierWorkspaceInner>> updateWithResponseAsync(String resourceGroupName,
         String networkManagerName, String workspaceName, String ifMatch, VerifierWorkspaceUpdate body) {
@@ -471,7 +368,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -521,24 +418,14 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, workspaceName, ifMatch, accept, body, context);
     }
 
-    /**
-     * Updates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifierWorkspaceInner> updateAsync(String resourceGroupName, String networkManagerName,
         String workspaceName) {
@@ -548,21 +435,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param body Verifier Workspace object to create/update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VerifierWorkspaceInner> updateWithResponse(String resourceGroupName, String networkManagerName,
         String workspaceName, String ifMatch, VerifierWorkspaceUpdate body, Context context) {
@@ -570,17 +443,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .block();
     }
 
-    /**
-     * Updates Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of Verifier Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifierWorkspaceInner update(String resourceGroupName, String networkManagerName, String workspaceName) {
         final String ifMatch = null;
@@ -589,19 +452,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .getValue();
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String workspaceName, String ifMatch) {
@@ -624,7 +475,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -668,25 +519,13 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, workspaceName, ifMatch, context);
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String workspaceName, String ifMatch) {
@@ -696,17 +535,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             this.client.getContext());
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String workspaceName) {
@@ -741,17 +570,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             context);
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String workspaceName) {
@@ -759,20 +578,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, workspaceName, ifMatch).getSyncPoller();
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String workspaceName, String ifMatch, Context context) {
@@ -780,19 +586,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .getSyncPoller();
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String workspaceName,
         String ifMatch) {
@@ -800,17 +594,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String workspaceName) {
         final String ifMatch = null;
@@ -839,35 +623,14 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String workspaceName) {
         final String ifMatch = null;
         deleteAsync(resourceGroupName, networkManagerName, workspaceName, ifMatch).block();
     }
 
-    /**
-     * Deletes Verifier Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param workspaceName The name of the resource.
-     * @param ifMatch The entity state (ETag) version of the pool to update. This value can be omitted or set to "*" to
-     * apply the operation unconditionally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String workspaceName, String ifMatch,
         Context context) {
@@ -908,7 +671,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -954,7 +717,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -964,21 +727,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets list of Verifier Workspaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Verifier Workspaces as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VerifierWorkspaceInner> listAsync(String resourceGroupName, String networkManagerName,
         String skipToken, Integer skip, Integer top, String sortKey, String sortValue) {
@@ -987,16 +736,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets list of Verifier Workspaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Verifier Workspaces as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VerifierWorkspaceInner> listAsync(String resourceGroupName, String networkManagerName) {
         final String skipToken = null;
@@ -1032,16 +772,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             sortKey, sortValue, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets list of Verifier Workspaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Verifier Workspaces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VerifierWorkspaceInner> list(String resourceGroupName, String networkManagerName) {
         final String skipToken = null;
@@ -1053,22 +784,7 @@ public final class VerifierWorkspacesClientImpl implements VerifierWorkspacesCli
             listAsync(resourceGroupName, networkManagerName, skipToken, skip, top, sortKey, sortValue));
     }
 
-    /**
-     * Gets list of Verifier Workspaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Verifier Workspaces as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VerifierWorkspaceInner> list(String resourceGroupName, String networkManagerName,
         String skipToken, Integer skip, Integer top, String sortKey, String sortValue, Context context) {

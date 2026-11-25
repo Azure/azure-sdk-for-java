@@ -203,11 +203,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationDefinitionInner> listSinglePage(String skipToken) {
-        final String accept = "application/json";
-        Response<OperationDefinitionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(skipToken, Context.NONE);
     }
 
     /**
@@ -231,33 +227,14 @@ public final class OperationsClientImpl implements OperationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the operations for the provider.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list configuration store operations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationDefinitionInner> list() {
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(skipToken), nextLink -> listNextSinglePage(nextLink));
+        return list(skipToken, Context.NONE);
     }
 
-    /**
-     * List the operations for the provider.
-     * 
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
-     * parameter that specifies a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list configuration store operations as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationDefinitionInner> list(String skipToken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(skipToken, context),
@@ -303,16 +280,7 @@ public final class OperationsClientImpl implements OperationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the configuration store name is available for use.
-     * 
-     * @param checkNameAvailabilityParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityStatusInner> checkNameAvailabilityWithResponse(
         CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
@@ -322,15 +290,7 @@ public final class OperationsClientImpl implements OperationsClient {
             this.client.getSubscriptionId(), contentType, accept, checkNameAvailabilityParameters, context);
     }
 
-    /**
-     * Checks whether the configuration store name is available for use.
-     * 
-     * @param checkNameAvailabilityParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NameAvailabilityStatusInner
         checkNameAvailability(CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
@@ -378,17 +338,7 @@ public final class OperationsClientImpl implements OperationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the configuration store name is available for use.
-     * 
-     * @param location The location name.
-     * @param checkNameAvailabilityParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NameAvailabilityStatusInner> regionalCheckNameAvailabilityWithResponse(String location,
         CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
@@ -398,16 +348,7 @@ public final class OperationsClientImpl implements OperationsClient {
             this.client.getSubscriptionId(), location, contentType, accept, checkNameAvailabilityParameters, context);
     }
 
-    /**
-     * Checks whether the configuration store name is available for use.
-     * 
-     * @param location The location name.
-     * @param checkNameAvailabilityParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to check the availability of a resource name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NameAvailabilityStatusInner regionalCheckNameAvailability(String location,
         CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
@@ -445,11 +386,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationDefinitionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OperationDefinitionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -48,7 +48,7 @@ public final class FleetsImpl implements Fleets {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String fleetName) {
-        this.serviceClient().delete(resourceGroupName, fleetName);
+        this.delete(resourceGroupName, fleetName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String fleetName, Context context) {
@@ -56,8 +56,7 @@ public final class FleetsImpl implements Fleets {
     }
 
     public PagedIterable<Fleet> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<FleetInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Fleet> listByResourceGroup(String resourceGroupName, Context context) {
@@ -66,8 +65,7 @@ public final class FleetsImpl implements Fleets {
     }
 
     public PagedIterable<Fleet> list() {
-        PagedIterable<FleetInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Fleet> list(Context context) {
@@ -76,9 +74,7 @@ public final class FleetsImpl implements Fleets {
     }
 
     public PagedIterable<VirtualMachineScaleSet> listVirtualMachineScaleSets(String resourceGroupName, String name) {
-        PagedIterable<VirtualMachineScaleSetInner> inner
-            = this.serviceClient().listVirtualMachineScaleSets(resourceGroupName, name);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineScaleSetImpl(inner1, this.manager()));
+        return this.listVirtualMachineScaleSets(resourceGroupName, name, Context.NONE);
     }
 
     public PagedIterable<VirtualMachineScaleSet> listVirtualMachineScaleSets(String resourceGroupName, String name,
@@ -101,58 +97,30 @@ public final class FleetsImpl implements Fleets {
     }
 
     public Fleet getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, fleetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Fleet> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}",
+            "fleetName", "fleets", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, fleetName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
-        this.delete(resourceGroupName, fleetName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fleetName = ResourceManagerUtils.getValueFromIdByName(id, "fleets");
-        if (fleetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fleets'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fleetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}",
+            "fleetName", "fleets", LOGGER);
         this.delete(resourceGroupName, fleetName, context);
     }
 

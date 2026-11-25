@@ -89,10 +89,7 @@ public final class SummaryLogsImpl implements SummaryLogs, SummaryLogs.Definitio
     }
 
     public SummaryLogs create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSummaryLogsOperations()
-            .createOrUpdate(resourceGroupName, workspaceName, summaryLogsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SummaryLogs create(Context context) {
@@ -113,10 +110,7 @@ public final class SummaryLogsImpl implements SummaryLogs, SummaryLogs.Definitio
     }
 
     public SummaryLogs apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSummaryLogsOperations()
-            .createOrUpdate(resourceGroupName, workspaceName, summaryLogsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SummaryLogs apply(Context context) {
@@ -130,17 +124,19 @@ public final class SummaryLogsImpl implements SummaryLogs, SummaryLogs.Definitio
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.summaryLogsName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "summaryLogs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}",
+            "workspaceName");
+        this.summaryLogsName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/summaryLogs/{summaryLogsName}",
+            "summaryLogsName");
     }
 
     public SummaryLogs refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSummaryLogsOperations()
-            .getWithResponse(resourceGroupName, workspaceName, summaryLogsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SummaryLogs refresh(Context context) {

@@ -118,17 +118,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a server encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server encryption protector along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EncryptionProtectorInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -197,17 +187,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             resourceGroupName, serverName, encryptionProtectorName, accept, context);
     }
 
-    /**
-     * Gets a server encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server encryption protector on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptionProtectorInner> getAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -215,53 +195,21 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a server encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server encryption protector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EncryptionProtectorInner> getWithResponse(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName, context).block();
     }
 
-    /**
-     * Gets a server encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptionProtectorInner get(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
         return getWithResponse(resourceGroupName, serverName, encryptionProtectorName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters) {
@@ -347,18 +295,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             accept, parameters, context);
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the server encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
@@ -394,18 +331,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             this.client.getHttpPipeline(), EncryptionProtectorInner.class, EncryptionProtectorInner.class, context);
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the server encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
@@ -414,19 +340,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the server encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
@@ -436,18 +350,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters) {
@@ -476,37 +379,14 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptionProtectorInner createOrUpdate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, encryptionProtectorName, parameters).block();
     }
 
-    /**
-     * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param parameters The requested encryption protector resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the server encryption protector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptionProtectorInner createOrUpdate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context) {
@@ -590,16 +470,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of server encryption protectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server encryption protectors as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EncryptionProtectorInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -624,49 +495,20 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of server encryption protectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server encryption protectors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionProtectorInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Gets a list of server encryption protectors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server encryption protectors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionProtectorInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -734,17 +576,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             this.client.getSubscriptionId(), resourceGroupName, serverName, encryptionProtectorName, context);
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -776,35 +608,14 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             context);
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
         return this.beginRevalidateAsync(resourceGroupName, serverName, encryptionProtectorName).getSyncPoller();
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName, Context context) {
@@ -812,17 +623,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             .getSyncPoller();
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revalidateAsync(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
@@ -849,33 +650,14 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revalidate(String resourceGroupName, String serverName,
         EncryptionProtectorName encryptionProtectorName) {
         revalidateAsync(resourceGroupName, serverName, encryptionProtectorName).block();
     }
 
-    /**
-     * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param encryptionProtectorName The name of the encryption protector to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revalidate(String resourceGroupName, String serverName, EncryptionProtectorName encryptionProtectorName,
         Context context) {

@@ -182,11 +182,7 @@ public final class CloudServicesNetworkImpl
     }
 
     public CloudServicesNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudServicesNetworks()
-            .createOrUpdate(resourceGroupName, cloudServicesNetworkName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudServicesNetwork create(Context context) {
@@ -213,11 +209,7 @@ public final class CloudServicesNetworkImpl
     }
 
     public CloudServicesNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudServicesNetworks()
-            .update(resourceGroupName, cloudServicesNetworkName, updateIfMatch, updateIfNoneMatch,
-                updateCloudServicesNetworkUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudServicesNetwork apply(Context context) {
@@ -232,17 +224,16 @@ public final class CloudServicesNetworkImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudServicesNetworkName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudServicesNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}",
+            "resourceGroupName");
+        this.cloudServicesNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/cloudServicesNetworks/{cloudServicesNetworkName}",
+            "cloudServicesNetworkName");
     }
 
     public CloudServicesNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudServicesNetworks()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudServicesNetwork refresh(Context context) {

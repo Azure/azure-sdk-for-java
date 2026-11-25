@@ -15,15 +15,6 @@
 - [TransitionToCmk](#accounts_transitiontocmk)
 - [Update](#accounts_update)
 
-## ActiveDirectoryConfigs
-
-- [CreateOrUpdate](#activedirectoryconfigs_createorupdate)
-- [Delete](#activedirectoryconfigs_delete)
-- [GetByResourceGroup](#activedirectoryconfigs_getbyresourcegroup)
-- [List](#activedirectoryconfigs_list)
-- [ListByResourceGroup](#activedirectoryconfigs_listbyresourcegroup)
-- [Update](#activedirectoryconfigs_update)
-
 ## BackupPolicies
 
 - [Create](#backuppolicies_create)
@@ -83,74 +74,6 @@
 - [PoolChange](#caches_poolchange)
 - [ResetSmbPassword](#caches_resetsmbpassword)
 - [Update](#caches_update)
-
-## ElasticAccounts
-
-- [CreateOrUpdate](#elasticaccounts_createorupdate)
-- [Delete](#elasticaccounts_delete)
-- [GetByResourceGroup](#elasticaccounts_getbyresourcegroup)
-- [List](#elasticaccounts_list)
-- [ListByResourceGroup](#elasticaccounts_listbyresourcegroup)
-- [Update](#elasticaccounts_update)
-
-## ElasticBackupPolicies
-
-- [CreateOrUpdate](#elasticbackuppolicies_createorupdate)
-- [Delete](#elasticbackuppolicies_delete)
-- [Get](#elasticbackuppolicies_get)
-- [ListByElasticAccount](#elasticbackuppolicies_listbyelasticaccount)
-- [Update](#elasticbackuppolicies_update)
-
-## ElasticBackupVaults
-
-- [CreateOrUpdate](#elasticbackupvaults_createorupdate)
-- [Delete](#elasticbackupvaults_delete)
-- [Get](#elasticbackupvaults_get)
-- [ListByElasticAccount](#elasticbackupvaults_listbyelasticaccount)
-- [Update](#elasticbackupvaults_update)
-
-## ElasticBackups
-
-- [CreateOrUpdate](#elasticbackups_createorupdate)
-- [Delete](#elasticbackups_delete)
-- [Get](#elasticbackups_get)
-- [ListByVault](#elasticbackups_listbyvault)
-- [Update](#elasticbackups_update)
-
-## ElasticCapacityPools
-
-- [ChangeZone](#elasticcapacitypools_changezone)
-- [CheckVolumeFilePathAvailability](#elasticcapacitypools_checkvolumefilepathavailability)
-- [CreateOrUpdate](#elasticcapacitypools_createorupdate)
-- [Delete](#elasticcapacitypools_delete)
-- [Get](#elasticcapacitypools_get)
-- [ListByElasticAccount](#elasticcapacitypools_listbyelasticaccount)
-- [Update](#elasticcapacitypools_update)
-
-## ElasticSnapshotPolicies
-
-- [CreateOrUpdate](#elasticsnapshotpolicies_createorupdate)
-- [Delete](#elasticsnapshotpolicies_delete)
-- [Get](#elasticsnapshotpolicies_get)
-- [ListByElasticAccount](#elasticsnapshotpolicies_listbyelasticaccount)
-- [ListElasticVolumes](#elasticsnapshotpolicies_listelasticvolumes)
-- [Update](#elasticsnapshotpolicies_update)
-
-## ElasticSnapshots
-
-- [CreateOrUpdate](#elasticsnapshots_createorupdate)
-- [Delete](#elasticsnapshots_delete)
-- [Get](#elasticsnapshots_get)
-- [ListByElasticVolume](#elasticsnapshots_listbyelasticvolume)
-
-## ElasticVolumes
-
-- [CreateOrUpdate](#elasticvolumes_createorupdate)
-- [Delete](#elasticvolumes_delete)
-- [Get](#elasticvolumes_get)
-- [ListByElasticPool](#elasticvolumes_listbyelasticpool)
-- [Revert](#elasticvolumes_revert)
-- [Update](#elasticvolumes_update)
 
 ## NetAppResource
 
@@ -216,15 +139,6 @@
 - [List](#snapshots_list)
 - [RestoreFiles](#snapshots_restorefiles)
 
-## Subvolumes
-
-- [Create](#subvolumes_create)
-- [Delete](#subvolumes_delete)
-- [Get](#subvolumes_get)
-- [GetMetadata](#subvolumes_getmetadata)
-- [ListByVolume](#subvolumes_listbyvolume)
-- [Update](#subvolumes_update)
-
 ## VolumeGroups
 
 - [Create](#volumegroups_create)
@@ -282,7 +196,7 @@ import java.util.Arrays;
  */
 public final class AccountsChangeKeyVaultSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_ChangeKeyVault.json
+     * x-ms-original-file: 2026-09-01/Accounts_ChangeKeyVault.json
      */
     /**
      * Sample code: Accounts_ChangeKeyVault.
@@ -310,6 +224,7 @@ import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.BindAuthenticationLevel;
 import com.azure.resourcemanager.netapp.models.BindPasswordAkvConfig;
 import com.azure.resourcemanager.netapp.models.LdapConfiguration;
+import com.azure.resourcemanager.netapp.models.SecureLdapType;
 import java.util.Arrays;
 
 /**
@@ -317,7 +232,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -329,7 +244,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdateAD.json
+     * x-ms-original-file: 2026-09-01/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
@@ -356,7 +271,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_CreateOrUpdateLdapConfig.json
+     * x-ms-original-file: 2026-09-01/Accounts_CreateOrUpdateLdapConfig.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateLdapConfig.
@@ -370,7 +285,7 @@ public final class AccountsCreateOrUpdateSamples {
             .withExistingResourceGroup("myRG")
             .withLdapConfiguration(new LdapConfiguration().withDomain("example.com")
                 .withLdapServers(Arrays.asList("192.0.2.1", "192.0.2.2"))
-                .withLdapOverTLS(false)
+                .withSecureLdapType(SecureLdapType.LDAP_OVER_TLS)
                 .withServerCACertificate("<REDACTED>")
                 .withCertificateCNHost("ldap.krypton.com")
                 .withLdapPort(636)
@@ -396,7 +311,7 @@ public final class AccountsCreateOrUpdateSamples {
  */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_Delete.json
+     * x-ms-original-file: 2026-09-01/Accounts_Delete.json
      */
     /**
      * Sample code: Accounts_Delete.
@@ -417,7 +332,7 @@ public final class AccountsDeleteSamples {
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_Get.json
+     * x-ms-original-file: 2026-09-01/Accounts_Get.json
      */
     /**
      * Sample code: Accounts_Get.
@@ -438,7 +353,7 @@ public final class AccountsGetByResourceGroupSamples {
  */
 public final class AccountsGetChangeKeyVaultInformationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_GetChangeKeyVaultInformation.json
+     * x-ms-original-file: 2026-09-01/Accounts_GetChangeKeyVaultInformation.json
      */
     /**
      * Sample code: Accounts_GetChangeKeyVaultInformation.
@@ -460,7 +375,7 @@ public final class AccountsGetChangeKeyVaultInformationSamples {
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_ListBySubscription.json
+     * x-ms-original-file: 2026-09-01/Accounts_ListBySubscription.json
      */
     /**
      * Sample code: Accounts_ListBySubscription.
@@ -481,7 +396,7 @@ public final class AccountsListSamples {
  */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_List.json
+     * x-ms-original-file: 2026-09-01/Accounts_List.json
      */
     /**
      * Sample code: Accounts_List.
@@ -502,7 +417,7 @@ public final class AccountsListByResourceGroupSamples {
  */
 public final class AccountsRefreshLdapBindPasswordSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_RefreshLdapBindPassword.json
+     * x-ms-original-file: 2026-09-01/Accounts_RefreshLdapBindPassword.json
      */
     /**
      * Sample code: NetAppAccounts_RefreshLdapBindPassword.
@@ -524,7 +439,7 @@ public final class AccountsRefreshLdapBindPasswordSamples {
  */
 public final class AccountsRenewCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_RenewCredentials.json
+     * x-ms-original-file: 2026-09-01/Accounts_RenewCredentials.json
      */
     /**
      * Sample code: Accounts_RenewCredentials.
@@ -547,7 +462,7 @@ import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
  */
 public final class AccountsTransitionToCmkSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_TransitionEncryptionKey.json
+     * x-ms-original-file: 2026-09-01/Accounts_TransitionEncryptionKey.json
      */
     /**
      * Sample code: Accounts_MigrateEncryptionKey.
@@ -577,7 +492,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Accounts_Update.json
+     * x-ms-original-file: 2026-09-01/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.
@@ -605,191 +520,6 @@ public final class AccountsUpdateSamples {
 }
 ```
 
-### ActiveDirectoryConfigs_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.ActiveDirectoryConfigProperties;
-import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.netapp.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.netapp.models.SecretPassword;
-import com.azure.resourcemanager.netapp.models.SecretPasswordIdentity;
-import com.azure.resourcemanager.netapp.models.SecretPasswordKeyVaultProperties;
-import com.azure.resourcemanager.netapp.models.UserAssignedIdentity;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for ActiveDirectoryConfigs CreateOrUpdate.
- */
-public final class ActiveDirectoryConfigsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ActiveDirectoryConfigs_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ActiveDirectoryConfigs_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        activeDirectoryConfigsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.activeDirectoryConfigs()
-            .define("adconfig1")
-            .withRegion("eastus")
-            .withExistingResourceGroup("myRG")
-            .withTags(mapOf("ac-tag1", "activeDirectoryConfig1"))
-            .withProperties(new ActiveDirectoryConfigProperties().withUserName("admin1")
-                .withDns(Arrays.asList("10.10.10.4", "10.10.10.5"))
-                .withSmbServerName("smbServer")
-                .withOrganizationalUnit("OU=Computers,DC=corp,DC=contoso,DC=com")
-                .withSite("Default-First-Site-Name")
-                .withBackupOperators(Arrays.asList("backupOp1"))
-                .withAdministrators(Arrays.asList("admin1"))
-                .withSecurityOperators(Arrays.asList("secOp1"))
-                .withDomain("example.net")
-                .withSecretPassword(new SecretPassword()
-                    .withKeyVaultProperties(
-                        new SecretPasswordKeyVaultProperties().withKeyVaultUri("fakeTokenPlaceholder")
-                            .withSecretName("fakeTokenPlaceholder"))
-                    .withIdentity(new SecretPasswordIdentity().withUserAssignedIdentity(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userAssignedIdentity1"))))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userAssignedIdentity1",
-                    new UserAssignedIdentity())))
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### ActiveDirectoryConfigs_Delete
-
-```java
-/**
- * Samples for ActiveDirectoryConfigs Delete.
- */
-public final class ActiveDirectoryConfigsDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ActiveDirectoryConfigs_Delete.json
-     */
-    /**
-     * Sample code: ActiveDirectoryConfigs_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void activeDirectoryConfigsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.activeDirectoryConfigs().delete("myRG", "adconfig1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ActiveDirectoryConfigs_GetByResourceGroup
-
-```java
-/**
- * Samples for ActiveDirectoryConfigs GetByResourceGroup.
- */
-public final class ActiveDirectoryConfigsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ActiveDirectoryConfigs_Get.json
-     */
-    /**
-     * Sample code: ActiveDirectoryConfigs_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void activeDirectoryConfigsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.activeDirectoryConfigs()
-            .getByResourceGroupWithResponse("myRG", "adconfig1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ActiveDirectoryConfigs_List
-
-```java
-/**
- * Samples for ActiveDirectoryConfigs List.
- */
-public final class ActiveDirectoryConfigsListSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ActiveDirectoryConfigs_ListBySubscription.json
-     */
-    /**
-     * Sample code: ActiveDirectoryConfigs_ListBySubscription.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        activeDirectoryConfigsListBySubscription(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.activeDirectoryConfigs().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ActiveDirectoryConfigs_ListByResourceGroup
-
-```java
-/**
- * Samples for ActiveDirectoryConfigs ListByResourceGroup.
- */
-public final class ActiveDirectoryConfigsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ActiveDirectoryConfigs_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: ActiveDirectoryConfigs_ListByResourceGroup.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        activeDirectoryConfigsListByResourceGroup(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.activeDirectoryConfigs().listByResourceGroup("myRG", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ActiveDirectoryConfigs_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.ActiveDirectoryConfig;
-import com.azure.resourcemanager.netapp.models.ActiveDirectoryConfigUpdateProperties;
-
-/**
- * Samples for ActiveDirectoryConfigs Update.
- */
-public final class ActiveDirectoryConfigsUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ActiveDirectoryConfigs_Update.json
-     */
-    /**
-     * Sample code: ActiveDirectoryConfigs_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void activeDirectoryConfigsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ActiveDirectoryConfig resource = manager.activeDirectoryConfigs()
-            .getByResourceGroupWithResponse("myRG", "adconfig1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new ActiveDirectoryConfigUpdateProperties().withSmbServerName("smbServer2"))
-            .apply();
-    }
-}
-```
-
 ### BackupPolicies_Create
 
 ```java
@@ -798,7 +528,7 @@ public final class ActiveDirectoryConfigsUpdateSamples {
  */
 public final class BackupPoliciesCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupPolicies_Create.json
+     * x-ms-original-file: 2026-09-01/BackupPolicies_Create.json
      */
     /**
      * Sample code: BackupPolicies_Create.
@@ -827,7 +557,7 @@ public final class BackupPoliciesCreateSamples {
  */
 public final class BackupPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupPolicies_Delete.json
+     * x-ms-original-file: 2026-09-01/BackupPolicies_Delete.json
      */
     /**
      * Sample code: BackupPolicies_Delete.
@@ -849,7 +579,7 @@ public final class BackupPoliciesDeleteSamples {
  */
 public final class BackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupPolicies_Get.json
+     * x-ms-original-file: 2026-09-01/BackupPolicies_Get.json
      */
     /**
      * Sample code: BackupPolicies_Get.
@@ -871,7 +601,7 @@ public final class BackupPoliciesGetSamples {
  */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupPolicies_List.json
+     * x-ms-original-file: 2026-09-01/BackupPolicies_List.json
      */
     /**
      * Sample code: BackupPolicies_List.
@@ -894,7 +624,7 @@ import com.azure.resourcemanager.netapp.models.BackupPolicy;
  */
 public final class BackupPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupPolicies_Update.json
+     * x-ms-original-file: 2026-09-01/BackupPolicies_Update.json
      */
     /**
      * Sample code: BackupPolicies_Update.
@@ -923,7 +653,7 @@ public final class BackupPoliciesUpdateSamples {
  */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupVaults_Create.json
+     * x-ms-original-file: 2026-09-01/BackupVaults_Create.json
      */
     /**
      * Sample code: BackupVault_CreateOrUpdate.
@@ -948,7 +678,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
  */
 public final class BackupVaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupVaults_Delete.json
+     * x-ms-original-file: 2026-09-01/BackupVaults_Delete.json
      */
     /**
      * Sample code: BackupVaults_Delete.
@@ -969,7 +699,7 @@ public final class BackupVaultsDeleteSamples {
  */
 public final class BackupVaultsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupVaults_Get.json
+     * x-ms-original-file: 2026-09-01/BackupVaults_Get.json
      */
     /**
      * Sample code: BackupVaults_Get.
@@ -990,7 +720,7 @@ public final class BackupVaultsGetSamples {
  */
 public final class BackupVaultsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupVaults_List.json
+     * x-ms-original-file: 2026-09-01/BackupVaults_List.json
      */
     /**
      * Sample code: BackupVaults_List.
@@ -1015,7 +745,7 @@ import java.util.Map;
  */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupVaults_Update.json
+     * x-ms-original-file: 2026-09-01/BackupVaults_Update.json
      */
     /**
      * Sample code: BackupVaults_Update.
@@ -1051,7 +781,7 @@ public final class BackupVaultsUpdateSamples {
  */
 public final class BackupsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupsUnderBackupVault_Create.json
+     * x-ms-original-file: 2026-09-01/BackupsUnderBackupVault_Create.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Create.
@@ -1078,7 +808,7 @@ public final class BackupsCreateSamples {
  */
 public final class BackupsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupsUnderBackupVault_Delete.json
+     * x-ms-original-file: 2026-09-01/BackupsUnderBackupVault_Delete.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Delete.
@@ -1100,7 +830,7 @@ public final class BackupsDeleteSamples {
  */
 public final class BackupsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupsUnderBackupVault_Get.json
+     * x-ms-original-file: 2026-09-01/BackupsUnderBackupVault_Get.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Get.
@@ -1122,7 +852,7 @@ public final class BackupsGetSamples {
  */
 public final class BackupsGetLatestStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_LatestBackupStatus.json
+     * x-ms-original-file: 2026-09-01/Volumes_LatestBackupStatus.json
      */
     /**
      * Sample code: Volumes_BackupStatus.
@@ -1144,7 +874,7 @@ public final class BackupsGetLatestStatusSamples {
  */
 public final class BackupsGetVolumeLatestRestoreStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_LatestRestoreStatus.json
+     * x-ms-original-file: 2026-09-01/Volumes_LatestRestoreStatus.json
      */
     /**
      * Sample code: Volumes_RestoreStatus.
@@ -1167,7 +897,7 @@ public final class BackupsGetVolumeLatestRestoreStatusSamples {
  */
 public final class BackupsListByVaultSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Backups_ListByVault.json
+     * x-ms-original-file: 2026-09-01/Backups_ListByVault.json
      */
     /**
      * Sample code: Backups_ListByVault.
@@ -1190,7 +920,7 @@ import com.azure.resourcemanager.netapp.models.Backup;
  */
 public final class BackupsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupsUnderBackupVault_Update.json
+     * x-ms-original-file: 2026-09-01/BackupsUnderBackupVault_Update.json
      */
     /**
      * Sample code: BackupsUnderBackupVault_Update.
@@ -1216,7 +946,7 @@ import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
  */
 public final class BackupsUnderAccountMigrateBackupsSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupsUnderAccount_Migrate.json
+     * x-ms-original-file: 2026-09-01/BackupsUnderAccount_Migrate.json
      */
     /**
      * Sample code: BackupsUnderAccount_Migrate.
@@ -1243,7 +973,7 @@ import java.util.Arrays;
  */
 public final class BackupsUnderBackupVaultRestoreFilesSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupsUnderBackupVault_SingleFileRestore.json
+     * x-ms-original-file: 2026-09-01/BackupsUnderBackupVault_SingleFileRestore.json
      */
     /**
      * Sample code: Backups_SingleFileRestore.
@@ -1271,7 +1001,7 @@ import com.azure.resourcemanager.netapp.models.BackupsMigrationRequest;
  */
 public final class BackupsUnderVolumeMigrateBackupsSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/BackupsUnderVolume_Migrate.json
+     * x-ms-original-file: 2026-09-01/BackupsUnderVolume_Migrate.json
      */
     /**
      * Sample code: BackupsUnderVolume_Migrate.
@@ -1304,7 +1034,7 @@ import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
  */
 public final class BucketsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Buckets_CreateOrUpdate.json
      */
     /**
      * Sample code: Buckets_CreateOrUpdate.
@@ -1325,7 +1055,7 @@ public final class BucketsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_CreateOrUpdateWithAkv.json
+     * x-ms-original-file: 2026-09-01/Buckets_CreateOrUpdateWithAkv.json
      */
     /**
      * Sample code: Buckets_CreateOrUpdateWithAkv.
@@ -1341,16 +1071,13 @@ public final class BucketsCreateOrUpdateSamples {
             .withServer(new BucketServerProperties().withFqdn("fullyqualified.domainname.com")
                 .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL))
             .withPermissions(BucketPermissions.READ_ONLY)
-            .withAkvDetails(new AzureKeyVaultDetails().withCertificateAkvDetails(new CertificateAkvDetails()
-                .withCertificateKeyVaultUri("fakeTokenPlaceholder")
-                .withCertificateName("my-certificate")
-                .withUserAssignedIdentity(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))
-                .withCredentialsAkvDetails(new CredentialsAkvDetails()
-                    .withCredentialsKeyVaultUri("fakeTokenPlaceholder")
-                    .withSecretName("fakeTokenPlaceholder")
-                    .withUserAssignedIdentity(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1")))
+            .withAkvDetails(new AzureKeyVaultDetails()
+                .withCertificateAkvDetails(
+                    new CertificateAkvDetails().withCertificateKeyVaultUri("fakeTokenPlaceholder")
+                        .withCertificateName("my-certificate"))
+                .withCredentialsAkvDetails(
+                    new CredentialsAkvDetails().withCredentialsKeyVaultUri("fakeTokenPlaceholder")
+                        .withSecretName("fakeTokenPlaceholder")))
             .create();
     }
 }
@@ -1364,7 +1091,7 @@ public final class BucketsCreateOrUpdateSamples {
  */
 public final class BucketsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_Delete.json
+     * x-ms-original-file: 2026-09-01/Buckets_Delete.json
      */
     /**
      * Sample code: Buckets_Delete.
@@ -1387,7 +1114,7 @@ import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
  */
 public final class BucketsGenerateAkvCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_GenerateAkvCredentials.json
+     * x-ms-original-file: 2026-09-01/Buckets_GenerateAkvCredentials.json
      */
     /**
      * Sample code: Buckets_GenerateAkvCredentials.
@@ -1412,7 +1139,7 @@ import com.azure.resourcemanager.netapp.models.BucketCredentialsExpiry;
  */
 public final class BucketsGenerateCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_GenerateCredentials.json
+     * x-ms-original-file: 2026-09-01/Buckets_GenerateCredentials.json
      */
     /**
      * Sample code: Buckets_GenerateCredentials.
@@ -1435,7 +1162,7 @@ public final class BucketsGenerateCredentialsSamples {
  */
 public final class BucketsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_Get.json
+     * x-ms-original-file: 2026-09-01/Buckets_Get.json
      */
     /**
      * Sample code: Buckets_Get.
@@ -1457,7 +1184,7 @@ public final class BucketsGetSamples {
  */
 public final class BucketsListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_List.json
+     * x-ms-original-file: 2026-09-01/Buckets_List.json
      */
     /**
      * Sample code: Buckets_List.
@@ -1478,7 +1205,7 @@ public final class BucketsListSamples {
  */
 public final class BucketsRefreshCertificateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_RefreshCertificate.json
+     * x-ms-original-file: 2026-09-01/Buckets_RefreshCertificate.json
      */
     /**
      * Sample code: Buckets_RefreshCertificate.
@@ -1508,7 +1235,7 @@ import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
  */
 public final class BucketsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_Update.json
+     * x-ms-original-file: 2026-09-01/Buckets_Update.json
      */
     /**
      * Sample code: Buckets_Update.
@@ -1528,7 +1255,7 @@ public final class BucketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Buckets_UpdateWithAkv.json
+     * x-ms-original-file: 2026-09-01/Buckets_UpdateWithAkv.json
      */
     /**
      * Sample code: Buckets_UpdateWithAkv.
@@ -1543,16 +1270,13 @@ public final class BucketsUpdateSamples {
             .withServer(new BucketServerPatchProperties().withFqdn("fullyqualified.domainname.com")
                 .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL))
             .withPermissions(BucketPatchPermissions.READ_ONLY)
-            .withAkvDetails(new AzureKeyVaultDetails().withCertificateAkvDetails(new CertificateAkvDetails()
-                .withCertificateKeyVaultUri("fakeTokenPlaceholder")
-                .withCertificateName("my-certificate")
-                .withUserAssignedIdentity(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))
-                .withCredentialsAkvDetails(new CredentialsAkvDetails()
-                    .withCredentialsKeyVaultUri("fakeTokenPlaceholder")
-                    .withSecretName("fakeTokenPlaceholder")
-                    .withUserAssignedIdentity(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1")))
+            .withAkvDetails(new AzureKeyVaultDetails()
+                .withCertificateAkvDetails(
+                    new CertificateAkvDetails().withCertificateKeyVaultUri("fakeTokenPlaceholder")
+                        .withCertificateName("my-certificate"))
+                .withCredentialsAkvDetails(
+                    new CredentialsAkvDetails().withCredentialsKeyVaultUri("fakeTokenPlaceholder")
+                        .withSecretName("fakeTokenPlaceholder")))
             .apply();
     }
 }
@@ -1566,6 +1290,11 @@ import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.LdapState;
 import com.azure.resourcemanager.netapp.models.OriginClusterInformation;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbEncryptionState;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
+import com.azure.resourcemanager.netapp.models.SmbSettings;
 import java.util.Arrays;
 
 /**
@@ -1573,7 +1302,38 @@ import java.util.Arrays;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Caches_CreateOrUpdate_SMB.json
+     */
+    /**
+     * Sample code: Caches_CreateOrUpdate_SMB.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void cachesCreateOrUpdateSMB(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.caches()
+            .define("cache1")
+            .withRegion("eastus")
+            .withExistingCapacityPool("myRG", "account1", "pool1")
+            .withProperties(new CacheProperties().withFilePath("cache-smb-01")
+                .withSize(107374182400L)
+                .withCacheSubnetResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/cacheVnet/subnets/cacheSubnet1")
+                .withPeeringSubnetResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/icLifVnet/subnets/peeringSubnet1")
+                .withSmbSettings(new SmbSettings().withSmbEncryption(SmbEncryptionState.ENABLED)
+                    .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.ENABLED)
+                    .withSmbNonBrowsable(SmbNonBrowsable.ENABLED)
+                    .withSmbOplocks(SmbOplocks.ENABLED))
+                .withEncryptionKeySource(EncryptionKeySource.MICROSOFT_NET_APP)
+                .withOriginClusterInformation(new OriginClusterInformation().withPeerClusterName("cluster1")
+                    .withPeerAddresses(Arrays.asList("192.0.2.10", "192.0.2.11"))
+                    .withPeerVserverName("vserver1")
+                    .withPeerVolumeName("originvol1")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.
@@ -1611,7 +1371,7 @@ public final class CachesCreateOrUpdateSamples {
  */
 public final class CachesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_Delete.json
+     * x-ms-original-file: 2026-09-01/Caches_Delete.json
      */
     /**
      * Sample code: Caches_Delete.
@@ -1632,7 +1392,7 @@ public final class CachesDeleteSamples {
  */
 public final class CachesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_Get.json
+     * x-ms-original-file: 2026-09-01/Caches_Get.json
      */
     /**
      * Sample code: Caches_Get.
@@ -1653,7 +1413,7 @@ public final class CachesGetSamples {
  */
 public final class CachesListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_List.json
+     * x-ms-original-file: 2026-09-01/Caches_List.json
      */
     /**
      * Sample code: Caches_List.
@@ -1674,7 +1434,7 @@ public final class CachesListSamples {
  */
 public final class CachesListPeeringPassphrasesSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_ListPeeringPassphrases.json
+     * x-ms-original-file: 2026-09-01/Caches_ListPeeringPassphrases.json
      */
     /**
      * Sample code: Caches_ListPeeringPassphrases.
@@ -1699,7 +1459,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
  */
 public final class CachesPoolChangeSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_PoolChange.json
+     * x-ms-original-file: 2026-09-01/Caches_PoolChange.json
      */
     /**
      * Sample code: Caches_PoolChange.
@@ -1723,7 +1483,7 @@ public final class CachesPoolChangeSamples {
  */
 public final class CachesResetSmbPasswordSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_ResetSmbPassword.json
+     * x-ms-original-file: 2026-09-01/Caches_ResetSmbPassword.json
      */
     /**
      * Sample code: Caches_ResetSmbPassword.
@@ -1748,7 +1508,7 @@ import com.azure.resourcemanager.netapp.models.CacheUpdateProperties;
  */
 public final class CachesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Caches_Update.json
+     * x-ms-original-file: 2026-09-01/Caches_Update.json
      */
     /**
      * Sample code: Caches_Update.
@@ -1764,1243 +1524,6 @@ public final class CachesUpdateSamples {
 }
 ```
 
-### ElasticAccounts_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticAccountProperties;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for ElasticAccounts CreateOrUpdate.
- */
-public final class ElasticAccountsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticAccounts_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ElasticAccounts_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticAccountsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticAccounts()
-            .define("account1")
-            .withRegion("eastus")
-            .withExistingResourceGroup("myRG")
-            .withTags(mapOf("ac-tag1", "account1"))
-            .withProperties(new ElasticAccountProperties())
-            .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### ElasticAccounts_Delete
-
-```java
-/**
- * Samples for ElasticAccounts Delete.
- */
-public final class ElasticAccountsDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticAccounts_Delete.json
-     */
-    /**
-     * Sample code: ElasticAccounts_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticAccountsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticAccounts().delete("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticAccounts_GetByResourceGroup
-
-```java
-/**
- * Samples for ElasticAccounts GetByResourceGroup.
- */
-public final class ElasticAccountsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticAccounts_Get.json
-     */
-    /**
-     * Sample code: ElasticAccounts_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticAccountsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticAccounts().getByResourceGroupWithResponse("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticAccounts_List
-
-```java
-/**
- * Samples for ElasticAccounts List.
- */
-public final class ElasticAccountsListSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticAccounts_ListBySubscription.json
-     */
-    /**
-     * Sample code: ElasticAccounts_ListBySubscription.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticAccountsListBySubscription(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticAccounts().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticAccounts_ListByResourceGroup
-
-```java
-/**
- * Samples for ElasticAccounts ListByResourceGroup.
- */
-public final class ElasticAccountsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticAccounts_ListByResourceGroup.json
-     */
-    /**
-     * Sample code: ElasticAccounts_ListByResourceGroup.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticAccountsListByResourceGroup(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticAccounts().listByResourceGroup("myRG", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticAccounts_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticAccount;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for ElasticAccounts Update.
- */
-public final class ElasticAccountsUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticAccounts_Update.json
-     */
-    /**
-     * Sample code: ElasticAccounts_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticAccountsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ElasticAccount resource = manager.elasticAccounts()
-            .getByResourceGroupWithResponse("myRG", "account1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("Tag1", "Value1")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### ElasticBackupPolicies_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyProperties;
-import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyState;
-
-/**
- * Samples for ElasticBackupPolicies CreateOrUpdate.
- */
-public final class ElasticBackupPoliciesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ElasticBackupPolicies_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticBackupPoliciesCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupPolicies()
-            .define("backupPolicyName")
-            .withRegion("westus")
-            .withExistingElasticAccount("myRG", "account1")
-            .withProperties(new ElasticBackupPolicyProperties().withDailyBackupsToKeep(10)
-                .withWeeklyBackupsToKeep(10)
-                .withMonthlyBackupsToKeep(10)
-                .withPolicyState(ElasticBackupPolicyState.ENABLED))
-            .create();
-    }
-}
-```
-
-### ElasticBackupPolicies_Delete
-
-```java
-/**
- * Samples for ElasticBackupPolicies Delete.
- */
-public final class ElasticBackupPoliciesDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupPolicies_Delete.json
-     */
-    /**
-     * Sample code: ElasticBackupPolicies_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupPoliciesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupPolicies()
-            .delete("resourceGroup", "accountName", "backupPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackupPolicies_Get
-
-```java
-/**
- * Samples for ElasticBackupPolicies Get.
- */
-public final class ElasticBackupPoliciesGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupPolicies_Get.json
-     */
-    /**
-     * Sample code: ElasticBackupPolicies_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupPoliciesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupPolicies()
-            .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackupPolicies_ListByElasticAccount
-
-```java
-/**
- * Samples for ElasticBackupPolicies ListByElasticAccount.
- */
-public final class ElasticBackupPoliciesListByElasticAccountSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupPolicies_List.json
-     */
-    /**
-     * Sample code: ElasticBackupPolicies_ListByElasticAccount.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticBackupPoliciesListByElasticAccount(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupPolicies().listByElasticAccount("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackupPolicies_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticBackupPolicy;
-import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyState;
-import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyUpdateProperties;
-
-/**
- * Samples for ElasticBackupPolicies Update.
- */
-public final class ElasticBackupPoliciesUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupPolicies_Update.json
-     */
-    /**
-     * Sample code: ElasticBackupPolicies_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupPoliciesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ElasticBackupPolicy resource = manager.elasticBackupPolicies()
-            .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new ElasticBackupPolicyUpdateProperties().withDailyBackupsToKeep(5)
-                .withWeeklyBackupsToKeep(10)
-                .withMonthlyBackupsToKeep(10)
-                .withPolicyState(ElasticBackupPolicyState.ENABLED))
-            .apply();
-    }
-}
-```
-
-### ElasticBackupVaults_CreateOrUpdate
-
-```java
-/**
- * Samples for ElasticBackupVaults CreateOrUpdate.
- */
-public final class ElasticBackupVaultsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupVaults_Create.json
-     */
-    /**
-     * Sample code: ElasticBackupVaults_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupVaultsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupVaults()
-            .define("backupVault1")
-            .withRegion("eastus")
-            .withExistingElasticAccount("myRG", "account1")
-            .create();
-    }
-}
-```
-
-### ElasticBackupVaults_Delete
-
-```java
-/**
- * Samples for ElasticBackupVaults Delete.
- */
-public final class ElasticBackupVaultsDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupVaults_Delete.json
-     */
-    /**
-     * Sample code: ElasticBackupVaults_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupVaultsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupVaults()
-            .delete("resourceGroup", "account1", "backupVault1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackupVaults_Get
-
-```java
-/**
- * Samples for ElasticBackupVaults Get.
- */
-public final class ElasticBackupVaultsGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupVaults_Get.json
-     */
-    /**
-     * Sample code: ElasticBackupVaults_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupVaultsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupVaults()
-            .getWithResponse("myRG", "account1", "backupVault1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackupVaults_ListByElasticAccount
-
-```java
-/**
- * Samples for ElasticBackupVaults ListByElasticAccount.
- */
-public final class ElasticBackupVaultsListByElasticAccountSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupVaults_ListByElasticAccount.json
-     */
-    /**
-     * Sample code: ElasticBackupVaults_ListByElasticAccount.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticBackupVaultsListByElasticAccount(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackupVaults().listByElasticAccount("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackupVaults_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticBackupVault;
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Samples for ElasticBackupVaults Update.
- */
-public final class ElasticBackupVaultsUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackupVaults_Update.json
-     */
-    /**
-     * Sample code: ElasticBackupVaults_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupVaultsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ElasticBackupVault resource = manager.elasticBackupVaults()
-            .getWithResponse("myRG", "account1", "backupVault1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withTags(mapOf("Tag1", "Value1")).apply();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
-    }
-}
-```
-
-### ElasticBackups_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticBackupProperties;
-import com.azure.resourcemanager.netapp.models.SnapshotUsage;
-
-/**
- * Samples for ElasticBackups CreateOrUpdate.
- */
-public final class ElasticBackupsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackups_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ElasticBackups_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackups()
-            .define("backup1")
-            .withExistingElasticBackupVault("myRG", "account1", "backupVault1")
-            .withProperties(new ElasticBackupProperties().withLabel("myLabel")
-                .withElasticVolumeResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticCapacityPools/pool1/elasticVolumes/volume1")
-                .withSnapshotUsage(SnapshotUsage.USE_EXISTING_SNAPSHOT)
-                .withElasticSnapshotResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticCapacityPools/pool1/elasticVolumes/volume1/elasticSnapshots/snap1"))
-            .create();
-    }
-}
-```
-
-### ElasticBackups_Delete
-
-```java
-/**
- * Samples for ElasticBackups Delete.
- */
-public final class ElasticBackupsDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackups_Delete.json
-     */
-    /**
-     * Sample code: ElasticBackups_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackups()
-            .delete("resourceGroup", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackups_Get
-
-```java
-/**
- * Samples for ElasticBackups Get.
- */
-public final class ElasticBackupsGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackups_Get.json
-     */
-    /**
-     * Sample code: ElasticBackups_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackups()
-            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackups_ListByVault
-
-```java
-/**
- * Samples for ElasticBackups ListByVault.
- */
-public final class ElasticBackupsListByVaultSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackups_ListByVault.json
-     */
-    /**
-     * Sample code: ElasticBackups_ListByVault.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupsListByVault(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticBackups().listByVault("myRG", "account1", "backupVault1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticBackups_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticBackup;
-
-/**
- * Samples for ElasticBackups Update.
- */
-public final class ElasticBackupsUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticBackups_Update.json
-     */
-    /**
-     * Sample code: ElasticBackups_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticBackupsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ElasticBackup resource = manager.elasticBackups()
-            .getWithResponse("myRG", "account1", "backupVault1", "backup1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
-### ElasticCapacityPools_ChangeZone
-
-```java
-import com.azure.resourcemanager.netapp.models.ChangeZoneRequest;
-
-/**
- * Samples for ElasticCapacityPools ChangeZone.
- */
-public final class ElasticCapacityPoolsChangeZoneSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_ChangeZone.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_ChangeZone.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticCapacityPoolsChangeZone(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticCapacityPools()
-            .changeZone("myRG", "account1", "pool1", new ChangeZoneRequest().withNewZone("3"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticCapacityPools_CheckVolumeFilePathAvailability
-
-```java
-import com.azure.resourcemanager.netapp.models.CheckElasticVolumeFilePathAvailabilityRequest;
-
-/**
- * Samples for ElasticCapacityPools CheckVolumeFilePathAvailability.
- */
-public final class ElasticCapacityPoolsCheckVolumeFilePathAvailabilitySamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_CheckVolumeFilePathAvailability.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_CheckVolumeFilePathAvailability.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticCapacityPoolsCheckVolumeFilePathAvailability(
-        com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticCapacityPools()
-            .checkVolumeFilePathAvailabilityWithResponse("myRG", "account1", "pool1",
-                new CheckElasticVolumeFilePathAvailabilityRequest().withFilePath("my-exact-filepath"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticCapacityPools_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticCapacityPoolProperties;
-import com.azure.resourcemanager.netapp.models.ElasticEncryptionConfiguration;
-import com.azure.resourcemanager.netapp.models.ElasticPoolEncryptionKeySource;
-import com.azure.resourcemanager.netapp.models.ElasticServiceLevel;
-import java.util.Arrays;
-
-/**
- * Samples for ElasticCapacityPools CreateOrUpdate.
- */
-public final class ElasticCapacityPoolsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_CreateOrUpdateCMK.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_CreateOrUpdateCMK.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticCapacityPoolsCreateOrUpdateCMK(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticCapacityPools()
-            .define("pool1")
-            .withRegion("eastus")
-            .withExistingElasticAccount("myRG", "account1")
-            .withProperties(new ElasticCapacityPoolProperties().withSize(4398046511104L)
-                .withServiceLevel(ElasticServiceLevel.ZONE_REDUNDANT)
-                .withEncryption(new ElasticEncryptionConfiguration()
-                    .withElasticPoolEncryptionKeySource(ElasticPoolEncryptionKeySource.NET_APP)
-                    .withKeyVaultPrivateEndpointResourceId("fakeTokenPlaceholder"))
-                .withSubnetResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                .withActiveDirectoryConfigResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/activeDirectoryConfigs/activeDirectoryConfig1"))
-            .withZones(Arrays.asList("1", "2", "3"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticCapacityPoolsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticCapacityPools()
-            .define("pool1")
-            .withRegion("eastus")
-            .withExistingElasticAccount("myRG", "account1")
-            .withProperties(new ElasticCapacityPoolProperties().withSize(4398046511104L)
-                .withServiceLevel(ElasticServiceLevel.ZONE_REDUNDANT)
-                .withSubnetResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
-                .withActiveDirectoryConfigResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/activeDirectoryConfigs/activeDirectoryConfig1"))
-            .withZones(Arrays.asList("1", "2", "3"))
-            .create();
-    }
-}
-```
-
-### ElasticCapacityPools_Delete
-
-```java
-/**
- * Samples for ElasticCapacityPools Delete.
- */
-public final class ElasticCapacityPoolsDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_Delete.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticCapacityPoolsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticCapacityPools().delete("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticCapacityPools_Get
-
-```java
-/**
- * Samples for ElasticCapacityPools Get.
- */
-public final class ElasticCapacityPoolsGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_Get.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticCapacityPoolsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticCapacityPools().getWithResponse("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticCapacityPools_ListByElasticAccount
-
-```java
-/**
- * Samples for ElasticCapacityPools ListByElasticAccount.
- */
-public final class ElasticCapacityPoolsListByElasticAccountSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_ListByElasticAccount.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_ListByElasticAccount.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticCapacityPoolsListByElasticAccount(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticCapacityPools().listByElasticAccount("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticCapacityPools_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticCapacityPool;
-import com.azure.resourcemanager.netapp.models.ElasticCapacityPoolUpdateProperties;
-
-/**
- * Samples for ElasticCapacityPools Update.
- */
-public final class ElasticCapacityPoolsUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_Update.json
-     */
-    /**
-     * Sample code: ElasticCapacityPools_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticCapacityPoolsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ElasticCapacityPool resource = manager.elasticCapacityPools()
-            .getWithResponse("myRG", "account1", "pool1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new ElasticCapacityPoolUpdateProperties().withSize(4398046511104L)
-                .withActiveDirectoryConfigResourceId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/activeDirectoryConfigs/activeDirectoryConfig1"))
-            .apply();
-    }
-}
-```
-
-### ElasticSnapshotPolicies_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.DayOfWeek;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyDailySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyHourlySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyMonthlySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyProperties;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyWeeklySchedule;
-import com.azure.resourcemanager.netapp.models.PolicyStatus;
-import java.util.Arrays;
-
-/**
- * Samples for ElasticSnapshotPolicies CreateOrUpdate.
- */
-public final class ElasticSnapshotPoliciesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshotPolicies_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ElasticSnapshotPolicies_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticSnapshotPoliciesCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshotPolicies()
-            .define("snapshotPolicyName")
-            .withRegion("eastus")
-            .withExistingElasticAccount("myRG", "account1")
-            .withProperties(new ElasticSnapshotPolicyProperties()
-                .withHourlySchedule(new ElasticSnapshotPolicyHourlySchedule().withSnapshotsToKeep(2).withMinute(50))
-                .withDailySchedule(
-                    new ElasticSnapshotPolicyDailySchedule().withSnapshotsToKeep(4).withHour(14).withMinute(30))
-                .withWeeklySchedule(new ElasticSnapshotPolicyWeeklySchedule().withSnapshotsToKeep(3)
-                    .withDays(Arrays.asList(DayOfWeek.WEDNESDAY))
-                    .withHour(14)
-                    .withMinute(45))
-                .withMonthlySchedule(new ElasticSnapshotPolicyMonthlySchedule().withSnapshotsToKeep(5)
-                    .withDaysOfMonth(Arrays.asList(10, 11, 12))
-                    .withHour(14)
-                    .withMinute(15))
-                .withPolicyStatus(PolicyStatus.ENABLED))
-            .create();
-    }
-}
-```
-
-### ElasticSnapshotPolicies_Delete
-
-```java
-/**
- * Samples for ElasticSnapshotPolicies Delete.
- */
-public final class ElasticSnapshotPoliciesDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshotPolicies_Delete.json
-     */
-    /**
-     * Sample code: ElasticSnapshotPolicies_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticSnapshotPoliciesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshotPolicies()
-            .delete("resourceGroup", "accountName", "snapshotPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticSnapshotPolicies_Get
-
-```java
-/**
- * Samples for ElasticSnapshotPolicies Get.
- */
-public final class ElasticSnapshotPoliciesGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshotPolicies_Get.json
-     */
-    /**
-     * Sample code: ElasticSnapshotPolicies_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticSnapshotPoliciesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshotPolicies()
-            .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticSnapshotPolicies_ListByElasticAccount
-
-```java
-/**
- * Samples for ElasticSnapshotPolicies ListByElasticAccount.
- */
-public final class ElasticSnapshotPoliciesListByElasticAccountSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshotPolicies_ListByElasticAccount.json
-     */
-    /**
-     * Sample code: ElasticSnapshotPolicies_ListByElasticAccount.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticSnapshotPoliciesListByElasticAccount(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshotPolicies().listByElasticAccount("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticSnapshotPolicies_ListElasticVolumes
-
-```java
-/**
- * Samples for ElasticSnapshotPolicies ListElasticVolumes.
- */
-public final class ElasticSnapshotPoliciesListElasticVolumesSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshotPolicies_ListElasticVolumes.json
-     */
-    /**
-     * Sample code: ElasticSnapshotPolicies_ListElasticVolumes.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticSnapshotPoliciesListElasticVolumes(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshotPolicies()
-            .listElasticVolumes("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticSnapshotPolicies_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.DayOfWeek;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicy;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyDailySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyHourlySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyMonthlySchedule;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyUpdateProperties;
-import com.azure.resourcemanager.netapp.models.ElasticSnapshotPolicyWeeklySchedule;
-import com.azure.resourcemanager.netapp.models.PolicyStatus;
-import java.util.Arrays;
-
-/**
- * Samples for ElasticSnapshotPolicies Update.
- */
-public final class ElasticSnapshotPoliciesUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshotPolicies_Update.json
-     */
-    /**
-     * Sample code: ElasticSnapshotPolicies_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticSnapshotPoliciesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ElasticSnapshotPolicy resource = manager.elasticSnapshotPolicies()
-            .getWithResponse("myRG", "account1", "snapshotPolicyName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new ElasticSnapshotPolicyUpdateProperties()
-                .withHourlySchedule(new ElasticSnapshotPolicyHourlySchedule().withSnapshotsToKeep(2).withMinute(50))
-                .withDailySchedule(
-                    new ElasticSnapshotPolicyDailySchedule().withSnapshotsToKeep(4).withHour(14).withMinute(30))
-                .withWeeklySchedule(new ElasticSnapshotPolicyWeeklySchedule().withSnapshotsToKeep(3)
-                    .withDays(Arrays.asList(DayOfWeek.WEDNESDAY))
-                    .withHour(14)
-                    .withMinute(45))
-                .withMonthlySchedule(new ElasticSnapshotPolicyMonthlySchedule().withSnapshotsToKeep(5)
-                    .withDaysOfMonth(Arrays.asList(10, 11, 12))
-                    .withHour(14)
-                    .withMinute(15))
-                .withPolicyStatus(PolicyStatus.ENABLED))
-            .apply();
-    }
-}
-```
-
-### ElasticSnapshots_CreateOrUpdate
-
-```java
-/**
- * Samples for ElasticSnapshots CreateOrUpdate.
- */
-public final class ElasticSnapshotsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshots_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ElasticSnapshots_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticSnapshotsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshots()
-            .define("snapshot1")
-            .withExistingElasticVolume("myRG", "account1", "pool1", "volume1")
-            .create();
-    }
-}
-```
-
-### ElasticSnapshots_Delete
-
-```java
-/**
- * Samples for ElasticSnapshots Delete.
- */
-public final class ElasticSnapshotsDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshots_Delete.json
-     */
-    /**
-     * Sample code: ElasticSnapshots_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticSnapshotsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshots()
-            .delete("myRG", "account1", "pool1", "volume1", "snapshot1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticSnapshots_Get
-
-```java
-/**
- * Samples for ElasticSnapshots Get.
- */
-public final class ElasticSnapshotsGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshots_Get.json
-     */
-    /**
-     * Sample code: ElasticSnapshots_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticSnapshotsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshots()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", "snapshot1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticSnapshots_ListByElasticVolume
-
-```java
-/**
- * Samples for ElasticSnapshots ListByElasticVolume.
- */
-public final class ElasticSnapshotsListByElasticVolumeSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshots_ListByElasticVolume.json
-     */
-    /**
-     * Sample code: ElasticSnapshots_ListByElasticVolume.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void
-        elasticSnapshotsListByElasticVolume(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticSnapshots()
-            .listByElasticVolume("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticVolumes_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticExportPolicy;
-import com.azure.resourcemanager.netapp.models.ElasticExportPolicyRule;
-import com.azure.resourcemanager.netapp.models.ElasticNfsv3Access;
-import com.azure.resourcemanager.netapp.models.ElasticNfsv4Access;
-import com.azure.resourcemanager.netapp.models.ElasticProtocolType;
-import com.azure.resourcemanager.netapp.models.ElasticRootAccess;
-import com.azure.resourcemanager.netapp.models.ElasticUnixAccessRule;
-import com.azure.resourcemanager.netapp.models.ElasticVolumeBackupProperties;
-import com.azure.resourcemanager.netapp.models.ElasticVolumeDataProtectionProperties;
-import com.azure.resourcemanager.netapp.models.ElasticVolumePolicyEnforcement;
-import com.azure.resourcemanager.netapp.models.ElasticVolumeProperties;
-import com.azure.resourcemanager.netapp.models.ElasticVolumeSnapshotProperties;
-import java.util.Arrays;
-
-/**
- * Samples for ElasticVolumes CreateOrUpdate.
- */
-public final class ElasticVolumesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticVolumes_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: ElasticVolumes_CreateOrUpdate.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticVolumesCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticVolumes()
-            .define("volume1")
-            .withRegion("eastus")
-            .withExistingElasticCapacityPool("myRG", "account1", "pool1")
-            .withProperties(new ElasticVolumeProperties().withFilePath("my-unique-file-path")
-                .withSize(107374182400L)
-                .withExportPolicy(
-                    new ElasticExportPolicy().withRules(Arrays.asList(new ElasticExportPolicyRule().withRuleIndex(1)
-                        .withUnixAccessRule(ElasticUnixAccessRule.READ_ONLY)
-                        .withNfsv3(ElasticNfsv3Access.ENABLED)
-                        .withNfsv4(ElasticNfsv4Access.DISABLED)
-                        .withAllowedClients(Arrays.asList("0.0.0.0/0"))
-                        .withRootAccess(ElasticRootAccess.DISABLED))))
-                .withProtocolTypes(Arrays.asList(ElasticProtocolType.NFSV3))
-                .withDataProtection(new ElasticVolumeDataProtectionProperties()
-                    .withSnapshot(new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticSnapshotPolicies/policy1"))
-                    .withBackup(new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupPolicies/elasticBackupPolicy1")
-                        .withPolicyEnforcement(ElasticVolumePolicyEnforcement.ENFORCED)
-                        .withElasticBackupVaultResourceId(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupVaults/elasticBackupVault1"))))
-            .create();
-    }
-}
-```
-
-### ElasticVolumes_Delete
-
-```java
-/**
- * Samples for ElasticVolumes Delete.
- */
-public final class ElasticVolumesDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticVolumes_Delete.json
-     */
-    /**
-     * Sample code: ElasticVolumes_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticVolumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticVolumes().delete("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticVolumes_Get
-
-```java
-/**
- * Samples for ElasticVolumes Get.
- */
-public final class ElasticVolumesGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticVolumes_Get.json
-     */
-    /**
-     * Sample code: ElasticVolumes_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticVolumesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticVolumes()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticVolumes_ListByElasticPool
-
-```java
-/**
- * Samples for ElasticVolumes ListByElasticPool.
- */
-public final class ElasticVolumesListByElasticPoolSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticVolumes_ListByElasticPool.json
-     */
-    /**
-     * Sample code: ElasticVolumes_ListByElasticPool.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticVolumesListByElasticPool(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticVolumes().listByElasticPool("myRG", "account1", "pool1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticVolumes_Revert
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticVolumeRevert;
-
-/**
- * Samples for ElasticVolumes Revert.
- */
-public final class ElasticVolumesRevertSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticVolumes_Revert.json
-     */
-    /**
-     * Sample code: ElasticVolumes_Revert.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticVolumesRevert(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.elasticVolumes()
-            .revert("myRG", "account1", "pool1", "volume1", new ElasticVolumeRevert().withSnapshotResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticCapacityPools/pool1/elasticVolumes/volume1/elasticSnapshots/snapshot1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ElasticVolumes_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.ElasticExportPolicy;
-import com.azure.resourcemanager.netapp.models.ElasticExportPolicyRule;
-import com.azure.resourcemanager.netapp.models.ElasticNfsv3Access;
-import com.azure.resourcemanager.netapp.models.ElasticNfsv4Access;
-import com.azure.resourcemanager.netapp.models.ElasticRootAccess;
-import com.azure.resourcemanager.netapp.models.ElasticUnixAccessRule;
-import com.azure.resourcemanager.netapp.models.ElasticVolume;
-import com.azure.resourcemanager.netapp.models.ElasticVolumeDataProtectionPatchProperties;
-import com.azure.resourcemanager.netapp.models.ElasticVolumeSnapshotProperties;
-import com.azure.resourcemanager.netapp.models.ElasticVolumeUpdateProperties;
-import java.util.Arrays;
-
-/**
- * Samples for ElasticVolumes Update.
- */
-public final class ElasticVolumesUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticVolumes_Update.json
-     */
-    /**
-     * Sample code: ElasticVolumes_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void elasticVolumesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        ElasticVolume resource = manager.elasticVolumes()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new ElasticVolumeUpdateProperties()
-                .withExportPolicy(
-                    new ElasticExportPolicy().withRules(Arrays.asList(new ElasticExportPolicyRule().withRuleIndex(1)
-                        .withUnixAccessRule(ElasticUnixAccessRule.READ_ONLY)
-                        .withNfsv3(ElasticNfsv3Access.ENABLED)
-                        .withNfsv4(ElasticNfsv4Access.DISABLED)
-                        .withAllowedClients(Arrays.asList("0.0.0.0/0"))
-                        .withRootAccess(ElasticRootAccess.DISABLED))))
-                .withDataProtection(new ElasticVolumeDataProtectionPatchProperties()
-                    .withSnapshot(new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticSnapshotPolicies/policy1"))))
-            .apply();
-    }
-}
-```
-
 ### NetAppResource_CheckFilePathAvailability
 
 ```java
@@ -3011,7 +1534,7 @@ import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
  */
 public final class NetAppResourceCheckFilePathAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/CheckFilePathAvailability.json
+     * x-ms-original-file: 2026-09-01/CheckFilePathAvailability.json
      */
     /**
      * Sample code: CheckFilePathAvailability.
@@ -3040,7 +1563,7 @@ import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
  */
 public final class NetAppResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/CheckNameAvailability.json
+     * x-ms-original-file: 2026-09-01/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
@@ -3069,7 +1592,7 @@ import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
  */
 public final class NetAppResourceCheckQuotaAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/CheckQuotaAvailability.json
+     * x-ms-original-file: 2026-09-01/CheckQuotaAvailability.json
      */
     /**
      * Sample code: CheckQuotaAvailability.
@@ -3097,7 +1620,7 @@ import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
  */
 public final class NetAppResourceQueryNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/NetworkSiblingSet_Query.json
+     * x-ms-original-file: 2026-09-01/NetworkSiblingSet_Query.json
      */
     /**
      * Sample code: NetworkSiblingSet_Query.
@@ -3123,7 +1646,7 @@ public final class NetAppResourceQueryNetworkSiblingSetSamples {
  */
 public final class NetAppResourceQueryRegionInfoSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/RegionInfo.json
+     * x-ms-original-file: 2026-09-01/RegionInfo.json
      */
     /**
      * Sample code: RegionInfo_Query.
@@ -3147,7 +1670,7 @@ import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
  */
 public final class NetAppResourceUpdateNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/NetworkSiblingSet_Update.json
+     * x-ms-original-file: 2026-09-01/NetworkSiblingSet_Update.json
      */
     /**
      * Sample code: NetworkFeatures_Update.
@@ -3174,7 +1697,7 @@ public final class NetAppResourceUpdateNetworkSiblingSetSamples {
  */
 public final class NetAppResourceQuotaLimitsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/NetAppResourceQuotaLimits_Get.json
+     * x-ms-original-file: 2026-09-01/NetAppResourceQuotaLimits_Get.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3196,7 +1719,7 @@ public final class NetAppResourceQuotaLimitsGetSamples {
  */
 public final class NetAppResourceQuotaLimitsListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/NetAppResourceQuotaLimits_List.json
+     * x-ms-original-file: 2026-09-01/NetAppResourceQuotaLimits_List.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3217,7 +1740,7 @@ public final class NetAppResourceQuotaLimitsListSamples {
  */
 public final class NetAppResourceQuotaLimitsAccountGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/NetAppResourceQuotaLimitsAccount_Get.json
+     * x-ms-original-file: 2026-09-01/NetAppResourceQuotaLimitsAccount_Get.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3239,7 +1762,7 @@ public final class NetAppResourceQuotaLimitsAccountGetSamples {
  */
 public final class NetAppResourceQuotaLimitsAccountListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/NetAppResourceQuotaLimitsAccount_List.json
+     * x-ms-original-file: 2026-09-01/NetAppResourceQuotaLimitsAccount_List.json
      */
     /**
      * Sample code: QuotaLimits.
@@ -3260,7 +1783,7 @@ public final class NetAppResourceQuotaLimitsAccountListSamples {
  */
 public final class NetAppResourceRegionInfosGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/RegionInfos_Get.json
+     * x-ms-original-file: 2026-09-01/RegionInfos_Get.json
      */
     /**
      * Sample code: RegionInfos_Get.
@@ -3281,7 +1804,7 @@ public final class NetAppResourceRegionInfosGetSamples {
  */
 public final class NetAppResourceRegionInfosListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/RegionInfos_List.json
+     * x-ms-original-file: 2026-09-01/RegionInfos_List.json
      */
     /**
      * Sample code: RegionInfos_List.
@@ -3302,7 +1825,7 @@ public final class NetAppResourceRegionInfosListSamples {
  */
 public final class NetAppResourceUsagesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Usages_Get.json
+     * x-ms-original-file: 2026-09-01/Usages_Get.json
      */
     /**
      * Sample code: Usages_Get.
@@ -3324,7 +1847,7 @@ public final class NetAppResourceUsagesGetSamples {
  */
 public final class NetAppResourceUsagesListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Usages_List.json
+     * x-ms-original-file: 2026-09-01/Usages_List.json
      */
     /**
      * Sample code: Usages_List.
@@ -3345,7 +1868,7 @@ public final class NetAppResourceUsagesListSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/OperationList.json
+     * x-ms-original-file: 2026-09-01/OperationList.json
      */
     /**
      * Sample code: OperationList.
@@ -3369,7 +1892,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Pools_CreateOrUpdate.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -3388,7 +1911,7 @@ public final class PoolsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_CreateOrUpdate_CustomThroughput.json
+     * x-ms-original-file: 2026-09-01/Pools_CreateOrUpdate_CustomThroughput.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate_CustomThroughput.
@@ -3418,7 +1941,7 @@ public final class PoolsCreateOrUpdateSamples {
  */
 public final class PoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_Delete.json
+     * x-ms-original-file: 2026-09-01/Pools_Delete.json
      */
     /**
      * Sample code: Pools_Delete.
@@ -3439,7 +1962,7 @@ public final class PoolsDeleteSamples {
  */
 public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_Get_CustomThroughput.json
+     * x-ms-original-file: 2026-09-01/Pools_Get_CustomThroughput.json
      */
     /**
      * Sample code: Pools_Get_CustomThroughput.
@@ -3451,7 +1974,7 @@ public final class PoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_Get.json
+     * x-ms-original-file: 2026-09-01/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.
@@ -3472,7 +1995,7 @@ public final class PoolsGetSamples {
  */
 public final class PoolsListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_List.json
+     * x-ms-original-file: 2026-09-01/Pools_List.json
      */
     /**
      * Sample code: Pools_List.
@@ -3495,7 +2018,7 @@ import com.azure.resourcemanager.netapp.models.CapacityPool;
  */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_Update.json
+     * x-ms-original-file: 2026-09-01/Pools_Update.json
      */
     /**
      * Sample code: Pools_Update.
@@ -3509,7 +2032,7 @@ public final class PoolsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Pools_Update_CustomThroughput.json
+     * x-ms-original-file: 2026-09-01/Pools_Update_CustomThroughput.json
      */
     /**
      * Sample code: Pools_Update_CustomThroughput.
@@ -3537,7 +2060,7 @@ import java.util.Arrays;
  */
 public final class RansomwareReportsClearSuspectsSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/RansomwareReports_ClearSuspects.json
+     * x-ms-original-file: 2026-09-01/RansomwareReports_ClearSuspects.json
      */
     /**
      * Sample code: RansomwareReports_ClearSuspects.
@@ -3562,7 +2085,7 @@ public final class RansomwareReportsClearSuspectsSamples {
  */
 public final class RansomwareReportsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/RansomwareReports_Get.json
+     * x-ms-original-file: 2026-09-01/RansomwareReports_Get.json
      */
     /**
      * Sample code: RansomwareReports_Get.
@@ -3585,7 +2108,7 @@ public final class RansomwareReportsGetSamples {
  */
 public final class RansomwareReportsListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/RansomwareReports_List.json
+     * x-ms-original-file: 2026-09-01/RansomwareReports_List.json
      */
     /**
      * Sample code: RansomwareReports_List.
@@ -3611,7 +2134,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
  */
 public final class SnapshotPoliciesCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/SnapshotPolicies_Create.json
+     * x-ms-original-file: 2026-09-01/SnapshotPolicies_Create.json
      */
     /**
      * Sample code: SnapshotPolicies_Create.
@@ -3643,7 +2166,7 @@ public final class SnapshotPoliciesCreateSamples {
  */
 public final class SnapshotPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/SnapshotPolicies_Delete.json
+     * x-ms-original-file: 2026-09-01/SnapshotPolicies_Delete.json
      */
     /**
      * Sample code: SnapshotPolicies_Delete.
@@ -3665,7 +2188,7 @@ public final class SnapshotPoliciesDeleteSamples {
  */
 public final class SnapshotPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/SnapshotPolicies_Get.json
+     * x-ms-original-file: 2026-09-01/SnapshotPolicies_Get.json
      */
     /**
      * Sample code: SnapshotPolicies_Get.
@@ -3687,7 +2210,7 @@ public final class SnapshotPoliciesGetSamples {
  */
 public final class SnapshotPoliciesListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/SnapshotPolicies_List.json
+     * x-ms-original-file: 2026-09-01/SnapshotPolicies_List.json
      */
     /**
      * Sample code: SnapshotPolicies_List.
@@ -3708,7 +2231,7 @@ public final class SnapshotPoliciesListSamples {
  */
 public final class SnapshotPoliciesListVolumesSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/SnapshotPolicies_ListVolumes.json
+     * x-ms-original-file: 2026-09-01/SnapshotPolicies_ListVolumes.json
      */
     /**
      * Sample code: SnapshotPolicies_ListVolumes.
@@ -3736,7 +2259,7 @@ import com.azure.resourcemanager.netapp.models.WeeklySchedule;
  */
 public final class SnapshotPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/SnapshotPolicies_Update.json
+     * x-ms-original-file: 2026-09-01/SnapshotPolicies_Update.json
      */
     /**
      * Sample code: SnapshotPolicies_Update.
@@ -3768,7 +2291,7 @@ public final class SnapshotPoliciesUpdateSamples {
  */
 public final class SnapshotsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Snapshots_Create.json
+     * x-ms-original-file: 2026-09-01/Snapshots_Create.json
      */
     /**
      * Sample code: Snapshots_Create.
@@ -3793,7 +2316,7 @@ public final class SnapshotsCreateSamples {
  */
 public final class SnapshotsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Snapshots_Delete.json
+     * x-ms-original-file: 2026-09-01/Snapshots_Delete.json
      */
     /**
      * Sample code: Snapshots_Delete.
@@ -3815,7 +2338,7 @@ public final class SnapshotsDeleteSamples {
  */
 public final class SnapshotsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Snapshots_Get.json
+     * x-ms-original-file: 2026-09-01/Snapshots_Get.json
      */
     /**
      * Sample code: Snapshots_Get.
@@ -3837,7 +2360,7 @@ public final class SnapshotsGetSamples {
  */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Snapshots_List.json
+     * x-ms-original-file: 2026-09-01/Snapshots_List.json
      */
     /**
      * Sample code: Snapshots_List.
@@ -3861,7 +2384,7 @@ import java.util.Arrays;
  */
 public final class SnapshotsRestoreFilesSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Snapshots_SingleFileRestore.json
+     * x-ms-original-file: 2026-09-01/Snapshots_SingleFileRestore.json
      */
     /**
      * Sample code: Snapshots_SingleFileRestore.
@@ -3873,144 +2396,6 @@ public final class SnapshotsRestoreFilesSamples {
             .restoreFiles("myRG", "account1", "pool1", "volume1", "snapshot1",
                 new SnapshotRestoreFiles().withFilePaths(Arrays.asList("/dir1/customer1.db", "/dir1/customer2.db")),
                 com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_Create
-
-```java
-/**
- * Samples for Subvolumes Create.
- */
-public final class SubvolumesCreateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/Subvolumes_Create.json
-     */
-    /**
-     * Sample code: Subvolumes_Create.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes()
-            .define("subvolume1")
-            .withExistingVolume("myRG", "account1", "pool1", "volume1")
-            .withPath("/subvolumePath")
-            .create();
-    }
-}
-```
-
-### Subvolumes_Delete
-
-```java
-/**
- * Samples for Subvolumes Delete.
- */
-public final class SubvolumesDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/Subvolumes_Delete.json
-     */
-    /**
-     * Sample code: Subvolumes_Delete.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes()
-            .delete("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_Get
-
-```java
-/**
- * Samples for Subvolumes Get.
- */
-public final class SubvolumesGetSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/Subvolumes_Get.json
-     */
-    /**
-     * Sample code: Subvolumes_Get.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_GetMetadata
-
-```java
-/**
- * Samples for Subvolumes GetMetadata.
- */
-public final class SubvolumesGetMetadataSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/Subvolumes_Metadata.json
-     */
-    /**
-     * Sample code: Subvolumes_Metadata.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesMetadata(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes()
-            .getMetadata("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_ListByVolume
-
-```java
-/**
- * Samples for Subvolumes ListByVolume.
- */
-public final class SubvolumesListByVolumeSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/Subvolumes_List.json
-     */
-    /**
-     * Sample code: Subvolumes_List.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.subvolumes().listByVolume("myRG", "account1", "pool1", "volume1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Subvolumes_Update
-
-```java
-import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
-
-/**
- * Samples for Subvolumes Update.
- */
-public final class SubvolumesUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-05-15-preview/Subvolumes_Update.json
-     */
-    /**
-     * Sample code: Subvolumes_Update.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void subvolumesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        SubvolumeInfo resource = manager.subvolumes()
-            .getWithResponse("myRG", "account1", "pool1", "volume1", "subvolume1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withPath("/subvolumePath").apply();
     }
 }
 ```
@@ -4034,7 +2419,7 @@ import java.util.Arrays;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_SapHana.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Create_SapHana.
@@ -4194,7 +2579,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_Oracle.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Create_Oracle.
@@ -4538,7 +2923,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_Custom.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_Custom.json
      */
     /**
      * Sample code: VolumeGroups_Create_Custom.
@@ -4882,7 +3267,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Create_Custom_SMB.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Create_Custom_SMB.json
      */
     /**
      * Sample code: VolumeGroups_Create_Custom_SMB.
@@ -5114,7 +3499,7 @@ public final class VolumeGroupsCreateSamples {
  */
 public final class VolumeGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Delete.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Delete.json
      */
     /**
      * Sample code: VolumeGroups_Delete.
@@ -5135,7 +3520,7 @@ public final class VolumeGroupsDeleteSamples {
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Get_Custom.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Get_Custom.json
      */
     /**
      * Sample code: VolumeGroups_Get_Custom.
@@ -5147,7 +3532,7 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Get_SapHana.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Get_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Get_SapHana.
@@ -5159,7 +3544,7 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Get_Custom_SMB.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Get_Custom_SMB.json
      */
     /**
      * Sample code: VolumeGroups_Get_Custom_SMB.
@@ -5171,7 +3556,7 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_Get_Oracle.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_Get_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Get_Oracle.
@@ -5192,7 +3577,7 @@ public final class VolumeGroupsGetSamples {
  */
 public final class VolumeGroupsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_List_Custom.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_List_Custom.json
      */
     /**
      * Sample code: VolumeGroups_List_Custom.
@@ -5204,7 +3589,7 @@ public final class VolumeGroupsListByNetAppAccountSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_List_Oracle.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_List_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_List_Oracle.
@@ -5216,7 +3601,7 @@ public final class VolumeGroupsListByNetAppAccountSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_List_SapHana.json
+     * x-ms-original-file: 2026-09-01/VolumeGroups_List_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_List_SapHana.
@@ -5239,7 +3624,7 @@ import com.azure.resourcemanager.netapp.models.QuotaType;
  */
 public final class VolumeQuotaRulesCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeQuotaRules_Create.json
+     * x-ms-original-file: 2026-09-01/VolumeQuotaRules_Create.json
      */
     /**
      * Sample code: VolumeQuotaRules_Create.
@@ -5267,7 +3652,7 @@ public final class VolumeQuotaRulesCreateSamples {
  */
 public final class VolumeQuotaRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeQuotaRules_Delete.json
+     * x-ms-original-file: 2026-09-01/VolumeQuotaRules_Delete.json
      */
     /**
      * Sample code: VolumeQuotaRules_Delete.
@@ -5289,7 +3674,7 @@ public final class VolumeQuotaRulesDeleteSamples {
  */
 public final class VolumeQuotaRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeQuotaRules_Get.json
+     * x-ms-original-file: 2026-09-01/VolumeQuotaRules_Get.json
      */
     /**
      * Sample code: VolumeQuotaRules_Get.
@@ -5312,7 +3697,7 @@ public final class VolumeQuotaRulesGetSamples {
  */
 public final class VolumeQuotaRulesListByVolumeSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeQuotaRules_List.json
+     * x-ms-original-file: 2026-09-01/VolumeQuotaRules_List.json
      */
     /**
      * Sample code: VolumeQuotaRules_List.
@@ -5336,7 +3721,7 @@ import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
  */
 public final class VolumeQuotaRulesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeQuotaRules_Update.json
+     * x-ms-original-file: 2026-09-01/VolumeQuotaRules_Update.json
      */
     /**
      * Sample code: VolumeQuotaRules_Update.
@@ -5361,7 +3746,7 @@ public final class VolumeQuotaRulesUpdateSamples {
  */
 public final class VolumesAuthorizeExternalReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_AuthorizeExternalReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_AuthorizeExternalReplication.json
      */
     /**
      * Sample code: Volumes_AuthorizeExternalReplication.
@@ -5386,7 +3771,7 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
  */
 public final class VolumesAuthorizeReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_AuthorizeReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_AuthorizeReplication.json
      */
     /**
      * Sample code: Volumes_AuthorizeReplication.
@@ -5413,7 +3798,7 @@ import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
  */
 public final class VolumesBreakFileLocksSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_BreakFileLocks.json
+     * x-ms-original-file: 2026-09-01/Volumes_BreakFileLocks.json
      */
     /**
      * Sample code: Volumes_BreakFileLocks.
@@ -5439,7 +3824,7 @@ import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
  */
 public final class VolumesBreakReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_BreakReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_BreakReplication.json
      */
     /**
      * Sample code: Volumes_BreakReplication.
@@ -5458,13 +3843,17 @@ public final class VolumesBreakReplicationSamples {
 
 ```java
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
+import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
+import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
+import java.util.Arrays;
 
 /**
  * Samples for Volumes CreateOrUpdate.
  */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.
@@ -5483,6 +3872,33 @@ public final class VolumesCreateOrUpdateSamples {
             .withServiceLevel(ServiceLevel.PREMIUM)
             .create();
     }
+
+    /*
+     * x-ms-original-file: 2026-09-01/Volumes_CreateOrUpdate_SMB.json
+     */
+    /**
+     * Sample code: Volumes_CreateOrUpdate_SMB.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumesCreateOrUpdateSMB(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumes()
+            .define("volume1")
+            .withRegion("eastus")
+            .withExistingCapacityPool("myRG", "account1", "pool1")
+            .withCreationToken("my-smb-volume")
+            .withUsageThreshold(107374182400L)
+            .withSubnetId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")
+            .withServiceLevel(ServiceLevel.PREMIUM)
+            .withProtocolTypes(Arrays.asList("CIFS"))
+            .withSmbEncryption(true)
+            .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.ENABLED)
+            .withSmbNonBrowsable(SmbNonBrowsable.ENABLED)
+            .withSmbContinuouslyAvailable(true)
+            .withSmbOplocks(SmbOplocks.ENABLED)
+            .create();
+    }
 }
 ```
 
@@ -5494,7 +3910,7 @@ public final class VolumesCreateOrUpdateSamples {
  */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_Delete.json
+     * x-ms-original-file: 2026-09-01/Volumes_Delete.json
      */
     /**
      * Sample code: Volumes_Delete.
@@ -5515,7 +3931,7 @@ public final class VolumesDeleteSamples {
  */
 public final class VolumesDeleteReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_DeleteReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_DeleteReplication.json
      */
     /**
      * Sample code: Volumes_DeleteReplication.
@@ -5536,7 +3952,7 @@ public final class VolumesDeleteReplicationSamples {
  */
 public final class VolumesFinalizeExternalReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_FinalizeExternalReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_FinalizeExternalReplication.json
      */
     /**
      * Sample code: Volumes_FinalizeExternalReplication.
@@ -5558,7 +3974,7 @@ public final class VolumesFinalizeExternalReplicationSamples {
  */
 public final class VolumesFinalizeRelocationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_FinalizeRelocation.json
+     * x-ms-original-file: 2026-09-01/Volumes_FinalizeRelocation.json
      */
     /**
      * Sample code: Volumes_FinalizeRelocation.
@@ -5579,7 +3995,7 @@ public final class VolumesFinalizeRelocationSamples {
  */
 public final class VolumesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ExtraLargeVolumes_Get.json
+     * x-ms-original-file: 2026-09-01/Volumes_ExtraLargeVolumes_Get.json
      */
     /**
      * Sample code: Volumes_ExtralargeVolumeGet.
@@ -5591,7 +4007,7 @@ public final class VolumesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_Get.json
+     * x-ms-original-file: 2026-09-01/Volumes_Get.json
      */
     /**
      * Sample code: Volumes_Get.
@@ -5612,7 +4028,7 @@ public final class VolumesGetSamples {
  */
 public final class VolumesListSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ExtraLargeVolumes_List.json
+     * x-ms-original-file: 2026-09-01/Volumes_ExtraLargeVolumes_List.json
      */
     /**
      * Sample code: Volumes_ExtralargeVolumeList.
@@ -5624,7 +4040,7 @@ public final class VolumesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_List.json
+     * x-ms-original-file: 2026-09-01/Volumes_List.json
      */
     /**
      * Sample code: Volumes_List.
@@ -5647,7 +4063,7 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
  */
 public final class VolumesListGetGroupIdListForLdapUserSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/GroupIdListForLDAPUser.json
+     * x-ms-original-file: 2026-09-01/GroupIdListForLDAPUser.json
      */
     /**
      * Sample code: GetGroupIdListForUser.
@@ -5671,7 +4087,7 @@ public final class VolumesListGetGroupIdListForLdapUserSamples {
  */
 public final class VolumesListQuotaReportSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ListQuotaReport.json
+     * x-ms-original-file: 2026-09-01/Volumes_ListQuotaReport.json
      */
     /**
      * Sample code: ListQuotaReport.
@@ -5696,7 +4112,7 @@ import com.azure.resourcemanager.netapp.models.ListReplicationsRequest;
  */
 public final class VolumesListReplicationsSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ListReplications.json
+     * x-ms-original-file: 2026-09-01/Volumes_ListReplications.json
      */
     /**
      * Sample code: Volumes_ListReplications.
@@ -5722,7 +4138,7 @@ import java.util.Arrays;
  */
 public final class VolumesPeerExternalClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_PeerExternalCluster.json
+     * x-ms-original-file: 2026-09-01/Volumes_PeerExternalCluster.json
      */
     /**
      * Sample code: Volumes_PeerExternalCluster.
@@ -5747,7 +4163,7 @@ public final class VolumesPeerExternalClusterSamples {
  */
 public final class VolumesPerformReplicationTransferSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_PerformReplicationTransfer.json
+     * x-ms-original-file: 2026-09-01/Volumes_PerformReplicationTransfer.json
      */
     /**
      * Sample code: Volumes_PerformReplicationTransfer.
@@ -5771,7 +4187,7 @@ import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
  */
 public final class VolumesPoolChangeSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_PoolChange.json
+     * x-ms-original-file: 2026-09-01/Volumes_PoolChange.json
      */
     /**
      * Sample code: Volumes_PoolChange.
@@ -5795,7 +4211,7 @@ public final class VolumesPoolChangeSamples {
  */
 public final class VolumesPopulateAvailabilityZoneSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_PopulateAvailabilityZones.json
+     * x-ms-original-file: 2026-09-01/Volumes_PopulateAvailabilityZones.json
      */
     /**
      * Sample code: Volumes_PopulateAvailabilityZones.
@@ -5817,7 +4233,7 @@ public final class VolumesPopulateAvailabilityZoneSamples {
  */
 public final class VolumesReInitializeReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ReInitializeReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_ReInitializeReplication.json
      */
     /**
      * Sample code: Volumes_ReInitializeReplication.
@@ -5841,7 +4257,7 @@ import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
  */
 public final class VolumesReestablishReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ReestablishReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_ReestablishReplication.json
      */
     /**
      * Sample code: Volumes_ReestablishReplication.
@@ -5868,7 +4284,7 @@ import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
  */
 public final class VolumesRelocateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_Relocate.json
+     * x-ms-original-file: 2026-09-01/Volumes_Relocate.json
      */
     /**
      * Sample code: Volumes_Relocate.
@@ -5891,7 +4307,7 @@ public final class VolumesRelocateSamples {
  */
 public final class VolumesReplicationStatusSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ReplicationStatus.json
+     * x-ms-original-file: 2026-09-01/Volumes_ReplicationStatus.json
      */
     /**
      * Sample code: Volumes_ReplicationStatus.
@@ -5913,7 +4329,7 @@ public final class VolumesReplicationStatusSamples {
  */
 public final class VolumesResetCifsPasswordSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ResetCifsPassword.json
+     * x-ms-original-file: 2026-09-01/Volumes_ResetCifsPassword.json
      */
     /**
      * Sample code: Volumes_ResetCifsPassword.
@@ -5934,7 +4350,7 @@ public final class VolumesResetCifsPasswordSamples {
  */
 public final class VolumesResyncReplicationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_ResyncReplication.json
+     * x-ms-original-file: 2026-09-01/Volumes_ResyncReplication.json
      */
     /**
      * Sample code: Volumes_ResyncReplication.
@@ -5957,7 +4373,7 @@ import com.azure.resourcemanager.netapp.models.VolumeRevert;
  */
 public final class VolumesRevertSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_Revert.json
+     * x-ms-original-file: 2026-09-01/Volumes_Revert.json
      */
     /**
      * Sample code: Volumes_Revert.
@@ -5981,7 +4397,7 @@ public final class VolumesRevertSamples {
  */
 public final class VolumesRevertRelocationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_RevertRelocation.json
+     * x-ms-original-file: 2026-09-01/Volumes_RevertRelocation.json
      */
     /**
      * Sample code: Volumes_RevertRelocation.
@@ -6002,7 +4418,7 @@ public final class VolumesRevertRelocationSamples {
  */
 public final class VolumesSplitCloneFromParentSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_SplitClone.json
+     * x-ms-original-file: 2026-09-01/Volumes_SplitClone.json
      */
     /**
      * Sample code: Volumes_SplitClone.
@@ -6026,7 +4442,7 @@ import com.azure.resourcemanager.netapp.models.Volume;
  */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/Volumes_Update.json
+     * x-ms-original-file: 2026-09-01/Volumes_Update.json
      */
     /**
      * Sample code: Volumes_Update.

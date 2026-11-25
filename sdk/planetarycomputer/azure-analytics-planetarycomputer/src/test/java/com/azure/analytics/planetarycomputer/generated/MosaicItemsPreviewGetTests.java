@@ -4,11 +4,15 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.Resampling;
 import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
 import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
 import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -20,10 +24,11 @@ public final class MosaicItemsPreviewGetTests extends PlanetaryComputerProClient
     public void testMosaicItemsPreviewGetTests() {
         // method invocation
         BinaryData response = dataClient.getItemPreview("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            Arrays.asList(1, 2, 3), Arrays.asList("image"), null, Arrays.asList("image|1,2,3"), null, null, null,
-            WarpKernelResampling.NEAREST, null, null, TilerImageFormat.PNG, null, null, null, null, 512, 512, null,
-            null, null, null, null, null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"),
-            SelMethod.NEAREST);
+            Arrays.asList(1, 2, 3), Arrays.asList("image"), (String) null, Arrays.asList("image|1,2,3"), (Boolean) null,
+            (String) null, (Boolean) null, WarpKernelResampling.NEAREST, (TerrainAlgorithm) null, (String) null,
+            TilerImageFormat.PNG, (String) null, (String) null, (Resampling) null, (Integer) null, 512, 512,
+            (List<String>) null, (ColorMapNames) null, (String) null, (Boolean) null, (String) null,
+            (List<Integer>) null, "epsg:4326", "2024-01-01T00:00:00Z", Arrays.asList("band=1"), SelMethod.NEAREST);
 
         // response assertion
         Assertions.assertNotNull(response);

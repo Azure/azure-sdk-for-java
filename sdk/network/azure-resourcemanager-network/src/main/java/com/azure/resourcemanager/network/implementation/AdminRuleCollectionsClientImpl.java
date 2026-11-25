@@ -126,19 +126,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a network manager security admin configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security admin configuration rule collection along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdminRuleCollectionInner>> getWithResponseAsync(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName) {
@@ -166,7 +154,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -215,25 +203,14 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, configurationName, ruleCollectionName, accept, context);
     }
 
-    /**
-     * Gets a network manager security admin configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security admin configuration rule collection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdminRuleCollectionInner> getAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -241,19 +218,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a network manager security admin configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security admin configuration rule collection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdminRuleCollectionInner> getWithResponse(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Context context) {
@@ -261,18 +226,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             context).block();
     }
 
-    /**
-     * Gets a network manager security admin configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security admin configuration rule collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdminRuleCollectionInner get(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName) {
@@ -280,19 +234,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param ruleCollection The Rule Collection to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the admin rule collection along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdminRuleCollectionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName,
@@ -326,7 +268,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
         } else {
             ruleCollection.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -383,7 +325,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
         } else {
             ruleCollection.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -392,19 +334,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             ruleCollection, context);
     }
 
-    /**
-     * Creates or updates an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param ruleCollection The Rule Collection to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the admin rule collection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdminRuleCollectionInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, AdminRuleCollectionInner ruleCollection) {
@@ -412,20 +342,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             ruleCollectionName, ruleCollection).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param ruleCollection The Rule Collection to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the admin rule collection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdminRuleCollectionInner> createOrUpdateWithResponse(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName,
@@ -434,19 +351,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             ruleCollectionName, ruleCollection, context).block();
     }
 
-    /**
-     * Creates or updates an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param ruleCollection The Rule Collection to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the admin rule collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdminRuleCollectionInner createOrUpdate(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, AdminRuleCollectionInner ruleCollection) {
@@ -454,20 +359,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             ruleCollection, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Boolean force) {
@@ -495,7 +387,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -546,26 +438,13 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, configurationName, ruleCollectionName, force, context);
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Boolean force) {
@@ -575,18 +454,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             this.client.getContext());
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -622,18 +490,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             context);
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -643,21 +500,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Boolean force, Context context) {
@@ -667,20 +510,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, Boolean force) {
@@ -689,18 +519,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName) {
@@ -732,17 +551,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName) {
@@ -750,20 +559,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
         deleteAsync(resourceGroupName, networkManagerName, configurationName, ruleCollectionName, force).block();
     }
 
-    /**
-     * Deletes an admin rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, Boolean force, Context context) {
@@ -811,7 +607,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -862,7 +658,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -872,22 +668,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the rule collections in a security admin configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AdminRuleCollection list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AdminRuleCollectionInner> listAsync(String resourceGroupName, String networkManagerName,
         String configurationName, Integer top, String skipToken) {
@@ -896,17 +677,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all the rule collections in a security admin configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AdminRuleCollection list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AdminRuleCollectionInner> listAsync(String resourceGroupName, String networkManagerName,
         String configurationName) {
@@ -941,17 +712,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
             skipToken, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the rule collections in a security admin configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AdminRuleCollection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdminRuleCollectionInner> list(String resourceGroupName, String networkManagerName,
         String configurationName) {
@@ -960,23 +721,7 @@ public final class AdminRuleCollectionsClientImpl implements AdminRuleCollection
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, configurationName, top, skipToken));
     }
 
-    /**
-     * Lists all the rule collections in a security admin configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AdminRuleCollection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AdminRuleCollectionInner> list(String resourceGroupName, String networkManagerName,
         String configurationName, Integer top, String skipToken, Context context) {

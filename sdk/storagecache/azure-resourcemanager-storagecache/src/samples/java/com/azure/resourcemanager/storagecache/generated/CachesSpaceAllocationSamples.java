@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class CachesSpaceAllocationSamples {
     /*
-     * x-ms-original-file: 2026-01-01/SpaceAllocation_Post.json
+     * x-ms-original-file: 2026-08-01/SpaceAllocation_Post.json
      */
     /**
      * Sample code: SpaceAllocation_Post.

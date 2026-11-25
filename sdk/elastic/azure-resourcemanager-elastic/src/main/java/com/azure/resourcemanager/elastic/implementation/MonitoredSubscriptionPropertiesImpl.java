@@ -61,10 +61,7 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
     }
 
     public MonitoredSubscriptionProperties create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitoredSubscriptions()
-            .createorUpdate(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MonitoredSubscriptionProperties create(Context context) {
@@ -85,10 +82,7 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
     }
 
     public MonitoredSubscriptionProperties apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitoredSubscriptions()
-            .update(resourceGroupName, monitorName, configurationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MonitoredSubscriptionProperties apply(Context context) {
@@ -102,17 +96,19 @@ public final class MonitoredSubscriptionPropertiesImpl implements MonitoredSubsc
         com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.configurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitoredSubscriptions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/monitoredSubscriptions/{configurationName}",
+            "resourceGroupName");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/monitoredSubscriptions/{configurationName}",
+            "monitorName");
+        this.configurationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/monitoredSubscriptions/{configurationName}",
+            "configurationName");
     }
 
     public MonitoredSubscriptionProperties refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMonitoredSubscriptions()
-            .getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MonitoredSubscriptionProperties refresh(Context context) {

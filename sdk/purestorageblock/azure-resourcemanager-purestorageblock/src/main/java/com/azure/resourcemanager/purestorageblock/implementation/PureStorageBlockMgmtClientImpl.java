@@ -22,6 +22,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -32,8 +33,13 @@ import com.azure.resourcemanager.purestorageblock.fluent.AvsVmVolumesClient;
 import com.azure.resourcemanager.purestorageblock.fluent.AvsVmsClient;
 import com.azure.resourcemanager.purestorageblock.fluent.OperationsClient;
 import com.azure.resourcemanager.purestorageblock.fluent.PureStorageBlockMgmtClient;
+import com.azure.resourcemanager.purestorageblock.fluent.RecoverableVolumeGroupsClient;
 import com.azure.resourcemanager.purestorageblock.fluent.ReservationsClient;
+import com.azure.resourcemanager.purestorageblock.fluent.SaaSOperationGroupsClient;
 import com.azure.resourcemanager.purestorageblock.fluent.StoragePoolsClient;
+import com.azure.resourcemanager.purestorageblock.fluent.VolumeGroupSnapshotsClient;
+import com.azure.resourcemanager.purestorageblock.fluent.VolumeGroupsClient;
+import com.azure.resourcemanager.purestorageblock.fluent.VolumesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -231,6 +237,76 @@ public final class PureStorageBlockMgmtClientImpl implements PureStorageBlockMgm
     }
 
     /**
+     * The VolumeGroupsClient object to access its operations.
+     */
+    private final VolumeGroupsClient volumeGroups;
+
+    /**
+     * Gets the VolumeGroupsClient object to access its operations.
+     * 
+     * @return the VolumeGroupsClient object.
+     */
+    public VolumeGroupsClient getVolumeGroups() {
+        return this.volumeGroups;
+    }
+
+    /**
+     * The VolumesClient object to access its operations.
+     */
+    private final VolumesClient volumes;
+
+    /**
+     * Gets the VolumesClient object to access its operations.
+     * 
+     * @return the VolumesClient object.
+     */
+    public VolumesClient getVolumes() {
+        return this.volumes;
+    }
+
+    /**
+     * The RecoverableVolumeGroupsClient object to access its operations.
+     */
+    private final RecoverableVolumeGroupsClient recoverableVolumeGroups;
+
+    /**
+     * Gets the RecoverableVolumeGroupsClient object to access its operations.
+     * 
+     * @return the RecoverableVolumeGroupsClient object.
+     */
+    public RecoverableVolumeGroupsClient getRecoverableVolumeGroups() {
+        return this.recoverableVolumeGroups;
+    }
+
+    /**
+     * The SaaSOperationGroupsClient object to access its operations.
+     */
+    private final SaaSOperationGroupsClient saaSOperationGroups;
+
+    /**
+     * Gets the SaaSOperationGroupsClient object to access its operations.
+     * 
+     * @return the SaaSOperationGroupsClient object.
+     */
+    public SaaSOperationGroupsClient getSaaSOperationGroups() {
+        return this.saaSOperationGroups;
+    }
+
+    /**
+     * The VolumeGroupSnapshotsClient object to access its operations.
+     */
+    private final VolumeGroupSnapshotsClient volumeGroupSnapshots;
+
+    /**
+     * Gets the VolumeGroupSnapshotsClient object to access its operations.
+     * 
+     * @return the VolumeGroupSnapshotsClient object.
+     */
+    public VolumeGroupSnapshotsClient getVolumeGroupSnapshots() {
+        return this.volumeGroupSnapshots;
+    }
+
+    /**
      * Initializes an instance of PureStorageBlockMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -247,7 +323,7 @@ public final class PureStorageBlockMgmtClientImpl implements PureStorageBlockMgm
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-11-01";
+        this.apiVersion = "2026-05-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.reservations = new ReservationsClientImpl(this);
         this.storagePools = new StoragePoolsClientImpl(this);
@@ -255,6 +331,11 @@ public final class PureStorageBlockMgmtClientImpl implements PureStorageBlockMgm
         this.avsStorageContainerVolumes = new AvsStorageContainerVolumesClientImpl(this);
         this.avsVms = new AvsVmsClientImpl(this);
         this.avsVmVolumes = new AvsVmVolumesClientImpl(this);
+        this.volumeGroups = new VolumeGroupsClientImpl(this);
+        this.volumes = new VolumesClientImpl(this);
+        this.recoverableVolumeGroups = new RecoverableVolumeGroupsClientImpl(this);
+        this.saaSOperationGroups = new SaaSOperationGroupsClientImpl(this);
+        this.volumeGroupSnapshots = new VolumeGroupSnapshotsClientImpl(this);
     }
 
     /**
@@ -312,6 +393,24 @@ public final class PureStorageBlockMgmtClientImpl implements PureStorageBlockMgm
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -320,17 +419,25 @@ public final class PureStorageBlockMgmtClientImpl implements PureStorageBlockMgm
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -349,12 +456,11 @@ public final class PureStorageBlockMgmtClientImpl implements PureStorageBlockMgm
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

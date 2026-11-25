@@ -45,7 +45,7 @@ public final class SchemasImpl implements Schemas {
     }
 
     public void delete(String resourceGroupName, String schemaRegistryName, String schemaName) {
-        this.serviceClient().delete(resourceGroupName, schemaRegistryName, schemaName);
+        this.delete(resourceGroupName, schemaRegistryName, schemaName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String schemaRegistryName, String schemaName, Context context) {
@@ -53,9 +53,7 @@ public final class SchemasImpl implements Schemas {
     }
 
     public PagedIterable<Schema> listBySchemaRegistry(String resourceGroupName, String schemaRegistryName) {
-        PagedIterable<SchemaInner> inner
-            = this.serviceClient().listBySchemaRegistry(resourceGroupName, schemaRegistryName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SchemaImpl(inner1, this.manager()));
+        return this.listBySchemaRegistry(resourceGroupName, schemaRegistryName, Context.NONE);
     }
 
     public PagedIterable<Schema> listBySchemaRegistry(String resourceGroupName, String schemaRegistryName,
@@ -66,78 +64,36 @@ public final class SchemasImpl implements Schemas {
     }
 
     public Schema getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaRegistryName = ResourceManagerUtils.getValueFromIdByName(id, "schemaRegistries");
-        if (schemaRegistryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaRegistries'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, schemaRegistryName, schemaName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Schema> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaRegistryName = ResourceManagerUtils.getValueFromIdByName(id, "schemaRegistries");
-        if (schemaRegistryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaRegistries'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaRegistryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "schemaRegistryName", "schemaRegistries", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "schemaName", "schemas", LOGGER);
         return this.getWithResponse(resourceGroupName, schemaRegistryName, schemaName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaRegistryName = ResourceManagerUtils.getValueFromIdByName(id, "schemaRegistries");
-        if (schemaRegistryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaRegistries'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
-        this.delete(resourceGroupName, schemaRegistryName, schemaName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String schemaRegistryName = ResourceManagerUtils.getValueFromIdByName(id, "schemaRegistries");
-        if (schemaRegistryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemaRegistries'.", id)));
-        }
-        String schemaName = ResourceManagerUtils.getValueFromIdByName(id, "schemas");
-        if (schemaName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String schemaRegistryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "schemaRegistryName", "schemaRegistries", LOGGER);
+        String schemaName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas/{schemaName}",
+            "schemaName", "schemas", LOGGER);
         this.delete(resourceGroupName, schemaRegistryName, schemaName, context);
     }
 

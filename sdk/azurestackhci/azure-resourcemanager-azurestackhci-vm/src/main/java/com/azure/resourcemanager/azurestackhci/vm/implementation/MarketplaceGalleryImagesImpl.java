@@ -46,7 +46,7 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String marketplaceGalleryImageName) {
-        this.serviceClient().delete(resourceGroupName, marketplaceGalleryImageName);
+        this.delete(resourceGroupName, marketplaceGalleryImageName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String marketplaceGalleryImageName, Context context) {
@@ -54,8 +54,7 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public PagedIterable<MarketplaceGalleryImage> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MarketplaceGalleryImageInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MarketplaceGalleryImageImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<MarketplaceGalleryImage> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public PagedIterable<MarketplaceGalleryImage> list() {
-        PagedIterable<MarketplaceGalleryImageInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MarketplaceGalleryImageImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<MarketplaceGalleryImage> list(Context context) {
@@ -75,59 +73,30 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public MarketplaceGalleryImage getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
-        if (marketplaceGalleryImageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, marketplaceGalleryImageName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<MarketplaceGalleryImage> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
-        if (marketplaceGalleryImageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String marketplaceGalleryImageName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "marketplaceGalleryImageName", "marketplaceGalleryImages", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, marketplaceGalleryImageName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
-        if (marketplaceGalleryImageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));
-        }
-        this.delete(resourceGroupName, marketplaceGalleryImageName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
-        if (marketplaceGalleryImageName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String marketplaceGalleryImageName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "marketplaceGalleryImageName", "marketplaceGalleryImages", LOGGER);
         this.delete(resourceGroupName, marketplaceGalleryImageName, context);
     }
 

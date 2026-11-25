@@ -88,10 +88,7 @@ public final class DisconnectedOperationImpl
     }
 
     public DisconnectedOperation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisconnectedOperations()
-            .createOrUpdate(resourceGroupName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DisconnectedOperation create(Context context) {
@@ -114,11 +111,7 @@ public final class DisconnectedOperationImpl
     }
 
     public DisconnectedOperation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisconnectedOperations()
-            .updateWithResponse(resourceGroupName, name, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DisconnectedOperation apply(Context context) {
@@ -133,16 +126,16 @@ public final class DisconnectedOperationImpl
         com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "disconnectedOperations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}",
+            "resourceGroupName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}",
+            "name");
     }
 
     public DisconnectedOperation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisconnectedOperations()
-            .getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DisconnectedOperation refresh(Context context) {

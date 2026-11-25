@@ -47,7 +47,7 @@ public final class WebPubSubSharedPrivateLinkResourcesImpl implements WebPubSubS
     }
 
     public void delete(String resourceGroupName, String resourceName, String sharedPrivateLinkResourceName) {
-        this.serviceClient().delete(resourceGroupName, resourceName, sharedPrivateLinkResourceName);
+        this.delete(resourceGroupName, resourceName, sharedPrivateLinkResourceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String sharedPrivateLinkResourceName,
@@ -56,9 +56,7 @@ public final class WebPubSubSharedPrivateLinkResourcesImpl implements WebPubSubS
     }
 
     public PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName) {
-        PagedIterable<SharedPrivateLinkResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<SharedPrivateLinkResource> list(String resourceGroupName, String resourceName,
@@ -69,83 +67,36 @@ public final class WebPubSubSharedPrivateLinkResourcesImpl implements WebPubSubS
     }
 
     public SharedPrivateLinkResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String sharedPrivateLinkResourceName
-            = ResourceManagerUtils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, resourceName, sharedPrivateLinkResourceName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SharedPrivateLinkResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String sharedPrivateLinkResourceName
-            = ResourceManagerUtils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "resourceName", "webPubSub", LOGGER);
+        String sharedPrivateLinkResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "sharedPrivateLinkResourceName", "sharedPrivateLinkResources", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, sharedPrivateLinkResourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String sharedPrivateLinkResourceName
-            = ResourceManagerUtils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
-        this.delete(resourceGroupName, resourceName, sharedPrivateLinkResourceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "webPubSub");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'webPubSub'.", id)));
-        }
-        String sharedPrivateLinkResourceName
-            = ResourceManagerUtils.getValueFromIdByName(id, "sharedPrivateLinkResources");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "resourceName", "webPubSub", LOGGER);
+        String sharedPrivateLinkResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
+            "sharedPrivateLinkResourceName", "sharedPrivateLinkResources", LOGGER);
         this.delete(resourceGroupName, resourceName, sharedPrivateLinkResourceName, context);
     }
 

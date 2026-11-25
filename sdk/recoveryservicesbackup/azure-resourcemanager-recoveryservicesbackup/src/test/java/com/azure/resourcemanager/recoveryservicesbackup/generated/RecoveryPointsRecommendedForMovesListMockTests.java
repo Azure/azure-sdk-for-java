@@ -27,7 +27,7 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"Unknown\",\"threatInfo\":[{\"threatTitle\":\"mtbgwjdxwna\",\"threatDescription\":\"urrdreyzjwhsetww\",\"lastUpdatedTime\":\"2021-09-26T07:42:56Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-09-27T14:07:34Z\",\"threatEndTime\":\"2021-06-13T21:06:36Z\",\"threatURI\":\"ukykcyqh\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"zdcykeystew\",\"threatDescription\":\"pazdazgbsqgp\",\"lastUpdatedTime\":\"2021-04-08T11:25:56Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-08-29T01:28:56Z\",\"threatEndTime\":\"2021-03-26T13:27:40Z\",\"threatURI\":\"vozglqjbk\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"lctzeyowmndcovd\",\"threatDescription\":\"qauxzan\",\"lastUpdatedTime\":\"2021-06-26T09:12:26Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-06-03T23:40:37Z\",\"threatEndTime\":\"2021-07-15T19:04:46Z\",\"threatURI\":\"drbcp\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"dqyemebunaucm\",\"threatDescription\":\"rtneemmja\",\"lastUpdatedTime\":\"2021-08-13T01:13:38Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-03-14T19:08:24Z\",\"threatEndTime\":\"2021-01-02T10:16:31Z\",\"threatURI\":\"aitranizerw\",\"threatSeverity\":\"High\"}]},\"tags\":{\"hpriylfm\":\"mxubvfbngfcoce\",\"vhl\":\"ztraud\"},\"location\":\"culregpqt\",\"eTag\":\"jhvrztnvgyshqrdg\",\"id\":\"wmewjzlpyk\",\"name\":\"fa\",\"type\":\"zwjcaye\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"Warning\",\"threatInfo\":[{\"threatTitle\":\"atuwqkokbc\",\"threatDescription\":\"thymgobl\",\"lastUpdatedTime\":\"2021-11-11T10:03:36Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-08-28T08:03:40Z\",\"threatEndTime\":\"2021-05-21T12:25:24Z\",\"threatURI\":\"an\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"t\",\"threatDescription\":\"obcyanrfvqtvk\",\"lastUpdatedTime\":\"2021-05-24T07:59:38Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-04-14T06:39:10Z\",\"threatEndTime\":\"2021-05-31T14:18:32Z\",\"threatURI\":\"aoaqymhccto\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"yrnskb\",\"threatDescription\":\"quhczygxvh\",\"lastUpdatedTime\":\"2021-02-06T07:03:13Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-03-23T23:26:48Z\",\"threatEndTime\":\"2021-10-23T09:19:50Z\",\"threatURI\":\"hscozawmvgxsmpk\",\"threatSeverity\":\"High\"},{\"threatTitle\":\"rfljfewxq\",\"threatDescription\":\"oxudnmckap\",\"lastUpdatedTime\":\"2021-11-23T22:05:55Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-10-11T06:59:10Z\",\"threatEndTime\":\"2021-07-21T21:15:21Z\",\"threatURI\":\"ncdgmoqueq\",\"threatSeverity\":\"Critical\"}]},\"tags\":{\"jouw\":\"owl\",\"xmcvprstvkitbfjt\":\"ldxwhieproqksm\"},\"location\":\"otnplfacqocc\",\"eTag\":\"qxwetjtd\",\"id\":\"u\",\"name\":\"fdoadtxopgeh\",\"type\":\"adkm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,19 +36,20 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<RecoveryPointResource> response = manager.recoveryPointsRecommendedForMoves()
-            .list("ossscyva", "fppuacvfye", "w", "sfxtjd", "soy",
-                new ListRecoveryPointsRecommendedForMoveRequest().withObjectType("pvtyqfttehdpbouj")
-                    .withExcludedRPList(Arrays.asList("fvvdshxcdedsue", "ygnxcgjtfrnqukt", "fnslnlrxsmy")),
-                com.azure.core.util.Context.NONE);
+        PagedIterable<RecoveryPointResource> response
+            = manager.recoveryPointsRecommendedForMoves()
+                .list("rhxuddqmdt", "fisjmrkk", "mw", "mdlgy", "ixokwtjawhv",
+                    new ListRecoveryPointsRecommendedForMoveRequest().withObjectType("nqf")
+                        .withExcludedRPList(Arrays.asList("lcvmyolcaymjch", "vsnvlaq")),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ThreatStatus.UNKNOWN, response.iterator().next().properties().threatStatus());
-        Assertions.assertEquals(ThreatState.RESOLVED,
+        Assertions.assertEquals(ThreatStatus.WARNING, response.iterator().next().properties().threatStatus());
+        Assertions.assertEquals(ThreatState.IN_PROGRESS,
             response.iterator().next().properties().threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.WARNING,
+        Assertions.assertEquals(ThreatSeverity.INFORMATIONAL,
             response.iterator().next().properties().threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("mxubvfbngfcoce", response.iterator().next().tags().get("hpriylfm"));
-        Assertions.assertEquals("culregpqt", response.iterator().next().location());
-        Assertions.assertEquals("jhvrztnvgyshqrdg", response.iterator().next().etag());
+        Assertions.assertEquals("owl", response.iterator().next().tags().get("jouw"));
+        Assertions.assertEquals("otnplfacqocc", response.iterator().next().location());
+        Assertions.assertEquals("qxwetjtd", response.iterator().next().etag());
     }
 }

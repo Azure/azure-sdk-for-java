@@ -11,7 +11,7 @@ public final class ResourceProtectionSolutionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProtectionSolutionSettings model = BinaryData.fromString(
-            "{\"protectionSolutionType\":\"CrossZoneVMRecovery\",\"protectionStatus\":\"Unknown\",\"resourceId\":\"ud\",\"activeLocation\":\"dvxzbncblylpst\",\"activeLocations\":[\"hxsrzdzucersc\"],\"activePhysicalZones\":[\"nevf\"],\"recoveryLocations\":[\"mygtdssls\",\"tmweriofzpyq\",\"emwabnet\",\"hhszh\"],\"replicationRole\":\"Replica\",\"primaryResource\":\"vwiwubmwmbesld\",\"replicaResources\":[\"wtppjflcxogaoko\",\"z\"],\"isAutoFailover\":true,\"failoverState\":\"FailedOverCommitPending\",\"testFailoverState\":\"None\"}")
+            "{\"protectionSolutionType\":\"AzureSiteRecovery\",\"protectionStatus\":\"NotProtected\",\"resourceId\":\"knalaulppg\",\"activeLocation\":\"tpnapnyiropuhpig\",\"activeLocations\":[\"ylgqgitxmedjvcsl\",\"n\",\"wwncwzzhxgk\",\"rmgucnap\"],\"activePhysicalZones\":[\"oellwp\",\"fdygpfqbuaceopz\",\"qrhhu\",\"opppcqeq\"],\"recoveryLocations\":[\"z\",\"ahzxctobgbk\",\"moizpos\",\"mgrcfbu\"],\"replicationRole\":\"Unknown\",\"primaryResource\":\"qjhhkxbpv\",\"replicaResources\":[\"jhxxjyn\"],\"isAutoFailover\":false,\"failoverState\":\"FailedOver\",\"testFailoverState\":\"TestFailoverCleanupPending\"}")
             .toObject(ResourceProtectionSolutionSettings.class);
     }
 }

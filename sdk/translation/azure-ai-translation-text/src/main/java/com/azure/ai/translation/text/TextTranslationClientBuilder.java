@@ -337,7 +337,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         } else if (CustomEndpointUtils.isPlatformHost(endpoint)) {
             try {
                 URL hostUri = new URL(endpoint);
-                URL fullUri = new URL(hostUri, "/translator/text/v" + localServiceVersion.getVersion());
+                URL fullUri = new URL(hostUri, "/translator/text");
                 serviceEndpoint = fullUri.toString();
             } catch (MalformedURLException ex) {
                 serviceEndpoint = endpoint;

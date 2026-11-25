@@ -22,6 +22,11 @@ public final class ClusterResourcePlacementSpec implements JsonSerializable<Clus
      */
     private PlacementPolicy policy;
 
+    /*
+     * The rollout strategy configuration for the cluster resource placement.
+     */
+    private RolloutStrategy rolloutStrategy;
+
     /**
      * Creates an instance of ClusterResourcePlacementSpec class.
      */
@@ -51,12 +56,33 @@ public final class ClusterResourcePlacementSpec implements JsonSerializable<Clus
     }
 
     /**
+     * Get the rolloutStrategy property: The rollout strategy configuration for the cluster resource placement.
+     * 
+     * @return the rolloutStrategy value.
+     */
+    public RolloutStrategy rolloutStrategy() {
+        return this.rolloutStrategy;
+    }
+
+    /**
+     * Set the rolloutStrategy property: The rollout strategy configuration for the cluster resource placement.
+     * 
+     * @param rolloutStrategy the rolloutStrategy value to set.
+     * @return the ClusterResourcePlacementSpec object itself.
+     */
+    public ClusterResourcePlacementSpec withRolloutStrategy(RolloutStrategy rolloutStrategy) {
+        this.rolloutStrategy = rolloutStrategy;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("policy", this.policy);
+        jsonWriter.writeJsonField("rolloutStrategy", this.rolloutStrategy);
         return jsonWriter.writeEndObject();
     }
 
@@ -77,6 +103,8 @@ public final class ClusterResourcePlacementSpec implements JsonSerializable<Clus
 
                 if ("policy".equals(fieldName)) {
                     deserializedClusterResourcePlacementSpec.policy = PlacementPolicy.fromJson(reader);
+                } else if ("rolloutStrategy".equals(fieldName)) {
+                    deserializedClusterResourcePlacementSpec.rolloutStrategy = RolloutStrategy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

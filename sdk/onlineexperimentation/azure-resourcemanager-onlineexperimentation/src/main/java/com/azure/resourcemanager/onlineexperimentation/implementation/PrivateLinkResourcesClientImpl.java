@@ -159,18 +159,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a private link resource for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateLinkResourceName The name of the PrivateLinkResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for an online experimentation workspace resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
         String privateLinkResourceName, Context context) {
@@ -179,17 +168,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             resourceGroupName, workspaceName, privateLinkResourceName, accept, context);
     }
 
-    /**
-     * Gets a private link resource for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param privateLinkResourceName The name of the PrivateLinkResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String workspaceName,
         String privateLinkResourceName) {
@@ -249,12 +228,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -280,35 +254,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of private link resources for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private link resources for an online experimentation workspace resource as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of private link resources for an online experimentation workspace resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of private link resources for an online experimentation workspace resource as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String workspaceName,
         Context context) {
@@ -347,11 +299,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

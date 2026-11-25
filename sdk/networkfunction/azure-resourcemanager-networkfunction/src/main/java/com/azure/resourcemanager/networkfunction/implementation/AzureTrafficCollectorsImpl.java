@@ -45,7 +45,7 @@ public final class AzureTrafficCollectorsImpl implements AzureTrafficCollectors 
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String azureTrafficCollectorName) {
-        this.serviceClient().delete(resourceGroupName, azureTrafficCollectorName);
+        this.delete(resourceGroupName, azureTrafficCollectorName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String azureTrafficCollectorName, Context context) {
@@ -53,59 +53,30 @@ public final class AzureTrafficCollectorsImpl implements AzureTrafficCollectors 
     }
 
     public AzureTrafficCollector getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, azureTrafficCollectorName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AzureTrafficCollector> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureTrafficCollectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}",
+            "azureTrafficCollectorName", "azureTrafficCollectors", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, azureTrafficCollectorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
-        this.delete(resourceGroupName, azureTrafficCollectorName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureTrafficCollectorName = ResourceManagerUtils.getValueFromIdByName(id, "azureTrafficCollectors");
-        if (azureTrafficCollectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'azureTrafficCollectors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureTrafficCollectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}",
+            "azureTrafficCollectorName", "azureTrafficCollectors", LOGGER);
         this.delete(resourceGroupName, azureTrafficCollectorName, context);
     }
 

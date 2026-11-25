@@ -55,7 +55,7 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
     }
 
     public void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName) {
-        this.serviceClient().delete(resourceGroupName, customerResourceName, cacheNodeResourceName);
+        this.delete(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String customerResourceName, String cacheNodeResourceName,
@@ -65,10 +65,7 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
 
     public PagedIterable<EnterpriseMccCacheNodeResource> listByEnterpriseMccCustomerResource(String resourceGroupName,
         String customerResourceName) {
-        PagedIterable<EnterpriseMccCacheNodeResourceInner> inner
-            = this.serviceClient().listByEnterpriseMccCustomerResource(resourceGroupName, customerResourceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new EnterpriseMccCacheNodeResourceImpl(inner1, this.manager()));
+        return this.listByEnterpriseMccCustomerResource(resourceGroupName, customerResourceName, Context.NONE);
     }
 
     public PagedIterable<EnterpriseMccCacheNodeResource> listByEnterpriseMccCustomerResource(String resourceGroupName,
@@ -160,79 +157,36 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
     }
 
     public EnterpriseMccCacheNodeResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EnterpriseMccCacheNodeResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String customerResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName", "enterpriseMccCustomers", LOGGER);
+        String cacheNodeResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName", "enterpriseMccCacheNodes", LOGGER);
         return this.getWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));
-        }
-        this.delete(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
-        if (customerResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
-        }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
-        if (cacheNodeResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String customerResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName", "enterpriseMccCustomers", LOGGER);
+        String cacheNodeResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName", "enterpriseMccCacheNodes", LOGGER);
         this.delete(resourceGroupName, customerResourceName, cacheNodeResourceName, context);
     }
 

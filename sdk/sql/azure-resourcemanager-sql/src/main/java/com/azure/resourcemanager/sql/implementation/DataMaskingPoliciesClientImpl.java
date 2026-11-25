@@ -83,18 +83,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             @BodyParam("application/json") DataMaskingPolicyInner parameters, Context context);
     }
 
-    /**
-     * Gets the database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the database data masking policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataMaskingPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName) {
@@ -172,18 +161,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             resourceGroupName, serverName, databaseName, dataMaskingPolicyName, accept, context);
     }
 
-    /**
-     * Gets the database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the database data masking policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataMaskingPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         DataMaskingPolicyName dataMaskingPolicyName) {
@@ -191,19 +169,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the database data masking policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingPolicyInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Context context) {
@@ -211,18 +177,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             .block();
     }
 
-    /**
-     * Gets the database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the database data masking policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataMaskingPolicyInner get(String resourceGroupName, String serverName, String databaseName,
         DataMaskingPolicyName dataMaskingPolicyName) {
@@ -230,19 +185,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             .getValue();
     }
 
-    /**
-     * Creates or updates a database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param parameters Parameters for creating or updating a data masking policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataMaskingPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName,
@@ -336,19 +279,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param parameters Parameters for creating or updating a data masking policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataMaskingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName, DataMaskingPolicyInner parameters) {
@@ -356,20 +287,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param parameters Parameters for creating or updating a data masking policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName, DataMaskingPolicyInner parameters,
@@ -378,19 +296,7 @@ public final class DataMaskingPoliciesClientImpl implements DataMaskingPoliciesC
             parameters, context).block();
     }
 
-    /**
-     * Creates or updates a database data masking policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param parameters Parameters for creating or updating a data masking policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataMaskingPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         DataMaskingPolicyName dataMaskingPolicyName, DataMaskingPolicyInner parameters) {

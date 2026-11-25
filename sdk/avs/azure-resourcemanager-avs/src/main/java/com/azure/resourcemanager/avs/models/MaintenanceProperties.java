@@ -35,6 +35,21 @@ public final class MaintenanceProperties implements JsonSerializable<Maintenance
     private Integer clusterId;
 
     /*
+     * Activities performed as part of maintenance
+     */
+    private List<MaintenanceActivity> activities;
+
+    /*
+     * Group details if maintenance is part of a group
+     */
+    private MaintenanceGroup group;
+
+    /*
+     * Relationships with other maintenances like dependencies and prerequisites
+     */
+    private MaintenanceRelationships relationships;
+
+    /*
      * Link to maintenance info
      */
     private String infoLink;
@@ -111,6 +126,33 @@ public final class MaintenanceProperties implements JsonSerializable<Maintenance
      */
     public Integer clusterId() {
         return this.clusterId;
+    }
+
+    /**
+     * Get the activities property: Activities performed as part of maintenance.
+     * 
+     * @return the activities value.
+     */
+    public List<MaintenanceActivity> activities() {
+        return this.activities;
+    }
+
+    /**
+     * Get the group property: Group details if maintenance is part of a group.
+     * 
+     * @return the group value.
+     */
+    public MaintenanceGroup group() {
+        return this.group;
+    }
+
+    /**
+     * Get the relationships property: Relationships with other maintenances like dependencies and prerequisites.
+     * 
+     * @return the relationships value.
+     */
+    public MaintenanceRelationships relationships() {
+        return this.relationships;
     }
 
     /**
@@ -200,6 +242,15 @@ public final class MaintenanceProperties implements JsonSerializable<Maintenance
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (activities() != null) {
+            activities().forEach(e -> e.validate());
+        }
+        if (group() != null) {
+            group().validate();
+        }
+        if (relationships() != null) {
+            relationships().validate();
+        }
         if (state() != null) {
             state().validate();
         }
@@ -241,6 +292,14 @@ public final class MaintenanceProperties implements JsonSerializable<Maintenance
                     deserializedMaintenanceProperties.displayName = reader.getString();
                 } else if ("clusterId".equals(fieldName)) {
                     deserializedMaintenanceProperties.clusterId = reader.getNullable(JsonReader::getInt);
+                } else if ("activities".equals(fieldName)) {
+                    List<MaintenanceActivity> activities
+                        = reader.readArray(reader1 -> MaintenanceActivity.fromJson(reader1));
+                    deserializedMaintenanceProperties.activities = activities;
+                } else if ("group".equals(fieldName)) {
+                    deserializedMaintenanceProperties.group = MaintenanceGroup.fromJson(reader);
+                } else if ("relationships".equals(fieldName)) {
+                    deserializedMaintenanceProperties.relationships = MaintenanceRelationships.fromJson(reader);
                 } else if ("infoLink".equals(fieldName)) {
                     deserializedMaintenanceProperties.infoLink = reader.getString();
                 } else if ("impact".equals(fieldName)) {

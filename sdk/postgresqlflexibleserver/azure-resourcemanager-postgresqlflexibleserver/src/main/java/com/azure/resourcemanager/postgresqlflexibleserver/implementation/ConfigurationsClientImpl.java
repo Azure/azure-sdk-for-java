@@ -166,18 +166,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a specific configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific configuration (also known as server parameter) of a server along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String configurationName) {
@@ -188,37 +177,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a specific configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific configuration (also known as server parameter) of a server on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationInner> getAsync(String resourceGroupName, String serverName, String configurationName) {
         return getWithResponseAsync(resourceGroupName, serverName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a specific configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific configuration (also known as server parameter) of a server along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationInner> getWithResponse(String resourceGroupName, String serverName,
         String configurationName, Context context) {
@@ -227,36 +193,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             resourceGroupName, serverName, configurationName, accept, context);
     }
 
-    /**
-     * Gets information about a specific configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a specific configuration (also known as server parameter) of a server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationInner get(String resourceGroupName, String serverName, String configurationName) {
         return getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
-     * parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(String resourceGroupName, String serverName,
         String configurationName, ConfigurationForUpdate parameters) {
@@ -285,9 +228,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> putWithResponse(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters) {
-        final String contentType = "application/json";
-        return service.putSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, serverName, configurationName, contentType, parameters, Context.NONE);
+        return putWithResponse(resourceGroupName, serverName, configurationName, parameters, Context.NONE);
     }
 
     /**
@@ -313,20 +254,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             resourceGroupName, serverName, configurationName, contentType, parameters, context);
     }
 
-    /**
-     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
-     * parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginPutAsync(String resourceGroupName,
         String serverName, String configurationName, ConfigurationForUpdate parameters) {
@@ -336,43 +264,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             ConfigurationInner.class, ConfigurationInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
-     * parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(String resourceGroupName,
         String serverName, String configurationName, ConfigurationForUpdate parameters) {
-        Response<BinaryData> response = putWithResponse(resourceGroupName, serverName, configurationName, parameters);
-        return this.client.<ConfigurationInner, ConfigurationInner>getLroResult(response, ConfigurationInner.class,
-            ConfigurationInner.class, Context.NONE);
+        return beginPut(resourceGroupName, serverName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
-     * parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(String resourceGroupName,
         String serverName, String configurationName, ConfigurationForUpdate parameters, Context context) {
@@ -382,20 +281,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             ConfigurationInner.class, context);
     }
 
-    /**
-     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
-     * parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationInner> putAsync(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters) {
@@ -403,60 +289,22 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
-     * parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationInner put(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters) {
-        return beginPut(resourceGroupName, serverName, configurationName, parameters).getFinalResult();
+        return put(resourceGroupName, serverName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server
-     * parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationInner put(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters, Context context) {
-        return beginPut(resourceGroupName, serverName, configurationName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginPut(resourceGroupName, serverName, configurationName, parameters, context));
     }
 
-    /**
-     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String configurationName, ConfigurationForUpdate parameters) {
@@ -484,10 +332,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String serverName,
         String configurationName, ConfigurationForUpdate parameters) {
-        final String contentType = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, configurationName, contentType, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, serverName, configurationName, parameters, Context.NONE);
     }
 
     /**
@@ -513,19 +358,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             context);
     }
 
-    /**
-     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdateAsync(String resourceGroupName,
         String serverName, String configurationName, ConfigurationForUpdate parameters) {
@@ -535,42 +368,14 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             ConfigurationInner.class, ConfigurationInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(String resourceGroupName,
         String serverName, String configurationName, ConfigurationForUpdate parameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, serverName, configurationName, parameters);
-        return this.client.<ConfigurationInner, ConfigurationInner>getLroResult(response, ConfigurationInner.class,
-            ConfigurationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, serverName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(String resourceGroupName,
         String serverName, String configurationName, ConfigurationForUpdate parameters, Context context) {
@@ -580,19 +385,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             ConfigurationInner.class, context);
     }
 
-    /**
-     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationInner> updateAsync(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters) {
@@ -600,43 +393,19 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationInner update(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters) {
-        return beginUpdate(resourceGroupName, serverName, configurationName, parameters).getFinalResult();
+        return update(resourceGroupName, serverName, configurationName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param configurationName Name of the configuration (also known as server parameter).
-     * @param parameters Parameters required to update the value of a specific modifiable configuration (also known as
-     * server parameter).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationInner update(String resourceGroupName, String serverName, String configurationName,
         ConfigurationForUpdate parameters, Context context) {
-        return beginUpdate(resourceGroupName, serverName, configurationName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, serverName, configurationName, parameters, context));
     }
 
     /**
@@ -662,16 +431,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all configurations (also known as server parameters) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configurations (also known as server parameters) as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -690,12 +450,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationInner> listByServerSinglePage(String resourceGroupName, String serverName) {
-        final String accept = "application/json";
-        Response<ConfigurationList> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -720,35 +475,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all configurations (also known as server parameters) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configurations (also known as server parameters) as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
+        return listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * Lists all configurations (also known as server parameters) of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configurations (also known as server parameters) as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
@@ -787,11 +520,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConfigurationInner> listByServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConfigurationList> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

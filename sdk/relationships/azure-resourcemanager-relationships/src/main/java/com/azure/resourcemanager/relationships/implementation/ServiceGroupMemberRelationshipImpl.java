@@ -8,7 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.relationships.fluent.models.ServiceGroupMemberRelationshipInner;
 import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationship;
-import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipProperties;
+import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipPropertiesV2;
 
 public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMemberRelationship,
     ServiceGroupMemberRelationship.Definition, ServiceGroupMemberRelationship.Update {
@@ -28,7 +28,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
         return this.innerModel().type();
     }
 
-    public ServiceGroupMemberRelationshipProperties properties() {
+    public ServiceGroupMemberRelationshipPropertiesV2 properties() {
         return this.innerModel().properties();
     }
 
@@ -54,10 +54,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
     }
 
     public ServiceGroupMemberRelationship create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceGroupMemberRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceGroupMemberRelationship create(Context context) {
@@ -79,10 +76,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
     }
 
     public ServiceGroupMemberRelationship apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceGroupMemberRelationships()
-            .createOrUpdate(resourceUri, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceGroupMemberRelationship apply(Context context) {
@@ -103,11 +97,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
     }
 
     public ServiceGroupMemberRelationship refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServiceGroupMemberRelationships()
-            .getWithResponse(resourceUri, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceGroupMemberRelationship refresh(Context context) {
@@ -118,7 +108,7 @@ public final class ServiceGroupMemberRelationshipImpl implements ServiceGroupMem
         return this;
     }
 
-    public ServiceGroupMemberRelationshipImpl withProperties(ServiceGroupMemberRelationshipProperties properties) {
+    public ServiceGroupMemberRelationshipImpl withProperties(ServiceGroupMemberRelationshipPropertiesV2 properties) {
         this.innerModel().withProperties(properties);
         return this;
     }

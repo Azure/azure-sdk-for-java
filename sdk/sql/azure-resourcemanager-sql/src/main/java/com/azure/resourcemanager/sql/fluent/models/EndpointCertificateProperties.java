@@ -9,7 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.EndpointTrustedRootCertificateInfo;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The properties of an endpoint certificate.
@@ -20,6 +22,11 @@ public final class EndpointCertificateProperties implements JsonSerializable<End
      * The certificate public blob
      */
     private String publicBlob;
+
+    /*
+     * Trusted root certificates required to validate the instance certificate
+     */
+    private List<EndpointTrustedRootCertificateInfo> trustedRootCertificates;
 
     /**
      * Creates an instance of EndpointCertificateProperties class.
@@ -37,11 +44,24 @@ public final class EndpointCertificateProperties implements JsonSerializable<End
     }
 
     /**
+     * Get the trustedRootCertificates property: Trusted root certificates required to validate the instance
+     * certificate.
+     * 
+     * @return the trustedRootCertificates value.
+     */
+    public List<EndpointTrustedRootCertificateInfo> trustedRootCertificates() {
+        return this.trustedRootCertificates;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (trustedRootCertificates() != null) {
+            trustedRootCertificates().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -72,6 +92,10 @@ public final class EndpointCertificateProperties implements JsonSerializable<End
 
                 if ("publicBlob".equals(fieldName)) {
                     deserializedEndpointCertificateProperties.publicBlob = reader.getString();
+                } else if ("trustedRootCertificates".equals(fieldName)) {
+                    List<EndpointTrustedRootCertificateInfo> trustedRootCertificates
+                        = reader.readArray(reader1 -> EndpointTrustedRootCertificateInfo.fromJson(reader1));
+                    deserializedEndpointCertificateProperties.trustedRootCertificates = trustedRootCertificates;
                 } else {
                     reader.skipChildren();
                 }

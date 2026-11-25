@@ -10,9 +10,9 @@ import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.eventhubs.impl.IteratorUtil;
 import com.microsoft.azure.eventhubs.impl.ReceivePump;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 import java.util.concurrent.CompletableFuture;
@@ -22,12 +22,12 @@ public class ReceivePumpTest {
     private final String exceptionMessage = "receive Exception";
     private volatile boolean assertion = false;
 
-    @Before
+    @BeforeEach
     public void initializeValidation() {
         assertion = false;
     }
 
-    @Test()
+    @Test
     public void testPumpOnReceiveEventFlow() throws Exception {
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
@@ -61,7 +61,7 @@ public class ReceivePumpTest {
 
                     @Override
                     public void onError(Throwable error) {
-                        Assert.assertTrue(error instanceof PumpClosedException);
+                        Assertions.assertTrue(error instanceof PumpClosedException);
                         pumpRun.complete(null);
                     }
                 },
@@ -75,10 +75,10 @@ public class ReceivePumpTest {
             receivePump.stop().get();
         }
 
-        Assert.assertTrue(assertion);
+        Assertions.assertTrue(assertion);
     }
 
-    @Test()
+    @Test
     public void testPumpReceiveTransientErrorsPropagated() throws Exception {
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
@@ -122,10 +122,10 @@ public class ReceivePumpTest {
             receivePump.stop().get();
         }
 
-        Assert.assertTrue(assertion);
+        Assertions.assertTrue(assertion);
     }
 
-    @Test()
+    @Test
     public void testPumpReceiveExceptionsPropagated() throws Exception {
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
@@ -169,10 +169,10 @@ public class ReceivePumpTest {
             receivePump.stop().get();
         }
 
-        Assert.assertTrue(assertion);
+        Assertions.assertTrue(assertion);
     }
 
-    @Test()
+    @Test
     public void testPumpOnReceiveExceptionsPropagated() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final String runtimeExceptionMsg = "random exception";
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
@@ -216,7 +216,7 @@ public class ReceivePumpTest {
             receivePump.stop().get();
         }
 
-        Assert.assertTrue(assertion);
+        Assertions.assertTrue(assertion);
     }
 
     public class PumpClosedException extends RuntimeException {

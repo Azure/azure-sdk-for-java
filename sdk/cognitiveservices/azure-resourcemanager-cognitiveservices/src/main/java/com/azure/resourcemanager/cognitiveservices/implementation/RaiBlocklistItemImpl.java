@@ -80,12 +80,7 @@ public final class RaiBlocklistItemImpl
     }
 
     public RaiBlocklistItem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklistItems()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiBlocklistItem create(Context context) {
@@ -109,12 +104,7 @@ public final class RaiBlocklistItemImpl
     }
 
     public RaiBlocklistItem apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklistItems()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiBlocklistItem apply(Context context) {
@@ -130,18 +120,22 @@ public final class RaiBlocklistItemImpl
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.raiBlocklistName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "raiBlocklists");
-        this.raiBlocklistItemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "raiBlocklistItems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "accountName");
+        this.raiBlocklistName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "raiBlocklistName");
+        this.raiBlocklistItemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}",
+            "raiBlocklistItemName");
     }
 
     public RaiBlocklistItem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklistItems()
-            .getWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiBlocklistItem refresh(Context context) {

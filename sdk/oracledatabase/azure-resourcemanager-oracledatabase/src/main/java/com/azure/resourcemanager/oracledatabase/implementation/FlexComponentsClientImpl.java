@@ -150,17 +150,7 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
         return getWithResponseAsync(location, flexComponentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FlexComponent.
-     * 
-     * @param location The name of the Azure region.
-     * @param flexComponentName The name of the FlexComponent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FlexComponent along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FlexComponentInner> getWithResponse(String location, String flexComponentName, Context context) {
         final String accept = "application/json";
@@ -168,16 +158,7 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
             location, flexComponentName, accept, context);
     }
 
-    /**
-     * Get a FlexComponent.
-     * 
-     * @param location The name of the Azure region.
-     * @param flexComponentName The name of the FlexComponent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FlexComponent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlexComponentInner get(String location, String flexComponentName) {
         return getWithResponse(location, flexComponentName, Context.NONE).getValue();
@@ -249,11 +230,7 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlexComponentInner> listByParentSinglePage(String location, SystemShapes shape) {
-        final String accept = "application/json";
-        Response<FlexComponentListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, shape, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(location, shape, Context.NONE);
     }
 
     /**
@@ -277,33 +254,14 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FlexComponent resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FlexComponent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FlexComponentInner> listByParent(String location) {
         final SystemShapes shape = null;
-        return new PagedIterable<>(() -> listByParentSinglePage(location, shape),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(location, shape, Context.NONE);
     }
 
-    /**
-     * List FlexComponent resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param shape If provided, filters the results for the given shape.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FlexComponent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FlexComponentInner> listByParent(String location, SystemShapes shape, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(location, shape, context),
@@ -341,11 +299,7 @@ public final class FlexComponentsClientImpl implements FlexComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlexComponentInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FlexComponentListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

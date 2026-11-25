@@ -79,10 +79,7 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTagRules()
-            .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TagRule create(Context context) {
@@ -105,11 +102,7 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTagRules()
-            .updateWithResponse(resourceGroupName, monitorName, ruleSetName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TagRule apply(Context context) {
@@ -124,17 +117,19 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.ruleSetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tagRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "resourceGroupName");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "monitorName");
+        this.ruleSetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "ruleSetName");
     }
 
     public TagRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTagRules()
-            .getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TagRule refresh(Context context) {

@@ -93,10 +93,7 @@ public final class NamespaceAssetImpl implements NamespaceAsset, NamespaceAsset.
     }
 
     public NamespaceAsset create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceAssets()
-            .createOrReplace(resourceGroupName, namespaceName, assetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NamespaceAsset create(Context context) {
@@ -118,10 +115,7 @@ public final class NamespaceAssetImpl implements NamespaceAsset, NamespaceAsset.
     }
 
     public NamespaceAsset apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceAssets()
-            .update(resourceGroupName, namespaceName, assetName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NamespaceAsset apply(Context context) {
@@ -135,17 +129,19 @@ public final class NamespaceAssetImpl implements NamespaceAsset, NamespaceAsset.
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.assetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}",
+            "resourceGroupName");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}",
+            "namespaceName");
+        this.assetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}",
+            "assetName");
     }
 
     public NamespaceAsset refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceAssets()
-            .getWithResponse(resourceGroupName, namespaceName, assetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NamespaceAsset refresh(Context context) {

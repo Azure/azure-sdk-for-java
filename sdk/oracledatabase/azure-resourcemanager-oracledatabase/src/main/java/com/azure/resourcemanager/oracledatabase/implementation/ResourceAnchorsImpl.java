@@ -28,8 +28,7 @@ public final class ResourceAnchorsImpl implements ResourceAnchors {
     }
 
     public PagedIterable<ResourceAnchor> list() {
-        PagedIterable<ResourceAnchorInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceAnchorImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ResourceAnchor> list(Context context) {
@@ -55,7 +54,7 @@ public final class ResourceAnchorsImpl implements ResourceAnchors {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String resourceAnchorName) {
-        this.serviceClient().delete(resourceGroupName, resourceAnchorName);
+        this.delete(resourceGroupName, resourceAnchorName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceAnchorName, Context context) {
@@ -63,8 +62,7 @@ public final class ResourceAnchorsImpl implements ResourceAnchors {
     }
 
     public PagedIterable<ResourceAnchor> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ResourceAnchorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceAnchorImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ResourceAnchor> listByResourceGroup(String resourceGroupName, Context context) {
@@ -73,58 +71,30 @@ public final class ResourceAnchorsImpl implements ResourceAnchors {
     }
 
     public ResourceAnchor getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceAnchorName = ResourceManagerUtils.getValueFromIdByName(id, "resourceAnchors");
-        if (resourceAnchorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceAnchors'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, resourceAnchorName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ResourceAnchor> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceAnchorName = ResourceManagerUtils.getValueFromIdByName(id, "resourceAnchors");
-        if (resourceAnchorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceAnchors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceAnchorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceAnchorName", "resourceAnchors", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceAnchorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceAnchorName = ResourceManagerUtils.getValueFromIdByName(id, "resourceAnchors");
-        if (resourceAnchorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceAnchors'.", id)));
-        }
-        this.delete(resourceGroupName, resourceAnchorName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceAnchorName = ResourceManagerUtils.getValueFromIdByName(id, "resourceAnchors");
-        if (resourceAnchorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceAnchors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceAnchorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/resourceAnchors/{resourceAnchorName}",
+            "resourceAnchorName", "resourceAnchors", LOGGER);
         this.delete(resourceGroupName, resourceAnchorName, context);
     }
 

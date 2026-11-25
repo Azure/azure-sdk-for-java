@@ -22,12 +22,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
-import com.azure.resourcemanager.netapp.fluent.ActiveDirectoryConfigsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.BackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
@@ -36,14 +36,6 @@ import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
 import com.azure.resourcemanager.netapp.fluent.BucketsClient;
 import com.azure.resourcemanager.netapp.fluent.CachesClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticAccountsClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticBackupPoliciesClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticBackupVaultsClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticBackupsClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticCapacityPoolsClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticSnapshotPoliciesClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticSnapshotsClient;
-import com.azure.resourcemanager.netapp.fluent.ElasticVolumesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsAccountsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
@@ -55,7 +47,6 @@ import com.azure.resourcemanager.netapp.fluent.PoolsClient;
 import com.azure.resourcemanager.netapp.fluent.RansomwareReportsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
-import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeQuotaRulesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
@@ -340,132 +331,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
-     * The ElasticAccountsClient object to access its operations.
-     */
-    private final ElasticAccountsClient elasticAccounts;
-
-    /**
-     * Gets the ElasticAccountsClient object to access its operations.
-     * 
-     * @return the ElasticAccountsClient object.
-     */
-    public ElasticAccountsClient getElasticAccounts() {
-        return this.elasticAccounts;
-    }
-
-    /**
-     * The ElasticCapacityPoolsClient object to access its operations.
-     */
-    private final ElasticCapacityPoolsClient elasticCapacityPools;
-
-    /**
-     * Gets the ElasticCapacityPoolsClient object to access its operations.
-     * 
-     * @return the ElasticCapacityPoolsClient object.
-     */
-    public ElasticCapacityPoolsClient getElasticCapacityPools() {
-        return this.elasticCapacityPools;
-    }
-
-    /**
-     * The ElasticVolumesClient object to access its operations.
-     */
-    private final ElasticVolumesClient elasticVolumes;
-
-    /**
-     * Gets the ElasticVolumesClient object to access its operations.
-     * 
-     * @return the ElasticVolumesClient object.
-     */
-    public ElasticVolumesClient getElasticVolumes() {
-        return this.elasticVolumes;
-    }
-
-    /**
-     * The ElasticSnapshotsClient object to access its operations.
-     */
-    private final ElasticSnapshotsClient elasticSnapshots;
-
-    /**
-     * Gets the ElasticSnapshotsClient object to access its operations.
-     * 
-     * @return the ElasticSnapshotsClient object.
-     */
-    public ElasticSnapshotsClient getElasticSnapshots() {
-        return this.elasticSnapshots;
-    }
-
-    /**
-     * The ElasticSnapshotPoliciesClient object to access its operations.
-     */
-    private final ElasticSnapshotPoliciesClient elasticSnapshotPolicies;
-
-    /**
-     * Gets the ElasticSnapshotPoliciesClient object to access its operations.
-     * 
-     * @return the ElasticSnapshotPoliciesClient object.
-     */
-    public ElasticSnapshotPoliciesClient getElasticSnapshotPolicies() {
-        return this.elasticSnapshotPolicies;
-    }
-
-    /**
-     * The ElasticBackupVaultsClient object to access its operations.
-     */
-    private final ElasticBackupVaultsClient elasticBackupVaults;
-
-    /**
-     * Gets the ElasticBackupVaultsClient object to access its operations.
-     * 
-     * @return the ElasticBackupVaultsClient object.
-     */
-    public ElasticBackupVaultsClient getElasticBackupVaults() {
-        return this.elasticBackupVaults;
-    }
-
-    /**
-     * The ElasticBackupPoliciesClient object to access its operations.
-     */
-    private final ElasticBackupPoliciesClient elasticBackupPolicies;
-
-    /**
-     * Gets the ElasticBackupPoliciesClient object to access its operations.
-     * 
-     * @return the ElasticBackupPoliciesClient object.
-     */
-    public ElasticBackupPoliciesClient getElasticBackupPolicies() {
-        return this.elasticBackupPolicies;
-    }
-
-    /**
-     * The ElasticBackupsClient object to access its operations.
-     */
-    private final ElasticBackupsClient elasticBackups;
-
-    /**
-     * Gets the ElasticBackupsClient object to access its operations.
-     * 
-     * @return the ElasticBackupsClient object.
-     */
-    public ElasticBackupsClient getElasticBackups() {
-        return this.elasticBackups;
-    }
-
-    /**
-     * The ActiveDirectoryConfigsClient object to access its operations.
-     */
-    private final ActiveDirectoryConfigsClient activeDirectoryConfigs;
-
-    /**
-     * Gets the ActiveDirectoryConfigsClient object to access its operations.
-     * 
-     * @return the ActiveDirectoryConfigsClient object.
-     */
-    public ActiveDirectoryConfigsClient getActiveDirectoryConfigs() {
-        return this.activeDirectoryConfigs;
-    }
-
-    /**
      * The NetAppResourceQuotaLimitsClient object to access its operations.
      */
     private final NetAppResourceQuotaLimitsClient netAppResourceQuotaLimits;
@@ -564,20 +429,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
-     * The SubvolumesClient object to access its operations.
-     */
-    private final SubvolumesClient subvolumes;
-
-    /**
-     * Gets the SubvolumesClient object to access its operations.
-     * 
-     * @return the SubvolumesClient object.
-     */
-    public SubvolumesClient getSubvolumes() {
-        return this.subvolumes;
-    }
-
-    /**
      * The NetAppResourcesClient object to access its operations.
      */
     private final NetAppResourcesClient netAppResources;
@@ -622,7 +473,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-15-preview";
+        this.apiVersion = "2026-09-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
@@ -636,15 +487,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.buckets = new BucketsClientImpl(this);
         this.caches = new CachesClientImpl(this);
-        this.elasticAccounts = new ElasticAccountsClientImpl(this);
-        this.elasticCapacityPools = new ElasticCapacityPoolsClientImpl(this);
-        this.elasticVolumes = new ElasticVolumesClientImpl(this);
-        this.elasticSnapshots = new ElasticSnapshotsClientImpl(this);
-        this.elasticSnapshotPolicies = new ElasticSnapshotPoliciesClientImpl(this);
-        this.elasticBackupVaults = new ElasticBackupVaultsClientImpl(this);
-        this.elasticBackupPolicies = new ElasticBackupPoliciesClientImpl(this);
-        this.elasticBackups = new ElasticBackupsClientImpl(this);
-        this.activeDirectoryConfigs = new ActiveDirectoryConfigsClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
         this.netAppResourceRegionInfos = new NetAppResourceRegionInfosClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
@@ -652,7 +494,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.pools = new PoolsClientImpl(this);
         this.backupsUnderBackupVaults = new BackupsUnderBackupVaultsClientImpl(this);
         this.backupsUnderVolumes = new BackupsUnderVolumesClientImpl(this);
-        this.subvolumes = new SubvolumesClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceUsages = new NetAppResourceUsagesClientImpl(this);
     }
@@ -712,6 +553,24 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -720,17 +579,25 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -749,12 +616,11 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

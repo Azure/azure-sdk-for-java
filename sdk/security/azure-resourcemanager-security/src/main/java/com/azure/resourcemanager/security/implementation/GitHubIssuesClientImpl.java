@@ -240,18 +240,7 @@ public final class GitHubIssuesClientImpl implements GitHubIssuesClient {
             context);
     }
 
-    /**
-     * Creates a GitHub issue for the specified repository and assessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param repoName The repoName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String securityConnectorName,
         String ownerName, String repoName) {
@@ -260,20 +249,7 @@ public final class GitHubIssuesClientImpl implements GitHubIssuesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a GitHub issue for the specified repository and assessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param repoName The repoName parameter.
-     * @param createIssueRequest The request model containing details for creating the GitHub issue.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String securityConnectorName,
         String ownerName, String repoName, IssueCreationRequest createIssueRequest, Context context) {
@@ -346,36 +322,14 @@ public final class GitHubIssuesClientImpl implements GitHubIssuesClient {
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a GitHub issue for the specified repository and assessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param repoName The repoName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String resourceGroupName, String securityConnectorName, String ownerName, String repoName) {
         final IssueCreationRequest createIssueRequest = null;
         createAsync(resourceGroupName, securityConnectorName, ownerName, repoName, createIssueRequest).block();
     }
 
-    /**
-     * Creates a GitHub issue for the specified repository and assessment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param repoName The repoName parameter.
-     * @param createIssueRequest The request model containing details for creating the GitHub issue.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String resourceGroupName, String securityConnectorName, String ownerName, String repoName,
         IssueCreationRequest createIssueRequest, Context context) {

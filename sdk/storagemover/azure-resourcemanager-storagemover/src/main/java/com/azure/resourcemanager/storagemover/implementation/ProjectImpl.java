@@ -67,12 +67,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, projectName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Project create(Context context) {
@@ -95,11 +90,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .updateWithResponse(resourceGroupName, storageMoverName, projectName, updateProject, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Project apply(Context context) {
@@ -113,17 +104,19 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     ProjectImpl(ProjectInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}",
+            "resourceGroupName");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}",
+            "storageMoverName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}",
+            "projectName");
     }
 
     public Project refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .getWithResponse(resourceGroupName, storageMoverName, projectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Project refresh(Context context) {

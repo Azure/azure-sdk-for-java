@@ -48,7 +48,7 @@ public final class CloudAccountsImpl implements CloudAccounts {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String cloudAccountName) {
-        this.serviceClient().delete(resourceGroupName, cloudAccountName);
+        this.delete(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String cloudAccountName, Context context) {
@@ -56,8 +56,7 @@ public final class CloudAccountsImpl implements CloudAccounts {
     }
 
     public PagedIterable<CloudAccount> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CloudAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudAccountImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<CloudAccount> listByResourceGroup(String resourceGroupName, Context context) {
@@ -66,8 +65,7 @@ public final class CloudAccountsImpl implements CloudAccounts {
     }
 
     public PagedIterable<CloudAccount> list() {
-        PagedIterable<CloudAccountInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudAccountImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<CloudAccount> list(Context context) {
@@ -76,12 +74,7 @@ public final class CloudAccountsImpl implements CloudAccounts {
     }
 
     public CloudAccount linkSaaS(String resourceGroupName, String cloudAccountName, SaaSData body) {
-        CloudAccountInner inner = this.serviceClient().linkSaaS(resourceGroupName, cloudAccountName, body);
-        if (inner != null) {
-            return new CloudAccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.linkSaaS(resourceGroupName, cloudAccountName, body, Context.NONE);
     }
 
     public CloudAccount linkSaaS(String resourceGroupName, String cloudAccountName, SaaSData body, Context context) {
@@ -112,58 +105,30 @@ public final class CloudAccountsImpl implements CloudAccounts {
     }
 
     public CloudAccount getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, cloudAccountName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CloudAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudAccountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "cloudAccountName", "cloudAccounts", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, cloudAccountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
-        this.delete(resourceGroupName, cloudAccountName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudAccountName = ResourceManagerUtils.getValueFromIdByName(id, "cloudAccounts");
-        if (cloudAccountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudAccounts'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudAccountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}",
+            "cloudAccountName", "cloudAccounts", LOGGER);
         this.delete(resourceGroupName, cloudAccountName, context);
     }
 

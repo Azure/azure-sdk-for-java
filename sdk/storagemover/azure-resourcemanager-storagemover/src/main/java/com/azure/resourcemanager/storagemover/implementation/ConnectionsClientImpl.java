@@ -209,19 +209,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @param connection The connection parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
         String connectionName, ConnectionInner connection, Context context) {
@@ -232,18 +220,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             connection, context);
     }
 
-    /**
-     * Creates or updates a Connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @param connection The connection parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner createOrUpdate(String resourceGroupName, String storageMoverName, String connectionName,
         ConnectionInner connection) {
@@ -289,18 +266,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionInner> getWithResponse(String resourceGroupName, String storageMoverName,
         String connectionName, Context context) {
@@ -309,17 +275,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             resourceGroupName, storageMoverName, connectionName, accept, context);
     }
 
-    /**
-     * Gets a Connection resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner get(String resourceGroupName, String storageMoverName, String connectionName) {
         return getWithResponse(resourceGroupName, storageMoverName, connectionName, Context.NONE).getValue();
@@ -375,11 +331,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listSinglePage(String resourceGroupName, String storageMoverName) {
-        final String accept = "application/json";
-        Response<ConnectionList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, storageMoverName, Context.NONE);
     }
 
     /**
@@ -403,33 +355,13 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Connections in a Storage Mover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> list(String resourceGroupName, String storageMoverName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageMoverName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, storageMoverName, Context.NONE);
     }
 
-    /**
-     * Lists all Connections in a Storage Mover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Connections as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionInner> list(String resourceGroupName, String storageMoverName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageMoverName, context),
@@ -472,8 +404,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageMoverName,
         String connectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageMoverName, connectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageMoverName, connectionName, Context.NONE);
     }
 
     /**
@@ -517,38 +448,14 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Connection resource.
-     * Returns 409 if there are active jobs using this connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String connectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageMoverName, connectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageMoverName, connectionName, Context.NONE);
     }
 
-    /**
-     * Deletes a Connection resource.
-     * Returns 409 if there are active jobs using this connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
         String connectionName, Context context) {
@@ -575,37 +482,16 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Connection resource.
-     * Returns 409 if there are active jobs using this connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String connectionName) {
-        beginDelete(resourceGroupName, storageMoverName, connectionName).getFinalResult();
+        delete(resourceGroupName, storageMoverName, connectionName, Context.NONE);
     }
 
-    /**
-     * Deletes a Connection resource.
-     * Returns 409 if there are active jobs using this connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param connectionName The name of the Connection resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageMoverName, String connectionName, Context context) {
-        beginDelete(resourceGroupName, storageMoverName, connectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageMoverName, connectionName, context));
     }
 
     /**
@@ -637,10 +523,7 @@ public final class ConnectionsClientImpl implements ConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectionList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

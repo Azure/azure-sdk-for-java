@@ -6,9 +6,11 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TileSetList;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.List;
 
 public class MosaicItemsTileSetListGet {
     public static void main(String[] args) {
@@ -17,8 +19,8 @@ public class MosaicItemsTileSetListGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-tilesets.mosaic-items-tile-set-list-get
-        TileSetList response
-            = dataClient.getTilesets("naip-atl", "ga_m_3308421_se_16_060_20211114", null, null, null, null, null, null);
+        TileSetList response = dataClient.getTilesets("naip-atl", "ga_m_3308421_se_16_060_20211114", (String) null,
+            (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-tilesets.mosaic-items-tile-set-list-get
     }
 }

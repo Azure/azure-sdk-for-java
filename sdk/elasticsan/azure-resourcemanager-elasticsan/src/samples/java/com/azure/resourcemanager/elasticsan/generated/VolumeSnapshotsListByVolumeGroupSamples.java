@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class VolumeSnapshotsListByVolumeGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VolumeSnapshots_ListByVolumeGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeSnapshots_ListByVolumeGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeSnapshots_ListByVolumeGroup_MinimumSet_Gen.
@@ -24,7 +24,7 @@ public final class VolumeSnapshotsListByVolumeGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/VolumeSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/VolumeSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeSnapshots_ListByVolumeGroup_MaximumSet_Gen.

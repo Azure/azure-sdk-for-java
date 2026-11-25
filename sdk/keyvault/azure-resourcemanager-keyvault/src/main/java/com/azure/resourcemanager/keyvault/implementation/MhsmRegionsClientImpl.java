@@ -157,16 +157,7 @@ public final class MhsmRegionsClientImpl implements MhsmRegionsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * The List operation gets information about the regions associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regions associated with a managed HSM Pools as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MhsmGeoReplicatedRegionInner> listByResourceAsync(String resourceGroupName, String name) {
         return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceGroupName, name),
@@ -191,32 +182,13 @@ public final class MhsmRegionsClientImpl implements MhsmRegionsClient {
             nextLink -> listByResourceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * The List operation gets information about the regions associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regions associated with a managed HSM Pools as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MhsmGeoReplicatedRegionInner> listByResource(String resourceGroupName, String name) {
         return new PagedIterable<>(listByResourceAsync(resourceGroupName, name));
     }
 
-    /**
-     * The List operation gets information about the regions associated with the managed HSM Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regions associated with a managed HSM Pools as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MhsmGeoReplicatedRegionInner> listByResource(String resourceGroupName, String name,
         Context context) {

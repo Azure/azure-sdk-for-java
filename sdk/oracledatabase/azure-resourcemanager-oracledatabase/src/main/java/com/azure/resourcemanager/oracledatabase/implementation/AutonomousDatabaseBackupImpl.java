@@ -66,10 +66,7 @@ public final class AutonomousDatabaseBackupImpl
     }
 
     public AutonomousDatabaseBackup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabaseBackups()
-            .createOrUpdate(resourceGroupName, autonomousdatabasename, adbbackupid, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutonomousDatabaseBackup create(Context context) {
@@ -92,10 +89,7 @@ public final class AutonomousDatabaseBackupImpl
     }
 
     public AutonomousDatabaseBackup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabaseBackups()
-            .update(resourceGroupName, autonomousdatabasename, adbbackupid, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutonomousDatabaseBackup apply(Context context) {
@@ -109,18 +103,19 @@ public final class AutonomousDatabaseBackupImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.autonomousdatabasename
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autonomousDatabases");
-        this.adbbackupid = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autonomousDatabaseBackups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
+            "resourceGroupName");
+        this.autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
+            "autonomousdatabasename");
+        this.adbbackupid = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
+            "adbbackupid");
     }
 
     public AutonomousDatabaseBackup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabaseBackups()
-            .getWithResponse(resourceGroupName, autonomousdatabasename, adbbackupid, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutonomousDatabaseBackup refresh(Context context) {

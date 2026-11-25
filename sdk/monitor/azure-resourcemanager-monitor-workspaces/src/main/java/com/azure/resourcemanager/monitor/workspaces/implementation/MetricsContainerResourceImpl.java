@@ -62,12 +62,7 @@ public final class MetricsContainerResourceImpl
     }
 
     public MetricsContainerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsContainers()
-            .createOrUpdateWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MetricsContainerResource create(Context context) {
@@ -91,12 +86,7 @@ public final class MetricsContainerResourceImpl
     }
 
     public MetricsContainerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsContainers()
-            .createOrUpdateWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MetricsContainerResource apply(Context context) {
@@ -112,17 +102,19 @@ public final class MetricsContainerResourceImpl
         com.azure.resourcemanager.monitor.workspaces.MonitorWorkspacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.metricsContainerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "metricsContainers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
+            "resourceGroupName");
+        this.azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
+            "azureMonitorWorkspaceName");
+        this.metricsContainerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers/{metricsContainerName}",
+            "metricsContainerName");
     }
 
     public MetricsContainerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMetricsContainers()
-            .getWithResponse(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MetricsContainerResource refresh(Context context) {

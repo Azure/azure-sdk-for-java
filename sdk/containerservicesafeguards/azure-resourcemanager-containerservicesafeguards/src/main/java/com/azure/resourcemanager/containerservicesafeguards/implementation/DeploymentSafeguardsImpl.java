@@ -43,12 +43,7 @@ public final class DeploymentSafeguardsImpl implements DeploymentSafeguards {
     }
 
     public DeploymentSafeguard create(String resourceUri, DeploymentSafeguardInner resource) {
-        DeploymentSafeguardInner inner = this.serviceClient().create(resourceUri, resource);
-        if (inner != null) {
-            return new DeploymentSafeguardImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.create(resourceUri, resource, Context.NONE);
     }
 
     public DeploymentSafeguard create(String resourceUri, DeploymentSafeguardInner resource, Context context) {
@@ -61,7 +56,7 @@ public final class DeploymentSafeguardsImpl implements DeploymentSafeguards {
     }
 
     public void delete(String resourceUri) {
-        this.serviceClient().delete(resourceUri);
+        this.delete(resourceUri, Context.NONE);
     }
 
     public void delete(String resourceUri, Context context) {
@@ -69,8 +64,7 @@ public final class DeploymentSafeguardsImpl implements DeploymentSafeguards {
     }
 
     public PagedIterable<DeploymentSafeguard> list(String resourceUri) {
-        PagedIterable<DeploymentSafeguardInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentSafeguardImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<DeploymentSafeguard> list(String resourceUri, Context context) {

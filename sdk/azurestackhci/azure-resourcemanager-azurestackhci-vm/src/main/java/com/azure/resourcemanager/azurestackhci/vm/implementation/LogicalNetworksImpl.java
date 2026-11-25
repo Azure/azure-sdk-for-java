@@ -45,7 +45,7 @@ public final class LogicalNetworksImpl implements LogicalNetworks {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String logicalNetworkName) {
-        this.serviceClient().delete(resourceGroupName, logicalNetworkName);
+        this.delete(resourceGroupName, logicalNetworkName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String logicalNetworkName, Context context) {
@@ -53,8 +53,7 @@ public final class LogicalNetworksImpl implements LogicalNetworks {
     }
 
     public PagedIterable<LogicalNetwork> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<LogicalNetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogicalNetworkImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<LogicalNetwork> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class LogicalNetworksImpl implements LogicalNetworks {
     }
 
     public PagedIterable<LogicalNetwork> list() {
-        PagedIterable<LogicalNetworkInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogicalNetworkImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<LogicalNetwork> list(Context context) {
@@ -73,58 +71,30 @@ public final class LogicalNetworksImpl implements LogicalNetworks {
     }
 
     public LogicalNetwork getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String logicalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "logicalNetworks");
-        if (logicalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'logicalNetworks'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, logicalNetworkName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<LogicalNetwork> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String logicalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "logicalNetworks");
-        if (logicalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'logicalNetworks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String logicalNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}",
+            "logicalNetworkName", "logicalNetworks", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, logicalNetworkName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String logicalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "logicalNetworks");
-        if (logicalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'logicalNetworks'.", id)));
-        }
-        this.delete(resourceGroupName, logicalNetworkName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String logicalNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "logicalNetworks");
-        if (logicalNetworkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'logicalNetworks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String logicalNetworkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}",
+            "logicalNetworkName", "logicalNetworks", LOGGER);
         this.delete(resourceGroupName, logicalNetworkName, context);
     }
 

@@ -45,7 +45,7 @@ public final class LicensesImpl implements Licenses {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String licenseName) {
-        this.serviceClient().delete(resourceGroupName, licenseName);
+        this.delete(resourceGroupName, licenseName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String licenseName, Context context) {
@@ -53,8 +53,7 @@ public final class LicensesImpl implements Licenses {
     }
 
     public PagedIterable<License> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<LicenseInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LicenseImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<License> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class LicensesImpl implements Licenses {
     }
 
     public PagedIterable<License> list() {
-        PagedIterable<LicenseInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LicenseImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<License> list(Context context) {
@@ -73,12 +71,7 @@ public final class LicensesImpl implements Licenses {
     }
 
     public License validateLicense(LicenseInner parameters) {
-        LicenseInner inner = this.serviceClient().validateLicense(parameters);
-        if (inner != null) {
-            return new LicenseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateLicense(parameters, Context.NONE);
     }
 
     public License validateLicense(LicenseInner parameters, Context context) {
@@ -91,58 +84,30 @@ public final class LicensesImpl implements Licenses {
     }
 
     public License getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String licenseName = ResourceManagerUtils.getValueFromIdByName(id, "licenses");
-        if (licenseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'licenses'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, licenseName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<License> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String licenseName = ResourceManagerUtils.getValueFromIdByName(id, "licenses");
-        if (licenseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'licenses'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String licenseName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}",
+            "licenseName", "licenses", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, licenseName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String licenseName = ResourceManagerUtils.getValueFromIdByName(id, "licenses");
-        if (licenseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'licenses'.", id)));
-        }
-        this.delete(resourceGroupName, licenseName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String licenseName = ResourceManagerUtils.getValueFromIdByName(id, "licenses");
-        if (licenseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'licenses'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String licenseName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}",
+            "licenseName", "licenses", LOGGER);
         this.delete(resourceGroupName, licenseName, context);
     }
 

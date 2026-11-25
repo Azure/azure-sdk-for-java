@@ -95,12 +95,7 @@ public final class SavedSearchImpl implements SavedSearch, SavedSearch.Definitio
     }
 
     public SavedSearch create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSavedSearches()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, savedSearchId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SavedSearch create(Context context) {
@@ -122,12 +117,7 @@ public final class SavedSearchImpl implements SavedSearch, SavedSearch.Definitio
     }
 
     public SavedSearch apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSavedSearches()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, savedSearchId, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SavedSearch apply(Context context) {
@@ -142,17 +132,19 @@ public final class SavedSearchImpl implements SavedSearch, SavedSearch.Definitio
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.savedSearchId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "savedSearches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}",
+            "workspaceName");
+        this.savedSearchId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}",
+            "savedSearchId");
     }
 
     public SavedSearch refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSavedSearches()
-            .getWithResponse(resourceGroupName, workspaceName, savedSearchId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SavedSearch refresh(Context context) {

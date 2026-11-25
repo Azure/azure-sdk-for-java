@@ -50,12 +50,11 @@ public final class AuthorizedApplicationsImpl implements AuthorizedApplications 
     }
 
     public void delete(String providerNamespace, UUID applicationId) {
-        this.serviceClient().delete(providerNamespace, applicationId);
+        this.deleteWithResponse(providerNamespace, applicationId, Context.NONE);
     }
 
     public PagedIterable<AuthorizedApplication> list(String providerNamespace) {
-        PagedIterable<AuthorizedApplicationInner> inner = this.serviceClient().list(providerNamespace);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AuthorizedApplicationImpl(inner1, this.manager()));
+        return this.list(providerNamespace, Context.NONE);
     }
 
     public PagedIterable<AuthorizedApplication> list(String providerNamespace, Context context) {
@@ -64,61 +63,31 @@ public final class AuthorizedApplicationsImpl implements AuthorizedApplications 
     }
 
     public AuthorizedApplication getById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String applicationIdLocal = ResourceManagerUtils.getValueFromIdByName(id, "authorizedApplications");
-        if (applicationIdLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authorizedApplications'.", id)));
-        }
-        UUID applicationId = UUID.fromString(applicationIdLocal);
-        return this.getWithResponse(providerNamespace, applicationId, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AuthorizedApplication> getByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String applicationIdLocal = ResourceManagerUtils.getValueFromIdByName(id, "authorizedApplications");
-        if (applicationIdLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authorizedApplications'.", id)));
-        }
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}",
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String applicationIdLocal = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}",
+            "applicationId", "authorizedApplications", LOGGER);
         UUID applicationId = UUID.fromString(applicationIdLocal);
         return this.getWithResponse(providerNamespace, applicationId, context);
     }
 
     public void deleteById(String id) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String applicationIdLocal = ResourceManagerUtils.getValueFromIdByName(id, "authorizedApplications");
-        if (applicationIdLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authorizedApplications'.", id)));
-        }
-        UUID applicationId = UUID.fromString(applicationIdLocal);
-        this.deleteWithResponse(providerNamespace, applicationId, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String providerNamespace = ResourceManagerUtils.getValueFromIdByName(id, "providerRegistrations");
-        if (providerNamespace == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'providerRegistrations'.", id)));
-        }
-        String applicationIdLocal = ResourceManagerUtils.getValueFromIdByName(id, "authorizedApplications");
-        if (applicationIdLocal == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'authorizedApplications'.", id)));
-        }
+        String providerNamespace = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}",
+            "providerNamespace", "providerRegistrations", LOGGER);
+        String applicationIdLocal = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}",
+            "applicationId", "authorizedApplications", LOGGER);
         UUID applicationId = UUID.fromString(applicationIdLocal);
         return this.deleteWithResponse(providerNamespace, applicationId, context);
     }

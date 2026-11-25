@@ -50,11 +50,7 @@ public final class WorkspaceSettingImpl
     private String workspaceSettingName;
 
     public WorkspaceSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceSettings()
-            .createWithResponse(workspaceSettingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceSetting create(Context context) {
@@ -76,11 +72,7 @@ public final class WorkspaceSettingImpl
     }
 
     public WorkspaceSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceSettings()
-            .updateWithResponse(workspaceSettingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceSetting apply(Context context) {
@@ -95,15 +87,13 @@ public final class WorkspaceSettingImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.workspaceSettingName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaceSettings");
+        this.workspaceSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}",
+            "workspaceSettingName");
     }
 
     public WorkspaceSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceSettings()
-            .getWithResponse(workspaceSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceSetting refresh(Context context) {

@@ -45,7 +45,7 @@ public final class HealthModelsImpl implements HealthModels {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String healthModelName) {
-        this.serviceClient().delete(resourceGroupName, healthModelName);
+        this.delete(resourceGroupName, healthModelName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String healthModelName, Context context) {
@@ -53,8 +53,7 @@ public final class HealthModelsImpl implements HealthModels {
     }
 
     public PagedIterable<HealthModel> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<HealthModelInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HealthModelImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<HealthModel> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class HealthModelsImpl implements HealthModels {
     }
 
     public PagedIterable<HealthModel> list() {
-        PagedIterable<HealthModelInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HealthModelImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<HealthModel> list(Context context) {
@@ -73,58 +71,30 @@ public final class HealthModelsImpl implements HealthModels {
     }
 
     public HealthModel getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, healthModelName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<HealthModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}",
+            "healthModelName", "healthmodels", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, healthModelName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        this.delete(resourceGroupName, healthModelName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}",
+            "healthModelName", "healthmodels", LOGGER);
         this.delete(resourceGroupName, healthModelName, context);
     }
 

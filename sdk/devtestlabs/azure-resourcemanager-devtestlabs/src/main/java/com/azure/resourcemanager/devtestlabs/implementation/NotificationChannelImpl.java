@@ -125,11 +125,7 @@ public final class NotificationChannelImpl
     }
 
     public NotificationChannel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationChannels()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NotificationChannel create(Context context) {
@@ -152,11 +148,7 @@ public final class NotificationChannelImpl
     }
 
     public NotificationChannel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationChannels()
-            .updateWithResponse(resourceGroupName, labName, name, updateNotificationChannel, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NotificationChannel apply(Context context) {
@@ -171,18 +163,19 @@ public final class NotificationChannelImpl
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "notificationchannels");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}",
+            "labName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/notificationchannels/{name}",
+            "name");
     }
 
     public NotificationChannel refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationChannels()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NotificationChannel refresh(Context context) {

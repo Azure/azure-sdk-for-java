@@ -89,17 +89,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a shared gallery by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @param galleryUniqueName The unique name of the Shared Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharedGalleryInner>> getWithResponseAsync(String location, String galleryUniqueName) {
         if (this.client.getEndpoint() == null) {
@@ -117,7 +107,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -155,54 +145,26 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
             galleryUniqueName, accept, context);
     }
 
-    /**
-     * Get a shared gallery by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @param galleryUniqueName The unique name of the Shared Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedGalleryInner> getAsync(String location, String galleryUniqueName) {
         return getWithResponseAsync(location, galleryUniqueName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a shared gallery by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @param galleryUniqueName The unique name of the Shared Gallery.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedGalleryInner> getWithResponse(String location, String galleryUniqueName, Context context) {
         return getWithResponseAsync(location, galleryUniqueName, context).block();
     }
 
-    /**
-     * Get a shared gallery by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @param galleryUniqueName The unique name of the Shared Gallery.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedGalleryInner get(String location, String galleryUniqueName) {
         return getWithResponse(location, galleryUniqueName, Context.NONE).getValue();
@@ -232,7 +194,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -268,7 +230,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -278,31 +240,14 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List shared galleries by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryInner> listAsync(String location, SharedToValues sharedTo) {
         return new PagedFlux<>(() -> listSinglePageAsync(location, sharedTo),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List shared galleries by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryInner> listAsync(String location) {
         final SharedToValues sharedTo = null;
@@ -327,32 +272,14 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List shared galleries by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryInner> list(String location) {
         final SharedToValues sharedTo = null;
         return new PagedIterable<>(listAsync(location, sharedTo));
     }
 
-    /**
-     * List shared galleries by subscription id or tenant id.
-     * 
-     * @param location The name of the Azure region.
-     * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryInner> list(String location, SharedToValues sharedTo, Context context) {
         return new PagedIterable<>(listAsync(location, sharedTo, context));

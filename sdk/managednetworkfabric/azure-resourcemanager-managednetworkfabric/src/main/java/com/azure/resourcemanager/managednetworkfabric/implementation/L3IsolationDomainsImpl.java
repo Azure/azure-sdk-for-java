@@ -53,7 +53,7 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String l3IsolationDomainName) {
-        this.serviceClient().delete(resourceGroupName, l3IsolationDomainName);
+        this.delete(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String l3IsolationDomainName, Context context) {
@@ -61,8 +61,7 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
     }
 
     public PagedIterable<L3IsolationDomain> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<L3IsolationDomainInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new L3IsolationDomainImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<L3IsolationDomain> listByResourceGroup(String resourceGroupName, Context context) {
@@ -72,8 +71,7 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
     }
 
     public PagedIterable<L3IsolationDomain> list() {
-        PagedIterable<L3IsolationDomainInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new L3IsolationDomainImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<L3IsolationDomain> list(Context context) {
@@ -83,13 +81,7 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String l3IsolationDomainName, UpdateAdministrativeState body) {
-        UpdateAdministrativeStateResponseInner inner
-            = this.serviceClient().updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body);
-        if (inner != null) {
-            return new UpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, l3IsolationDomainName, body, Context.NONE);
     }
 
     public UpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
@@ -104,13 +96,7 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
     }
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName) {
-        ValidateConfigurationResponseInner inner
-            = this.serviceClient().validateConfiguration(resourceGroupName, l3IsolationDomainName);
-        if (inner != null) {
-            return new ValidateConfigurationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateConfiguration(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName,
@@ -126,13 +112,7 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
 
     public CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName,
         String l3IsolationDomainName) {
-        CommonPostActionResponseForStateUpdateInner inner
-            = this.serviceClient().commitConfiguration(resourceGroupName, l3IsolationDomainName);
-        if (inner != null) {
-            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.commitConfiguration(resourceGroupName, l3IsolationDomainName, Context.NONE);
     }
 
     public CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName,
@@ -147,58 +127,30 @@ public final class L3IsolationDomainsImpl implements L3IsolationDomains {
     }
 
     public L3IsolationDomain getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, l3IsolationDomainName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<L3IsolationDomain> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3IsolationDomainName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}",
+            "l3IsolationDomainName", "l3IsolationDomains", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, l3IsolationDomainName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
-        this.delete(resourceGroupName, l3IsolationDomainName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String l3IsolationDomainName = ResourceManagerUtils.getValueFromIdByName(id, "l3IsolationDomains");
-        if (l3IsolationDomainName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'l3IsolationDomains'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String l3IsolationDomainName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/{l3IsolationDomainName}",
+            "l3IsolationDomainName", "l3IsolationDomains", LOGGER);
         this.delete(resourceGroupName, l3IsolationDomainName, context);
     }
 

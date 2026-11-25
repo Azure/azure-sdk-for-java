@@ -28,9 +28,7 @@ public final class NeonRolesImpl implements NeonRoles {
 
     public PagedIterable<NeonRole> list(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
-        PagedIterable<NeonRoleInner> inner
-            = this.serviceClient().list(resourceGroupName, organizationName, projectName, branchName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NeonRoleImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
     public PagedIterable<NeonRole> list(String resourceGroupName, String organizationName, String projectName,
@@ -48,65 +46,30 @@ public final class NeonRolesImpl implements NeonRoles {
 
     public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
         String neonRoleName) {
-        this.serviceClient().delete(resourceGroupName, organizationName, projectName, branchName, neonRoleName);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
-        if (branchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
-        }
-        String neonRoleName = ResourceManagerUtils.getValueFromIdByName(id, "neonRoles");
-        if (neonRoleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'neonRoles'.", id)));
-        }
         this.deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
             Context.NONE);
     }
 
+    public void deleteById(String id) {
+        this.deleteByIdWithResponse(id, Context.NONE);
+    }
+
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByName(id, "organizations");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        String projectName = ResourceManagerUtils.getValueFromIdByName(id, "projects");
-        if (projectName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'projects'.", id)));
-        }
-        String branchName = ResourceManagerUtils.getValueFromIdByName(id, "branches");
-        if (branchName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'branches'.", id)));
-        }
-        String neonRoleName = ResourceManagerUtils.getValueFromIdByName(id, "neonRoles");
-        if (neonRoleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'neonRoles'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}",
+            "organizationName", "organizations", LOGGER);
+        String projectName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}",
+            "projectName", "projects", LOGGER);
+        String branchName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}",
+            "branchName", "branches", LOGGER);
+        String neonRoleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}",
+            "neonRoleName", "neonRoles", LOGGER);
         return this.deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
             context);
     }

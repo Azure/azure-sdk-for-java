@@ -97,10 +97,7 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), createXMsDeletedVaultId, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BackupVaultResource create(Context context) {
@@ -124,10 +121,7 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .update(resourceGroupName, vaultName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BackupVaultResource apply(Context context) {
@@ -141,16 +135,16 @@ public final class BackupVaultResourceImpl
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}",
+            "vaultName");
     }
 
     public BackupVaultResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BackupVaultResource refresh(Context context) {

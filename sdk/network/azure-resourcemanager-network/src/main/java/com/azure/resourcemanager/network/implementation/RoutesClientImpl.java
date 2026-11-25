@@ -116,18 +116,7 @@ public final class RoutesClientImpl implements RoutesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route from a route table along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteInner>> getWithResponseAsync(String resourceGroupName, String routeTableName,
         String routeName) {
@@ -149,7 +138,7 @@ public final class RoutesClientImpl implements RoutesClient {
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -191,76 +180,34 @@ public final class RoutesClientImpl implements RoutesClient {
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             routeTableName, routeName, accept, context);
     }
 
-    /**
-     * Gets the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route from a route table on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteInner> getAsync(String resourceGroupName, String routeTableName, String routeName) {
         return getWithResponseAsync(resourceGroupName, routeTableName, routeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route from a route table along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouteInner> getWithResponse(String resourceGroupName, String routeTableName, String routeName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, routeTableName, routeName, context).block();
     }
 
-    /**
-     * Gets the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route from a route table.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouteInner get(String resourceGroupName, String routeTableName, String routeName) {
         return getWithResponse(resourceGroupName, routeTableName, routeName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a route in the specified route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create or update route operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String routeTableName, String routeName, RouteInner routeParameters) {
@@ -288,7 +235,7 @@ public final class RoutesClientImpl implements RoutesClient {
         } else {
             routeParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -338,7 +285,7 @@ public final class RoutesClientImpl implements RoutesClient {
         } else {
             routeParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -346,18 +293,7 @@ public final class RoutesClientImpl implements RoutesClient {
             resourceGroupName, routeTableName, routeName, contentType, accept, routeParameters, context);
     }
 
-    /**
-     * Creates or updates a route in the specified route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create or update route operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of route resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateOrUpdateAsync(String resourceGroupName,
         String routeTableName, String routeName, RouteInner routeParameters) {
@@ -390,18 +326,7 @@ public final class RoutesClientImpl implements RoutesClient {
             RouteInner.class, context);
     }
 
-    /**
-     * Creates or updates a route in the specified route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create or update route operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of route resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(String resourceGroupName,
         String routeTableName, String routeName, RouteInner routeParameters) {
@@ -409,19 +334,7 @@ public final class RoutesClientImpl implements RoutesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a route in the specified route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create or update route operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of route resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(String resourceGroupName,
         String routeTableName, String routeName, RouteInner routeParameters, Context context) {
@@ -429,18 +342,7 @@ public final class RoutesClientImpl implements RoutesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a route in the specified route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create or update route operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName,
         RouteInner routeParameters) {
@@ -468,54 +370,21 @@ public final class RoutesClientImpl implements RoutesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a route in the specified route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create or update route operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouteInner createOrUpdate(String resourceGroupName, String routeTableName, String routeName,
         RouteInner routeParameters) {
         return createOrUpdateAsync(resourceGroupName, routeTableName, routeName, routeParameters).block();
     }
 
-    /**
-     * Creates or updates a route in the specified route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param routeParameters Parameters supplied to the create or update route operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouteInner createOrUpdate(String resourceGroupName, String routeTableName, String routeName,
         RouteInner routeParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, routeTableName, routeName, routeParameters, context).block();
     }
 
-    /**
-     * Deletes the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String routeTableName,
         String routeName) {
@@ -537,7 +406,7 @@ public final class RoutesClientImpl implements RoutesClient {
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, routeTableName, routeName, context))
@@ -577,23 +446,13 @@ public final class RoutesClientImpl implements RoutesClient {
         if (routeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             routeTableName, routeName, context);
     }
 
-    /**
-     * Deletes the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeTableName,
         String routeName) {
@@ -624,52 +483,21 @@ public final class RoutesClientImpl implements RoutesClient {
             context);
     }
 
-    /**
-     * Deletes the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeTableName,
         String routeName) {
         return this.beginDeleteAsync(resourceGroupName, routeTableName, routeName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeTableName,
         String routeName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, routeTableName, routeName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String routeTableName, String routeName) {
         return beginDeleteAsync(resourceGroupName, routeTableName, routeName).last()
@@ -694,32 +522,13 @@ public final class RoutesClientImpl implements RoutesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String routeTableName, String routeName) {
         deleteAsync(resourceGroupName, routeTableName, routeName).block();
     }
 
-    /**
-     * Deletes the specified route from a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param routeName The name of the route.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String routeTableName, String routeName, Context context) {
         deleteAsync(resourceGroupName, routeTableName, routeName, context).block();
@@ -752,7 +561,7 @@ public final class RoutesClientImpl implements RoutesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -791,7 +600,7 @@ public final class RoutesClientImpl implements RoutesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -801,16 +610,7 @@ public final class RoutesClientImpl implements RoutesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all routes in a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all routes in a route table as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouteInner> listAsync(String resourceGroupName, String routeTableName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, routeTableName),
@@ -834,32 +634,13 @@ public final class RoutesClientImpl implements RoutesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all routes in a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all routes in a route table as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouteInner> list(String resourceGroupName, String routeTableName) {
         return new PagedIterable<>(listAsync(resourceGroupName, routeTableName));
     }
 
-    /**
-     * Gets all routes in a route table.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param routeTableName The name of the route table.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all routes in a route table as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RouteInner> list(String resourceGroupName, String routeTableName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, routeTableName, context));

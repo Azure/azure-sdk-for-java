@@ -6,6 +6,7 @@ package com.azure.ai.translation.document.generated;
 
 import com.azure.ai.translation.document.SingleDocumentTranslationClient;
 import com.azure.ai.translation.document.SingleDocumentTranslationClientBuilder;
+import com.azure.ai.translation.document.models.DocumentTranslateContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -17,8 +18,8 @@ public class TranslateASingleDocument {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.translation.document.generated.translate.translate-a-single-document
-        BinaryData response
-            = singleDocumentTranslationClient.translate("es", null, "en", null, "gpt-4o-mini", null, true);
+        BinaryData response = singleDocumentTranslationClient.translate("es", (DocumentTranslateContent) null, "en",
+            (String) null, "gpt-4o-mini", (Boolean) null, true);
         // END:com.azure.ai.translation.document.generated.translate.translate-a-single-document
     }
 }

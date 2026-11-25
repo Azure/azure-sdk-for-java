@@ -111,7 +111,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -138,7 +138,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -147,15 +147,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available PrivateEndpoint types as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailablePrivateEndpointTypeInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -177,30 +169,13 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available PrivateEndpoint types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailablePrivateEndpointTypeInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
-    /**
-     * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available PrivateEndpoint types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailablePrivateEndpointTypeInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));
@@ -227,7 +202,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -259,7 +234,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -269,16 +244,7 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available PrivateEndpoint types as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailablePrivateEndpointTypeInner> listByResourceGroupAsync(String location,
         String resourceGroupName) {
@@ -304,33 +270,14 @@ public final class AvailablePrivateEndpointTypesClientImpl implements AvailableP
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available PrivateEndpoint types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(String location,
         String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(location, resourceGroupName));
     }
 
-    /**
-     * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     * 
-     * @param location The location name.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available PrivateEndpoint types as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(String location,
         String resourceGroupName, Context context) {

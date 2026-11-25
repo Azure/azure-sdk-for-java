@@ -12,18 +12,18 @@ public final class AgentReferencePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentReferenceProperties model
-            = BinaryData.fromString("{\"agentId\":\"qejpmvssehaepwa\",\"agentName\":\"xtczhupeuknijd\"}")
+            = BinaryData.fromString("{\"agentId\":\"oorssatfy\",\"agentName\":\"pufdmxuqbdqn\"}")
                 .toObject(AgentReferenceProperties.class);
-        Assertions.assertEquals("qejpmvssehaepwa", model.agentId());
-        Assertions.assertEquals("xtczhupeuknijd", model.agentName());
+        Assertions.assertEquals("oorssatfy", model.agentId());
+        Assertions.assertEquals("pufdmxuqbdqn", model.agentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgentReferenceProperties model
-            = new AgentReferenceProperties().withAgentId("qejpmvssehaepwa").withAgentName("xtczhupeuknijd");
+            = new AgentReferenceProperties().withAgentId("oorssatfy").withAgentName("pufdmxuqbdqn");
         model = BinaryData.fromObject(model).toObject(AgentReferenceProperties.class);
-        Assertions.assertEquals("qejpmvssehaepwa", model.agentId());
-        Assertions.assertEquals("xtczhupeuknijd", model.agentName());
+        Assertions.assertEquals("oorssatfy", model.agentId());
+        Assertions.assertEquals("pufdmxuqbdqn", model.agentName());
     }
 }

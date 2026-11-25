@@ -132,10 +132,7 @@ public final class StorageSyncServiceImpl
     }
 
     public StorageSyncService create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageSyncServices()
-            .create(resourceGroupName, storageSyncServiceName, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageSyncService create(Context context) {
@@ -157,10 +154,7 @@ public final class StorageSyncServiceImpl
     }
 
     public StorageSyncService apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageSyncServices()
-            .update(resourceGroupName, storageSyncServiceName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageSyncService apply(Context context) {
@@ -174,17 +168,16 @@ public final class StorageSyncServiceImpl
         com.azure.resourcemanager.storagesync.StorageSyncManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageSyncServiceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageSyncServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}",
+            "resourceGroupName");
+        this.storageSyncServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}",
+            "storageSyncServiceName");
     }
 
     public StorageSyncService refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageSyncServices()
-            .getByResourceGroupWithResponse(resourceGroupName, storageSyncServiceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageSyncService refresh(Context context) {

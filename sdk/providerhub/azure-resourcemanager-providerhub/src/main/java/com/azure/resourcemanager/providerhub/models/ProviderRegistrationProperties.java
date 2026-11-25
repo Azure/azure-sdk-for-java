@@ -41,6 +41,16 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
      */
     private TokenAuthConfiguration tokenAuthConfiguration;
 
+    /*
+     * The on behalf of subscription id for the resource provider.
+     */
+    private String oboSubscriptionId;
+
+    /*
+     * Indicates whether automatic registration for the preset resource types is enabled or disabled.
+     */
+    private Boolean enablePresetResourceTypes;
+
     /**
      * Creates an instance of ProviderRegistrationProperties class.
      */
@@ -140,6 +150,48 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
      */
     public ProviderRegistrationProperties withTokenAuthConfiguration(TokenAuthConfiguration tokenAuthConfiguration) {
         this.tokenAuthConfiguration = tokenAuthConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the oboSubscriptionId property: The on behalf of subscription id for the resource provider.
+     * 
+     * @return the oboSubscriptionId value.
+     */
+    public String oboSubscriptionId() {
+        return this.oboSubscriptionId;
+    }
+
+    /**
+     * Set the oboSubscriptionId property: The on behalf of subscription id for the resource provider.
+     * 
+     * @param oboSubscriptionId the oboSubscriptionId value to set.
+     * @return the ProviderRegistrationProperties object itself.
+     */
+    public ProviderRegistrationProperties withOboSubscriptionId(String oboSubscriptionId) {
+        this.oboSubscriptionId = oboSubscriptionId;
+        return this;
+    }
+
+    /**
+     * Get the enablePresetResourceTypes property: Indicates whether automatic registration for the preset resource
+     * types is enabled or disabled.
+     * 
+     * @return the enablePresetResourceTypes value.
+     */
+    public Boolean enablePresetResourceTypes() {
+        return this.enablePresetResourceTypes;
+    }
+
+    /**
+     * Set the enablePresetResourceTypes property: Indicates whether automatic registration for the preset resource
+     * types is enabled or disabled.
+     * 
+     * @param enablePresetResourceTypes the enablePresetResourceTypes value to set.
+     * @return the ProviderRegistrationProperties object itself.
+     */
+    public ProviderRegistrationProperties withEnablePresetResourceTypes(Boolean enablePresetResourceTypes) {
+        this.enablePresetResourceTypes = enablePresetResourceTypes;
         return this;
     }
 
@@ -336,16 +388,6 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
      * {@inheritDoc}
      */
     @Override
-    public ProviderRegistrationProperties
-        withDstsConfiguration(ResourceProviderManifestPropertiesDstsConfiguration dstsConfiguration) {
-        super.withDstsConfiguration(dstsConfiguration);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public ProviderRegistrationProperties withNotificationOptions(NotificationOptions notificationOptions) {
         super.withNotificationOptions(notificationOptions);
         return this;
@@ -492,9 +534,6 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
         if (resourceProviderAuthorizationRules() != null) {
             resourceProviderAuthorizationRules().validate();
         }
-        if (dstsConfiguration() != null) {
-            dstsConfiguration().validate();
-        }
         if (resourceHydrationAccounts() != null) {
             resourceHydrationAccounts().forEach(e -> e.validate());
         }
@@ -545,7 +584,6 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
         jsonWriter.writeArrayField("linkedNotificationRules", linkedNotificationRules(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("resourceProviderAuthorizationRules", resourceProviderAuthorizationRules());
-        jsonWriter.writeJsonField("dstsConfiguration", dstsConfiguration());
         jsonWriter.writeStringField("notificationOptions",
             notificationOptions() == null ? null : notificationOptions().toString());
         jsonWriter.writeArrayField("resourceHydrationAccounts", resourceHydrationAccounts(),
@@ -566,6 +604,8 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
             this.subscriptionLifecycleNotificationSpecifications);
         jsonWriter.writeJsonField("privateResourceProviderConfiguration", this.privateResourceProviderConfiguration);
         jsonWriter.writeJsonField("tokenAuthConfiguration", this.tokenAuthConfiguration);
+        jsonWriter.writeStringField("oboSubscriptionId", this.oboSubscriptionId);
+        jsonWriter.writeBooleanField("enablePresetResourceTypes", this.enablePresetResourceTypes);
         return jsonWriter.writeEndObject();
     }
 
@@ -647,9 +687,6 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
                 } else if ("resourceProviderAuthorizationRules".equals(fieldName)) {
                     deserializedProviderRegistrationProperties
                         .withResourceProviderAuthorizationRules(ResourceProviderAuthorizationRules.fromJson(reader));
-                } else if ("dstsConfiguration".equals(fieldName)) {
-                    deserializedProviderRegistrationProperties
-                        .withDstsConfiguration(ResourceProviderManifestPropertiesDstsConfiguration.fromJson(reader));
                 } else if ("notificationOptions".equals(fieldName)) {
                     deserializedProviderRegistrationProperties
                         .withNotificationOptions(NotificationOptions.fromString(reader.getString()));
@@ -697,6 +734,11 @@ public final class ProviderRegistrationProperties extends ResourceProviderManife
                 } else if ("tokenAuthConfiguration".equals(fieldName)) {
                     deserializedProviderRegistrationProperties.tokenAuthConfiguration
                         = TokenAuthConfiguration.fromJson(reader);
+                } else if ("oboSubscriptionId".equals(fieldName)) {
+                    deserializedProviderRegistrationProperties.oboSubscriptionId = reader.getString();
+                } else if ("enablePresetResourceTypes".equals(fieldName)) {
+                    deserializedProviderRegistrationProperties.enablePresetResourceTypes
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

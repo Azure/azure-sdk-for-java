@@ -69,10 +69,7 @@ public final class CloudLinkImpl implements CloudLink, CloudLink.Definition, Clo
     }
 
     public CloudLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudLinks()
-            .createOrUpdate(resourceGroupName, privateCloudName, cloudLinkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudLink create(Context context) {
@@ -93,10 +90,7 @@ public final class CloudLinkImpl implements CloudLink, CloudLink.Definition, Clo
     }
 
     public CloudLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudLinks()
-            .createOrUpdate(resourceGroupName, privateCloudName, cloudLinkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudLink apply(Context context) {
@@ -109,17 +103,19 @@ public final class CloudLinkImpl implements CloudLink, CloudLink.Definition, Clo
     CloudLinkImpl(CloudLinkInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.cloudLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}",
+            "privateCloudName");
+        this.cloudLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}",
+            "cloudLinkName");
     }
 
     public CloudLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudLinks()
-            .getWithResponse(resourceGroupName, privateCloudName, cloudLinkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudLink refresh(Context context) {

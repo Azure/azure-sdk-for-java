@@ -71,10 +71,7 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
     }
 
     public Entity create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEntities()
-            .createOrUpdate(resourceGroupName, healthModelName, entityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Entity create(Context context) {
@@ -95,10 +92,7 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
     }
 
     public Entity apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEntities()
-            .createOrUpdate(resourceGroupName, healthModelName, entityName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Entity apply(Context context) {
@@ -111,17 +105,19 @@ public final class EntityImpl implements Entity, Entity.Definition, Entity.Updat
     EntityImpl(EntityInner innerObject, com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.entityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "entities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "healthModelName");
+        this.entityName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}",
+            "entityName");
     }
 
     public Entity refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEntities()
-            .getWithResponse(resourceGroupName, healthModelName, entityName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Entity refresh(Context context) {

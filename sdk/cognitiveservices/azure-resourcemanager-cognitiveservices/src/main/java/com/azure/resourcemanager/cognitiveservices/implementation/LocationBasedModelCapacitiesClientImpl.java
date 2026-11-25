@@ -156,11 +156,7 @@ public final class LocationBasedModelCapacitiesClientImpl implements LocationBas
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelCapacityListResultValueItemInner> listSinglePage(String location, String modelFormat,
         String modelName, String modelVersion) {
-        final String accept = "application/json";
-        Response<ModelCapacityListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, modelFormat, modelName, modelVersion, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, modelFormat, modelName, modelVersion, Context.NONE);
     }
 
     /**
@@ -186,40 +182,14 @@ public final class LocationBasedModelCapacitiesClientImpl implements LocationBas
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Location Based ModelCapacities.
-     * 
-     * @param location The location name.
-     * @param modelFormat The format of the Model.
-     * @param modelName The name of the Model.
-     * @param modelVersion The version of the Model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelCapacityListResultValueItemInner> list(String location, String modelFormat,
         String modelName, String modelVersion) {
-        return new PagedIterable<>(() -> listSinglePage(location, modelFormat, modelName, modelVersion),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(location, modelFormat, modelName, modelVersion, Context.NONE);
     }
 
-    /**
-     * List Location Based ModelCapacities.
-     * 
-     * @param location The location name.
-     * @param modelFormat The format of the Model.
-     * @param modelName The name of the Model.
-     * @param modelVersion The version of the Model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelCapacityListResultValueItemInner> list(String location, String modelFormat,
         String modelName, String modelVersion, Context context) {
@@ -257,11 +227,7 @@ public final class LocationBasedModelCapacitiesClientImpl implements LocationBas
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelCapacityListResultValueItemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ModelCapacityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

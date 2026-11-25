@@ -118,17 +118,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NspLoggingConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String networkSecurityPerimeterName, String loggingConfigurationName) {
@@ -152,7 +142,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -195,24 +185,14 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkSecurityPerimeterName, loggingConfigurationName, accept, context);
     }
 
-    /**
-     * Gets the NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NspLoggingConfigurationInner> getAsync(String resourceGroupName, String networkSecurityPerimeterName,
         String loggingConfigurationName) {
@@ -220,18 +200,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NspLoggingConfigurationInner> getWithResponse(String resourceGroupName,
         String networkSecurityPerimeterName, String loggingConfigurationName, Context context) {
@@ -239,17 +208,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             .block();
     }
 
-    /**
-     * Gets the NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NspLoggingConfigurationInner get(String resourceGroupName, String networkSecurityPerimeterName,
         String loggingConfigurationName) {
@@ -257,18 +216,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             .getValue();
     }
 
-    /**
-     * Creates or updates NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @param parameters Parameters that hold the NspLoggingConfiguration to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NspLoggingConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkSecurityPerimeterName, String loggingConfigurationName, NspLoggingConfigurationInner parameters) {
@@ -297,7 +245,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -349,7 +297,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -358,18 +306,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             context);
     }
 
-    /**
-     * Creates or updates NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @param parameters Parameters that hold the NspLoggingConfiguration to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NspLoggingConfigurationInner> createOrUpdateAsync(String resourceGroupName,
         String networkSecurityPerimeterName, String loggingConfigurationName, NspLoggingConfigurationInner parameters) {
@@ -377,19 +314,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             loggingConfigurationName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @param parameters Parameters that hold the NspLoggingConfiguration to be created/updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NspLoggingConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
         String networkSecurityPerimeterName, String loggingConfigurationName, NspLoggingConfigurationInner parameters,
@@ -398,18 +323,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             loggingConfigurationName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @param parameters Parameters that hold the NspLoggingConfiguration to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NSP logging configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NspLoggingConfigurationInner createOrUpdate(String resourceGroupName, String networkSecurityPerimeterName,
         String loggingConfigurationName, NspLoggingConfigurationInner parameters) {
@@ -417,17 +331,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes an NSP Logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String networkSecurityPerimeterName,
         String loggingConfigurationName) {
@@ -451,7 +355,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -494,23 +398,13 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter loggingConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkSecurityPerimeterName, loggingConfigurationName, context);
     }
 
-    /**
-     * Deletes an NSP Logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkSecurityPerimeterName,
         String loggingConfigurationName) {
@@ -518,18 +412,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an NSP Logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String networkSecurityPerimeterName,
         String loggingConfigurationName, Context context) {
@@ -537,16 +420,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             context).block();
     }
 
-    /**
-     * Deletes an NSP Logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param loggingConfigurationName The name of the NSP logging configuration. Accepts 'instance' as name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityPerimeterName, String loggingConfigurationName) {
         deleteWithResponse(resourceGroupName, networkSecurityPerimeterName, loggingConfigurationName, Context.NONE);
@@ -582,7 +456,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -623,7 +497,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter networkSecurityPerimeterName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -633,16 +507,7 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NspLoggingConfiguration list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NspLoggingConfigurationInner> listAsync(String resourceGroupName,
         String networkSecurityPerimeterName) {
@@ -668,35 +533,14 @@ public final class NetworkSecurityPerimeterLoggingConfigurationsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NspLoggingConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NspLoggingConfigurationInner> list(String resourceGroupName,
         String networkSecurityPerimeterName) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkSecurityPerimeterName));
     }
 
-    /**
-     * Lists the NSP logging configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityPerimeterName The name of the network security perimeter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NspLoggingConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NspLoggingConfigurationInner> list(String resourceGroupName,
         String networkSecurityPerimeterName, Context context) {

@@ -133,10 +133,7 @@ public final class DiskImpl implements Disk, Disk.Definition, Disk.Update {
     }
 
     public Disk create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisks()
-            .createOrUpdate(resourceGroupName, labName, userName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Disk create(Context context) {
@@ -158,11 +155,7 @@ public final class DiskImpl implements Disk, Disk.Definition, Disk.Update {
     }
 
     public Disk apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDisks()
-            .updateWithResponse(resourceGroupName, labName, userName, name, updateDisk, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Disk apply(Context context) {
@@ -176,19 +169,22 @@ public final class DiskImpl implements Disk, Disk.Definition, Disk.Update {
     DiskImpl(DiskInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.userName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "users");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "disks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}",
+            "labName");
+        this.userName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}",
+            "userName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/users/{userName}/disks/{name}",
+            "name");
     }
 
     public Disk refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getDisks()
-            .getWithResponse(resourceGroupName, labName, userName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Disk refresh(Context context) {

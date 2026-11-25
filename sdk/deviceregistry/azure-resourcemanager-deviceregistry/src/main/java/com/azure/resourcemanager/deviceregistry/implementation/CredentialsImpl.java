@@ -45,12 +45,7 @@ public final class CredentialsImpl implements Credentials {
     }
 
     public Credential createOrUpdate(String resourceGroupName, String namespaceName, CredentialInner resource) {
-        CredentialInner inner = this.serviceClient().createOrUpdate(resourceGroupName, namespaceName, resource);
-        if (inner != null) {
-            return new CredentialImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, namespaceName, resource, Context.NONE);
     }
 
     public Credential createOrUpdate(String resourceGroupName, String namespaceName, CredentialInner resource,
@@ -65,7 +60,7 @@ public final class CredentialsImpl implements Credentials {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String namespaceName) {
-        this.serviceClient().delete(resourceGroupName, namespaceName);
+        this.delete(resourceGroupName, namespaceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String namespaceName, Context context) {
@@ -73,12 +68,7 @@ public final class CredentialsImpl implements Credentials {
     }
 
     public Credential update(String resourceGroupName, String namespaceName, CredentialUpdate properties) {
-        CredentialInner inner = this.serviceClient().update(resourceGroupName, namespaceName, properties);
-        if (inner != null) {
-            return new CredentialImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, namespaceName, properties, Context.NONE);
     }
 
     public Credential update(String resourceGroupName, String namespaceName, CredentialUpdate properties,
@@ -92,9 +82,7 @@ public final class CredentialsImpl implements Credentials {
     }
 
     public PagedIterable<Credential> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        PagedIterable<CredentialInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CredentialImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, namespaceName, Context.NONE);
     }
 
     public PagedIterable<Credential> listByResourceGroup(String resourceGroupName, String namespaceName,
@@ -105,7 +93,7 @@ public final class CredentialsImpl implements Credentials {
     }
 
     public void synchronize(String resourceGroupName, String namespaceName) {
-        this.serviceClient().synchronize(resourceGroupName, namespaceName);
+        this.synchronize(resourceGroupName, namespaceName, Context.NONE);
     }
 
     public void synchronize(String resourceGroupName, String namespaceName, Context context) {

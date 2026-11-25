@@ -45,7 +45,7 @@ public final class FabricAgentsImpl implements FabricAgents {
     }
 
     public void delete(String resourceGroupName, String fabricName, String fabricAgentName) {
-        this.serviceClient().delete(resourceGroupName, fabricName, fabricAgentName);
+        this.delete(resourceGroupName, fabricName, fabricAgentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String fabricName, String fabricAgentName, Context context) {
@@ -53,8 +53,7 @@ public final class FabricAgentsImpl implements FabricAgents {
     }
 
     public PagedIterable<FabricAgentModel> list(String resourceGroupName, String fabricName) {
-        PagedIterable<FabricAgentModelInner> inner = this.serviceClient().list(resourceGroupName, fabricName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new FabricAgentModelImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, fabricName, Context.NONE);
     }
 
     public PagedIterable<FabricAgentModel> list(String resourceGroupName, String fabricName, Context context) {
@@ -63,78 +62,36 @@ public final class FabricAgentsImpl implements FabricAgents {
     }
 
     public FabricAgentModel getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
-        if (fabricAgentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, fabricName, fabricAgentName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<FabricAgentModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
-        if (fabricAgentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "fabricName", "replicationFabrics", LOGGER);
+        String fabricAgentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "fabricAgentName", "fabricAgents", LOGGER);
         return this.getWithResponse(resourceGroupName, fabricName, fabricAgentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
-        if (fabricAgentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));
-        }
-        this.delete(resourceGroupName, fabricName, fabricAgentName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String fabricAgentName = ResourceManagerUtils.getValueFromIdByName(id, "fabricAgents");
-        if (fabricAgentName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'fabricAgents'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "fabricName", "replicationFabrics", LOGGER);
+        String fabricAgentName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}",
+            "fabricAgentName", "fabricAgents", LOGGER);
         this.delete(resourceGroupName, fabricName, fabricAgentName, context);
     }
 

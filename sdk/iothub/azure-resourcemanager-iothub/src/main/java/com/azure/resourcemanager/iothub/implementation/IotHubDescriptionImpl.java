@@ -107,10 +107,7 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotHubResources()
-            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IotHubDescription create(Context context) {
@@ -133,10 +130,7 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotHubResources()
-            .update(resourceGroupName, resourceName, updateIotHubTags, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IotHubDescription apply(Context context) {
@@ -150,16 +144,16 @@ public final class IotHubDescriptionImpl
         com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "IotHubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "resourceGroupName");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}",
+            "resourceName");
     }
 
     public IotHubDescription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotHubResources()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IotHubDescription refresh(Context context) {

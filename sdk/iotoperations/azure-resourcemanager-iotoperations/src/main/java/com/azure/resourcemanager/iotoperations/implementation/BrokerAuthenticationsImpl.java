@@ -47,7 +47,7 @@ public final class BrokerAuthenticationsImpl implements BrokerAuthentications {
     }
 
     public void delete(String resourceGroupName, String instanceName, String brokerName, String authenticationName) {
-        this.serviceClient().delete(resourceGroupName, instanceName, brokerName, authenticationName);
+        this.delete(resourceGroupName, instanceName, brokerName, authenticationName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String instanceName, String brokerName, String authenticationName,
@@ -57,10 +57,7 @@ public final class BrokerAuthenticationsImpl implements BrokerAuthentications {
 
     public PagedIterable<BrokerAuthenticationResource> listByResourceGroup(String resourceGroupName,
         String instanceName, String brokerName) {
-        PagedIterable<BrokerAuthenticationResourceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, instanceName, brokerName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new BrokerAuthenticationResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, instanceName, brokerName, Context.NONE);
     }
 
     public PagedIterable<BrokerAuthenticationResource> listByResourceGroup(String resourceGroupName,
@@ -72,99 +69,42 @@ public final class BrokerAuthenticationsImpl implements BrokerAuthentications {
     }
 
     public BrokerAuthenticationResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
-        String authenticationName = ResourceManagerUtils.getValueFromIdByName(id, "authentications");
-        if (authenticationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authentications'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, instanceName, brokerName, authenticationName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<BrokerAuthenticationResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
-        String authenticationName = ResourceManagerUtils.getValueFromIdByName(id, "authentications");
-        if (authenticationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authentications'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "instanceName", "instances", LOGGER);
+        String brokerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "brokerName", "brokers", LOGGER);
+        String authenticationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "authenticationName", "authentications", LOGGER);
         return this.getWithResponse(resourceGroupName, instanceName, brokerName, authenticationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
-        String authenticationName = ResourceManagerUtils.getValueFromIdByName(id, "authentications");
-        if (authenticationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authentications'.", id)));
-        }
-        this.delete(resourceGroupName, instanceName, brokerName, authenticationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String brokerName = ResourceManagerUtils.getValueFromIdByName(id, "brokers");
-        if (brokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'brokers'.", id)));
-        }
-        String authenticationName = ResourceManagerUtils.getValueFromIdByName(id, "authentications");
-        if (authenticationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'authentications'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "instanceName", "instances", LOGGER);
+        String brokerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "brokerName", "brokers", LOGGER);
+        String authenticationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authentications/{authenticationName}",
+            "authenticationName", "authentications", LOGGER);
         this.delete(resourceGroupName, instanceName, brokerName, authenticationName, context);
     }
 

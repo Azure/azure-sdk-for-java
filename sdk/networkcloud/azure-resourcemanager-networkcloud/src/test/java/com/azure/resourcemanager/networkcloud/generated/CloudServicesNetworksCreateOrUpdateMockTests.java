@@ -41,29 +41,25 @@ public final class CloudServicesNetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CloudServicesNetwork response = manager.cloudServicesNetworks()
-            .define("zknxkv")
-            .withRegion("fsuqtaazyqbxy")
-            .withExistingResourceGroup("a")
+            .define("vxisimjcea")
+            .withRegion("fcfsrhkhgsnx")
+            .withExistingResourceGroup("yqgxhlus")
             .withExtendedLocation(
-                new ExtendedLocation().withName("zacn").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withTags(mapOf("qqi", "fp"))
+                new ExtendedLocation().withName("sqqzlgcndhz").withType(ExtendedLocationType.EDGE_ZONE))
+            .withTags(mapOf("bzxomeik", "kpphefsbzx", "t", "clwzacnmwpfsu", "qqi", "azyqbxyxoyfp"))
             .withAdditionalEgressEndpoints(Arrays.asList(
-                new EgressEndpoint().withCategory("tyvkunmignohi")
-                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("gqogjwpindedva"),
-                        new EndpointDependency().withDomainName("bxbhmedeilbj"))),
-                new EgressEndpoint().withCategory("wfcfxzirzz")
-                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("vwypusuvjsl"),
-                        new EndpointDependency().withDomainName("zwci"))),
-                new EgressEndpoint().withCategory("djsllfr")
-                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("dmvxadq"),
-                        new EndpointDependency().withDomainName("cfrgnawbabgfbkt"),
-                        new EndpointDependency().withDomainName("jmfczlfsyqkf"))),
-                new EgressEndpoint().withCategory("bzgowoxqmje")
-                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("cxn")))))
-            .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE)
-            .withStorageOptions(new CloudServicesNetworkStorageOptions().withMode(CloudServicesNetworkStorageMode.NONE)
-                .withSizeMiB(2336775625074082692L)
-                .withStorageApplianceId("xisimjceagbj"))
+                new EgressEndpoint().withCategory("vl")
+                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("mywzashxgonoy"))),
+                new EgressEndpoint().withCategory("fq")
+                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("ubyzn"))),
+                new EgressEndpoint().withCategory("lkfk")
+                    .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("bgvopemt"),
+                        new EndpointDependency().withDomainName("oqujlyegqavn")))))
+            .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE)
+            .withStorageOptions(
+                new CloudServicesNetworkStorageOptions().withMode(CloudServicesNetworkStorageMode.STANDARD)
+                    .withSizeMiB(2771172692324739906L)
+                    .withStorageApplianceId("jpylxdbfvab"))
             .withIfMatch("pnx")
             .withIfNoneMatch("dvwnjkgvfnmxa")
             .create();

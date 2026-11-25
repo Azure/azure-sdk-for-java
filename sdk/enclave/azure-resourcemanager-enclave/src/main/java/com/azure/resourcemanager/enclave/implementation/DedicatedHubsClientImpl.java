@@ -257,18 +257,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DedicatedHubResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DedicatedHubResourceInner> getWithResponse(String resourceGroupName, String communityName,
         String dedicatedHubName, Context context) {
@@ -277,17 +266,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             resourceGroupName, communityName, dedicatedHubName, accept, context);
     }
 
-    /**
-     * Get a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DedicatedHubResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHubResourceInner get(String resourceGroupName, String communityName, String dedicatedHubName) {
         return getWithResponse(resourceGroupName, communityName, dedicatedHubName, Context.NONE).getValue();
@@ -332,11 +311,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String communityName,
         String dedicatedHubName, DedicatedHubResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, dedicatedHubName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, communityName, dedicatedHubName, resource, Context.NONE);
     }
 
     /**
@@ -384,40 +359,14 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHubResourceInner>, DedicatedHubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communityName, String dedicatedHubName, DedicatedHubResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, communityName, dedicatedHubName, resource);
-        return this.client.<DedicatedHubResourceInner, DedicatedHubResourceInner>getLroResult(response,
-            DedicatedHubResourceInner.class, DedicatedHubResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, communityName, dedicatedHubName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHubResourceInner>, DedicatedHubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String communityName, String dedicatedHubName, DedicatedHubResourceInner resource,
@@ -447,42 +396,19 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHubResourceInner createOrUpdate(String resourceGroupName, String communityName,
         String dedicatedHubName, DedicatedHubResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, dedicatedHubName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, communityName, dedicatedHubName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHubResourceInner createOrUpdate(String resourceGroupName, String communityName,
         String dedicatedHubName, DedicatedHubResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, communityName, dedicatedHubName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, communityName, dedicatedHubName, resource, context));
     }
 
     /**
@@ -524,11 +450,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String communityName,
         String dedicatedHubName, DedicatedHubPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, dedicatedHubName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, communityName, dedicatedHubName, properties, Context.NONE);
     }
 
     /**
@@ -576,40 +498,14 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Update a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHubResourceInner>, DedicatedHubResourceInner> beginUpdate(
         String resourceGroupName, String communityName, String dedicatedHubName, DedicatedHubPatchModel properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, communityName, dedicatedHubName, properties);
-        return this.client.<DedicatedHubResourceInner, DedicatedHubResourceInner>getLroResult(response,
-            DedicatedHubResourceInner.class, DedicatedHubResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, communityName, dedicatedHubName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedHubResourceInner>, DedicatedHubResourceInner> beginUpdate(
         String resourceGroupName, String communityName, String dedicatedHubName, DedicatedHubPatchModel properties,
@@ -639,41 +535,19 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHubResourceInner update(String resourceGroupName, String communityName, String dedicatedHubName,
         DedicatedHubPatchModel properties) {
-        return beginUpdate(resourceGroupName, communityName, dedicatedHubName, properties).getFinalResult();
+        return update(resourceGroupName, communityName, dedicatedHubName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicatedHub Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedHubResourceInner update(String resourceGroupName, String communityName, String dedicatedHubName,
         DedicatedHubPatchModel properties, Context context) {
-        return beginUpdate(resourceGroupName, communityName, dedicatedHubName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, communityName, dedicatedHubName, properties, context));
     }
 
     /**
@@ -710,8 +584,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String communityName,
         String dedicatedHubName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, communityName, dedicatedHubName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, communityName, dedicatedHubName, Context.NONE);
     }
 
     /**
@@ -753,36 +626,14 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName,
         String dedicatedHubName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, communityName, dedicatedHubName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, communityName, dedicatedHubName, Context.NONE);
     }
 
-    /**
-     * Delete a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communityName,
         String dedicatedHubName, Context context) {
@@ -807,35 +658,16 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName, String dedicatedHubName) {
-        beginDelete(resourceGroupName, communityName, dedicatedHubName).getFinalResult();
+        delete(resourceGroupName, communityName, dedicatedHubName, Context.NONE);
     }
 
-    /**
-     * Delete a DedicatedHubResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param dedicatedHubName The name of the Dedicated Hub Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String communityName, String dedicatedHubName, Context context) {
-        beginDelete(resourceGroupName, communityName, dedicatedHubName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, communityName, dedicatedHubName, context));
     }
 
     /**
@@ -892,12 +724,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedHubResourceInner> listByCommunityResourceSinglePage(String resourceGroupName,
         String communityName) {
-        final String accept = "application/json";
-        Response<DedicatedHubResourceListResult> res
-            = service.listByCommunityResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, communityName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCommunityResourceSinglePage(resourceGroupName, communityName, Context.NONE);
     }
 
     /**
@@ -922,34 +749,14 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DedicatedHubResource resources by CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DedicatedHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHubResourceInner> listByCommunityResource(String resourceGroupName,
         String communityName) {
-        return new PagedIterable<>(() -> listByCommunityResourceSinglePage(resourceGroupName, communityName),
-            nextLink -> listByCommunityResourceNextSinglePage(nextLink));
+        return listByCommunityResource(resourceGroupName, communityName, Context.NONE);
     }
 
-    /**
-     * List DedicatedHubResource resources by CommunityResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DedicatedHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHubResourceInner> listByCommunityResource(String resourceGroupName,
         String communityName, Context context) {
@@ -1004,11 +811,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedHubResourceInner> listBySubscriptionSinglePage(String communityName) {
-        final String accept = "application/json";
-        Response<DedicatedHubResourceListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), communityName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(communityName, Context.NONE);
     }
 
     /**
@@ -1031,31 +834,13 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DedicatedHubResource resources by subscription ID.
-     * 
-     * @param communityName The name of the communityResource Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DedicatedHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHubResourceInner> listBySubscription(String communityName) {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(communityName),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(communityName, Context.NONE);
     }
 
-    /**
-     * List DedicatedHubResource resources by subscription ID.
-     * 
-     * @param communityName The name of the communityResource Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DedicatedHubResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHubResourceInner> listBySubscription(String communityName, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(communityName, context),
@@ -1094,11 +879,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedHubResourceInner> listByCommunityResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DedicatedHubResourceListResult> res
-            = service.listByCommunityResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCommunityResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1153,11 +934,7 @@ public final class DedicatedHubsClientImpl implements DedicatedHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedHubResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DedicatedHubResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

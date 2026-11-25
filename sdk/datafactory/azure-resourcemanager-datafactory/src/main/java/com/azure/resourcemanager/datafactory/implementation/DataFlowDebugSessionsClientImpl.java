@@ -223,11 +223,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, contentType, accept, request,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, factoryName, request, Context.NONE);
     }
 
     /**
@@ -272,39 +268,14 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
                 CreateDataFlowDebugSessionResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a data flow debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body structure for creating data flow debug session.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, factoryName, request);
-        return this.client
-            .<CreateDataFlowDebugSessionResponseInner, CreateDataFlowDebugSessionResponseInner>getLroResult(response,
-                CreateDataFlowDebugSessionResponseInner.class, CreateDataFlowDebugSessionResponseInner.class,
-                Context.NONE);
+        return beginCreate(resourceGroupName, factoryName, request, Context.NONE);
     }
 
-    /**
-     * Creates a data flow debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body structure for creating data flow debug session.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request,
@@ -333,39 +304,18 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a data flow debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateDataFlowDebugSessionResponseInner create(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request) {
-        return beginCreate(resourceGroupName, factoryName, request).getFinalResult();
+        return create(resourceGroupName, factoryName, request, Context.NONE);
     }
 
-    /**
-     * Creates a data flow debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateDataFlowDebugSessionResponseInner create(String resourceGroupName, String factoryName,
         CreateDataFlowDebugSessionRequest request, Context context) {
-        return beginCreate(resourceGroupName, factoryName, request, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, factoryName, request, context));
     }
 
     /**
@@ -420,12 +370,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataFlowDebugSessionInfoInner> queryByFactorySinglePage(String resourceGroupName,
         String factoryName) {
-        final String accept = "application/json";
-        Response<QueryDataFlowDebugSessionsResponse> res
-            = service.queryByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return queryByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -450,33 +395,13 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Query all active data flow debug sessions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DataFlowDebugSessionInfo items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> queryByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> queryByFactoryNextSinglePage(nextLink));
+        return queryByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Query all active data flow debug sessions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DataFlowDebugSessionInfo items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -525,18 +450,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Add a data flow into debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition with debug content.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddDataFlowToDebugSessionResponseInner> addDataFlowWithResponse(String resourceGroupName,
         String factoryName, DataFlowDebugPackage request, Context context) {
@@ -546,17 +460,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             this.client.getSubscriptionId(), resourceGroupName, factoryName, contentType, accept, request, context);
     }
 
-    /**
-     * Add a data flow into debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition with debug content.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddDataFlowToDebugSessionResponseInner addDataFlow(String resourceGroupName, String factoryName,
         DataFlowDebugPackage request) {
@@ -601,18 +505,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
         return deleteWithResponseAsync(resourceGroupName, factoryName, request).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a data flow debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition for deletion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         DeleteDataFlowDebugSessionRequest request, Context context) {
@@ -621,16 +514,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             this.client.getSubscriptionId(), resourceGroupName, factoryName, contentType, request, context);
     }
 
-    /**
-     * Deletes a data flow debug session.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug session definition for deletion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
         deleteWithResponse(resourceGroupName, factoryName, request, Context.NONE);
@@ -674,11 +558,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> executeCommandWithResponse(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.executeCommandSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, contentType, accept, request,
-            Context.NONE);
+        return executeCommandWithResponse(resourceGroupName, factoryName, request, Context.NONE);
     }
 
     /**
@@ -725,39 +605,14 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             DataFlowDebugCommandResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Execute a data flow debug command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug command definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body structure of data flow result for data preview,
-     * statistics or expression preview.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request) {
-        Response<BinaryData> response = executeCommandWithResponse(resourceGroupName, factoryName, request);
-        return this.client.<DataFlowDebugCommandResponseInner, DataFlowDebugCommandResponseInner>getLroResult(response,
-            DataFlowDebugCommandResponseInner.class, DataFlowDebugCommandResponseInner.class, Context.NONE);
+        return beginExecuteCommand(resourceGroupName, factoryName, request, Context.NONE);
     }
 
-    /**
-     * Execute a data flow debug command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug command definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body structure of data flow result for data preview,
-     * statistics or expression preview.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request,
@@ -786,39 +641,19 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Execute a data flow debug command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug command definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowDebugCommandResponseInner executeCommand(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request) {
-        return beginExecuteCommand(resourceGroupName, factoryName, request).getFinalResult();
+        return executeCommand(resourceGroupName, factoryName, request, Context.NONE);
     }
 
-    /**
-     * Execute a data flow debug command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param request Data flow debug command definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowDebugCommandResponseInner executeCommand(String resourceGroupName, String factoryName,
         DataFlowDebugCommandRequest request, Context context) {
-        return beginExecuteCommand(resourceGroupName, factoryName, request, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginExecuteCommand(resourceGroupName, factoryName, request, context));
     }
 
     /**
@@ -852,11 +687,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataFlowDebugSessionInfoInner> queryByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<QueryDataFlowDebugSessionsResponse> res
-            = service.queryByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return queryByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -121,18 +121,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specific Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Static CIDR resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticCidrInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName) {
@@ -158,7 +147,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -204,25 +193,14 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, poolName, staticCidrName, accept, context);
     }
 
-    /**
-     * Gets the specific Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Static CIDR resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticCidrInner> getAsync(String resourceGroupName, String networkManagerName, String poolName,
         String staticCidrName) {
@@ -230,37 +208,14 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specific Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Static CIDR resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticCidrInner> getWithResponse(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, poolName, staticCidrName, context).block();
     }
 
-    /**
-     * Gets the specific Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Static CIDR resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticCidrInner get(String resourceGroupName, String networkManagerName, String poolName,
         String staticCidrName) {
@@ -268,19 +223,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             .getValue();
     }
 
-    /**
-     * Creates/Updates the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The networkManagerName parameter.
-     * @param poolName The name of the IPAM pool.
-     * @param staticCidrName Name for the static CIDR.
-     * @param body StaticCidr resource object to create/update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of StaticCidr resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticCidrInner>> createWithResponseAsync(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName, StaticCidrInner body) {
@@ -309,7 +252,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -360,25 +303,14 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, poolName, staticCidrName, accept, body, context);
     }
 
-    /**
-     * Creates/Updates the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The networkManagerName parameter.
-     * @param poolName The name of the IPAM pool.
-     * @param staticCidrName Name for the static CIDR.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of StaticCidr resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticCidrInner> createAsync(String resourceGroupName, String networkManagerName, String poolName,
         String staticCidrName) {
@@ -387,20 +319,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates/Updates the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The networkManagerName parameter.
-     * @param poolName The name of the IPAM pool.
-     * @param staticCidrName Name for the static CIDR.
-     * @param body StaticCidr resource object to create/update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of StaticCidr resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticCidrInner> createWithResponse(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName, StaticCidrInner body, Context context) {
@@ -408,18 +327,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             .block();
     }
 
-    /**
-     * Creates/Updates the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The networkManagerName parameter.
-     * @param poolName The name of the IPAM pool.
-     * @param staticCidrName Name for the static CIDR.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return instance of StaticCidr resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticCidrInner create(String resourceGroupName, String networkManagerName, String poolName,
         String staticCidrName) {
@@ -428,18 +336,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             .getValue();
     }
 
-    /**
-     * Delete the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName) {
@@ -465,7 +362,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -511,24 +408,13 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, poolName, staticCidrName, context);
     }
 
-    /**
-     * Delete the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName) {
@@ -561,37 +447,14 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             context);
     }
 
-    /**
-     * Delete the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName) {
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, poolName, staticCidrName).getSyncPoller();
     }
 
-    /**
-     * Delete the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String poolName, String staticCidrName, Context context) {
@@ -599,18 +462,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             .getSyncPoller();
     }
 
-    /**
-     * Delete the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String poolName,
         String staticCidrName) {
@@ -638,34 +490,13 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String poolName, String staticCidrName) {
         deleteAsync(resourceGroupName, networkManagerName, poolName, staticCidrName).block();
     }
 
-    /**
-     * Delete the Static CIDR resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param staticCidrName StaticCidr resource name to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String poolName, String staticCidrName,
         Context context) {
@@ -712,7 +543,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -764,7 +595,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -774,22 +605,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets list of Static CIDR resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Static CIDR resources at Network Manager level as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticCidrInner> listAsync(String resourceGroupName, String networkManagerName, String poolName,
         String skipToken, Integer skip, Integer top, String sortKey, String sortValue) {
@@ -797,17 +613,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             skip, top, sortKey, sortValue), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets list of Static CIDR resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Static CIDR resources at Network Manager level as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticCidrInner> listAsync(String resourceGroupName, String networkManagerName, String poolName) {
         final String skipToken = null;
@@ -843,17 +649,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             skip, top, sortKey, sortValue, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets list of Static CIDR resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Static CIDR resources at Network Manager level as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticCidrInner> list(String resourceGroupName, String networkManagerName, String poolName) {
         final String skipToken = null;
@@ -865,23 +661,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
             listAsync(resourceGroupName, networkManagerName, poolName, skipToken, skip, top, sortKey, sortValue));
     }
 
-    /**
-     * Gets list of Static CIDR resources at Network Manager level.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param poolName Pool resource name.
-     * @param skipToken Optional skip token.
-     * @param skip Optional num entries to skip.
-     * @param top Optional num entries to show.
-     * @param sortKey Optional key by which to sort.
-     * @param sortValue Optional sort value for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Static CIDR resources at Network Manager level as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticCidrInner> list(String resourceGroupName, String networkManagerName, String poolName,
         String skipToken, Integer skip, Integer top, String sortKey, String sortValue, Context context) {

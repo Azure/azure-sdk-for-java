@@ -53,7 +53,7 @@ public final class CapacitiesImpl implements Capacities {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
-        this.serviceClient().delete(resourceGroupName, dedicatedCapacityName);
+        this.delete(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String dedicatedCapacityName, Context context) {
@@ -61,8 +61,7 @@ public final class CapacitiesImpl implements Capacities {
     }
 
     public PagedIterable<DedicatedCapacity> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<DedicatedCapacityInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<DedicatedCapacity> listByResourceGroup(String resourceGroupName, Context context) {
@@ -72,8 +71,7 @@ public final class CapacitiesImpl implements Capacities {
     }
 
     public PagedIterable<DedicatedCapacity> list() {
-        PagedIterable<DedicatedCapacityInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<DedicatedCapacity> list(Context context) {
@@ -82,7 +80,7 @@ public final class CapacitiesImpl implements Capacities {
     }
 
     public void suspend(String resourceGroupName, String dedicatedCapacityName) {
-        this.serviceClient().suspend(resourceGroupName, dedicatedCapacityName);
+        this.suspend(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
     public void suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
@@ -90,7 +88,7 @@ public final class CapacitiesImpl implements Capacities {
     }
 
     public void resume(String resourceGroupName, String dedicatedCapacityName) {
-        this.serviceClient().resume(resourceGroupName, dedicatedCapacityName);
+        this.resume(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
     public void resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
@@ -151,58 +149,30 @@ public final class CapacitiesImpl implements Capacities {
     }
 
     public DedicatedCapacity getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (dedicatedCapacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DedicatedCapacity> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (dedicatedCapacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String dedicatedCapacityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "dedicatedCapacityName", "capacities", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (dedicatedCapacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
-        this.delete(resourceGroupName, dedicatedCapacityName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
-        if (dedicatedCapacityName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String dedicatedCapacityName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/capacities/{dedicatedCapacityName}",
+            "dedicatedCapacityName", "capacities", LOGGER);
         this.delete(resourceGroupName, dedicatedCapacityName, context);
     }
 

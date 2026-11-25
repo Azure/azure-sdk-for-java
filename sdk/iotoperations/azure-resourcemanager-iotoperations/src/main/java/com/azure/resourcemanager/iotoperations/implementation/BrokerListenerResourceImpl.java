@@ -70,10 +70,7 @@ public final class BrokerListenerResourceImpl
     }
 
     public BrokerListenerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerListeners()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, listenerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BrokerListenerResource create(Context context) {
@@ -95,10 +92,7 @@ public final class BrokerListenerResourceImpl
     }
 
     public BrokerListenerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerListeners()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, listenerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BrokerListenerResource apply(Context context) {
@@ -112,18 +106,22 @@ public final class BrokerListenerResourceImpl
         com.azure.resourcemanager.iotoperations.IoTOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
-        this.brokerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "brokers");
-        this.listenerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "listeners");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}",
+            "resourceGroupName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}",
+            "instanceName");
+        this.brokerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}",
+            "brokerName");
+        this.listenerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/listeners/{listenerName}",
+            "listenerName");
     }
 
     public BrokerListenerResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerListeners()
-            .getWithResponse(resourceGroupName, instanceName, brokerName, listenerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BrokerListenerResource refresh(Context context) {

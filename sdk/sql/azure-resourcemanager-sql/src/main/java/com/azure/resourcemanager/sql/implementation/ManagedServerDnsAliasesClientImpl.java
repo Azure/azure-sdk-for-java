@@ -134,17 +134,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedServerDnsAliasInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String dnsAliasName) {
@@ -214,17 +204,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             resourceGroupName, managedInstanceName, dnsAliasName, accept, context);
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedServerDnsAliasInner> getAsync(String resourceGroupName, String managedInstanceName,
         String dnsAliasName) {
@@ -232,52 +212,20 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedServerDnsAliasInner> getWithResponse(String resourceGroupName, String managedInstanceName,
         String dnsAliasName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, dnsAliasName, context).block();
     }
 
-    /**
-     * Gets a server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerDnsAliasInner get(String resourceGroupName, String managedInstanceName, String dnsAliasName) {
         return getWithResponse(resourceGroupName, managedInstanceName, dnsAliasName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a managed server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String dnsAliasName, ManagedServerDnsAliasCreation parameters) {
@@ -362,18 +310,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             parameters, context);
     }
 
-    /**
-     * Creates a managed server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, String dnsAliasName,
@@ -409,18 +346,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             this.client.getHttpPipeline(), ManagedServerDnsAliasInner.class, ManagedServerDnsAliasInner.class, context);
     }
 
-    /**
-     * Creates a managed server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String dnsAliasName,
@@ -429,19 +355,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             .getSyncPoller();
     }
 
-    /**
-     * Creates a managed server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, String dnsAliasName,
@@ -450,18 +364,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             .getSyncPoller();
     }
 
-    /**
-     * Creates a managed server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedServerDnsAliasInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
         String dnsAliasName, ManagedServerDnsAliasCreation parameters) {
@@ -490,54 +393,21 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a managed server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerDnsAliasInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String dnsAliasName, ManagedServerDnsAliasCreation parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters).block();
     }
 
-    /**
-     * Creates a managed server DNS alias.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerDnsAliasInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String dnsAliasName, ManagedServerDnsAliasCreation parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters, context).block();
     }
 
-    /**
-     * Deletes the managed server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String dnsAliasName) {
@@ -605,17 +475,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             resourceGroupName, managedInstanceName, dnsAliasName, context);
     }
 
-    /**
-     * Deletes the managed server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
         String dnsAliasName) {
@@ -647,52 +507,21 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             context);
     }
 
-    /**
-     * Deletes the managed server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String dnsAliasName) {
         return this.beginDeleteAsync(resourceGroupName, managedInstanceName, dnsAliasName).getSyncPoller();
     }
 
-    /**
-     * Deletes the managed server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String dnsAliasName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, managedInstanceName, dnsAliasName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the managed server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName, String dnsAliasName) {
         return beginDeleteAsync(resourceGroupName, managedInstanceName, dnsAliasName).last()
@@ -718,32 +547,13 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the managed server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String dnsAliasName) {
         deleteAsync(resourceGroupName, managedInstanceName, dnsAliasName).block();
     }
 
-    /**
-     * Deletes the managed server DNS alias with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String dnsAliasName, Context context) {
         deleteAsync(resourceGroupName, managedInstanceName, dnsAliasName, context).block();
@@ -829,16 +639,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed server DNS aliases for a managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed server DNS aliases for a managed server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedServerDnsAliasInner> listByManagedInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -865,53 +666,21 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed server DNS aliases for a managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed server DNS aliases for a managed server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedServerDnsAliasInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of managed server DNS aliases for a managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed server DNS aliases for a managed server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedServerDnsAliasInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName, Context context) {
         return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
-    /**
-     * Acquires managed server DNS alias from another managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> acquireWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String dnsAliasName, ManagedServerDnsAliasAcquisition parameters) {
@@ -995,18 +764,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             resourceGroupName, managedInstanceName, dnsAliasName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Acquires managed server DNS alias from another managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginAcquireAsync(
         String resourceGroupName, String managedInstanceName, String dnsAliasName,
@@ -1042,18 +800,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             this.client.getHttpPipeline(), ManagedServerDnsAliasInner.class, ManagedServerDnsAliasInner.class, context);
     }
 
-    /**
-     * Acquires managed server DNS alias from another managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginAcquire(
         String resourceGroupName, String managedInstanceName, String dnsAliasName,
@@ -1061,19 +808,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
         return this.beginAcquireAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters).getSyncPoller();
     }
 
-    /**
-     * Acquires managed server DNS alias from another managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedServerDnsAliasInner>, ManagedServerDnsAliasInner> beginAcquire(
         String resourceGroupName, String managedInstanceName, String dnsAliasName,
@@ -1082,18 +817,7 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             .getSyncPoller();
     }
 
-    /**
-     * Acquires managed server DNS alias from another managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedServerDnsAliasInner> acquireAsync(String resourceGroupName, String managedInstanceName,
         String dnsAliasName, ManagedServerDnsAliasAcquisition parameters) {
@@ -1121,37 +845,14 @@ public final class ManagedServerDnsAliasesClientImpl implements ManagedServerDns
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Acquires managed server DNS alias from another managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerDnsAliasInner acquire(String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasAcquisition parameters) {
         return acquireAsync(resourceGroupName, managedInstanceName, dnsAliasName, parameters).block();
     }
 
-    /**
-     * Acquires managed server DNS alias from another managed server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dnsAliasName The dnsAliasName parameter.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed server DNS alias.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedServerDnsAliasInner acquire(String resourceGroupName, String managedInstanceName, String dnsAliasName,
         ManagedServerDnsAliasAcquisition parameters, Context context) {

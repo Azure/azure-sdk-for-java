@@ -138,11 +138,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     public UpdateRun create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .putWithResponse(resourceGroupName, clusterName, updateName, updateRunName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public UpdateRun create(Context context) {
@@ -164,11 +160,7 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
     }
 
     public UpdateRun apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .putWithResponse(resourceGroupName, clusterName, updateName, updateRunName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public UpdateRun apply(Context context) {
@@ -183,18 +175,22 @@ public final class UpdateRunImpl implements UpdateRun, UpdateRun.Definition, Upd
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.updateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updates");
-        this.updateRunName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updateRuns");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/updateRuns/{updateRunName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/updateRuns/{updateRunName}",
+            "clusterName");
+        this.updateName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/updateRuns/{updateRunName}",
+            "updateName");
+        this.updateRunName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/updateRuns/{updateRunName}",
+            "updateRunName");
     }
 
     public UpdateRun refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getUpdateRuns()
-            .getWithResponse(resourceGroupName, clusterName, updateName, updateRunName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public UpdateRun refresh(Context context) {

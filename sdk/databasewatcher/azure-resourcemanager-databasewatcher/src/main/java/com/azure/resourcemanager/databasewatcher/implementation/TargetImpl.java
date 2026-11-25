@@ -60,11 +60,7 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
     }
 
     public Target create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTargets()
-            .createOrUpdateWithResponse(resourceGroupName, watcherName, targetName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Target create(Context context) {
@@ -86,11 +82,7 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
     }
 
     public Target apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTargets()
-            .createOrUpdateWithResponse(resourceGroupName, watcherName, targetName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Target apply(Context context) {
@@ -105,17 +97,19 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
         com.azure.resourcemanager.databasewatcher.DatabaseWatcherManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.watcherName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "watchers");
-        this.targetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "targets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "resourceGroupName");
+        this.watcherName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "watcherName");
+        this.targetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets/{targetName}",
+            "targetName");
     }
 
     public Target refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTargets()
-            .getWithResponse(resourceGroupName, watcherName, targetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Target refresh(Context context) {

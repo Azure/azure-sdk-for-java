@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/EnclaveEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: EnclaveEndpoints_CreateOrUpdate.

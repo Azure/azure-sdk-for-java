@@ -195,17 +195,7 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
         return getWithResponseAsync(resourceGroupName, firewallName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MetricsObjectFirewallResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsObjectFirewallResourceInner> getWithResponse(String resourceGroupName, String firewallName,
         Context context) {
@@ -214,16 +204,7 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
             resourceGroupName, firewallName, accept, context);
     }
 
-    /**
-     * Get a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a MetricsObjectFirewallResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsObjectFirewallResourceInner get(String resourceGroupName, String firewallName) {
         return getWithResponse(resourceGroupName, firewallName, Context.NONE).getValue();
@@ -266,11 +247,7 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String firewallName,
         MetricsObjectFirewallResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, firewallName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, firewallName, resource, Context.NONE);
     }
 
     /**
@@ -316,38 +293,15 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
             MetricsObjectFirewallResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of firewall Metrics Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MetricsObjectFirewallResourceInner>, MetricsObjectFirewallResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String firewallName,
             MetricsObjectFirewallResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, firewallName, resource);
-        return this.client.<MetricsObjectFirewallResourceInner, MetricsObjectFirewallResourceInner>getLroResult(
-            response, MetricsObjectFirewallResourceInner.class, MetricsObjectFirewallResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, firewallName, resource, Context.NONE);
     }
 
-    /**
-     * Create a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of firewall Metrics Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MetricsObjectFirewallResourceInner>, MetricsObjectFirewallResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String firewallName, MetricsObjectFirewallResourceInner resource,
@@ -375,39 +329,19 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewall Metrics Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsObjectFirewallResourceInner createOrUpdate(String resourceGroupName, String firewallName,
         MetricsObjectFirewallResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, firewallName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, firewallName, resource, Context.NONE);
     }
 
-    /**
-     * Create a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewall Metrics Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsObjectFirewallResourceInner createOrUpdate(String resourceGroupName, String firewallName,
         MetricsObjectFirewallResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, firewallName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, firewallName, resource, context));
     }
 
     /**
@@ -440,8 +374,7 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String firewallName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, firewallName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, firewallName, Context.NONE);
     }
 
     /**
@@ -478,33 +411,13 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
             this.client.getContext());
     }
 
-    /**
-     * Delete a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, firewallName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, firewallName, Context.NONE);
     }
 
-    /**
-     * Delete a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallName,
         Context context) {
@@ -527,33 +440,16 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
         return beginDeleteAsync(resourceGroupName, firewallName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallName) {
-        beginDelete(resourceGroupName, firewallName).getFinalResult();
+        delete(resourceGroupName, firewallName, Context.NONE);
     }
 
-    /**
-     * Delete a MetricsObjectFirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallName, Context context) {
-        beginDelete(resourceGroupName, firewallName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, firewallName, context));
     }
 
     /**
@@ -610,12 +506,7 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricsObjectFirewallResourceInner> listByFirewallsSinglePage(String resourceGroupName,
         String firewallName) {
-        final String accept = "application/json";
-        Response<MetricsObjectFirewallResourceListResult> res
-            = service.listByFirewallsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, firewallName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirewallsSinglePage(resourceGroupName, firewallName, Context.NONE);
     }
 
     /**
@@ -640,36 +531,14 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List MetricsObjectFirewallResource resources by Firewalls.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricsObjectFirewallResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricsObjectFirewallResourceInner> listByFirewalls(String resourceGroupName,
         String firewallName) {
-        return new PagedIterable<>(() -> listByFirewallsSinglePage(resourceGroupName, firewallName),
-            nextLink -> listByFirewallsNextSinglePage(nextLink));
+        return listByFirewalls(resourceGroupName, firewallName, Context.NONE);
     }
 
-    /**
-     * List MetricsObjectFirewallResource resources by Firewalls.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MetricsObjectFirewallResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricsObjectFirewallResourceInner> listByFirewalls(String resourceGroupName,
         String firewallName, Context context) {
@@ -709,11 +578,7 @@ public final class MetricsObjectFirewallsClientImpl implements MetricsObjectFire
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MetricsObjectFirewallResourceInner> listByFirewallsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MetricsObjectFirewallResourceListResult> res
-            = service.listByFirewallsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirewallsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

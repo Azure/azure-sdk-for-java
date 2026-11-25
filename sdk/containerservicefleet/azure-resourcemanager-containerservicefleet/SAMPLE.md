@@ -12,6 +12,14 @@
 - [Get](#autoupgradeprofiles_get)
 - [ListByFleet](#autoupgradeprofiles_listbyfleet)
 
+## ClusterMeshProfiles
+
+- [Apply](#clustermeshprofiles_apply)
+- [CreateOrUpdate](#clustermeshprofiles_createorupdate)
+- [Delete](#clustermeshprofiles_delete)
+- [Get](#clustermeshprofiles_get)
+- [ListByFleet](#clustermeshprofiles_listbyfleet)
+
 ## FleetManagedNamespaces
 
 - [CreateOrUpdate](#fleetmanagednamespaces_createorupdate)
@@ -51,6 +59,14 @@
 - [ListByFleet](#gates_listbyfleet)
 - [Update](#gates_update)
 
+## IdentityBindingProfiles
+
+- [Apply](#identitybindingprofiles_apply)
+- [CreateOrUpdate](#identitybindingprofiles_createorupdate)
+- [Delete](#identitybindingprofiles_delete)
+- [Get](#identitybindingprofiles_get)
+- [ListByFleet](#identitybindingprofiles_listbyfleet)
+
 ## Operations
 
 - [List](#operations_list)
@@ -72,7 +88,7 @@
  */
 public final class AutoUpgradeProfileOperationsGenerateUpdateRunSamples {
     /*
-     * x-ms-original-file: 2026-06-01/AutoUpgradeProfileOperations_GenerateUpdateRun.json
+     * x-ms-original-file: 2026-11-02-preview/AutoUpgradeProfileOperations_GenerateUpdateRun.json
      */
     /**
      * Sample code: AutoUpgradeProfileOperations_GenerateUpdateRun.
@@ -99,7 +115,7 @@ import com.azure.resourcemanager.containerservicefleet.models.UpgradeChannel;
  */
 public final class AutoUpgradeProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/AutoUpgradeProfiles_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-02-preview/AutoUpgradeProfiles_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an AutoUpgradeProfile.
@@ -132,7 +148,7 @@ public final class AutoUpgradeProfilesCreateOrUpdateSamples {
  */
 public final class AutoUpgradeProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/AutoUpgradeProfiles_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/AutoUpgradeProfiles_Delete.json
      */
     /**
      * Sample code: Delete an AutoUpgradeProfile resource.
@@ -155,7 +171,7 @@ public final class AutoUpgradeProfilesDeleteSamples {
  */
 public final class AutoUpgradeProfilesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/AutoUpgradeProfiles_Get.json
+     * x-ms-original-file: 2026-11-02-preview/AutoUpgradeProfiles_Get.json
      */
     /**
      * Sample code: Gets an AutoUpgradeProfile resource.
@@ -178,7 +194,7 @@ public final class AutoUpgradeProfilesGetSamples {
  */
 public final class AutoUpgradeProfilesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/AutoUpgradeProfiles_ListByFleet.json
+     * x-ms-original-file: 2026-11-02-preview/AutoUpgradeProfiles_ListByFleet.json
      */
     /**
      * Sample code: Lists the AutoUpgradeProfile resources by fleet.
@@ -188,6 +204,126 @@ public final class AutoUpgradeProfilesListByFleetSamples {
     public static void listsTheAutoUpgradeProfileResourcesByFleet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.autoUpgradeProfiles().listByFleet("rgfleets", "fleet1", null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_Apply
+
+```java
+/**
+ * Samples for ClusterMeshProfiles Apply.
+ */
+public final class ClusterMeshProfilesApplySamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/ClusterMeshProfiles_Apply.json
+     */
+    /**
+     * Sample code: Apply a ClusterMeshProfile.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void
+        applyAClusterMeshProfile(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .apply("rgfleets", "fleet1", "clustermeshprofile1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
+
+/**
+ * Samples for ClusterMeshProfiles CreateOrUpdate.
+ */
+public final class ClusterMeshProfilesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/ClusterMeshProfiles_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update a ClusterMeshProfile.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void createOrUpdateAClusterMeshProfile(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .define("clustermeshprofile1")
+            .withExistingFleet("rgfleets", "fleet1")
+            .withMemberSelector(new MemberSelector().withByLabel("env=production"))
+            .withIfMatch("uktvayathbu")
+            .create();
+    }
+}
+```
+
+### ClusterMeshProfiles_Delete
+
+```java
+/**
+ * Samples for ClusterMeshProfiles Delete.
+ */
+public final class ClusterMeshProfilesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/ClusterMeshProfiles_Delete.json
+     */
+    /**
+     * Sample code: Delete an ClusterMeshProfile resource.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void deleteAnClusterMeshProfileResource(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .delete("rg1", "fleet1", "clustermeshprofile1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_Get
+
+```java
+/**
+ * Samples for ClusterMeshProfiles Get.
+ */
+public final class ClusterMeshProfilesGetSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/ClusterMeshProfiles_Get.json
+     */
+    /**
+     * Sample code: Get a ClusterMeshProfile resource.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void getAClusterMeshProfileResource(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles()
+            .getWithResponse("rgfleets", "fleet1", "clustermeshprofile1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterMeshProfiles_ListByFleet
+
+```java
+/**
+ * Samples for ClusterMeshProfiles ListByFleet.
+ */
+public final class ClusterMeshProfilesListByFleetSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/ClusterMeshProfiles_ListByFleet.json
+     */
+    /**
+     * Sample code: List the ClusterMeshProfile resources by fleet.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void listTheClusterMeshProfileResourcesByFleet(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.clusterMeshProfiles().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -229,7 +365,7 @@ import java.util.Map;
  */
 public final class FleetManagedNamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-02-preview/FleetManagedNamespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: FleetManagedNamespaces_CreateOrUpdate.
@@ -306,7 +442,7 @@ public final class FleetManagedNamespacesCreateOrUpdateSamples {
  */
 public final class FleetManagedNamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/FleetManagedNamespaces_Delete.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Delete.
@@ -329,7 +465,7 @@ public final class FleetManagedNamespacesDeleteSamples {
  */
 public final class FleetManagedNamespacesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_Get.json
+     * x-ms-original-file: 2026-11-02-preview/FleetManagedNamespaces_Get.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Get.
@@ -352,7 +488,7 @@ public final class FleetManagedNamespacesGetSamples {
  */
 public final class FleetManagedNamespacesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_ListByFleet.json
+     * x-ms-original-file: 2026-11-02-preview/FleetManagedNamespaces_ListByFleet.json
      */
     /**
      * Sample code: FleetManagedNamespaces_ListByFleet.
@@ -369,14 +505,23 @@ public final class FleetManagedNamespacesListByFleetSamples {
 ### FleetManagedNamespaces_Update
 
 ```java
+import com.azure.resourcemanager.containerservicefleet.models.ClusterResourcePlacementSpecPatch;
+import com.azure.resourcemanager.containerservicefleet.models.ClusterUpdateStrategyReference;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespace;
+import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespacePropertiesPatch;
+import com.azure.resourcemanager.containerservicefleet.models.PlacementProfilePatch;
+import com.azure.resourcemanager.containerservicefleet.models.PropagationPolicyPatch;
+import com.azure.resourcemanager.containerservicefleet.models.RolloutStrategy;
+import com.azure.resourcemanager.containerservicefleet.models.RolloutStrategyType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for FleetManagedNamespaces Update.
  */
 public final class FleetManagedNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_Update.json
+     * x-ms-original-file: 2026-11-02-preview/FleetManagedNamespaces_Update.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Update.
@@ -388,7 +533,30 @@ public final class FleetManagedNamespacesUpdateSamples {
         FleetManagedNamespace resource = manager.fleetManagedNamespaces()
             .getWithResponse("rgfleets", "fleet1", "namespace1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().apply();
+        resource.update()
+            .withTags(mapOf("tag2", "tagValue2"))
+            .withProperties(
+                new FleetManagedNamespacePropertiesPatch()
+                    .withPropagationPolicy(
+                        new PropagationPolicyPatch()
+                            .withPlacementProfile(new PlacementProfilePatch()
+                                .withDefaultClusterResourcePlacement(new ClusterResourcePlacementSpecPatch()
+                                    .withRolloutStrategy(new RolloutStrategy().withType(RolloutStrategyType.EXTERNAL)
+                                        .withClusterUpdateStrategy(new ClusterUpdateStrategyReference()
+                                            .withName("my-staged-update-strategy")))))))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -401,7 +569,7 @@ public final class FleetManagedNamespacesUpdateSamples {
  */
 public final class FleetMembersCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetMembers_Create.json
+     * x-ms-original-file: 2026-11-02-preview/FleetMembers_Create.json
      */
     /**
      * Sample code: Creates a FleetMember resource with a long running operation.
@@ -428,7 +596,7 @@ public final class FleetMembersCreateSamples {
  */
 public final class FleetMembersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetMembers_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/FleetMembers_Delete.json
      */
     /**
      * Sample code: Deletes a FleetMember resource asynchronously with a long running operation.
@@ -450,7 +618,7 @@ public final class FleetMembersDeleteSamples {
  */
 public final class FleetMembersGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetMembers_Get.json
+     * x-ms-original-file: 2026-11-02-preview/FleetMembers_Get.json
      */
     /**
      * Sample code: Gets a FleetMember resource.
@@ -472,7 +640,7 @@ public final class FleetMembersGetSamples {
  */
 public final class FleetMembersListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetMembers_ListByFleet.json
+     * x-ms-original-file: 2026-11-02-preview/FleetMembers_ListByFleet.json
      */
     /**
      * Sample code: Lists the members of a Fleet.
@@ -496,7 +664,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
  */
 public final class FleetMembersUpdateAsyncSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetMembers_Update.json
+     * x-ms-original-file: 2026-11-02-preview/FleetMembers_Update.json
      */
     /**
      * Sample code: Updates a FleetMember resource synchronously.
@@ -518,6 +686,7 @@ public final class FleetMembersUpdateAsyncSamples {
 ```java
 import com.azure.resourcemanager.containerservicefleet.models.GateConfiguration;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
+import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
@@ -528,7 +697,7 @@ import java.util.Arrays;
  */
 public final class FleetUpdateStrategiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateStrategies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateStrategies_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a FleetUpdateStrategy.
@@ -540,19 +709,28 @@ public final class FleetUpdateStrategiesCreateOrUpdateSamples {
         manager.fleetUpdateStrategies()
             .define("strategy1")
             .withExistingFleet("rg1", "fleet1")
-            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("stage1")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")
-                    .withMaxConcurrency("5")
+            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
+                new UpdateStage().withName("stage1")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")
+                        .withMaxAllowedFailures("1")
+                        .withMaxConcurrency("5")
+                        .withMemberSelector(new MemberSelector().withByLabel("tier=frontend"))
+                        .withBeforeGates(Arrays.asList(
+                            new GateConfiguration().withDisplayName("gate before group-a").withType(GateType.APPROVAL)))
+                        .withAfterGates(Arrays.asList(new GateConfiguration().withDisplayName("gate after group-a")
+                            .withType(GateType.APPROVAL)))))
+                    .withAfterStageWaitInSeconds(3600)
+                    .withMaxAllowedFailures("2")
+                    .withMaxConcurrency("20%")
                     .withBeforeGates(Arrays.asList(
-                        new GateConfiguration().withDisplayName("gate before group-a").withType(GateType.APPROVAL)))
+                        new GateConfiguration().withDisplayName("gate before stage1").withType(GateType.APPROVAL)))
                     .withAfterGates(Arrays.asList(
-                        new GateConfiguration().withDisplayName("gate after group-a").withType(GateType.APPROVAL)))))
-                .withAfterStageWaitInSeconds(3600)
-                .withMaxConcurrency("20%")
-                .withBeforeGates(Arrays
-                    .asList(new GateConfiguration().withDisplayName("gate before stage1").withType(GateType.APPROVAL)))
-                .withAfterGates(Arrays.asList(
-                    new GateConfiguration().withDisplayName("gate after stage1").withType(GateType.APPROVAL))))))
+                        new GateConfiguration().withDisplayName("gate after stage1").withType(GateType.APPROVAL))),
+                new UpdateStage().withName("stage2")
+                    .withMemberSelector(new MemberSelector().withByLabel("env=production"))
+                    .withAfterStageWaitInSeconds(600)
+                    .withMaxAllowedFailures("25%")
+                    .withMaxConcurrency("50%"))))
             .create();
     }
 }
@@ -566,7 +744,7 @@ public final class FleetUpdateStrategiesCreateOrUpdateSamples {
  */
 public final class FleetUpdateStrategiesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateStrategies_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateStrategies_Delete.json
      */
     /**
      * Sample code: Delete a FleetUpdateStrategy resource.
@@ -588,7 +766,7 @@ public final class FleetUpdateStrategiesDeleteSamples {
  */
 public final class FleetUpdateStrategiesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateStrategies_Get.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateStrategies_Get.json
      */
     /**
      * Sample code: Get a FleetUpdateStrategy resource.
@@ -610,7 +788,7 @@ public final class FleetUpdateStrategiesGetSamples {
  */
 public final class FleetUpdateStrategiesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateStrategies_ListByFleet.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateStrategies_ListByFleet.json
      */
     /**
      * Sample code: List the FleetUpdateStrategy resources by fleet.
@@ -641,7 +819,7 @@ import java.util.Map;
  */
 public final class FleetsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates a Fleet resource with a long running operation.
@@ -692,7 +870,7 @@ public final class FleetsCreateSamples {
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_Delete.json
      */
     /**
      * Sample code: Deletes a Fleet resource asynchronously with a long running operation.
@@ -714,7 +892,7 @@ public final class FleetsDeleteSamples {
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_Get.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_Get.json
      */
     /**
      * Sample code: Gets a Fleet resource.
@@ -736,7 +914,7 @@ public final class FleetsGetByResourceGroupSamples {
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_ListBySub.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_ListBySub.json
      */
     /**
      * Sample code: Lists the Fleet resources in a subscription.
@@ -758,7 +936,7 @@ public final class FleetsListSamples {
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists the Fleet resources in a resource group.
@@ -780,7 +958,7 @@ public final class FleetsListByResourceGroupSamples {
  */
 public final class FleetsListCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_ListCredentialsResult.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_ListCredentialsResult.json
      */
     /**
      * Sample code: Lists the user credentials of a Fleet.
@@ -809,7 +987,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateAsyncSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_Update.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_Update.json
      */
     /**
      * Sample code: Update a Fleet.
@@ -830,7 +1008,7 @@ public final class FleetsUpdateAsyncSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/Fleets_PatchTags.json
+     * x-ms-original-file: 2026-11-02-preview/Fleets_PatchTags.json
      */
     /**
      * Sample code: Patch tags of a Fleet during Update.
@@ -867,7 +1045,7 @@ public final class FleetsUpdateAsyncSamples {
  */
 public final class GatesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Gates_Get.json
+     * x-ms-original-file: 2026-11-02-preview/Gates_Get.json
      */
     /**
      * Sample code: Gets a Gate resource.
@@ -878,6 +1056,20 @@ public final class GatesGetSamples {
         getsAGateResource(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.gates()
             .getWithResponse("rg1", "fleet1", "12345678-910a-bcde-f000-000000000000", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-02-preview/Gates_Get_ScheduledStart.json
+     */
+    /**
+     * Sample code: Gets a ScheduledStart Gate resource.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void getsAScheduledStartGateResource(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.gates()
+            .getWithResponse("rg1", "fleet1", "12345678-910a-bcde-f000-000000000001", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -890,7 +1082,7 @@ public final class GatesGetSamples {
  */
 public final class GatesListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Gates_ListByFleet.json
+     * x-ms-original-file: 2026-11-02-preview/Gates_ListByFleet.json
      */
     /**
      * Sample code: Lists the Gates of a Fleet.
@@ -916,7 +1108,7 @@ import com.azure.resourcemanager.containerservicefleet.models.GateState;
  */
 public final class GatesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Gates_Update.json
+     * x-ms-original-file: 2026-11-02-preview/Gates_Update.json
      */
     /**
      * Sample code: Updates a Gate resource.
@@ -933,6 +1125,139 @@ public final class GatesUpdateSamples {
 }
 ```
 
+### IdentityBindingProfiles_Apply
+
+```java
+/**
+ * Samples for IdentityBindingProfiles Apply.
+ */
+public final class IdentityBindingProfilesApplySamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/IdentityBindingProfiles_Apply.json
+     */
+    /**
+     * Sample code: Apply an identity binding profile to the selected members.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void applyAnIdentityBindingProfileToTheSelectedMembers(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.identityBindingProfiles()
+            .apply("rg1", "fleet1", "identitybinding1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IdentityBindingProfiles_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.containerservicefleet.models.AllowedSubject;
+import com.azure.resourcemanager.containerservicefleet.models.IdentityBindingLabelSelector;
+import com.azure.resourcemanager.containerservicefleet.models.IdentityBindingManagedIdentityProfile;
+import com.azure.resourcemanager.containerservicefleet.models.IdentityBindingProperties;
+import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
+import java.util.Arrays;
+
+/**
+ * Samples for IdentityBindingProfiles CreateOrUpdate.
+ */
+public final class IdentityBindingProfilesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/IdentityBindingProfiles_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update an identity binding profile.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void createOrUpdateAnIdentityBindingProfile(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.identityBindingProfiles()
+            .define("identitybinding1")
+            .withExistingFleet("rg1", "fleet1")
+            .withMemberSelector(new MemberSelector().withByLabel("env=production"))
+            .withIdentityBindingProperties(new IdentityBindingProperties()
+                .withManagedIdentity(new IdentityBindingManagedIdentityProfile().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1"))
+                .withAllowedSubjects(Arrays.asList(new AllowedSubject()
+                    .withNamespaceSelector(new IdentityBindingLabelSelector()
+                        .withMatchLabels(Arrays.asList("kubernetes.io/metadata.name=prod")))
+                    .withServiceAccountSelector(
+                        new IdentityBindingLabelSelector().withMatchLabels(Arrays.asList("app=payments"))))))
+            .withIfMatch("uktvayathbu")
+            .create();
+    }
+}
+```
+
+### IdentityBindingProfiles_Delete
+
+```java
+/**
+ * Samples for IdentityBindingProfiles Delete.
+ */
+public final class IdentityBindingProfilesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/IdentityBindingProfiles_Delete.json
+     */
+    /**
+     * Sample code: Delete an identity binding profile.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void deleteAnIdentityBindingProfile(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.identityBindingProfiles()
+            .delete("rg1", "fleet1", "identitybinding1", "uktvayathbu", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IdentityBindingProfiles_Get
+
+```java
+/**
+ * Samples for IdentityBindingProfiles Get.
+ */
+public final class IdentityBindingProfilesGetSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/IdentityBindingProfiles_Get.json
+     */
+    /**
+     * Sample code: Get an identity binding profile.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void getAnIdentityBindingProfile(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.identityBindingProfiles()
+            .getWithResponse("rg1", "fleet1", "identitybinding1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IdentityBindingProfiles_ListByFleet
+
+```java
+/**
+ * Samples for IdentityBindingProfiles ListByFleet.
+ */
+public final class IdentityBindingProfilesListByFleetSamples {
+    /*
+     * x-ms-original-file: 2026-11-02-preview/IdentityBindingProfiles_ListByFleet.json
+     */
+    /**
+     * Sample code: List identity binding profiles by fleet.
+     * 
+     * @param manager Entry point to ContainerServiceFleetManager.
+     */
+    public static void listIdentityBindingProfilesByFleet(
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+        manager.identityBindingProfiles().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -941,7 +1266,7 @@ public final class GatesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Operations_List.json
+     * x-ms-original-file: 2026-11-02-preview/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.
@@ -958,13 +1283,16 @@ public final class OperationsListSamples {
 ### UpdateRuns_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.containerservicefleet.models.DayOfWeek;
 import com.azure.resourcemanager.containerservicefleet.models.GateConfiguration;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpdate;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeSpec;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeType;
+import com.azure.resourcemanager.containerservicefleet.models.MemberSelector;
 import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelection;
 import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelectionType;
+import com.azure.resourcemanager.containerservicefleet.models.ScheduledStartConfiguration;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
@@ -975,7 +1303,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_CreateOrUpdate.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an UpdateRun.
@@ -989,19 +1317,34 @@ public final class UpdateRunsCreateOrUpdateSamples {
             .withExistingFleet("rg1", "fleet1")
             .withUpdateStrategyId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1")
-            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("stage1")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")
-                    .withMaxConcurrency("2")
+            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
+                new UpdateStage().withName("stage1")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")
+                        .withMaxAllowedFailures("1")
+                        .withMaxConcurrency("2")
+                        .withMemberSelector(new MemberSelector().withByLabel("tier=frontend"))
+                        .withBeforeGates(Arrays.asList(
+                            new GateConfiguration().withDisplayName("gate before group-a").withType(GateType.APPROVAL)))
+                        .withAfterGates(Arrays.asList(new GateConfiguration().withDisplayName("gate after group-a")
+                            .withType(GateType.APPROVAL)))))
+                    .withAfterStageWaitInSeconds(3600)
+                    .withMaxAllowedFailures("2")
+                    .withMaxConcurrency("10")
                     .withBeforeGates(Arrays.asList(
-                        new GateConfiguration().withDisplayName("gate before group-a").withType(GateType.APPROVAL)))
+                        new GateConfiguration().withDisplayName("gate before stage1").withType(GateType.APPROVAL)))
                     .withAfterGates(Arrays.asList(
-                        new GateConfiguration().withDisplayName("gate after group-a").withType(GateType.APPROVAL)))))
-                .withAfterStageWaitInSeconds(3600)
-                .withMaxConcurrency("10")
-                .withBeforeGates(Arrays
-                    .asList(new GateConfiguration().withDisplayName("gate before stage1").withType(GateType.APPROVAL)))
-                .withAfterGates(Arrays.asList(
-                    new GateConfiguration().withDisplayName("gate after stage1").withType(GateType.APPROVAL))))))
+                        new GateConfiguration().withDisplayName("gate after stage1").withType(GateType.APPROVAL))),
+                new UpdateStage().withName("stage2")
+                    .withMemberSelector(new MemberSelector().withByLabel("env=production"))
+                    .withAfterStageWaitInSeconds(600)
+                    .withMaxAllowedFailures("25%")
+                    .withMaxConcurrency("50%")
+                    .withBeforeGates(Arrays.asList(new GateConfiguration().withDisplayName("Wait until Friday evening")
+                        .withType(GateType.SCHEDULED_START)
+                        .withScheduledStartConfiguration(
+                            new ScheduledStartConfiguration().withStartDay(DayOfWeek.FRIDAY)
+                                .withStartTime("18:00")
+                                .withUtcOffset("-05:00")))))))
             .withManagedClusterUpdate(new ManagedClusterUpdate()
                 .withUpgrade(new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL)
                     .withKubernetesVersion("1.26.1"))
@@ -1019,7 +1362,7 @@ public final class UpdateRunsCreateOrUpdateSamples {
  */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_Delete.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_Delete.json
      */
     /**
      * Sample code: Delete an updateRun resource.
@@ -1041,7 +1384,7 @@ public final class UpdateRunsDeleteSamples {
  */
 public final class UpdateRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_Get.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_Get.json
      */
     /**
      * Sample code: Gets an UpdateRun resource.
@@ -1063,7 +1406,7 @@ public final class UpdateRunsGetSamples {
  */
 public final class UpdateRunsListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_ListByFleet.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_ListByFleet.json
      */
     /**
      * Sample code: Lists the UpdateRun resources by fleet.
@@ -1090,7 +1433,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsSkipSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_Skip.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_Skip.json
      */
     /**
      * Sample code: Skips one or more member/group/stage/afterStageWait(s) of an UpdateRun.
@@ -1117,7 +1460,7 @@ public final class UpdateRunsSkipSamples {
  */
 public final class UpdateRunsStartSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_Start.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_Start.json
      */
     /**
      * Sample code: Starts an UpdateRun.
@@ -1139,7 +1482,7 @@ public final class UpdateRunsStartSamples {
  */
 public final class UpdateRunsStopSamples {
     /*
-     * x-ms-original-file: 2026-06-01/UpdateRuns_Stop.json
+     * x-ms-original-file: 2026-11-02-preview/UpdateRuns_Stop.json
      */
     /**
      * Sample code: Stops an UpdateRun.

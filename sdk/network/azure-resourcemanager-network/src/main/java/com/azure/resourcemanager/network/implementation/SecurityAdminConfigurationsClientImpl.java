@@ -122,18 +122,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecurityAdminConfigurationInner>> getWithResponseAsync(String resourceGroupName,
         String networkManagerName, String configurationName) {
@@ -157,7 +146,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -201,24 +190,14 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, configurationName, accept, context);
     }
 
-    /**
-     * Retrieves a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityAdminConfigurationInner> getAsync(String resourceGroupName, String networkManagerName,
         String configurationName) {
@@ -226,54 +205,21 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityAdminConfigurationInner> getWithResponse(String resourceGroupName,
         String networkManagerName, String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkManagerName, configurationName, context).block();
     }
 
-    /**
-     * Retrieves a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityAdminConfigurationInner get(String resourceGroupName, String networkManagerName,
         String configurationName) {
         return getWithResponse(resourceGroupName, networkManagerName, configurationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param securityAdminConfiguration The security admin configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecurityAdminConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkManagerName, String configurationName,
@@ -304,7 +250,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
         } else {
             securityAdminConfiguration.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -358,7 +304,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
         } else {
             securityAdminConfiguration.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -367,18 +313,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             context);
     }
 
-    /**
-     * Creates or updates a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param securityAdminConfiguration The security admin configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityAdminConfigurationInner> createOrUpdateAsync(String resourceGroupName,
         String networkManagerName, String configurationName,
@@ -387,19 +322,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             securityAdminConfiguration).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param securityAdminConfiguration The security admin configuration to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityAdminConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
         String networkManagerName, String configurationName, SecurityAdminConfigurationInner securityAdminConfiguration,
@@ -408,18 +331,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             securityAdminConfiguration, context).block();
     }
 
-    /**
-     * Creates or updates a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param securityAdminConfiguration The security admin configuration to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security admin configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityAdminConfigurationInner createOrUpdate(String resourceGroupName, String networkManagerName,
         String configurationName, SecurityAdminConfigurationInner securityAdminConfiguration) {
@@ -427,19 +339,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             securityAdminConfiguration, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String configurationName, Boolean force) {
@@ -463,7 +363,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -508,25 +408,13 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, configurationName, force, context);
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName, Boolean force) {
@@ -536,17 +424,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             this.client.getContext());
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName) {
@@ -581,17 +459,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             context);
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName) {
@@ -599,20 +467,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, configurationName, force).getSyncPoller();
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName, Boolean force, Context context) {
@@ -620,19 +475,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
         Boolean force) {
@@ -640,17 +483,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName) {
         final Boolean force = null;
@@ -679,35 +512,14 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName) {
         final Boolean force = null;
         deleteAsync(resourceGroupName, networkManagerName, configurationName, force).block();
     }
 
-    /**
-     * Deletes a network manager security admin configuration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName, Boolean force,
         Context context) {
@@ -749,7 +561,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -795,7 +607,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -805,21 +617,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityAdminConfiguration list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityAdminConfigurationInner> listAsync(String resourceGroupName, String networkManagerName,
         Integer top, String skipToken) {
@@ -827,16 +625,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityAdminConfiguration list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityAdminConfigurationInner> listAsync(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
@@ -869,17 +658,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityAdminConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAdminConfigurationInner> list(String resourceGroupName, String networkManagerName) {
         final Integer top = null;
@@ -887,23 +666,7 @@ public final class SecurityAdminConfigurationsClientImpl implements SecurityAdmi
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, top, skipToken));
     }
 
-    /**
-     * Lists all the network manager security admin configurations in a network manager, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityAdminConfiguration list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAdminConfigurationInner> list(String resourceGroupName, String networkManagerName,
         Integer top, String skipToken, Context context) {

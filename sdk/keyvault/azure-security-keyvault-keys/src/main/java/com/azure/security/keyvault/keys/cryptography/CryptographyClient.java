@@ -1032,11 +1032,13 @@ public class CryptographyClient {
     }
 
     /**
-     * Performs a secure wrap operation using the configured key. This operation is remote-only and returns the
-     * wrapped key content produced with the specified algorithm.
+     * Generates and securely wraps a new 256-bit AES key inside the trusted execution environment (TEE).
+     *
+     * <p>The secure wrap operation creates a fresh 256-bit AES key inside a TEE and wraps it with this client's key as
+     * the wrapping key. Requires the {@code keys/wrapKey} permission. This operation is remote-only.</p>
      *
      * <p>This operation requires a Managed HSM and is only available with service API version
-     * {@code 2026-01-01-preview} and newer.</p>
+     * {@code 2026-04-01} and newer.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Performs a secure wrap operation and prints out the wrapped key details.</p>
@@ -1050,10 +1052,10 @@ public class CryptographyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm -->
      *
-     * @param algorithm The algorithm to use for wrapping the generated key.
+     * @param algorithm The secure wrap algorithm to use.
      *
      * @return The {@link SecureWrapResult} whose {@link SecureWrapResult#getEncryptedKey() encrypted key} contains the
-     * wrapped key result.
+     * wrapped, newly generated key.
      *
      * @throws NullPointerException If {@code algorithm} is {@code null}.
      * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
@@ -1064,11 +1066,13 @@ public class CryptographyClient {
     }
 
     /**
-     * Performs a secure wrap operation using the configured key. This operation is remote-only and returns the
-     * wrapped key content produced with the specified algorithm.
+     * Generates and securely wraps a new 256-bit AES key inside the trusted execution environment (TEE).
+     *
+     * <p>The secure wrap operation creates a fresh 256-bit AES key inside a TEE and wraps it with this client's key as
+     * the wrapping key. Requires the {@code keys/wrapKey} permission. This operation is remote-only.</p>
      *
      * <p>This operation requires a Managed HSM and is only available with service API version
-     * {@code 2026-01-01-preview} and newer.</p>
+     * {@code 2026-04-01} and newer.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Performs a secure wrap operation and prints out the wrapped key details.</p>
@@ -1083,11 +1087,11 @@ public class CryptographyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureWrapKey#SecureKeyWrapAlgorithm-Context -->
      *
-     * @param algorithm The algorithm to use for wrapping the generated key.
+     * @param algorithm The secure wrap algorithm to use.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link SecureWrapResult} whose {@link SecureWrapResult#getEncryptedKey() encrypted key} contains the
-     * wrapped key result.
+     * wrapped, newly generated key.
      *
      * @throws NullPointerException If {@code algorithm} is {@code null}.
      * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
@@ -1103,10 +1107,15 @@ public class CryptographyClient {
     }
 
     /**
-     * Unwraps the specified wrapped key using secure unwrap.
+     * Securely unwraps a key into a trusted execution environment (TEE).
+     *
+     * <p>The secure unwrap operation unwraps a key previously wrapped by
+     * {@link #secureWrapKey(SecureKeyWrapAlgorithm) secure wrap} and releases it only into a target TEE attested by the
+     * supplied Microsoft Azure Attestation (MAA) token. Requires the {@code keys/unwrapKey} permission. This operation
+     * is remote-only.</p>
      *
      * <p>This operation requires a Managed HSM and is only available with service API version
-     * {@code 2026-01-01-preview} and newer.</p>
+     * {@code 2026-04-01} and newer.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Securely unwraps a previously wrapped key and prints out the unwrapped key details.</p>
@@ -1121,9 +1130,9 @@ public class CryptographyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String -->
      *
-     * @param algorithm The algorithm that was used to wrap the key.
-     * @param encryptedKey The encrypted key content to unwrap.
-     * @param targetAttestationToken The MAA attestation token identifying the target TEE.
+     * @param algorithm The secure wrap algorithm originally used to wrap the key.
+     * @param encryptedKey The wrapped key bytes to unwrap.
+     * @param targetAttestationToken The MAA attestation token of the target TEE.
      *
      * @return The {@link SecureUnwrapResult} whose {@link SecureUnwrapResult#getKey() decrypted key} contains the
      * unwrapped key result.
@@ -1139,10 +1148,15 @@ public class CryptographyClient {
     }
 
     /**
-     * Unwraps the specified wrapped key using secure unwrap.
+     * Securely unwraps a key into a trusted execution environment (TEE).
+     *
+     * <p>The secure unwrap operation unwraps a key previously wrapped by
+     * {@link #secureWrapKey(SecureKeyWrapAlgorithm, Context) secure wrap} and releases it only into a target TEE
+     * attested by the supplied Microsoft Azure Attestation (MAA) token. Requires the {@code keys/unwrapKey} permission.
+     * This operation is remote-only.</p>
      *
      * <p>This operation requires a Managed HSM and is only available with service API version
-     * {@code 2026-01-01-preview} and newer.</p>
+     * {@code 2026-04-01} and newer.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Securely unwraps a previously wrapped key and prints out the unwrapped key details.</p>
@@ -1159,9 +1173,9 @@ public class CryptographyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String-Context -->
      *
-     * @param algorithm The algorithm that was used to wrap the key.
-     * @param encryptedKey The encrypted key content to unwrap.
-     * @param targetAttestationToken The MAA attestation token identifying the target TEE.
+     * @param algorithm The secure wrap algorithm originally used to wrap the key.
+     * @param encryptedKey The wrapped key bytes to unwrap.
+     * @param targetAttestationToken The MAA attestation token of the target TEE.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link SecureUnwrapResult} whose {@link SecureUnwrapResult#getKey() decrypted key} contains the

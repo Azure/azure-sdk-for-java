@@ -94,19 +94,7 @@ public final class DataWarehouseUserActivitiesOperationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the user activities of a data warehouse which includes running and suspended queries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataWarehouseUserActivityName The activity name of the data warehouse.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user activities of a data warehouse which includes running and suspended queries along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataWarehouseUserActivitiesInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, DataWarehouseUserActivityName dataWarehouseUserActivityName) {
@@ -186,19 +174,7 @@ public final class DataWarehouseUserActivitiesOperationsClientImpl
             resourceGroupName, serverName, databaseName, dataWarehouseUserActivityName, accept, context);
     }
 
-    /**
-     * Gets the user activities of a data warehouse which includes running and suspended queries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataWarehouseUserActivityName The activity name of the data warehouse.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user activities of a data warehouse which includes running and suspended queries on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataWarehouseUserActivitiesInner> getAsync(String resourceGroupName, String serverName,
         String databaseName, DataWarehouseUserActivityName dataWarehouseUserActivityName) {
@@ -206,20 +182,7 @@ public final class DataWarehouseUserActivitiesOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the user activities of a data warehouse which includes running and suspended queries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataWarehouseUserActivityName The activity name of the data warehouse.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user activities of a data warehouse which includes running and suspended queries along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataWarehouseUserActivitiesInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, DataWarehouseUserActivityName dataWarehouseUserActivityName, Context context) {
@@ -227,18 +190,7 @@ public final class DataWarehouseUserActivitiesOperationsClientImpl
             .block();
     }
 
-    /**
-     * Gets the user activities of a data warehouse which includes running and suspended queries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataWarehouseUserActivityName The activity name of the data warehouse.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user activities of a data warehouse which includes running and suspended queries.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataWarehouseUserActivitiesInner get(String resourceGroupName, String serverName, String databaseName,
         DataWarehouseUserActivityName dataWarehouseUserActivityName) {
@@ -331,18 +283,7 @@ public final class DataWarehouseUserActivitiesOperationsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List the user activities of a data warehouse which includes running and suspended queries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataWarehouseUserActivities list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataWarehouseUserActivitiesInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -371,37 +312,14 @@ public final class DataWarehouseUserActivitiesOperationsClientImpl
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List the user activities of a data warehouse which includes running and suspended queries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataWarehouseUserActivities list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataWarehouseUserActivitiesInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
-    /**
-     * List the user activities of a data warehouse which includes running and suspended queries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataWarehouseUserActivities list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataWarehouseUserActivitiesInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, Context context) {

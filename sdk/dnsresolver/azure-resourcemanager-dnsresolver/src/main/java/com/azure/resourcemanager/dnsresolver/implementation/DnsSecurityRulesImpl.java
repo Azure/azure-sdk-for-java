@@ -67,80 +67,37 @@ public final class DnsSecurityRulesImpl implements DnsSecurityRules {
     }
 
     public DnsSecurityRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
-        if (dnsResolverPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
-        }
-        String dnsSecurityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "dnsSecurityRules");
-        if (dnsSecurityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsSecurityRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DnsSecurityRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
-        if (dnsResolverPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
-        }
-        String dnsSecurityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "dnsSecurityRules");
-        if (dnsSecurityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsSecurityRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String dnsResolverPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "dnsResolverPolicyName", "dnsResolverPolicies", LOGGER);
+        String dnsSecurityRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "dnsSecurityRuleName", "dnsSecurityRules", LOGGER);
         return this.getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
-        if (dnsResolverPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
-        }
-        String dnsSecurityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "dnsSecurityRules");
-        if (dnsSecurityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsSecurityRules'.", id)));
-        }
         String localIfMatch = null;
-        this.delete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, localIfMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
-        if (dnsResolverPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
-        }
-        String dnsSecurityRuleName = ResourceManagerUtils.getValueFromIdByName(id, "dnsSecurityRules");
-        if (dnsSecurityRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsSecurityRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String dnsResolverPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "dnsResolverPolicyName", "dnsResolverPolicies", LOGGER);
+        String dnsSecurityRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/dnsSecurityRules/{dnsSecurityRuleName}",
+            "dnsSecurityRuleName", "dnsSecurityRules", LOGGER);
         this.delete(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, ifMatch, context);
     }
 

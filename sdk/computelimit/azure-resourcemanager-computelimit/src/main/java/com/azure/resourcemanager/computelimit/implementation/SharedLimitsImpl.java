@@ -47,12 +47,11 @@ public final class SharedLimitsImpl implements SharedLimits {
     }
 
     public void deleteByResourceGroup(String location, String name) {
-        this.serviceClient().delete(location, name);
+        this.deleteByResourceGroupWithResponse(location, name, Context.NONE);
     }
 
     public PagedIterable<SharedLimit> listBySubscriptionLocationResource(String location) {
-        PagedIterable<SharedLimitInner> inner = this.serviceClient().listBySubscriptionLocationResource(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SharedLimitImpl(inner1, this.manager()));
+        return this.listBySubscriptionLocationResource(location, Context.NONE);
     }
 
     public PagedIterable<SharedLimit> listBySubscriptionLocationResource(String location, Context context) {
@@ -62,58 +61,30 @@ public final class SharedLimitsImpl implements SharedLimits {
     }
 
     public SharedLimit getById(String id) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimits");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimits'.", id)));
-        }
-        return this.getWithResponse(location, name, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SharedLimit> getByIdWithResponse(String id, Context context) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimits");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimits'.", id)));
-        }
+        String location = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimits/{name}",
+            "location", "locations", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimits/{name}",
+            "name", "sharedLimits", LOGGER);
         return this.getWithResponse(location, name, context);
     }
 
     public void deleteById(String id) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimits");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimits'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(location, name, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String location = ResourceManagerUtils.getValueFromIdByName(id, "locations");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "sharedLimits");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'sharedLimits'.", id)));
-        }
+        String location = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimits/{name}",
+            "location", "locations", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimits/{name}",
+            "name", "sharedLimits", LOGGER);
         return this.deleteByResourceGroupWithResponse(location, name, context);
     }
 

@@ -46,7 +46,7 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
     }
 
     public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName) {
-        this.serviceClient().delete(resourceGroupName, healthModelName, discoveryRuleName);
+        this.delete(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String healthModelName, String discoveryRuleName, Context context) {
@@ -67,78 +67,36 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
     }
 
     public DiscoveryRule getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String discoveryRuleName = ResourceManagerUtils.getValueFromIdByName(id, "discoveryrules");
-        if (discoveryRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DiscoveryRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String discoveryRuleName = ResourceManagerUtils.getValueFromIdByName(id, "discoveryrules");
-        if (discoveryRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "healthModelName", "healthmodels", LOGGER);
+        String discoveryRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "discoveryRuleName", "discoveryrules", LOGGER);
         return this.getWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String discoveryRuleName = ResourceManagerUtils.getValueFromIdByName(id, "discoveryrules");
-        if (discoveryRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
-        }
-        this.delete(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String healthModelName = ResourceManagerUtils.getValueFromIdByName(id, "healthmodels");
-        if (healthModelName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'healthmodels'.", id)));
-        }
-        String discoveryRuleName = ResourceManagerUtils.getValueFromIdByName(id, "discoveryrules");
-        if (discoveryRuleName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'discoveryrules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String healthModelName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "healthModelName", "healthmodels", LOGGER);
+        String discoveryRuleName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}",
+            "discoveryRuleName", "discoveryrules", LOGGER);
         this.delete(resourceGroupName, healthModelName, discoveryRuleName, context);
     }
 

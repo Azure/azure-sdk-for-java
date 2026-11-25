@@ -45,8 +45,7 @@ public final class TagRulesImpl implements TagRules {
     }
 
     public PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName) {
-        PagedIterable<MonitoringTagRulesInner> inner = this.serviceClient().list(resourceGroupName, monitorName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MonitoringTagRulesImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, monitorName, Context.NONE);
     }
 
     public PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName, Context context) {
@@ -56,40 +55,19 @@ public final class TagRulesImpl implements TagRules {
     }
 
     public MonitoringTagRules getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        String ruleSetName = ResourceManagerUtils.getValueFromIdByName(id, "tagRules");
-        if (ruleSetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<MonitoringTagRules> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
-        if (monitorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
-        }
-        String ruleSetName = ResourceManagerUtils.getValueFromIdByName(id, "tagRules");
-        if (ruleSetName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String monitorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "monitorName", "monitors", LOGGER);
+        String ruleSetName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/tagRules/{ruleSetName}",
+            "ruleSetName", "tagRules", LOGGER);
         return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
     }
 

@@ -66,10 +66,7 @@ public final class ProtectionGroupImpl implements ProtectionGroup, ProtectionGro
     }
 
     public ProtectionGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionGroups()
-            .createOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionGroup create(Context context) {
@@ -91,10 +88,7 @@ public final class ProtectionGroupImpl implements ProtectionGroup, ProtectionGro
     }
 
     public ProtectionGroup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionGroups()
-            .createOrupdate(resourceGroupName, cloudAccountName, protectionGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectionGroup apply(Context context) {
@@ -108,17 +102,19 @@ public final class ProtectionGroupImpl implements ProtectionGroup, ProtectionGro
         com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudAccounts");
-        this.protectionGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectionGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}",
+            "resourceGroupName");
+        this.cloudAccountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}",
+            "cloudAccountName");
+        this.protectionGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}",
+            "protectionGroupName");
     }
 
     public ProtectionGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProtectionGroups()
-            .getWithResponse(resourceGroupName, cloudAccountName, protectionGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionGroup refresh(Context context) {

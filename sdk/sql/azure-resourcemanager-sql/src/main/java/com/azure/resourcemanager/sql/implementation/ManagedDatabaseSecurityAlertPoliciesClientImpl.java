@@ -111,19 +111,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a managed database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName) {
@@ -205,18 +193,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, accept, context);
     }
 
-    /**
-     * Gets a managed database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseSecurityAlertPolicyInner> getAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, SecurityAlertPolicyName securityAlertPolicyName) {
@@ -224,19 +201,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a managed database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDatabaseSecurityAlertPolicyInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
@@ -245,18 +210,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             context).block();
     }
 
-    /**
-     * Gets a managed database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseSecurityAlertPolicyInner get(String resourceGroupName, String managedInstanceName,
         String databaseName, SecurityAlertPolicyName securityAlertPolicyName) {
@@ -264,20 +218,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName,
@@ -375,19 +316,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             securityAlertPolicyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
@@ -396,20 +325,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             securityAlertPolicyName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
         String managedInstanceName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
@@ -418,19 +334,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             securityAlertPolicyName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates a database's security alert policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedDatabaseSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
@@ -527,17 +431,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed database's security alert policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedDatabaseSecurityAlertPolicyInner> listByDatabaseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName) {
@@ -566,35 +460,14 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed database's security alert policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName));
     }
 
-    /**
-     * Gets a list of managed database's security alert policies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(String resourceGroupName,
         String managedInstanceName, String databaseName, Context context) {

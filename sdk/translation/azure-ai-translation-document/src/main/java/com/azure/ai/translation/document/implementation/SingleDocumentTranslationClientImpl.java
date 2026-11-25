@@ -237,7 +237,7 @@ public final class SingleDocumentTranslationClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> translateWithResponseAsync(String targetLanguage,
+    public Mono<Response<BinaryData>> translateWithResponseInternalAsync(String targetLanguage,
         BinaryData documentTranslateContent, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/octet-stream";
@@ -304,8 +304,8 @@ public final class SingleDocumentTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> translateWithResponse(String targetLanguage, BinaryData documentTranslateContent,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> translateWithResponseInternal(String targetLanguage,
+        BinaryData documentTranslateContent, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/octet-stream";
         return service.translateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), targetLanguage,

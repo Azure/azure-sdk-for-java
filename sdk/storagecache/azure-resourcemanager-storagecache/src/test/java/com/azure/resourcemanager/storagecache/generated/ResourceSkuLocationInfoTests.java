@@ -11,10 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuLocationInfo model
-            = BinaryData.fromString("{\"location\":\"auwjuetaebu\",\"zones\":[\"dmovsm\",\"l\",\"wabm\",\"oefki\"]}")
-                .toObject(ResourceSkuLocationInfo.class);
-        Assertions.assertEquals("auwjuetaebu", model.location());
-        Assertions.assertEquals("dmovsm", model.zones().get(0));
+        ResourceSkuLocationInfo model = BinaryData
+            .fromString(
+                "{\"location\":\"qmqhldvriii\",\"zones\":[\"al\",\"hfkvtvsexsowuel\",\"qhhahhxvrhmzkwpj\",\"wws\"]}")
+            .toObject(ResourceSkuLocationInfo.class);
+        Assertions.assertEquals("qmqhldvriii", model.location());
+        Assertions.assertEquals("al", model.zones().get(0));
     }
 }

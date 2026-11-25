@@ -98,10 +98,7 @@ public final class NamespaceDeviceImpl implements NamespaceDevice, NamespaceDevi
     }
 
     public NamespaceDevice create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceDevices()
-            .createOrReplace(resourceGroupName, namespaceName, deviceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NamespaceDevice create(Context context) {
@@ -123,10 +120,7 @@ public final class NamespaceDeviceImpl implements NamespaceDevice, NamespaceDevi
     }
 
     public NamespaceDevice apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceDevices()
-            .update(resourceGroupName, namespaceName, deviceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NamespaceDevice apply(Context context) {
@@ -140,17 +134,19 @@ public final class NamespaceDeviceImpl implements NamespaceDevice, NamespaceDevi
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.deviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "devices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}",
+            "resourceGroupName");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}",
+            "namespaceName");
+        this.deviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}",
+            "deviceName");
     }
 
     public NamespaceDevice refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceDevices()
-            .getWithResponse(resourceGroupName, namespaceName, deviceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NamespaceDevice refresh(Context context) {

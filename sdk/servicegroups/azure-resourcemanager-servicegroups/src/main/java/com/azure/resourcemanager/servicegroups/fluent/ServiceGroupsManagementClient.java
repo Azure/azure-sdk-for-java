@@ -52,4 +52,11 @@ public interface ServiceGroupsManagementClient {
      * @return the ServiceGroupsClient object.
      */
     ServiceGroupsClient getServiceGroups();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
 }

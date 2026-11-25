@@ -50,7 +50,7 @@ public final class EnclaveConnectionsImpl implements EnclaveConnections {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String enclaveConnectionName) {
-        this.serviceClient().delete(resourceGroupName, enclaveConnectionName);
+        this.delete(resourceGroupName, enclaveConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String enclaveConnectionName, Context context) {
@@ -58,9 +58,7 @@ public final class EnclaveConnectionsImpl implements EnclaveConnections {
     }
 
     public PagedIterable<EnclaveConnectionResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<EnclaveConnectionResourceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnclaveConnectionResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<EnclaveConnectionResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -70,8 +68,7 @@ public final class EnclaveConnectionsImpl implements EnclaveConnections {
     }
 
     public PagedIterable<EnclaveConnectionResource> list() {
-        PagedIterable<EnclaveConnectionResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EnclaveConnectionResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<EnclaveConnectionResource> list(Context context) {
@@ -81,13 +78,7 @@ public final class EnclaveConnectionsImpl implements EnclaveConnections {
 
     public ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String enclaveConnectionName,
         ApprovalCallbackRequest body) {
-        ApprovalActionResponseInner inner
-            = this.serviceClient().handleApprovalCreation(resourceGroupName, enclaveConnectionName, body);
-        if (inner != null) {
-            return new ApprovalActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.handleApprovalCreation(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
     public ApprovalActionResponse handleApprovalCreation(String resourceGroupName, String enclaveConnectionName,
@@ -103,13 +94,7 @@ public final class EnclaveConnectionsImpl implements EnclaveConnections {
 
     public ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String enclaveConnectionName,
         ApprovalDeletionCallbackRequest body) {
-        ApprovalActionResponseInner inner
-            = this.serviceClient().handleApprovalDeletion(resourceGroupName, enclaveConnectionName, body);
-        if (inner != null) {
-            return new ApprovalActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.handleApprovalDeletion(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
     public ApprovalActionResponse handleApprovalDeletion(String resourceGroupName, String enclaveConnectionName,
@@ -124,58 +109,30 @@ public final class EnclaveConnectionsImpl implements EnclaveConnections {
     }
 
     public EnclaveConnectionResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enclaveConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "enclaveConnections");
-        if (enclaveConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'enclaveConnections'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, enclaveConnectionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EnclaveConnectionResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enclaveConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "enclaveConnections");
-        if (enclaveConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'enclaveConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String enclaveConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}",
+            "enclaveConnectionName", "enclaveConnections", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, enclaveConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enclaveConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "enclaveConnections");
-        if (enclaveConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'enclaveConnections'.", id)));
-        }
-        this.delete(resourceGroupName, enclaveConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String enclaveConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "enclaveConnections");
-        if (enclaveConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'enclaveConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String enclaveConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}",
+            "enclaveConnectionName", "enclaveConnections", LOGGER);
         this.delete(resourceGroupName, enclaveConnectionName, context);
     }
 

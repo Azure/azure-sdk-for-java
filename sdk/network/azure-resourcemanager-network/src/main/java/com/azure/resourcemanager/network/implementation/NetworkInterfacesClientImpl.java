@@ -312,20 +312,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified network interface in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceInner>> getCloudServiceNetworkInterfaceWithResponseAsync(
         String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName,
@@ -354,7 +341,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCloudServiceNetworkInterface(this.client.getEndpoint(), apiVersion,
@@ -406,7 +393,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCloudServiceNetworkInterface(this.client.getEndpoint(), apiVersion,
@@ -414,18 +401,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             networkInterfaceName, expand, accept, context);
     }
 
-    /**
-     * Get the specified network interface in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> getCloudServiceNetworkInterfaceAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName) {
@@ -434,20 +410,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             networkInterfaceName, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified network interface in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceInner> getCloudServiceNetworkInterfaceWithResponse(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String expand, Context context) {
@@ -455,18 +418,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             networkInterfaceName, expand, context).block();
     }
 
-    /**
-     * Get the specified network interface in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a cloud service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner getCloudServiceNetworkInterface(String resourceGroupName, String cloudServiceName,
         String roleInstanceName, String networkInterfaceName) {
@@ -510,7 +462,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceRoleInstanceNetworkInterfaces(this.client.getEndpoint(),
@@ -557,7 +509,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -567,18 +519,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfacesAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName) {
@@ -610,18 +551,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listCloudServiceRoleInstanceNetworkInterfacesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(String resourceGroupName,
         String cloudServiceName, String roleInstanceName) {
@@ -629,19 +559,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             listCloudServiceRoleInstanceNetworkInterfacesAsync(resourceGroupName, cloudServiceName, roleInstanceName));
     }
 
-    /**
-     * Gets information about all network interfaces in a role instance in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The name of role instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a role instance in a cloud service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listCloudServiceRoleInstanceNetworkInterfaces(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, Context context) {
@@ -649,20 +567,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             cloudServiceName, roleInstanceName, context));
     }
 
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -751,18 +656,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             networkInterfaceName, expand, accept, context);
     }
 
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
@@ -771,20 +665,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             virtualmachineIndex, networkInterfaceName, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceWithResponse(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -793,18 +674,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             virtualmachineIndex, networkInterfaceName, expand, context).block();
     }
 
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
@@ -906,18 +776,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex) {
@@ -949,18 +808,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex) {
@@ -968,19 +816,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             virtualMachineScaleSetName, virtualmachineIndex));
     }
 
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, Context context) {
@@ -988,18 +824,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             virtualMachineScaleSetName, virtualmachineIndex, context));
     }
 
-    /**
-     * Gets information about the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network interface along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String networkInterfaceName, String expand) {
@@ -1019,7 +844,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1059,23 +884,14 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, networkInterfaceName, expand, accept, context);
     }
 
-    /**
-     * Gets information about the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network interface on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> getByResourceGroupAsync(String resourceGroupName, String networkInterfaceName) {
         final String expand = null;
@@ -1083,52 +899,21 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network interface along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkInterfaceName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkInterfaceName, expand, context).block();
     }
 
-    /**
-     * Gets information about the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner getByResourceGroup(String resourceGroupName, String networkInterfaceName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, networkInterfaceName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to the create or update network interface operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkInterfaceName, NetworkInterfaceInner parameters) {
@@ -1153,7 +938,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1200,7 +985,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1208,17 +993,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             resourceGroupName, networkInterfaceName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to the create or update network interface operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a network interface in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
@@ -1251,35 +1026,14 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             this.client.getHttpPipeline(), NetworkInterfaceInner.class, NetworkInterfaceInner.class, context);
     }
 
-    /**
-     * Creates or updates a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to the create or update network interface operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a network interface in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner>
         beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to the create or update network interface operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a network interface in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
@@ -1287,17 +1041,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to the create or update network interface operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> createOrUpdateAsync(String resourceGroupName, String networkInterfaceName,
         NetworkInterfaceInner parameters) {
@@ -1324,53 +1068,21 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to the create or update network interface operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
         NetworkInterfaceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters).block();
     }
 
-    /**
-     * Creates or updates a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to the create or update network interface operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
         NetworkInterfaceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters, context).block();
     }
 
-    /**
-     * Updates a network interface tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to update network interface tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String networkInterfaceName, TagsObject parameters) {
@@ -1395,7 +1107,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1442,7 +1154,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1450,17 +1162,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             resourceGroupName, networkInterfaceName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a network interface tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to update network interface tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> updateTagsAsync(String resourceGroupName, String networkInterfaceName,
         TagsObject parameters) {
@@ -1468,51 +1170,21 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a network interface tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to update network interface tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceInner> updateTagsWithResponse(String resourceGroupName, String networkInterfaceName,
         TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, parameters, context).block();
     }
 
-    /**
-     * Updates a network interface tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param parameters Parameters supplied to update network interface tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner updateTags(String resourceGroupName, String networkInterfaceName,
         TagsObject parameters) {
         return updateTagsWithResponse(resourceGroupName, networkInterfaceName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String networkInterfaceName) {
@@ -1532,7 +1204,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkInterfaceName, context))
@@ -1569,22 +1241,13 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkInterfaceName, context);
     }
 
-    /**
-     * Deletes the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName);
@@ -1613,48 +1276,20 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             context);
     }
 
-    /**
-     * Deletes the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName) {
         return this.beginDeleteAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkInterfaceName) {
         return beginDeleteAsync(resourceGroupName, networkInterfaceName).last()
@@ -1678,30 +1313,13 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkInterfaceName) {
         deleteAsync(resourceGroupName, networkInterfaceName).block();
     }
 
-    /**
-     * Deletes the specified network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkInterfaceName, Context context) {
         deleteAsync(resourceGroupName, networkInterfaceName, context).block();
@@ -1731,7 +1349,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1767,7 +1385,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1777,15 +1395,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all network interfaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1808,30 +1418,13 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all network interfaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all network interfaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1855,7 +1448,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1885,7 +1478,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1893,13 +1486,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all network interfaces in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -1920,43 +1507,19 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all network interfaces in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all network interfaces in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Gets all route tables applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getEffectiveRouteTableWithResponseAsync(String resourceGroupName,
         String networkInterfaceName) {
@@ -1976,7 +1539,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEffectiveRouteTable(this.client.getEndpoint(), apiVersion,
@@ -2015,23 +1578,14 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getEffectiveRouteTable(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, networkInterfaceName, accept, context);
     }
 
-    /**
-     * Gets all route tables applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of all route tables applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
@@ -2064,49 +1618,21 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             context);
     }
 
-    /**
-     * Gets all route tables applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of all route tables applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
         return this.beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
     }
 
-    /**
-     * Gets all route tables applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of all route tables applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName, Context context) {
         return this.beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
     }
 
-    /**
-     * Gets all route tables applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveRouteListResultInner> getEffectiveRouteTableAsync(String resourceGroupName,
         String networkInterfaceName) {
@@ -2132,49 +1658,20 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets all route tables applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveRouteListResultInner getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
         return getEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName).block();
     }
 
-    /**
-     * Gets all route tables applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all route tables applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveRouteListResultInner getEffectiveRouteTable(String resourceGroupName, String networkInterfaceName,
         Context context) {
         return getEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName, context).block();
     }
 
-    /**
-     * Gets all network security groups applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>>
         listEffectiveNetworkSecurityGroupsWithResponseAsync(String resourceGroupName, String networkInterfaceName) {
@@ -2194,7 +1691,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listEffectiveNetworkSecurityGroups(this.client.getEndpoint(), apiVersion,
@@ -2233,23 +1730,14 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listEffectiveNetworkSecurityGroups(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, networkInterfaceName, accept, context);
     }
 
-    /**
-     * Gets all network security groups applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of all network security groups applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
@@ -2287,16 +1775,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 EffectiveNetworkSecurityGroupListResultInner.class, context);
     }
 
-    /**
-     * Gets all network security groups applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of all network security groups applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
@@ -2305,17 +1784,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .getSyncPoller();
     }
 
-    /**
-     * Gets all network security groups applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of all network security groups applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
@@ -2325,16 +1794,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .getSyncPoller();
     }
 
-    /**
-     * Gets all network security groups applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EffectiveNetworkSecurityGroupListResultInner>
         listEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
@@ -2360,33 +1820,14 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets all network security groups applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName,
         String networkInterfaceName) {
         return listEffectiveNetworkSecurityGroupsAsync(resourceGroupName, networkInterfaceName).block();
     }
 
-    /**
-     * Gets all network security groups applied to a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName The name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups applied to a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EffectiveNetworkSecurityGroupListResultInner listEffectiveNetworkSecurityGroups(String resourceGroupName,
         String networkInterfaceName, Context context) {
@@ -2423,7 +1864,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceNetworkInterfaces(this.client.getEndpoint(), apiVersion,
@@ -2464,7 +1905,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono
                 .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2474,16 +1915,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
         String cloudServiceName) {
@@ -2511,33 +1943,14 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
         String cloudServiceName) {
         return new PagedIterable<>(listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName));
     }
 
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
         String cloudServiceName, Context context) {
@@ -2627,16 +2040,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all network interfaces in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a virtual machine scale set as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfacesAsync(String resourceGroupName,
         String virtualMachineScaleSetName) {
@@ -2666,16 +2070,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listVirtualMachineScaleSetNetworkInterfacesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all network interfaces in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a virtual machine scale set as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName,
         String virtualMachineScaleSetName) {
@@ -2683,17 +2078,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             listVirtualMachineScaleSetNetworkInterfacesAsync(resourceGroupName, virtualMachineScaleSetName));
     }
 
-    /**
-     * Gets all network interfaces in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a virtual machine scale set as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName,
         String virtualMachineScaleSetName, Context context) {
@@ -2701,21 +2086,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             listVirtualMachineScaleSetNetworkInterfacesAsync(resourceGroupName, virtualMachineScaleSetName, context));
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceIpConfigurationInner>>
         getVirtualMachineScaleSetIpConfigurationWithResponseAsync(String resourceGroupName,
@@ -2815,20 +2186,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             networkInterfaceName, ipConfigurationName, expand, accept, context);
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceIpConfigurationInner> getVirtualMachineScaleSetIpConfigurationAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -2839,22 +2197,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceIpConfigurationInner> getVirtualMachineScaleSetIpConfigurationWithResponse(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -2863,19 +2206,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, expand, context).block();
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param ipConfigurationName The ipConfigurationName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceIpConfigurationInner getVirtualMachineScaleSetIpConfiguration(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
@@ -2993,20 +2324,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurationsAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -3017,19 +2335,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listVirtualMachineScaleSetIpConfigurationsNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     * with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurationsAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -3066,19 +2372,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             nextLink -> listVirtualMachineScaleSetIpConfigurationsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurations(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
@@ -3088,21 +2382,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand));
     }
 
-    /**
-     * Get the specified network interface ip configuration in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration in a virtual machine scale set as paginated response
-     * with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurations(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,

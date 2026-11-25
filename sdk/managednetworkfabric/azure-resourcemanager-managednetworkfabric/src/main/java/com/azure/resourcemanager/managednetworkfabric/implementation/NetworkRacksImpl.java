@@ -45,7 +45,7 @@ public final class NetworkRacksImpl implements NetworkRacks {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String networkRackName) {
-        this.serviceClient().delete(resourceGroupName, networkRackName);
+        this.delete(resourceGroupName, networkRackName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkRackName, Context context) {
@@ -53,8 +53,7 @@ public final class NetworkRacksImpl implements NetworkRacks {
     }
 
     public PagedIterable<NetworkRack> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NetworkRackInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkRackImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NetworkRack> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class NetworkRacksImpl implements NetworkRacks {
     }
 
     public PagedIterable<NetworkRack> list() {
-        PagedIterable<NetworkRackInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkRackImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NetworkRack> list(Context context) {
@@ -73,58 +71,30 @@ public final class NetworkRacksImpl implements NetworkRacks {
     }
 
     public NetworkRack getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkRackName = ResourceManagerUtils.getValueFromIdByName(id, "networkRacks");
-        if (networkRackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, networkRackName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetworkRack> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkRackName = ResourceManagerUtils.getValueFromIdByName(id, "networkRacks");
-        if (networkRackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkRackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}",
+            "networkRackName", "networkRacks", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, networkRackName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkRackName = ResourceManagerUtils.getValueFromIdByName(id, "networkRacks");
-        if (networkRackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
-        }
-        this.delete(resourceGroupName, networkRackName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkRackName = ResourceManagerUtils.getValueFromIdByName(id, "networkRacks");
-        if (networkRackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkRackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkRacks/{networkRackName}",
+            "networkRackName", "networkRacks", LOGGER);
         this.delete(resourceGroupName, networkRackName, context);
     }
 

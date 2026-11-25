@@ -12,8 +12,8 @@ public final class RestorableGremlinResourcesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableGremlinResourcesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"qwrldaxur\",\"name\":\"azcsozjvx\",\"type\":\"ciggbnvtxof\",\"databaseName\":\"lzy\",\"graphNames\":[\"oeamo\",\"obdoey\",\"fpnimtwuuhaueg\"]},{\"id\":\"wmnfeubtzjyrkwfu\",\"name\":\"phrrkuum\",\"type\":\"durhzzfopueoqus\",\"databaseName\":\"lujopwnibittozt\",\"graphNames\":[\"u\",\"qvfmwcad\",\"tgctxe\",\"tvgwyurbe\"]},{\"id\":\"nzzryizwbxgde\",\"name\":\"layunomirhpfabe\",\"type\":\"lamwmgewa\",\"databaseName\":\"f\",\"graphNames\":[\"cpjs\",\"bhem\",\"cucsqsnxfbxu\"]},{\"id\":\"apdrbzyvbsuadu\",\"name\":\"odkaxpfobkzhm\",\"type\":\"dqltdel\",\"databaseName\":\"rojadhfz\",\"graphNames\":[\"aysrkgzky\",\"udbkuwpzq\",\"lcwe\"]}],\"nextLink\":\"fecjvxf\"}")
+            "{\"value\":[{\"id\":\"ousz\",\"name\":\"cdwukokgoojjf\",\"type\":\"tubcmu\",\"databaseName\":\"gbtzvxxvsbcu\",\"graphNames\":[\"rfnkcnih\",\"swxmfurqm\"]},{\"id\":\"wwp\",\"name\":\"um\",\"type\":\"ahbqsvnkxm\",\"databaseName\":\"zuae\",\"graphNames\":[\"hxg\",\"qmyrhkvx\"]},{\"id\":\"miemqyftgpqos\",\"name\":\"fqvjmghpakbqyhls\",\"type\":\"nfbmeqagkncjm\",\"databaseName\":\"nyevztnjawrhule\",\"graphNames\":[\"mbwppxirxbkitzmn\",\"itaxju\"]}],\"nextLink\":\"tjlxsgcemegdzdvy\"}")
             .toObject(RestorableGremlinResourcesListResult.class);
-        Assertions.assertEquals("fecjvxf", model.nextLink());
+        Assertions.assertEquals("tjlxsgcemegdzdvy", model.nextLink());
     }
 }

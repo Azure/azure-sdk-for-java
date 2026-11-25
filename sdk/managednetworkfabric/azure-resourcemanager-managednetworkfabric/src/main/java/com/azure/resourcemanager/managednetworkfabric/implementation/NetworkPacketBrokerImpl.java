@@ -142,10 +142,7 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkPacketBrokers()
-            .create(resourceGroupName, networkPacketBrokerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkPacketBroker create(Context context) {
@@ -168,10 +165,7 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkPacketBrokers()
-            .update(resourceGroupName, networkPacketBrokerName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkPacketBroker apply(Context context) {
@@ -185,17 +179,16 @@ public final class NetworkPacketBrokerImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkPacketBrokerName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkPacketBrokers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}",
+            "resourceGroupName");
+        this.networkPacketBrokerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}",
+            "networkPacketBrokerName");
     }
 
     public NetworkPacketBroker refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkPacketBrokers()
-            .getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkPacketBroker refresh(Context context) {

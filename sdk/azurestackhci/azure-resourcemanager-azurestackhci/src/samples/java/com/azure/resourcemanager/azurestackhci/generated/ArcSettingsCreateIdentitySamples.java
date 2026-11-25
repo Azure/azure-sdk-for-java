@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class ArcSettingsCreateIdentitySamples {
     /*
-     * x-ms-original-file: 2026-04-30/CreateArcIdentity.json
+     * x-ms-original-file: 2026-10-01/CreateArcIdentity.json
      */
     /**
      * Sample code: Create Arc Identity.

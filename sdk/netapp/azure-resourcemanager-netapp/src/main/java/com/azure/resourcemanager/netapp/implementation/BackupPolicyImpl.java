@@ -125,10 +125,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .create(resourceGroupName, accountName, backupPolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BackupPolicy create(Context context) {
@@ -150,10 +147,7 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .update(resourceGroupName, accountName, backupPolicyName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BackupPolicy apply(Context context) {
@@ -167,17 +161,19 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.backupPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}",
+            "accountName");
+        this.backupPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupPolicies/{backupPolicyName}",
+            "backupPolicyName");
     }
 
     public BackupPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupPolicies()
-            .getWithResponse(resourceGroupName, accountName, backupPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BackupPolicy refresh(Context context) {

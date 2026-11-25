@@ -76,12 +76,7 @@ public final class RaiExternalSafetyProviderSchemaImpl implements RaiExternalSaf
     }
 
     public RaiExternalSafetyProviderSchema create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTestRaiExternalSafetyProviders()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, safetyProviderName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiExternalSafetyProviderSchema create(Context context) {
@@ -104,12 +99,7 @@ public final class RaiExternalSafetyProviderSchemaImpl implements RaiExternalSaf
     }
 
     public RaiExternalSafetyProviderSchema apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTestRaiExternalSafetyProviders()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, safetyProviderName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiExternalSafetyProviderSchema apply(Context context) {
@@ -124,10 +114,15 @@ public final class RaiExternalSafetyProviderSchemaImpl implements RaiExternalSaf
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.safetyProviderName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "testRaiExternalSafetyProvider");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/testRaiExternalSafetyProvider/{safetyProviderName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/testRaiExternalSafetyProvider/{safetyProviderName}",
+            "accountName");
+        this.safetyProviderName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/testRaiExternalSafetyProvider/{safetyProviderName}",
+            "safetyProviderName");
     }
 
     public RaiExternalSafetyProviderSchemaImpl withProperties(RaiExternalSafetyProviderSchemaProperties properties) {

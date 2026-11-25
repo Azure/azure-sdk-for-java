@@ -50,10 +50,7 @@ public final class ConnectorImpl implements Connector, Connector.Definition, Con
     private ConnectorUpdate updateProperties;
 
     public Connector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .createOrUpdate(connectorName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Connector create(Context context) {
@@ -74,11 +71,7 @@ public final class ConnectorImpl implements Connector, Connector.Definition, Con
     }
 
     public Connector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnectors()
-            .updateWithResponse(connectorName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Connector apply(Context context) {
@@ -93,13 +86,12 @@ public final class ConnectorImpl implements Connector, Connector.Definition, Con
         com.azure.resourcemanager.impactreporting.ImpactReportingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectors");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}", "connectorName");
     }
 
     public Connector refresh() {
-        this.innerObject
-            = serviceManager.serviceClient().getConnectors().getWithResponse(connectorName, Context.NONE).getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Connector refresh(Context context) {

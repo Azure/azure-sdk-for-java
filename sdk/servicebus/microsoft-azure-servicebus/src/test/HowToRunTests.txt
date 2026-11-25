@@ -1,8 +1,13 @@
 How to run unit tests?
 -----------------------
-Tests are simple JUnit tests. They can be run from the command line or any IDE that supports running JUnit tests.
-Only prerequisite to running tests is setting an environment variable named 'AZURE_SERVICEBUS_CONNECTION_STRING' to the connection string
- of the namespace in which the tests will create entities. The tests create entities in the namespace and run tests and delete the created entities.
+Tests use JUnit 5 Jupiter. They can be run from the command line or any IDE that supports JUnit 5.
+To run offline unit tests from the repository root without Azure credentials:
+
+mvn -f sdk\servicebus\microsoft-azure-servicebus\pom.xml test "-Dtest=MessageBodyTests,ConnectionStringBuilderTests,UtilsTests,AadTokenProviderTests"
+
+Service-backed tests are skipped unless 'AZURE_TEST_MODE' is set to 'RECORD'; there are no recorded playback tests in this package.
+To run those tests, also set 'AZURE_SERVICEBUS_CONNECTION_STRING' to the connection string
+of the namespace in which the tests will create entities. The tests create entities in the namespace and run tests and delete the created entities.
 And test classes also have methods to specify whether to create entities per test or once for all tests in a suite. Creating entities per test is better
 as it keeps test independent of each other.
 

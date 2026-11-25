@@ -97,10 +97,7 @@ public final class CloudExadataInfrastructureImpl
     }
 
     public CloudExadataInfrastructure create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudExadataInfrastructures()
-            .createOrUpdate(resourceGroupName, cloudexadatainfrastructurename, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudExadataInfrastructure create(Context context) {
@@ -123,10 +120,7 @@ public final class CloudExadataInfrastructureImpl
     }
 
     public CloudExadataInfrastructure apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudExadataInfrastructures()
-            .update(resourceGroupName, cloudexadatainfrastructurename, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudExadataInfrastructure apply(Context context) {
@@ -140,17 +134,16 @@ public final class CloudExadataInfrastructureImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudexadatainfrastructurename
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudExadataInfrastructures");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
+            "resourceGroupName");
+        this.cloudexadatainfrastructurename = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
+            "cloudexadatainfrastructurename");
     }
 
     public CloudExadataInfrastructure refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudExadataInfrastructures()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudexadatainfrastructurename, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudExadataInfrastructure refresh(Context context) {

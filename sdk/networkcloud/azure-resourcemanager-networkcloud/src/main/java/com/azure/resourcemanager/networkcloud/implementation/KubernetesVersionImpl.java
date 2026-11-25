@@ -113,11 +113,7 @@ public final class KubernetesVersionImpl
     }
 
     public KubernetesVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesVersions()
-            .createOrUpdate(resourceGroupName, kubernetesVersionName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public KubernetesVersion create(Context context) {
@@ -144,11 +140,7 @@ public final class KubernetesVersionImpl
     }
 
     public KubernetesVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesVersions()
-            .update(resourceGroupName, kubernetesVersionName, updateIfMatch, updateIfNoneMatch,
-                updateKubernetesVersionPatchParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public KubernetesVersion apply(Context context) {
@@ -163,16 +155,16 @@ public final class KubernetesVersionImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.kubernetesVersionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kubernetesVersions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}",
+            "resourceGroupName");
+        this.kubernetesVersionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesVersions/{kubernetesVersionName}",
+            "kubernetesVersionName");
     }
 
     public KubernetesVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesVersions()
-            .getByResourceGroupWithResponse(resourceGroupName, kubernetesVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public KubernetesVersion refresh(Context context) {

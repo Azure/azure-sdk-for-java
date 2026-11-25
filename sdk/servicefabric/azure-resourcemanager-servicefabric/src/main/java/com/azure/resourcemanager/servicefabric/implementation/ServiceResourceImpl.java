@@ -96,11 +96,7 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServices()
-            .createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ServiceResource create(Context context) {
@@ -122,10 +118,7 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServices()
-            .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ServiceResource apply(Context context) {
@@ -139,18 +132,22 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
-        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "services");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "clusterName");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "applicationName");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "serviceName");
     }
 
     public ServiceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getServices()
-            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ServiceResource refresh(Context context) {

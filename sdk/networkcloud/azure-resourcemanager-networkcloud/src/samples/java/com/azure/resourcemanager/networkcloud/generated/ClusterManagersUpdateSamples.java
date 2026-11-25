@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ClusterManagersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterManagers_Patch.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Patch.json
      */
     /**
      * Sample code: Patch cluster manager.

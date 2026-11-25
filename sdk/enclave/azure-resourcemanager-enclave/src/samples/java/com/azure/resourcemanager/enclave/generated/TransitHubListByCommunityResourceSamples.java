@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class TransitHubListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/TransitHub_ListByCommunityResource.json
+     * x-ms-original-file: 2026-04-01/TransitHub_ListByCommunityResource.json
      */
     /**
      * Sample code: TransitHub_ListByCommunityResource.

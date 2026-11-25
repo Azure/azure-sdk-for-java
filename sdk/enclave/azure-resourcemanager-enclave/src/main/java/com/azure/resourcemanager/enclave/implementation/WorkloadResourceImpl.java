@@ -89,10 +89,7 @@ public final class WorkloadResourceImpl
     }
 
     public WorkloadResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloads()
-            .createOrUpdate(resourceGroupName, virtualEnclaveName, workloadName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadResource create(Context context) {
@@ -114,10 +111,7 @@ public final class WorkloadResourceImpl
     }
 
     public WorkloadResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloads()
-            .update(resourceGroupName, virtualEnclaveName, workloadName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadResource apply(Context context) {
@@ -131,17 +125,19 @@ public final class WorkloadResourceImpl
         com.azure.resourcemanager.enclave.AzureEnclaveManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualEnclaveName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualEnclaves");
-        this.workloadName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloads");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "resourceGroupName");
+        this.virtualEnclaveName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "virtualEnclaveName");
+        this.workloadName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}",
+            "workloadName");
     }
 
     public WorkloadResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloads()
-            .getWithResponse(resourceGroupName, virtualEnclaveName, workloadName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadResource refresh(Context context) {

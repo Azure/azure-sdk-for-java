@@ -54,10 +54,7 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
     }
 
     public CustomRollout create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomRollouts()
-            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomRollout create(Context context) {
@@ -78,10 +75,7 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
     }
 
     public CustomRollout apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomRollouts()
-            .createOrUpdate(providerNamespace, rolloutName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomRollout apply(Context context) {
@@ -95,16 +89,16 @@ public final class CustomRolloutImpl implements CustomRollout, CustomRollout.Def
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.rolloutName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customRollouts");
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
+            "providerNamespace");
+        this.rolloutName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/customRollouts/{rolloutName}",
+            "rolloutName");
     }
 
     public CustomRollout refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCustomRollouts()
-            .getWithResponse(providerNamespace, rolloutName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomRollout refresh(Context context) {

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.GateProperties;
+import com.azure.resourcemanager.containerservicefleet.models.DayOfWeek;
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
 import com.azure.resourcemanager.containerservicefleet.models.Timing;
@@ -15,12 +16,15 @@ public final class GatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"displayName\":\"gnxytxhpzxbz\",\"gateType\":\"Approval\",\"target\":{\"id\":\"zabglcuhxwt\",\"updateRunProperties\":{\"name\":\"yqiklbbovplwzb\",\"stage\":\"gy\",\"group\":\"uosvmkfssxqukk\",\"timing\":\"After\"}},\"state\":\"Pending\"}")
+            "{\"provisioningState\":\"Canceled\",\"displayName\":\"rp\",\"gateType\":\"Approval\",\"scheduledStartProperties\":{\"startDay\":\"Wednesday\",\"startTime\":\"mnzb\",\"utcOffset\":\"bhjpglkfgohdne\",\"absoluteStartTime\":\"2021-06-11T23:58:50Z\"},\"target\":{\"id\":\"fphsdyhtozfikdow\",\"updateRunProperties\":{\"name\":\"uuvxz\",\"stage\":\"lvithhqzonosgg\",\"group\":\"c\",\"timing\":\"After\"}},\"state\":\"Skipped\"}")
             .toObject(GateProperties.class);
-        Assertions.assertEquals("gnxytxhpzxbz", model.displayName());
+        Assertions.assertEquals("rp", model.displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.gateType());
-        Assertions.assertEquals("zabglcuhxwt", model.target().id());
+        Assertions.assertEquals(DayOfWeek.WEDNESDAY, model.scheduledStartProperties().startDay());
+        Assertions.assertEquals("mnzb", model.scheduledStartProperties().startTime());
+        Assertions.assertEquals("bhjpglkfgohdne", model.scheduledStartProperties().utcOffset());
+        Assertions.assertEquals("fphsdyhtozfikdow", model.target().id());
         Assertions.assertEquals(Timing.AFTER, model.target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.PENDING, model.state());
+        Assertions.assertEquals(GateState.SKIPPED, model.state());
     }
 }

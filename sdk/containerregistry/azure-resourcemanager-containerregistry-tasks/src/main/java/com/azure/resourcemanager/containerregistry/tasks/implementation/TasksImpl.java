@@ -50,12 +50,11 @@ public final class TasksImpl implements Tasks {
     }
 
     public void delete(String resourceGroupName, String registryName, String taskName) {
-        this.serviceClient().delete(resourceGroupName, registryName, taskName);
+        this.deleteWithResponse(resourceGroupName, registryName, taskName, Context.NONE);
     }
 
     public PagedIterable<Task> list(String resourceGroupName, String registryName) {
-        PagedIterable<TaskInner> inner = this.serviceClient().list(resourceGroupName, registryName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new TaskImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, registryName, Context.NONE);
     }
 
     public PagedIterable<Task> list(String resourceGroupName, String registryName, Context context) {
@@ -81,78 +80,36 @@ public final class TasksImpl implements Tasks {
     }
 
     public Task getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByName(id, "registries");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
-        String taskName = ResourceManagerUtils.getValueFromIdByName(id, "tasks");
-        if (taskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tasks'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, registryName, taskName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Task> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByName(id, "registries");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
-        String taskName = ResourceManagerUtils.getValueFromIdByName(id, "tasks");
-        if (taskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tasks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String registryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "registryName", "registries", LOGGER);
+        String taskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "taskName", "tasks", LOGGER);
         return this.getWithResponse(resourceGroupName, registryName, taskName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByName(id, "registries");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
-        String taskName = ResourceManagerUtils.getValueFromIdByName(id, "tasks");
-        if (taskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tasks'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, registryName, taskName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByName(id, "registries");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
-        String taskName = ResourceManagerUtils.getValueFromIdByName(id, "tasks");
-        if (taskName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'tasks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String registryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "registryName", "registries", LOGGER);
+        String taskName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}",
+            "taskName", "tasks", LOGGER);
         return this.deleteWithResponse(resourceGroupName, registryName, taskName, context);
     }
 

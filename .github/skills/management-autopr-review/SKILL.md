@@ -34,10 +34,17 @@ be read as evidence, except files under a `generated` path.
 
 - **Severity:** Warning
 
-Normalize casing and Markdown emphasis. Accept both plain
-`Release Plan link: https://example.com/release-plan` and formatted
-`**Release plan link:** [text](https://example.com/release-plan)`. Require an
-HTTP(S) URL.
+Normalize casing and Markdown emphasis. Accept either description format:
+
+- Legacy label: `Release Plan link: https://example.com/release-plan` or
+  `**Release plan link:** [text](https://example.com/release-plan)`.
+- SDK generation details table:
+  `| **Release plan** | [Release plan #123](https://example.com/release-plan) |`.
+
+Require an HTTP(S) URL in the labeled field or table row's value, as a plain
+URL or Markdown link. A label without a URL, or an unrelated URL elsewhere in
+the description, does not qualify. Do not request a legacy label when the
+table row already contains an accepted URL.
 
 Report when the PR description contains no accepted release-plan link. Cite the
 PR description and continue the remaining review passes so other high-value
@@ -59,6 +66,8 @@ Ignore the fourth and later segments when comparing the module with its
 Report whenever the folder `<service>` differs from the module's third segment.
 Explain that the likely source is the `service-dir` configuration in the
 upstream `tspconfig.yaml`, without accessing that repository.
+An upstream `service-dir` selecting the incorrect folder is the cause of the
+mismatch, not an exception. A confirmed mismatch must remain Blocking.
 
 ### `MGMT-VERSION`: stable package on a preview API
 
@@ -213,13 +222,31 @@ Use only these severity levels:
 
 Every item must cite a repository-relative file and affected symbol or release
 entry and state whether it is `New`, `Carried forward`, or `Resolved`.
-Blocking and Warning items request one concrete human action or verification.
-Informational items provide context without requesting action.
+Unresolved Blocking and Warning items request one concrete human action or
+verification. Resolved items cite resolution evidence without requesting
+action. Informational items provide context without requesting action.
 `MGMT-RELEASE-PLAN` cites the PR description. Reuse stable IDs across commits,
 except that a changed `MGMT-API-VERSION` value is emitted again as `New`.
 When a new head SHA passes the Java gate, include each still-applicable prior
 item as `Carried forward` in the replacement current-state comment; do not
 restate its question as `New`.
+
+Before raising a Warning, check relevant earlier resolutions and author
+replies, not only the latest workflow comment. A verified reply remains
+effective for the same rule, release, affected symbols, and verification
+question after the visible `Resolved` item is omitted. Do not revive that
+unchanged finding. Changed evidence requires fresh verification.
+
+Set Decision from the unresolved (`New` or `Carried forward`) findings after
+critic verification, using the first matching condition:
+
+- Any Blocking finding: `changes requested`; the PR must be fixed before merge.
+- Otherwise, any Warning finding: `human attention requested`; human
+  verification is needed, but a defect is not established.
+- Otherwise: `no high-confidence concerns`.
+
+Resolved findings do not escalate the decision. These labels are advisory
+comment text, not GitHub review submissions or enforced merge gates.
 
 Code-format the complete bracketed concern ID, including the square brackets,
 for example `[MGMT-LIST-RETURN]`. Do not wrap the complete finding in
@@ -237,15 +264,17 @@ Output:
 - CHANGELOG: `<release and date>`
 - Java changes reviewed: `<summary>`
 - Breaking changes: `<none|summary>`
-- Decision: `<no high-confidence concerns|human attention requested>`
+- Decision: `<changes requested|human attention requested|no high-confidence concerns>`
 
 ### Blocking
 
-- `[MGMT-...]` New|Carried forward|Resolved — evidence and requested action
+- `[MGMT-...]` New|Carried forward — evidence and requested action
+- `[MGMT-...]` Resolved — resolution evidence
 
 ### Warning
 
-- `[MGMT-...]` New|Carried forward|Resolved — evidence and verification request
+- `[MGMT-...]` New|Carried forward — evidence and verification request
+- `[MGMT-...]` Resolved — resolution evidence
 
 ### Informational
 

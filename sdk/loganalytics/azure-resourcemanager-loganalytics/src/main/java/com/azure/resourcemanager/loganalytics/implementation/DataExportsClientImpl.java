@@ -194,18 +194,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a data export instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataExportInner> getWithResponse(String resourceGroupName, String workspaceName,
         String dataExportName, Context context) {
@@ -214,17 +203,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
             resourceGroupName, workspaceName, dataExportName, accept, context);
     }
 
-    /**
-     * Gets a data export instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataExportInner get(String resourceGroupName, String workspaceName, String dataExportName) {
         return getWithResponse(resourceGroupName, workspaceName, dataExportName, Context.NONE).getValue();
@@ -274,19 +253,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a data export.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param parameters The parameters required to create or update a data export.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataExportInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String dataExportName, DataExportInner parameters, Context context) {
@@ -297,18 +264,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
             parameters, context);
     }
 
-    /**
-     * Create or update a data export.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param parameters The parameters required to create or update a data export.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataExportInner createOrUpdate(String resourceGroupName, String workspaceName, String dataExportName,
         DataExportInner parameters) {
@@ -353,18 +309,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the specified data export in a given workspace..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
         Context context) {
@@ -372,16 +317,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, dataExportName, context);
     }
 
-    /**
-     * Deletes the specified data export in a given workspace..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String dataExportName) {
         deleteWithResponse(resourceGroupName, workspaceName, dataExportName, Context.NONE);
@@ -438,12 +374,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataExportInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<DataExportListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -468,33 +399,13 @@ public final class DataExportsClientImpl implements DataExportsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the data export instances within a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataExportInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Lists the data export instances within a workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataExportInner> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
@@ -533,11 +444,7 @@ public final class DataExportsClientImpl implements DataExportsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataExportInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataExportListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

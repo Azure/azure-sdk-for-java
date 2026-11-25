@@ -5,7 +5,12 @@ package com.azure.core.util.polling;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.Disposable;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -13,7 +18,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -25,6 +33,9 @@ import static com.azure.core.util.polling.LongRunningOperationStatus.SUCCESSFULL
 import static com.azure.core.util.polling.PollerFlux.create;
 import static com.azure.core.util.polling.PollerFlux.error;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -287,6 +298,95 @@ public class PollerTests {
             .verify(STEPVERIFIER_TIMEOUT);
 
         assertEquals(1, activationCallCount[0]);
+    }
+
+    @Test
+    public void cancelledSubscriberDoesNotCancelSharedActivation() {
+        AtomicInteger attempts = new AtomicInteger();
+        AtomicBoolean cancelled = new AtomicBoolean();
+        Sinks.One<PollResponse<String>> activation = Sinks.one();
+        PollerFlux<String, String> poller = create(Duration.ofMillis(1), context -> {
+            attempts.incrementAndGet();
+            return activation.asMono().doOnCancel(() -> cancelled.set(true));
+        }, context -> Mono.error(new AssertionError("Completed activation must not poll")),
+            (context, response) -> Mono.empty(), context -> Mono.empty());
+
+        Disposable first = poller.subscribe();
+        first.dispose();
+        assertFalse(cancelled.get());
+        assertEquals(1, attempts.get());
+
+        activation.emitValue(new PollResponse<>(SUCCESSFULLY_COMPLETED, "activated"),
+            Sinks.EmitFailureHandler.FAIL_FAST);
+        StepVerifier.create(poller)
+            .assertNext(response -> assertEquals("activated", response.getValue()))
+            .expectComplete()
+            .verify(STEPVERIFIER_TIMEOUT);
+        assertEquals(1, attempts.get());
+    }
+
+    @Test
+    public void concurrentSubscribersWaitForSharedActivationWithoutBlocking() throws Exception {
+        AtomicInteger attempts = new AtomicInteger();
+        Sinks.One<PollResponse<String>> activation = Sinks.one();
+        PollerFlux<String, String> poller = create(Duration.ofMillis(1), context -> {
+            attempts.incrementAndGet();
+            return activation.asMono();
+        }, context -> Mono.error(new AssertionError("Completed activation must not poll")),
+            (context, response) -> Mono.empty(), context -> Mono.empty());
+        AtomicReference<AsyncPollResponse<String, String>> firstResponse = new AtomicReference<>();
+        AtomicReference<AsyncPollResponse<String, String>> secondResponse = new AtomicReference<>();
+        Disposable first = poller.subscribe(firstResponse::set);
+        BaseSubscriber<AsyncPollResponse<String, String>> second
+            = new BaseSubscriber<AsyncPollResponse<String, String>>() {
+                @Override
+                protected void hookOnNext(AsyncPollResponse<String, String> response) {
+                    secondResponse.set(response);
+                }
+            };
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try {
+            executor.submit(() -> poller.subscribe(second)).get(5, TimeUnit.SECONDS);
+            assertEquals(1, attempts.get());
+            assertNull(firstResponse.get());
+            assertNull(secondResponse.get());
+
+            activation.emitValue(new PollResponse<>(SUCCESSFULLY_COMPLETED, "activated"),
+                Sinks.EmitFailureHandler.FAIL_FAST);
+            assertNotNull(firstResponse.get());
+            assertNotNull(secondResponse.get());
+            assertEquals("activated", firstResponse.get().getValue());
+            assertEquals("activated", secondResponse.get().getValue());
+        } finally {
+            first.dispose();
+            second.cancel();
+            executor.shutdownNow();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void failedActivationCanBeRetried(boolean synchronousFailure) {
+        AtomicInteger attempts = new AtomicInteger();
+        IllegalStateException expected = new IllegalStateException("Activation failed");
+        PollerFlux<String, String> poller = create(Duration.ofMillis(1), context -> {
+            if (attempts.incrementAndGet() == 1) {
+                if (synchronousFailure) {
+                    throw expected;
+                }
+                return Mono.error(expected);
+            }
+            return Mono.just(new PollResponse<>(SUCCESSFULLY_COMPLETED, "activated"));
+        }, context -> Mono.error(new AssertionError("Completed activation must not poll")),
+            (context, response) -> Mono.empty(), context -> Mono.empty());
+
+        StepVerifier.create(poller).expectErrorMatches(error -> error == expected).verify(STEPVERIFIER_TIMEOUT);
+        StepVerifier.create(poller)
+            .assertNext(response -> assertEquals("activated", response.getValue()))
+            .expectComplete()
+            .verify(STEPVERIFIER_TIMEOUT);
+        StepVerifier.create(poller).expectNextCount(1).expectComplete().verify(STEPVERIFIER_TIMEOUT);
+        assertEquals(2, attempts.get());
     }
 
     @Test

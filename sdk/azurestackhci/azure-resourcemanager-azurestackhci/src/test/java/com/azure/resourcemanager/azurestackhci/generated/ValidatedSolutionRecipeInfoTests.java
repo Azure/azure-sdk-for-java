@@ -12,9 +12,9 @@ public final class ValidatedSolutionRecipeInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidatedSolutionRecipeInfo model
-            = BinaryData.fromString("{\"solutionType\":\"jihw\",\"version\":\"ebiphryvcjwqwoq\"}")
+            = BinaryData.fromString("{\"solutionType\":\"qbxyxoyfpuqqi\",\"version\":\"ezxlhdjzqdca\"}")
                 .toObject(ValidatedSolutionRecipeInfo.class);
-        Assertions.assertEquals("jihw", model.solutionType());
-        Assertions.assertEquals("ebiphryvcjwqwoq", model.version());
+        Assertions.assertEquals("qbxyxoyfpuqqi", model.solutionType());
+        Assertions.assertEquals("ezxlhdjzqdca", model.version());
     }
 }

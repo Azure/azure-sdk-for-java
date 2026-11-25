@@ -27,15 +27,15 @@ public class Sample18_AnalyzeChunkingAsyncTest extends ContentUnderstandingPrevi
     public void testAnalyzeChunkingAsync() throws Exception {
         String analyzerId = testResourceNamer.randomName("semantic_chunking_", 50);
         try {
-            ContentAnalyzer createdAnalyzer = contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(analyzerId,
-                    PreviewSampleTestSupport.createChunkingAnalyzer(getModelProfile().getCompletionModel()), true)
-                .last()
-                .flatMap(response -> {
-                    assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                    return response.getFinalResult();
-                })
-                .block();
+            ContentAnalyzer createdAnalyzer
+                = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId,
+                    PreviewSampleTestSupport.createChunkingAnalyzer(getModelProfile().getCompletionModel()), true))
+                        .last()
+                        .flatMap(response -> {
+                            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+                            return response.getFinalResult();
+                        })
+                        .block();
             assertNotNull(createdAnalyzer);
 
             ContentAnalyzer persistedAnalyzer = contentUnderstandingAsyncClient.getAnalyzer(analyzerId).block();
@@ -45,14 +45,12 @@ public class Sample18_AnalyzeChunkingAsyncTest extends ContentUnderstandingPrevi
                 = assertInstanceOf(SemanticChunkingStrategy.class, persistedAnalyzer.getConfig().getChunkingStrategy());
             assertEquals(300, strategy.getMaxTokens());
 
-            AnalysisResult result = contentUnderstandingAsyncClient
-                .beginAnalyzeBinary(analyzerId, PreviewSampleTestSupport.readSample("sample_invoice.pdf"))
-                .last()
-                .flatMap(response -> {
-                    assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                    return response.getFinalResult();
-                })
-                .block();
+            AnalysisResult result
+                = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginAnalyzeBinary(analyzerId,
+                    PreviewSampleTestSupport.readSample("sample_invoice.pdf"))).last().flatMap(response -> {
+                        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+                        return response.getFinalResult();
+                    }).block();
             assertNotNull(result);
             assertNotNull(result.getContents());
             assertFalse(result.getContents().isEmpty());

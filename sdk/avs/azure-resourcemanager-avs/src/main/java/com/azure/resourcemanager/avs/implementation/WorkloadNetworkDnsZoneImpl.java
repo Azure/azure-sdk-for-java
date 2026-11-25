@@ -97,10 +97,7 @@ public final class WorkloadNetworkDnsZoneImpl
     }
 
     public WorkloadNetworkDnsZone create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .createDnsZone(resourceGroupName, privateCloudName, dnsZoneId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadNetworkDnsZone create(Context context) {
@@ -121,10 +118,7 @@ public final class WorkloadNetworkDnsZoneImpl
     }
 
     public WorkloadNetworkDnsZone apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .updateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkloadNetworkDnsZone apply(Context context) {
@@ -138,17 +132,19 @@ public final class WorkloadNetworkDnsZoneImpl
         com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.dnsZoneId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsZones");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}",
+            "privateCloudName");
+        this.dnsZoneId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}",
+            "dnsZoneId");
     }
 
     public WorkloadNetworkDnsZone refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadNetworks()
-            .getDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadNetworkDnsZone refresh(Context context) {

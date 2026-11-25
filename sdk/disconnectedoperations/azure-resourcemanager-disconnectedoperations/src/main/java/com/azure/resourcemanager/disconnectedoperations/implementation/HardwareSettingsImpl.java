@@ -28,8 +28,7 @@ public final class HardwareSettingsImpl implements HardwareSettings {
     }
 
     public PagedIterable<HardwareSetting> listByParent(String resourceGroupName, String name) {
-        PagedIterable<HardwareSettingInner> inner = this.serviceClient().listByParent(resourceGroupName, name);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HardwareSettingImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, name, Context.NONE);
     }
 
     public PagedIterable<HardwareSetting> listByParent(String resourceGroupName, String name, Context context) {
@@ -55,7 +54,7 @@ public final class HardwareSettingsImpl implements HardwareSettings {
     }
 
     public void delete(String resourceGroupName, String name, String hardwareSettingName) {
-        this.serviceClient().delete(resourceGroupName, name, hardwareSettingName);
+        this.delete(resourceGroupName, name, hardwareSettingName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String name, String hardwareSettingName, Context context) {
@@ -63,78 +62,36 @@ public final class HardwareSettingsImpl implements HardwareSettings {
     }
 
     public HardwareSetting getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
-        String hardwareSettingName = ResourceManagerUtils.getValueFromIdByName(id, "hardwareSettings");
-        if (hardwareSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hardwareSettings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, name, hardwareSettingName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<HardwareSetting> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
-        String hardwareSettingName = ResourceManagerUtils.getValueFromIdByName(id, "hardwareSettings");
-        if (hardwareSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hardwareSettings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}",
+            "name", "disconnectedOperations", LOGGER);
+        String hardwareSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}",
+            "hardwareSettingName", "hardwareSettings", LOGGER);
         return this.getWithResponse(resourceGroupName, name, hardwareSettingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
-        String hardwareSettingName = ResourceManagerUtils.getValueFromIdByName(id, "hardwareSettings");
-        if (hardwareSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hardwareSettings'.", id)));
-        }
-        this.delete(resourceGroupName, name, hardwareSettingName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByName(id, "disconnectedOperations");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'disconnectedOperations'.", id)));
-        }
-        String hardwareSettingName = ResourceManagerUtils.getValueFromIdByName(id, "hardwareSettings");
-        if (hardwareSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hardwareSettings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String name = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}",
+            "name", "disconnectedOperations", LOGGER);
+        String hardwareSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/hardwareSettings/{hardwareSettingName}",
+            "hardwareSettingName", "hardwareSettings", LOGGER);
         this.delete(resourceGroupName, name, hardwareSettingName, context);
     }
 

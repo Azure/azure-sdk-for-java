@@ -319,8 +319,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
@@ -331,8 +331,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("locationName") String locationName,
             @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
@@ -343,8 +343,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
@@ -356,8 +356,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
             @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -408,18 +408,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LongTermRetentionBackupInner>> getWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -497,18 +486,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, accept, context);
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> getAsync(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName) {
@@ -516,19 +494,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LongTermRetentionBackupInner> getWithResponse(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -536,18 +502,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, context).block();
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner get(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName) {
@@ -555,18 +510,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -642,18 +586,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName) {
@@ -686,18 +619,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName) {
@@ -706,19 +628,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -728,18 +638,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName) {
@@ -768,35 +667,14 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
         String backupName) {
         deleteAsync(locationName, longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
         String backupName, Context context) {
@@ -899,19 +777,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all long term retention backups for a database.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase,
@@ -922,17 +788,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all long term retention backups for a database.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByDatabaseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName) {
@@ -968,17 +824,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all long term retention backups for a database.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByDatabase(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName) {
@@ -988,20 +834,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState));
     }
 
-    /**
-     * Lists all long term retention backups for a database.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByDatabase(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, Boolean onlyLatestPerDatabase,
@@ -1010,19 +843,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState, context));
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> changeAccessTierWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -1116,19 +937,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginChangeAccessTierAsync(String locationName, String longTermRetentionServerName,
@@ -1168,19 +977,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -1191,20 +988,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner> beginChangeAccessTier(
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -1215,19 +999,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> changeAccessTierAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -1258,19 +1030,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName,
@@ -1279,20 +1039,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, parameters).block();
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner changeAccessTier(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName,
@@ -1301,20 +1048,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, parameters, context).block();
     }
 
-    /**
-     * Copy an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> copyWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -1409,19 +1143,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters, context);
     }
 
-    /**
-     * Copy an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -1463,19 +1185,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 LongTermRetentionBackupOperationResultInner.class, context);
     }
 
-    /**
-     * Copy an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -1487,20 +1197,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Copy an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -1512,19 +1209,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Copy an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupOperationResultInner> copyAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -1555,19 +1240,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Copy an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner copy(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters) {
@@ -1575,20 +1248,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters).block();
     }
 
-    /**
-     * Copy an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner copy(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName, CopyLongTermRetentionBackupParameters parameters,
@@ -1597,18 +1257,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters, context).block();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -1687,18 +1336,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, accept, context);
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginLockTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
@@ -1735,18 +1373,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginLockTimeBasedImmutability(String locationName, String longTermRetentionServerName,
@@ -1757,19 +1384,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginLockTimeBasedImmutability(String locationName, String longTermRetentionServerName,
@@ -1780,18 +1395,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -1819,18 +1423,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner lockTimeBasedImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -1838,19 +1431,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName).block();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner lockTimeBasedImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -1858,18 +1439,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, context).block();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -1948,18 +1518,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, accept, context);
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
@@ -1996,18 +1555,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveLegalHoldImmutability(String locationName, String longTermRetentionServerName,
@@ -2018,19 +1566,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveLegalHoldImmutability(String locationName, String longTermRetentionServerName,
@@ -2041,18 +1577,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2080,18 +1605,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeLegalHoldImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2099,19 +1613,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeLegalHoldImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -2119,18 +1621,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).block();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2209,18 +1700,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, accept, context);
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveTimeBasedImmutabilityAsync(String locationName, String longTermRetentionServerName,
@@ -2257,18 +1737,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveTimeBasedImmutability(String locationName, String longTermRetentionServerName,
@@ -2279,19 +1748,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveTimeBasedImmutability(String locationName, String longTermRetentionServerName,
@@ -2302,18 +1759,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2341,18 +1787,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeTimeBasedImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2360,19 +1795,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeTimeBasedImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -2380,18 +1803,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).block();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2470,18 +1882,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, accept, context);
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginSetLegalHoldImmutabilityAsync(String locationName, String longTermRetentionServerName,
@@ -2518,18 +1919,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginSetLegalHoldImmutability(String locationName, String longTermRetentionServerName,
@@ -2540,19 +1930,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginSetLegalHoldImmutability(String locationName, String longTermRetentionServerName,
@@ -2563,18 +1941,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2602,18 +1969,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner setLegalHoldImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -2621,19 +1977,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName).block();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner setLegalHoldImmutability(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -2641,20 +1985,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             backupName, context).block();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -2749,19 +2080,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters, context);
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -2803,19 +2122,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 LongTermRetentionBackupOperationResultInner.class, context);
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -2827,20 +2134,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -2852,19 +2146,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupOperationResultInner> updateAsync(String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -2895,19 +2177,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner update(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName, UpdateLongTermRetentionBackupParameters parameters) {
@@ -2915,20 +2185,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters).block();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner update(String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName, UpdateLongTermRetentionBackupParameters parameters,
@@ -2937,19 +2194,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             parameters, context).block();
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LongTermRetentionBackupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3039,19 +2284,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, accept, context);
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> getByResourceGroupAsync(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -3059,20 +2292,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LongTermRetentionBackupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3081,19 +2301,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).block();
     }
 
-    /**
-     * Gets a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner getByResourceGroup(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -3101,19 +2309,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3201,19 +2397,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3249,19 +2433,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -3271,20 +2443,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteByResourceGroup(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -3294,19 +2453,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName) {
@@ -3335,18 +2482,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName) {
@@ -3354,19 +2490,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Deletes a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByResourceGroup(String resourceGroupName, String locationName, String longTermRetentionServerName,
         String longTermRetentionDatabaseName, String backupName, Context context) {
@@ -3481,20 +2605,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all long term retention backups for a database based on a particular resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3505,18 +2616,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all long term retention backups for a database based on a particular resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupDatabaseAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
@@ -3552,18 +2652,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             nextLink -> listByResourceGroupDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all long term retention backups for a database based on a particular resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName) {
@@ -3573,21 +2662,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState));
     }
 
-    /**
-     * Lists all long term retention backups for a database based on a particular resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupDatabase(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3596,20 +2671,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, onlyLatestPerDatabase, databaseState, context));
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> changeAccessTierByResourceGroupWithResponseAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3713,20 +2775,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginChangeAccessTierByResourceGroupAsync(String resourceGroupName, String locationName,
@@ -3767,20 +2816,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
@@ -3792,21 +2828,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginChangeAccessTierByResourceGroup(String resourceGroupName, String locationName,
@@ -3818,20 +2840,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> changeAccessTierByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -3865,20 +2874,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -3887,21 +2883,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, parameters).block();
     }
 
-    /**
-     * Change a long term retention backup access tier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner changeAccessTierByResourceGroup(String resourceGroupName, String locationName,
         String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName,
@@ -3910,21 +2892,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, parameters, context).block();
     }
 
-    /**
-     * Copy an existing long term retention backup to a different server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> copyByResourceGroupWithResponseAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4028,20 +2996,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Copy an existing long term retention backup to a different server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -4085,20 +3040,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 LongTermRetentionBackupOperationResultInner.class, context);
     }
 
-    /**
-     * Copy an existing long term retention backup to a different server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -4110,21 +3052,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Copy an existing long term retention backup to a different server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -4137,20 +3065,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Copy an existing long term retention backup to a different server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupOperationResultInner> copyByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4184,20 +3099,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Copy an existing long term retention backup to a different server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner copyByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4206,21 +3108,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, parameters).block();
     }
 
-    /**
-     * Copy an existing long term retention backup to a different server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The parameters needed for long term retention copy request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner copyByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4229,19 +3117,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, parameters, context).block();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> lockTimeBasedImmutabilityByResourceGroupWithResponseAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
@@ -4331,19 +3207,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, accept, context);
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginLockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
@@ -4383,19 +3247,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -4406,20 +3258,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginLockTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -4431,19 +3270,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> lockTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4476,19 +3303,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4497,20 +3312,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Lock time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner lockTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4519,19 +3321,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> removeLegalHoldImmutabilityByResourceGroupWithResponseAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
@@ -4621,19 +3411,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, accept, context);
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
@@ -4673,19 +3451,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -4696,20 +3462,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -4721,19 +3474,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> removeLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4766,19 +3507,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4787,20 +3516,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Remove legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -4809,19 +3525,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> removeTimeBasedImmutabilityByResourceGroupWithResponseAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
@@ -4911,19 +3615,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, accept, context);
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
@@ -4963,19 +3655,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -4986,20 +3666,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginRemoveTimeBasedImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -5011,19 +3678,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> removeTimeBasedImmutabilityByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5056,19 +3711,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5077,20 +3720,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Remove time based immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner removeTimeBasedImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5099,19 +3729,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> setLegalHoldImmutabilityByResourceGroupWithResponseAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
@@ -5201,19 +3819,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, accept, context);
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginSetLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName, String locationName,
@@ -5253,19 +3859,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             context);
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -5276,20 +3870,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LongTermRetentionBackupInner>, LongTermRetentionBackupInner>
         beginSetLegalHoldImmutabilityByResourceGroup(String resourceGroupName, String locationName,
@@ -5301,19 +3882,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupInner> setLegalHoldImmutabilityByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5346,19 +3915,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5367,20 +3924,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName).block();
     }
 
-    /**
-     * Set legal hold immutability of an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention backup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupInner setLegalHoldImmutabilityByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5389,21 +3933,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionServerName, longTermRetentionDatabaseName, backupName, context).block();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateByResourceGroupWithResponseAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5508,20 +4038,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -5566,20 +4083,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 LongTermRetentionBackupOperationResultInner.class, context);
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -5592,21 +4096,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<LongTermRetentionBackupOperationResultInner>, LongTermRetentionBackupOperationResultInner>
@@ -5619,20 +4109,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             .getSyncPoller();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LongTermRetentionBackupOperationResultInner> updateByResourceGroupAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5666,20 +4143,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner updateByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5688,21 +4152,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             longTermRetentionDatabaseName, backupName, parameters).block();
     }
 
-    /**
-     * Updates an existing long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param longTermRetentionDatabaseName The name of the database.
-     * @param backupName The backup name.
-     * @param parameters The requested backup resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LongTermRetentionBackup operation result resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LongTermRetentionBackupOperationResultInner updateByResourceGroup(String resourceGroupName,
         String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName,
@@ -5717,6 +4167,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5725,7 +4177,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5740,7 +4192,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), locationName, onlyLatestPerDatabase, databaseState, accept, context))
+                this.client.getSubscriptionId(), locationName, onlyLatestPerDatabase, databaseState, skiptoken, top,
+                accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -5752,6 +4205,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5761,7 +4216,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5777,43 +4232,29 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         context = this.client.mergeContext(context);
         return service
             .listByLocation(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                locationName, onlyLatestPerDatabase, databaseState, accept, context)
+                locationName, onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
@@ -5823,6 +4264,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5831,44 +4274,28 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
-        return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState,
+            skiptoken, top, context), nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedIterable<>(
+            listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top));
     }
 
-    /**
-     * Lists the long term retention backups for a given location.
-     * 
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
-        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, context));
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
+        return new PagedIterable<>(
+            listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top, context));
     }
 
     /**
@@ -5878,6 +4305,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5886,7 +4315,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(String locationName,
-        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
+        String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5906,7 +4336,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return FluxUtil
             .withContext(context -> service.listByServer(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), locationName, longTermRetentionServerName, onlyLatestPerDatabase,
-                databaseState, accept, context))
+                databaseState, skiptoken, top, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -5919,6 +4349,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5929,7 +4361,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(String locationName,
         String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
+        String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5949,47 +4381,33 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         context = this.client.mergeContext(context);
         return service
             .listByServer(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState, accept, context)
+                locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top, accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName,
-        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
+        String skiptoken, Long top) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(locationName, longTermRetentionServerName,
-            onlyLatestPerDatabase, databaseState), nextLink -> listByServerNextSinglePageAsync(nextLink));
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName,
         String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedFlux<>(() -> listByServerSinglePageAsync(locationName, longTermRetentionServerName,
-            onlyLatestPerDatabase, databaseState), nextLink -> listByServerNextSinglePageAsync(nextLink));
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -5999,6 +4417,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6008,50 +4428,32 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName,
         String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(locationName, longTermRetentionServerName,
-            onlyLatestPerDatabase, databaseState, context),
+        String skiptoken, Long top, Context context) {
+        return new PagedFlux<>(
+            () -> listByServerSinglePageAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase,
+                databaseState, skiptoken, top, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName,
         String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedIterable<>(listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase,
+            databaseState, skiptoken, top));
     }
 
-    /**
-     * Lists the long term retention backups for a given server.
-     * 
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName,
         String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
+        String skiptoken, Long top, Context context) {
         return new PagedIterable<>(listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase,
-            databaseState, context));
+            databaseState, skiptoken, top, context));
     }
 
     /**
@@ -6061,6 +4463,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6069,7 +4473,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
-        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
+        String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6089,7 +4494,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return FluxUtil
             .withContext(context -> service.listByResourceGroupLocation(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, locationName,
-                onlyLatestPerDatabase, databaseState, accept, context))
+                onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -6102,6 +4507,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6112,7 +4519,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
         String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
+        String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6133,48 +4540,30 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return service
             .listByResourceGroupLocation(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, locationName, onlyLatestPerDatabase, databaseState,
-                accept, context)
+                skiptoken, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for a given location based on resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
         return new PagedFlux<>(() -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState),
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for a given location based on resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
         String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedFlux<>(() -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState),
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
@@ -6185,6 +4574,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6193,49 +4584,33 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState, context),
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top,
+        Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName, onlyLatestPerDatabase,
+                databaseState, skiptoken, top, context),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for a given location based on resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName,
         String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedIterable<>(listByResourceGroupLocationAsync(resourceGroupName, locationName,
+            onlyLatestPerDatabase, databaseState, skiptoken, top));
     }
 
-    /**
-     * Lists the long term retention backups for a given location based on resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupLocationAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState, context));
+            onlyLatestPerDatabase, databaseState, skiptoken, top, context));
     }
 
     /**
@@ -6246,6 +4621,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6255,7 +4632,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6279,7 +4656,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return FluxUtil
             .withContext(context -> service.listByResourceGroupServer(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, locationName,
-                longTermRetentionServerName, onlyLatestPerDatabase, databaseState, accept, context))
+                longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -6293,6 +4670,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6303,7 +4682,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6328,53 +4707,33 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return service
             .listByResourceGroupServer(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState, accept, context)
+                onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists the long term retention backups for a given server based on resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState) {
+        DatabaseState databaseState, String skiptoken, Long top) {
         return new PagedFlux<>(
             () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState),
+                onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists the long term retention backups for a given server based on resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedFlux<>(
             () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState),
+                onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
     }
 
@@ -6386,6 +4745,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6395,53 +4756,32 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState, Context context) {
+        DatabaseState databaseState, String skiptoken, Long top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState, context),
+                onlyLatestPerDatabase, databaseState, skiptoken, top, context),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists the long term retention backups for a given server based on resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName,
         String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedIterable<>(listByResourceGroupServerAsync(resourceGroupName, locationName,
-            longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+            longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top));
     }
 
-    /**
-     * Lists the long term retention backups for a given server based on resource groups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param locationName The location of the database.
-     * @param longTermRetentionServerName The name of the server.
-     * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
-     * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName,
         String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState, Context context) {
+        DatabaseState databaseState, String skiptoken, Long top, Context context) {
         return new PagedIterable<>(listByResourceGroupServerAsync(resourceGroupName, locationName,
-            longTermRetentionServerName, onlyLatestPerDatabase, databaseState, context));
+            longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top, context));
     }
 
     /**

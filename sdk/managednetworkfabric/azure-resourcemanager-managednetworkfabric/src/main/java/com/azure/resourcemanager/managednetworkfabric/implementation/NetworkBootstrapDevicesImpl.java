@@ -58,7 +58,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String networkBootstrapDeviceName) {
-        this.serviceClient().delete(resourceGroupName, networkBootstrapDeviceName);
+        this.delete(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkBootstrapDeviceName, Context context) {
@@ -66,8 +66,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
     }
 
     public PagedIterable<NetworkBootstrapDevice> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NetworkBootstrapDeviceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkBootstrapDeviceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NetworkBootstrapDevice> listByResourceGroup(String resourceGroupName, Context context) {
@@ -77,8 +76,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
     }
 
     public PagedIterable<NetworkBootstrapDevice> list() {
-        PagedIterable<NetworkBootstrapDeviceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkBootstrapDeviceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NetworkBootstrapDevice> list(Context context) {
@@ -87,13 +85,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
     }
 
     public NetworkBootstrapDeviceRebootResponse reboot(String resourceGroupName, String networkBootstrapDeviceName) {
-        NetworkBootstrapDeviceRebootResponseInner inner
-            = this.serviceClient().reboot(resourceGroupName, networkBootstrapDeviceName);
-        if (inner != null) {
-            return new NetworkBootstrapDeviceRebootResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reboot(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     public NetworkBootstrapDeviceRebootResponse reboot(String resourceGroupName, String networkBootstrapDeviceName,
@@ -109,13 +101,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
 
     public NetworkBootstrapDeviceRefreshConfigurationResponse refreshConfiguration(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        NetworkBootstrapDeviceRefreshConfigurationResponseInner inner
-            = this.serviceClient().refreshConfiguration(resourceGroupName, networkBootstrapDeviceName);
-        if (inner != null) {
-            return new NetworkBootstrapDeviceRefreshConfigurationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.refreshConfiguration(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     public NetworkBootstrapDeviceRefreshConfigurationResponse refreshConfiguration(String resourceGroupName,
@@ -131,13 +117,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
 
     public NetworkBootstrapDeviceUpgradeResponse upgrade(String resourceGroupName, String networkBootstrapDeviceName,
         UpdateVersion body) {
-        NetworkBootstrapDeviceUpgradeResponseInner inner
-            = this.serviceClient().upgrade(resourceGroupName, networkBootstrapDeviceName, body);
-        if (inner != null) {
-            return new NetworkBootstrapDeviceUpgradeResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.upgrade(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
     public NetworkBootstrapDeviceUpgradeResponse upgrade(String resourceGroupName, String networkBootstrapDeviceName,
@@ -153,13 +133,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
 
     public NetworkBootstrapDeviceUpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
         String networkBootstrapDeviceName, UpdateDeviceAdministrativeState body) {
-        NetworkBootstrapDeviceUpdateAdministrativeStateResponseInner inner
-            = this.serviceClient().updateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, body);
-        if (inner != null) {
-            return new NetworkBootstrapDeviceUpdateAdministrativeStateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateAdministrativeState(resourceGroupName, networkBootstrapDeviceName, body, Context.NONE);
     }
 
     public NetworkBootstrapDeviceUpdateAdministrativeStateResponse updateAdministrativeState(String resourceGroupName,
@@ -175,13 +149,7 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
 
     public NetworkBootstrapDeviceResyncPasswordsResponse resyncPasswords(String resourceGroupName,
         String networkBootstrapDeviceName) {
-        NetworkBootstrapDeviceResyncPasswordsResponseInner inner
-            = this.serviceClient().resyncPasswords(resourceGroupName, networkBootstrapDeviceName);
-        if (inner != null) {
-            return new NetworkBootstrapDeviceResyncPasswordsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.resyncPasswords(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
     }
 
     public NetworkBootstrapDeviceResyncPasswordsResponse resyncPasswords(String resourceGroupName,
@@ -196,59 +164,30 @@ public final class NetworkBootstrapDevicesImpl implements NetworkBootstrapDevice
     }
 
     public NetworkBootstrapDevice getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkBootstrapDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkBootstrapDevices");
-        if (networkBootstrapDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'networkBootstrapDevices'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, networkBootstrapDeviceName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetworkBootstrapDevice> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkBootstrapDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkBootstrapDevices");
-        if (networkBootstrapDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'networkBootstrapDevices'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkBootstrapDeviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}",
+            "networkBootstrapDeviceName", "networkBootstrapDevices", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, networkBootstrapDeviceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkBootstrapDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkBootstrapDevices");
-        if (networkBootstrapDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'networkBootstrapDevices'.", id)));
-        }
-        this.delete(resourceGroupName, networkBootstrapDeviceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkBootstrapDeviceName = ResourceManagerUtils.getValueFromIdByName(id, "networkBootstrapDevices");
-        if (networkBootstrapDeviceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'networkBootstrapDevices'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkBootstrapDeviceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}",
+            "networkBootstrapDeviceName", "networkBootstrapDevices", LOGGER);
         this.delete(resourceGroupName, networkBootstrapDeviceName, context);
     }
 

@@ -46,7 +46,7 @@ public final class NetworkPacketBrokersImpl implements NetworkPacketBrokers {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String networkPacketBrokerName) {
-        this.serviceClient().delete(resourceGroupName, networkPacketBrokerName);
+        this.delete(resourceGroupName, networkPacketBrokerName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String networkPacketBrokerName, Context context) {
@@ -54,8 +54,7 @@ public final class NetworkPacketBrokersImpl implements NetworkPacketBrokers {
     }
 
     public PagedIterable<NetworkPacketBroker> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<NetworkPacketBrokerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkPacketBrokerImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<NetworkPacketBroker> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class NetworkPacketBrokersImpl implements NetworkPacketBrokers {
     }
 
     public PagedIterable<NetworkPacketBroker> list() {
-        PagedIterable<NetworkPacketBrokerInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkPacketBrokerImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NetworkPacketBroker> list(Context context) {
@@ -75,58 +73,30 @@ public final class NetworkPacketBrokersImpl implements NetworkPacketBrokers {
     }
 
     public NetworkPacketBroker getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkPacketBrokerName = ResourceManagerUtils.getValueFromIdByName(id, "networkPacketBrokers");
-        if (networkPacketBrokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkPacketBrokers'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NetworkPacketBroker> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkPacketBrokerName = ResourceManagerUtils.getValueFromIdByName(id, "networkPacketBrokers");
-        if (networkPacketBrokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkPacketBrokers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkPacketBrokerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}",
+            "networkPacketBrokerName", "networkPacketBrokers", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkPacketBrokerName = ResourceManagerUtils.getValueFromIdByName(id, "networkPacketBrokers");
-        if (networkPacketBrokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkPacketBrokers'.", id)));
-        }
-        this.delete(resourceGroupName, networkPacketBrokerName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String networkPacketBrokerName = ResourceManagerUtils.getValueFromIdByName(id, "networkPacketBrokers");
-        if (networkPacketBrokerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'networkPacketBrokers'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String networkPacketBrokerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/{networkPacketBrokerName}",
+            "networkPacketBrokerName", "networkPacketBrokers", LOGGER);
         this.delete(resourceGroupName, networkPacketBrokerName, context);
     }
 

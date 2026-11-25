@@ -181,18 +181,7 @@ public final class GatesClientImpl implements GatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Gate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param gateName The name of the Gate resource, a GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Gate along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GateInner> getWithResponse(String resourceGroupName, String fleetName, String gateName,
         Context context) {
@@ -201,17 +190,7 @@ public final class GatesClientImpl implements GatesClient {
             resourceGroupName, fleetName, gateName, accept, context);
     }
 
-    /**
-     * Get a Gate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param gateName The name of the Gate resource, a GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Gate.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GateInner get(String resourceGroupName, String fleetName, String gateName) {
         return getWithResponse(resourceGroupName, fleetName, gateName, Context.NONE).getValue();
@@ -261,11 +240,8 @@ public final class GatesClientImpl implements GatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String fleetName, String gateName,
         GatePatch properties, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, gateName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
     /**
@@ -354,50 +330,21 @@ public final class GatesClientImpl implements GatesClient {
      * @return the {@link SyncPoller} for polling of a Gate controls the progression during a staged rollout, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GateInner>, GateInner> beginUpdate(String resourceGroupName, String fleetName,
+    private SyncPoller<PollResult<GateInner>, GateInner> beginUpdate(String resourceGroupName, String fleetName,
         String gateName, GatePatch properties, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch);
-        return this.client.<GateInner, GateInner>getLroResult(response, GateInner.class, GateInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Update a Gate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param gateName The name of the Gate resource, a GUID.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Gate controls the progression during a staged rollout, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GateInner>, GateInner> beginUpdate(String resourceGroupName, String fleetName,
         String gateName, GatePatch properties) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch);
-        return this.client.<GateInner, GateInner>getLroResult(response, GateInner.class, GateInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Update a Gate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param gateName The name of the Gate resource, a GUID.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Gate controls the progression during a staged rollout, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GateInner>, GateInner> beginUpdate(String resourceGroupName, String fleetName,
         String gateName, GatePatch properties, String ifMatch, String ifNoneMatch, Context context) {
@@ -448,45 +395,20 @@ public final class GatesClientImpl implements GatesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Gate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param gateName The name of the Gate resource, a GUID.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Gate controls the progression during a staged rollout, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GateInner update(String resourceGroupName, String fleetName, String gateName, GatePatch properties) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginUpdate(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch).getFinalResult();
+        return update(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Update a Gate.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param gateName The name of the Gate resource, a GUID.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Gate controls the progression during a staged rollout, e.g.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GateInner update(String resourceGroupName, String fleetName, String gateName, GatePatch properties,
         String ifMatch, String ifNoneMatch, Context context) {
-        return beginUpdate(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, fleetName, gateName, properties, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -570,12 +492,7 @@ public final class GatesClientImpl implements GatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GateInner> listByFleetSinglePage(String resourceGroupName, String fleetName, String filter,
         Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<GateListResult> res = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fleetName, filter, top, skipToken, accept,
-            Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetSinglePage(resourceGroupName, fleetName, filter, top, skipToken, Context.NONE);
     }
 
     /**
@@ -602,39 +519,16 @@ public final class GatesClientImpl implements GatesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Gate resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Gate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GateInner> listByFleet(String resourceGroupName, String fleetName) {
         final String filter = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, filter, top, skipToken),
-            nextLink -> listByFleetNextSinglePage(nextLink));
+        return listByFleet(resourceGroupName, fleetName, filter, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List Gate resources by Fleet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fleetName The name of the Fleet resource.
-     * @param filter Filter the result list using the given expression.
-     * @param top The number of result items to return.
-     * @param skipToken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Gate list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GateInner> listByFleet(String resourceGroupName, String fleetName, String filter, Integer top,
         String skipToken, Context context) {
@@ -674,11 +568,7 @@ public final class GatesClientImpl implements GatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GateInner> listByFleetNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GateListResult> res
-            = service.listByFleetNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFleetNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

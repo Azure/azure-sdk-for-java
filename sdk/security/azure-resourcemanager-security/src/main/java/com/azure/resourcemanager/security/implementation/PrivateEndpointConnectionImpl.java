@@ -82,11 +82,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, privateLinkName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnection create(Context context) {
@@ -108,11 +104,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, privateLinkName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateEndpointConnection apply(Context context) {
@@ -127,18 +119,19 @@ public final class PrivateEndpointConnectionImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateLinkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateLinks");
-        this.privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName");
+        this.privateLinkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateLinkName");
+        this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/privateLinks/{privateLinkName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName");
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, privateLinkName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnection refresh(Context context) {

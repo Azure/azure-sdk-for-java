@@ -94,38 +94,24 @@ public final class AssessmentsMetadatasImpl implements AssessmentsMetadatas {
     }
 
     public SecurityAssessmentMetadataResponse getInSubscriptionById(String id) {
-        String assessmentMetadataName = ResourceManagerUtils.getValueFromIdByName(id, "assessmentMetadata");
-        if (assessmentMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentMetadata'.", id)));
-        }
-        return this.getInSubscriptionWithResponse(assessmentMetadataName, Context.NONE).getValue();
+        return this.getInSubscriptionByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SecurityAssessmentMetadataResponse> getInSubscriptionByIdWithResponse(String id, Context context) {
-        String assessmentMetadataName = ResourceManagerUtils.getValueFromIdByName(id, "assessmentMetadata");
-        if (assessmentMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentMetadata'.", id)));
-        }
+        String assessmentMetadataName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}",
+            "assessmentMetadataName", "assessmentMetadata", LOGGER);
         return this.getInSubscriptionWithResponse(assessmentMetadataName, context);
     }
 
     public void deleteInSubscriptionById(String id) {
-        String assessmentMetadataName = ResourceManagerUtils.getValueFromIdByName(id, "assessmentMetadata");
-        if (assessmentMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentMetadata'.", id)));
-        }
-        this.deleteInSubscriptionWithResponse(assessmentMetadataName, Context.NONE);
+        this.deleteInSubscriptionByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteInSubscriptionByIdWithResponse(String id, Context context) {
-        String assessmentMetadataName = ResourceManagerUtils.getValueFromIdByName(id, "assessmentMetadata");
-        if (assessmentMetadataName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'assessmentMetadata'.", id)));
-        }
+        String assessmentMetadataName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}",
+            "assessmentMetadataName", "assessmentMetadata", LOGGER);
         return this.deleteInSubscriptionWithResponse(assessmentMetadataName, context);
     }
 

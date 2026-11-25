@@ -149,16 +149,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance window along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceWindowResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String maintenanceWindowName) {
@@ -221,16 +212,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             this.client.getSubscriptionId(), resourceGroupName, maintenanceWindowName, accept, context);
     }
 
-    /**
-     * Gets the specified maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance window on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceWindowResourceInner> getByResourceGroupAsync(String resourceGroupName,
         String maintenanceWindowName) {
@@ -238,51 +220,20 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance window along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String maintenanceWindowName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, maintenanceWindowName, context).block();
     }
 
-    /**
-     * Gets the specified maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance window.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowResourceInner getByResourceGroup(String resourceGroupName, String maintenanceWindowName) {
         return getByResourceGroupWithResponse(resourceGroupName, maintenanceWindowName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param resource The maintenance window to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String maintenanceWindowName, MaintenanceWindowResourceInner resource) {
@@ -362,19 +313,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             context);
     }
 
-    /**
-     * Creates or updates a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param resource The maintenance window to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a maintenance window is a resource-group-scoped resource that
-     * defines a reusable maintenance schedule which can be linked to maintenance configurations on one or more managed
-     * clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MaintenanceWindowResourceInner>, MaintenanceWindowResourceInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String maintenanceWindowName,
@@ -412,39 +351,14 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             context);
     }
 
-    /**
-     * Creates or updates a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param resource The maintenance window to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a maintenance window is a resource-group-scoped resource that
-     * defines a reusable maintenance schedule which can be linked to maintenance configurations on one or more managed
-     * clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceWindowResourceInner>, MaintenanceWindowResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String maintenanceWindowName, MaintenanceWindowResourceInner resource) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, maintenanceWindowName, resource).getSyncPoller();
     }
 
-    /**
-     * Creates or updates a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param resource The maintenance window to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a maintenance window is a resource-group-scoped resource that
-     * defines a reusable maintenance schedule which can be linked to maintenance configurations on one or more managed
-     * clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceWindowResourceInner>, MaintenanceWindowResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String maintenanceWindowName, MaintenanceWindowResourceInner resource,
@@ -453,19 +367,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param resource The maintenance window to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceWindowResourceInner> createOrUpdateAsync(String resourceGroupName,
         String maintenanceWindowName, MaintenanceWindowResourceInner resource) {
@@ -494,56 +396,21 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param resource The maintenance window to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowResourceInner createOrUpdate(String resourceGroupName, String maintenanceWindowName,
         MaintenanceWindowResourceInner resource) {
         return createOrUpdateAsync(resourceGroupName, maintenanceWindowName, resource).block();
     }
 
-    /**
-     * Creates or updates a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param resource The maintenance window to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowResourceInner createOrUpdate(String resourceGroupName, String maintenanceWindowName,
         MaintenanceWindowResourceInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, maintenanceWindowName, resource, context).block();
     }
 
-    /**
-     * Updates tags on a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param properties Parameters supplied to the Update maintenance window Tags operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceWindowResourceInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String maintenanceWindowName, TagsObject properties) {
@@ -623,19 +490,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             context);
     }
 
-    /**
-     * Updates tags on a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param properties Parameters supplied to the Update maintenance window Tags operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceWindowResourceInner> updateTagsAsync(String resourceGroupName, String maintenanceWindowName,
         TagsObject properties) {
@@ -643,53 +498,21 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates tags on a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param properties Parameters supplied to the Update maintenance window Tags operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowResourceInner> updateTagsWithResponse(String resourceGroupName,
         String maintenanceWindowName, TagsObject properties, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, maintenanceWindowName, properties, context).block();
     }
 
-    /**
-     * Updates tags on a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param properties Parameters supplied to the Update maintenance window Tags operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a maintenance window is a resource-group-scoped resource that defines a reusable maintenance schedule
-     * which can be linked to maintenance configurations on one or more managed clusters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceWindowResourceInner updateTags(String resourceGroupName, String maintenanceWindowName,
         TagsObject properties) {
         return updateTagsWithResponse(resourceGroupName, maintenanceWindowName, properties, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String maintenanceWindowName) {
@@ -750,16 +573,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             resourceGroupName, maintenanceWindowName, context);
     }
 
-    /**
-     * Deletes a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String maintenanceWindowName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, maintenanceWindowName);
@@ -788,48 +602,20 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             context);
     }
 
-    /**
-     * Deletes a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String maintenanceWindowName) {
         return this.beginDeleteAsync(resourceGroupName, maintenanceWindowName).getSyncPoller();
     }
 
-    /**
-     * Deletes a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String maintenanceWindowName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, maintenanceWindowName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String maintenanceWindowName) {
         return beginDeleteAsync(resourceGroupName, maintenanceWindowName).last()
@@ -853,30 +639,13 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String maintenanceWindowName) {
         deleteAsync(resourceGroupName, maintenanceWindowName).block();
     }
 
-    /**
-     * Deletes a maintenance window.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param maintenanceWindowName The name of the maintenance window.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String maintenanceWindowName, Context context) {
         deleteAsync(resourceGroupName, maintenanceWindowName, context).block();
@@ -951,15 +720,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists maintenance windows in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceWindowResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceWindowResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -983,32 +744,13 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists maintenance windows in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceWindowResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceWindowResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists maintenance windows in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceWindowResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceWindowResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -1071,13 +813,7 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists maintenance windows in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceWindowResource list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceWindowResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -1099,29 +835,13 @@ public final class MaintenanceWindowsClientImpl implements InnerSupportsGet<Main
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists maintenance windows in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceWindowResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceWindowResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists maintenance windows in the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceWindowResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceWindowResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

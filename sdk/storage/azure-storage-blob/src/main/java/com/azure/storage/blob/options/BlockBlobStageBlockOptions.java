@@ -7,13 +7,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when staging a block.
  */
 @Fluent
-public final class BlockBlobStageBlockOptions {
+public final class BlockBlobStageBlockOptions implements ValidatableContent {
     private final String base64BlockId;
     private final BinaryData data;
     private String leaseId;
@@ -106,6 +107,7 @@ public final class BlockBlobStageBlockOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -117,6 +119,7 @@ public final class BlockBlobStageBlockOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public BlockBlobStageBlockOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

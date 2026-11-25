@@ -46,10 +46,7 @@ public final class DeletedBackupInstancesImpl implements DeletedBackupInstances 
     }
 
     public PagedIterable<DeletedBackupInstanceResource> list(String resourceGroupName, String vaultName) {
-        PagedIterable<DeletedBackupInstanceResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new DeletedBackupInstanceResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<DeletedBackupInstanceResource> list(String resourceGroupName, String vaultName,
@@ -61,7 +58,7 @@ public final class DeletedBackupInstancesImpl implements DeletedBackupInstances 
     }
 
     public void undelete(String resourceGroupName, String vaultName, String backupInstanceName) {
-        this.serviceClient().undelete(resourceGroupName, vaultName, backupInstanceName);
+        this.undelete(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
     public void undelete(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {

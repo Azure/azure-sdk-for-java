@@ -55,10 +55,7 @@ public final class AuthorizedApplicationImpl
     }
 
     public AuthorizedApplication create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizedApplications()
-            .createOrUpdate(providerNamespace, applicationId, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AuthorizedApplication create(Context context) {
@@ -79,10 +76,7 @@ public final class AuthorizedApplicationImpl
     }
 
     public AuthorizedApplication apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizedApplications()
-            .createOrUpdate(providerNamespace, applicationId, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AuthorizedApplication apply(Context context) {
@@ -96,17 +90,16 @@ public final class AuthorizedApplicationImpl
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.providerNamespace = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "providerRegistrations");
-        this.applicationId
-            = UUID.fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizedApplications"));
+        this.providerNamespace = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}",
+            "providerNamespace");
+        this.applicationId = UUID.fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}",
+            "applicationId"));
     }
 
     public AuthorizedApplication refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAuthorizedApplications()
-            .getWithResponse(providerNamespace, applicationId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AuthorizedApplication refresh(Context context) {

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.netapp.models.CacheMountTargetProperties;
 public final class CacheMountTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheMountTargetProperties model = BinaryData.fromString(
-            "{\"mountTargetId\":\"azivjlfrqttbajl\",\"ipAddress\":\"tnwxy\",\"smbServerFqdn\":\"pidkqqfkuvscxkdm\"}")
+        CacheMountTargetProperties model = BinaryData
+            .fromString("{\"mountTargetId\":\"nrdsutujbazpjuoh\",\"ipAddress\":\"nyfln\",\"smbServerFqdn\":\"wmd\"}")
             .toObject(CacheMountTargetProperties.class);
     }
 }

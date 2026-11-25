@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagemover.generated;
  */
 public final class ConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Connections_List.json
+     * x-ms-original-file: 2026-05-01/Connections_List.json
      */
     /**
      * Sample code: Connections_List.

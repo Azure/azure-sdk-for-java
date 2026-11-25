@@ -65,11 +65,7 @@ public final class OutboundRuleBasicResourceImpl
     }
 
     public OutboundRuleBasicResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundRules()
-            .createOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OutboundRuleBasicResource create(Context context) {
@@ -91,11 +87,7 @@ public final class OutboundRuleBasicResourceImpl
     }
 
     public OutboundRuleBasicResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundRules()
-            .createOrUpdate(resourceGroupName, accountName, managedNetworkName, ruleName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OutboundRuleBasicResource apply(Context context) {
@@ -109,18 +101,22 @@ public final class OutboundRuleBasicResourceImpl
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.managedNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedNetworks");
-        this.ruleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "outboundRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "accountName");
+        this.managedNetworkName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "managedNetworkName");
+        this.ruleName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}/outboundRules/{ruleName}",
+            "ruleName");
     }
 
     public OutboundRuleBasicResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOutboundRules()
-            .getWithResponse(resourceGroupName, accountName, managedNetworkName, ruleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OutboundRuleBasicResource refresh(Context context) {

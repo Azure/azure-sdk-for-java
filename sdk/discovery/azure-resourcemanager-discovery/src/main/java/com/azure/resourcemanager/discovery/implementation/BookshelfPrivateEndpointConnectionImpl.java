@@ -62,11 +62,7 @@ public final class BookshelfPrivateEndpointConnectionImpl implements BookshelfPr
     }
 
     public BookshelfPrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelfPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BookshelfPrivateEndpointConnection create(Context context) {
@@ -89,11 +85,7 @@ public final class BookshelfPrivateEndpointConnectionImpl implements BookshelfPr
     }
 
     public BookshelfPrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelfPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, bookshelfName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BookshelfPrivateEndpointConnection apply(Context context) {
@@ -108,18 +100,19 @@ public final class BookshelfPrivateEndpointConnectionImpl implements BookshelfPr
         com.azure.resourcemanager.discovery.DiscoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.bookshelfName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bookshelves");
-        this.privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName");
+        this.bookshelfName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "bookshelfName");
+        this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName");
     }
 
     public BookshelfPrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBookshelfPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BookshelfPrivateEndpointConnection refresh(Context context) {

@@ -50,12 +50,11 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     }
 
     public void delete(String resourceGroupName, String vaultName, String backupPolicyName) {
-        this.serviceClient().delete(resourceGroupName, vaultName, backupPolicyName);
+        this.deleteWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE);
     }
 
     public PagedIterable<BaseBackupPolicyResource> list(String resourceGroupName, String vaultName) {
-        PagedIterable<BaseBackupPolicyResourceInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BaseBackupPolicyResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<BaseBackupPolicyResource> list(String resourceGroupName, String vaultName, Context context) {
@@ -65,78 +64,36 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     }
 
     public BaseBackupPolicyResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
-        if (backupPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<BaseBackupPolicyResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
-        if (backupPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String vaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "vaultName", "backupVaults", LOGGER);
+        String backupPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "backupPolicyName", "backupPolicies", LOGGER);
         return this.getWithResponse(resourceGroupName, vaultName, backupPolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
-        if (backupPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
-        if (backupPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String vaultName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "vaultName", "backupVaults", LOGGER);
+        String backupPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupPolicies/{backupPolicyName}",
+            "backupPolicyName", "backupPolicies", LOGGER);
         return this.deleteWithResponse(resourceGroupName, vaultName, backupPolicyName, context);
     }
 

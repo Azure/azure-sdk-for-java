@@ -87,12 +87,7 @@ public final class ApplicationTypeResourceImpl
     }
 
     public ApplicationTypeResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypes()
-            .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationTypeResource create(Context context) {
@@ -116,11 +111,7 @@ public final class ApplicationTypeResourceImpl
     }
 
     public ApplicationTypeResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypes()
-            .updateWithResponse(resourceGroupName, clusterName, applicationTypeName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ApplicationTypeResource apply(Context context) {
@@ -135,17 +126,19 @@ public final class ApplicationTypeResourceImpl
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedClusters");
-        this.applicationTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}",
+            "clusterName");
+        this.applicationTypeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}",
+            "applicationTypeName");
     }
 
     public ApplicationTypeResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypes()
-            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationTypeResource refresh(Context context) {

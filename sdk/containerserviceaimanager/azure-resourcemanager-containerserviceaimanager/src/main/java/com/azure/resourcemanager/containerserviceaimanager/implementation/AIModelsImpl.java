@@ -14,7 +14,6 @@ import com.azure.resourcemanager.containerserviceaimanager.fluent.models.AIModel
 import com.azure.resourcemanager.containerserviceaimanager.fluent.models.CalculateCostResponseInner;
 import com.azure.resourcemanager.containerserviceaimanager.models.AIModel;
 import com.azure.resourcemanager.containerserviceaimanager.models.AIModels;
-import com.azure.resourcemanager.containerserviceaimanager.models.CalculateCostRequest;
 import com.azure.resourcemanager.containerserviceaimanager.models.CalculateCostResponse;
 
 public final class AIModelsImpl implements AIModels {
@@ -46,8 +45,7 @@ public final class AIModelsImpl implements AIModels {
     }
 
     public PagedIterable<AIModel> list(String location) {
-        PagedIterable<AIModelInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AIModelImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<AIModel> list(String location, Context context) {
@@ -56,15 +54,15 @@ public final class AIModelsImpl implements AIModels {
     }
 
     public Response<CalculateCostResponse> calculateCostWithResponse(String location, String aiModelName,
-        CalculateCostRequest body, Context context) {
+        Context context) {
         Response<CalculateCostResponseInner> inner
-            = this.serviceClient().calculateCostWithResponse(location, aiModelName, body, context);
+            = this.serviceClient().calculateCostWithResponse(location, aiModelName, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
             new CalculateCostResponseImpl(inner.getValue(), this.manager()));
     }
 
-    public CalculateCostResponse calculateCost(String location, String aiModelName, CalculateCostRequest body) {
-        CalculateCostResponseInner inner = this.serviceClient().calculateCost(location, aiModelName, body);
+    public CalculateCostResponse calculateCost(String location, String aiModelName) {
+        CalculateCostResponseInner inner = this.serviceClient().calculateCost(location, aiModelName);
         if (inner != null) {
             return new CalculateCostResponseImpl(inner, this.manager());
         } else {

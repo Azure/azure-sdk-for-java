@@ -95,10 +95,7 @@ public final class DbSystemImpl implements DbSystem, DbSystem.Definition, DbSyst
     }
 
     public DbSystem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDbSystems()
-            .createOrUpdate(resourceGroupName, dbSystemName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DbSystem create(Context context) {
@@ -120,10 +117,7 @@ public final class DbSystemImpl implements DbSystem, DbSystem.Definition, DbSyst
     }
 
     public DbSystem apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDbSystems()
-            .update(resourceGroupName, dbSystemName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DbSystem apply(Context context) {
@@ -137,16 +131,16 @@ public final class DbSystemImpl implements DbSystem, DbSystem.Definition, DbSyst
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dbSystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dbSystems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "resourceGroupName");
+        this.dbSystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/dbSystems/{dbSystemName}",
+            "dbSystemName");
     }
 
     public DbSystem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDbSystems()
-            .getByResourceGroupWithResponse(resourceGroupName, dbSystemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DbSystem refresh(Context context) {

@@ -145,16 +145,7 @@ public final class BillingContainersClientImpl implements BillingContainersClien
         return getWithResponseAsync(billingContainerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a BillingContainer.
-     * 
-     * @param billingContainerName Name of the billing container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BillingContainer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingContainerInner> getWithResponse(String billingContainerName, Context context) {
         final String accept = "application/json";
@@ -162,15 +153,7 @@ public final class BillingContainersClientImpl implements BillingContainersClien
             billingContainerName, accept, context);
     }
 
-    /**
-     * Get a BillingContainer.
-     * 
-     * @param billingContainerName Name of the billing container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a BillingContainer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingContainerInner get(String billingContainerName) {
         return getWithResponse(billingContainerName, Context.NONE).getValue();
@@ -217,11 +200,7 @@ public final class BillingContainersClientImpl implements BillingContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BillingContainerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<BillingContainerListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -242,27 +221,13 @@ public final class BillingContainersClientImpl implements BillingContainersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List BillingContainer resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BillingContainer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingContainerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List BillingContainer resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BillingContainer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingContainerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -301,11 +266,7 @@ public final class BillingContainersClientImpl implements BillingContainersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BillingContainerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BillingContainerListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

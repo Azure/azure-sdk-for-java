@@ -74,7 +74,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("dataMaskingPolicyName") DataMaskingPolicyName dataMaskingPolicyName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$skip") Long skip, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
         @ExpectedResponses({ 200, 201 })
@@ -104,6 +104,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
+     * @param skip The number of elements in the collection to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -112,7 +113,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
-        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName) {
+        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Long skip) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -139,7 +140,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         return FluxUtil
             .withContext(context -> service.listByDatabase(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, serverName, databaseName, dataMaskingPolicyName,
-                accept, context))
+                skip, accept, context))
             .<PagedResponse<DataMaskingRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -152,6 +153,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
+     * @param skip The number of elements in the collection to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -161,7 +163,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
-        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Context context) {
+        String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Long skip,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -188,29 +191,26 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, serverName, databaseName, dataMaskingPolicyName, accept, context)
+                resourceGroupName, serverName, databaseName, dataMaskingPolicyName, skip, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of database data masking rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules as paginated response with {@link PagedFlux}.
-     */
+    @Override
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Long skip) {
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName,
+            dataMaskingPolicyName, skip), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName),
-            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+        final Long skip = null;
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName,
+            dataMaskingPolicyName, skip), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -220,6 +220,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
+     * @param skip The number of elements in the collection to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -228,64 +229,29 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Context context) {
+        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Long skip, Context context) {
         return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName,
-            dataMaskingPolicyName, context), nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
+            dataMaskingPolicyName, skip, context), nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of database data masking rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName) {
+        final Long skip = null;
         return new PagedIterable<>(
-            listByDatabaseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName));
+            listByDatabaseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName, skip));
     }
 
-    /**
-     * Gets a list of database data masking rules.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listByDatabase(String resourceGroupName, String serverName,
-        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Context context) {
+        String databaseName, DataMaskingPolicyName dataMaskingPolicyName, Long skip, Context context) {
         return new PagedIterable<>(
-            listByDatabaseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName, context));
+            listByDatabaseAsync(resourceGroupName, serverName, databaseName, dataMaskingPolicyName, skip, context));
     }
 
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName,
@@ -388,20 +354,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             dataMaskingRuleName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataMaskingRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName,
@@ -410,21 +363,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             dataMaskingRuleName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingRuleInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         String databaseName, DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName,
@@ -433,20 +372,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             dataMaskingRuleName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates a database data masking rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param dataMaskingPolicyName The name of the database for which the data masking policy applies.
-     * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters The required parameters for creating or updating a data masking rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database data masking rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataMaskingRuleInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         DataMaskingPolicyName dataMaskingPolicyName, String dataMaskingRuleName, DataMaskingRuleInner parameters) {

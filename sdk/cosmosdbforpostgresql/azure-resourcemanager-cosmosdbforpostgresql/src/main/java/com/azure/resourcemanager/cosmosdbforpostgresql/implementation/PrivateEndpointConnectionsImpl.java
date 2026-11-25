@@ -47,7 +47,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, clusterName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName,
@@ -56,9 +56,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PagedIterable<PrivateEndpointConnection> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner
-            = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> listByCluster(String resourceGroupName, String clusterName,
@@ -69,83 +67,36 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PrivateEndpointConnection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "clusterName", "serverGroupsv2", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         return this.getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
-        this.delete(resourceGroupName, clusterName, privateEndpointConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
-        }
-        String privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
-        if (privateEndpointConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "clusterName", "serverGroupsv2", LOGGER);
+        String privateEndpointConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName", "privateEndpointConnections", LOGGER);
         this.delete(resourceGroupName, clusterName, privateEndpointConnectionName, context);
     }
 

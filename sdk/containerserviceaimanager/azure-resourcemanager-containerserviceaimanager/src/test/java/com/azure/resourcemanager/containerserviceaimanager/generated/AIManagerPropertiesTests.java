@@ -13,15 +13,18 @@ public final class AIManagerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIManagerProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Creating\",\"deletePolicy\":\"Delete\",\"managedResourceGroupName\":\"ndiodjpslwejdpv\"}")
+            "{\"provisioningState\":\"Canceled\",\"deletePolicy\":\"Delete\",\"managedResourceGroupName\":\"lwejdpv\",\"clusterResourceId\":\"yoqpsoaccta\"}")
             .toObject(AIManagerProperties.class);
         Assertions.assertEquals(DeletePolicy.DELETE, model.deletePolicy());
+        Assertions.assertEquals("yoqpsoaccta", model.clusterResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AIManagerProperties model = new AIManagerProperties().withDeletePolicy(DeletePolicy.DELETE);
+        AIManagerProperties model
+            = new AIManagerProperties().withDeletePolicy(DeletePolicy.DELETE).withClusterResourceId("yoqpsoaccta");
         model = BinaryData.fromObject(model).toObject(AIManagerProperties.class);
         Assertions.assertEquals(DeletePolicy.DELETE, model.deletePolicy());
+        Assertions.assertEquals("yoqpsoaccta", model.clusterResourceId());
     }
 }

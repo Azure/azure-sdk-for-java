@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -32,6 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortAuthorizationsClient;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteAuthorizationKeyInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortAuthorizationInner;
 import com.azure.resourcemanager.network.implementation.models.ExpressRoutePortAuthorizationListResult;
 import java.nio.ByteBuffer;
@@ -113,6 +115,17 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRoutePorts/{expressRoutePortName}/authorizations/{authorizationName}/listKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeys(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRoutePortName") String expressRoutePortName,
+            @PathParam("authorizationName") String authorizationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,18 +134,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route port along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRoutePortAuthorizationInner>> getWithResponseAsync(String resourceGroupName,
         String expressRoutePortName, String authorizationName) {
@@ -156,7 +158,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -200,25 +202,14 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             expressRoutePortName, authorizationName, accept, context);
     }
 
-    /**
-     * Gets the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route port on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRoutePortAuthorizationInner> getAsync(String resourceGroupName, String expressRoutePortName,
         String authorizationName) {
@@ -226,54 +217,21 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route port along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRoutePortAuthorizationInner> getWithResponse(String resourceGroupName,
         String expressRoutePortName, String authorizationName, Context context) {
         return getWithResponseAsync(resourceGroupName, expressRoutePortName, authorizationName, context).block();
     }
 
-    /**
-     * Gets the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route port.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRoutePortAuthorizationInner get(String resourceGroupName, String expressRoutePortName,
         String authorizationName) {
         return getWithResponse(resourceGroupName, expressRoutePortName, authorizationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route port authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Port Authorization along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String expressRoutePortName, String authorizationName,
@@ -304,7 +262,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -358,7 +316,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -367,19 +325,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             context);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route port authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of expressRoute Port Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRoutePortAuthorizationInner>, ExpressRoutePortAuthorizationInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String expressRoutePortName, String authorizationName,
@@ -417,19 +363,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             ExpressRoutePortAuthorizationInner.class, context);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route port authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute Port Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRoutePortAuthorizationInner>, ExpressRoutePortAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String expressRoutePortName, String authorizationName,
@@ -440,20 +374,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route port authorization
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute Port Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRoutePortAuthorizationInner>, ExpressRoutePortAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String expressRoutePortName, String authorizationName,
@@ -464,19 +385,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route port authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Port Authorization on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRoutePortAuthorizationInner> createOrUpdateAsync(String resourceGroupName,
         String expressRoutePortName, String authorizationName,
@@ -507,19 +416,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             authorizationParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route port authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Port Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRoutePortAuthorizationInner createOrUpdate(String resourceGroupName, String expressRoutePortName,
         String authorizationName, ExpressRoutePortAuthorizationInner authorizationParameters) {
@@ -527,20 +424,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             .block();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create or update express route port authorization
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Port Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRoutePortAuthorizationInner createOrUpdate(String resourceGroupName, String expressRoutePortName,
         String authorizationName, ExpressRoutePortAuthorizationInner authorizationParameters, Context context) {
@@ -548,17 +432,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             context).block();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String expressRoutePortName, String authorizationName) {
@@ -582,7 +456,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, expressRoutePortName, authorizationName, context))
@@ -624,23 +498,13 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             expressRoutePortName, authorizationName, context);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String expressRoutePortName,
         String authorizationName) {
@@ -672,35 +536,14 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             context);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRoutePortName,
         String authorizationName) {
         return this.beginDeleteAsync(resourceGroupName, expressRoutePortName, authorizationName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRoutePortName,
         String authorizationName, Context context) {
@@ -708,17 +551,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String expressRoutePortName, String authorizationName) {
         return beginDeleteAsync(resourceGroupName, expressRoutePortName, authorizationName).last()
@@ -744,32 +577,13 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String expressRoutePortName, String authorizationName) {
         deleteAsync(resourceGroupName, expressRoutePortName, authorizationName).block();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param authorizationName The name of the authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String expressRoutePortName, String authorizationName,
         Context context) {
@@ -806,7 +620,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -847,7 +661,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -857,16 +671,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all authorizations in an express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route port as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRoutePortAuthorizationInner> listAsync(String resourceGroupName,
         String expressRoutePortName) {
@@ -892,37 +697,117 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all authorizations in an express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route port as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRoutePortAuthorizationInner> list(String resourceGroupName,
         String expressRoutePortName) {
         return new PagedIterable<>(listAsync(resourceGroupName, expressRoutePortName));
     }
 
-    /**
-     * Gets all authorizations in an express route port.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRoutePortName The name of the express route port.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route port as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRoutePortAuthorizationInner> list(String resourceGroupName, String expressRoutePortName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, expressRoutePortName, context));
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String expressRoutePortName, String authorizationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRoutePortName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
+        }
+        if (authorizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listKeys(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, expressRoutePortName, authorizationName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the authorization key associated with the specified express route port authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRoutePortName The name of the express route port.
+     * @param authorizationName The name of the authorization.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route port authorization along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String expressRoutePortName, String authorizationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (expressRoutePortName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
+        }
+        if (authorizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listKeys(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, expressRoutePortName, authorizationName, accept, context);
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExpressRouteAuthorizationKeyInner> listKeysAsync(String resourceGroupName, String expressRoutePortName,
+        String authorizationName) {
+        return listKeysWithResponseAsync(resourceGroupName, expressRoutePortName, authorizationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExpressRouteAuthorizationKeyInner> listKeysWithResponse(String resourceGroupName,
+        String expressRoutePortName, String authorizationName, Context context) {
+        return listKeysWithResponseAsync(resourceGroupName, expressRoutePortName, authorizationName, context).block();
+    }
+
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteAuthorizationKeyInner listKeys(String resourceGroupName, String expressRoutePortName,
+        String authorizationName) {
+        return listKeysWithResponse(resourceGroupName, expressRoutePortName, authorizationName, Context.NONE)
+            .getValue();
     }
 
     /**

@@ -341,18 +341,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Cloud HSM Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudHsmClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String cloudHsmClusterName, Context context) {
@@ -361,17 +350,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, context);
     }
 
-    /**
-     * Gets the specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Cloud HSM Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudHsmClusterInner getByResourceGroup(String resourceGroupName, String cloudHsmClusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE).getValue();
@@ -417,11 +396,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudHsmClusterName, body, Context.NONE);
     }
 
     /**
@@ -468,39 +443,14 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             CloudHsmClusterInner.class, CloudHsmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudHsmClusterInner>, CloudHsmClusterInner>
         beginCreateOrUpdate(String resourceGroupName, String cloudHsmClusterName, CloudHsmClusterInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudHsmClusterName, body);
-        return this.client.<CloudHsmClusterInner, CloudHsmClusterInner>getLroResult(response,
-            CloudHsmClusterInner.class, CloudHsmClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Create or Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudHsmClusterInner>, CloudHsmClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudHsmClusterName, CloudHsmClusterInner body, Context context) {
@@ -529,41 +479,19 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudHsmClusterInner createOrUpdate(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterInner body) {
-        return beginCreateOrUpdate(resourceGroupName, cloudHsmClusterName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Create or Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudHsmClusterInner createOrUpdate(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudHsmClusterName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, cloudHsmClusterName, body, context));
     }
 
     /**
@@ -606,11 +534,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterPatchParameters body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, cloudHsmClusterName, body, Context.NONE);
     }
 
     /**
@@ -656,39 +580,14 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             CloudHsmClusterInner.class, CloudHsmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudHsmClusterInner>, CloudHsmClusterInner> beginUpdate(String resourceGroupName,
         String cloudHsmClusterName, CloudHsmClusterPatchParameters body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, cloudHsmClusterName, body);
-        return this.client.<CloudHsmClusterInner, CloudHsmClusterInner>getLroResult(response,
-            CloudHsmClusterInner.class, CloudHsmClusterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, cloudHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudHsmClusterInner>, CloudHsmClusterInner> beginUpdate(String resourceGroupName,
         String cloudHsmClusterName, CloudHsmClusterPatchParameters body, Context context) {
@@ -716,41 +615,18 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudHsmClusterInner update(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterPatchParameters body) {
-        return beginUpdate(resourceGroupName, cloudHsmClusterName, body).getFinalResult();
+        return update(resourceGroupName, cloudHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Update a Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Cloud HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudHsmClusterInner update(String resourceGroupName, String cloudHsmClusterName,
         CloudHsmClusterPatchParameters body, Context context) {
-        return beginUpdate(resourceGroupName, cloudHsmClusterName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, cloudHsmClusterName, body, context));
     }
 
     /**
@@ -786,8 +662,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudHsmClusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
     /**
@@ -827,35 +702,13 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudHsmClusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudHsmClusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudHsmClusterName,
         Context context) {
@@ -880,35 +733,16 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudHsmClusterName) {
-        beginDelete(resourceGroupName, cloudHsmClusterName).getFinalResult();
+        delete(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudHsmClusterName, Context context) {
-        beginDelete(resourceGroupName, cloudHsmClusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudHsmClusterName, context));
     }
 
     /**
@@ -983,12 +817,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listByResourceGroupSinglePage(String resourceGroupName,
         String skiptoken) {
-        final String accept = "application/json";
-        Response<CloudHsmClusterListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, skiptoken, Context.NONE);
     }
 
     /**
@@ -1014,35 +843,14 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The List operation gets information about the Cloud HSM Clusters associated with the subscription and within the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudHsmClusterInner> listByResourceGroup(String resourceGroupName) {
         final String skiptoken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, skiptoken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, skiptoken, Context.NONE);
     }
 
-    /**
-     * The List operation gets information about the Cloud HSM Clusters associated with the subscription and within the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudHsmClusterInner> listByResourceGroup(String resourceGroupName, String skiptoken,
         Context context) {
@@ -1111,11 +919,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listSinglePage(String skiptoken) {
-        final String accept = "application/json";
-        Response<CloudHsmClusterListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(skiptoken, Context.NONE);
     }
 
     /**
@@ -1137,30 +941,14 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The List operation gets information about the Cloud HSM Clusters associated with the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudHsmClusterInner> list() {
         final String skiptoken = null;
-        return new PagedIterable<>(() -> listSinglePage(skiptoken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(skiptoken, Context.NONE);
     }
 
-    /**
-     * The List operation gets information about the Cloud HSM Clusters associated with the subscription.
-     * 
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CloudHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudHsmClusterInner> list(String skiptoken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(skiptoken, context),
@@ -1207,9 +995,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateBackupPropertiesWithResponse(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
-        final String accept = "application/json";
-        return service.validateBackupPropertiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, backupRequestProperties,
+        return validateBackupPropertiesWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties,
             Context.NONE);
     }
 
@@ -1294,50 +1080,22 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginValidateBackupProperties(
+    private SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginValidateBackupProperties(
         String resourceGroupName, String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
-        Response<BinaryData> response
-            = validateBackupPropertiesWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties);
-        return this.client.<BackupResultInner, BackupResultInner>getLroResult(response, BackupResultInner.class,
-            BackupResultInner.class, Context.NONE);
+        return beginValidateBackupProperties(resourceGroupName, cloudHsmClusterName, backupRequestProperties,
+            Context.NONE);
     }
 
-    /**
-     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
-     * the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupResultInner>, BackupResultInner>
         beginValidateBackupProperties(String resourceGroupName, String cloudHsmClusterName) {
         final BackupRequestProperties backupRequestProperties = null;
-        Response<BinaryData> response
-            = validateBackupPropertiesWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties);
-        return this.client.<BackupResultInner, BackupResultInner>getLroResult(response, BackupResultInner.class,
-            BackupResultInner.class, Context.NONE);
+        return beginValidateBackupProperties(resourceGroupName, cloudHsmClusterName, backupRequestProperties,
+            Context.NONE);
     }
 
-    /**
-     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
-     * the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param backupRequestProperties Backup Operation Required properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginValidateBackupProperties(
         String resourceGroupName, String cloudHsmClusterName, BackupRequestProperties backupRequestProperties,
@@ -1390,44 +1148,19 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
-     * the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResultInner validateBackupProperties(String resourceGroupName, String cloudHsmClusterName) {
         final BackupRequestProperties backupRequestProperties = null;
-        return beginValidateBackupProperties(resourceGroupName, cloudHsmClusterName, backupRequestProperties)
-            .getFinalResult();
+        return validateBackupProperties(resourceGroupName, cloudHsmClusterName, backupRequestProperties, Context.NONE);
     }
 
-    /**
-     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
-     * the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param backupRequestProperties Backup Operation Required properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResultInner validateBackupProperties(String resourceGroupName, String cloudHsmClusterName,
         BackupRequestProperties backupRequestProperties, Context context) {
-        return beginValidateBackupProperties(resourceGroupName, cloudHsmClusterName, backupRequestProperties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateBackupProperties(resourceGroupName, cloudHsmClusterName, backupRequestProperties, context));
     }
 
     /**
@@ -1468,10 +1201,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> backupWithResponse(String resourceGroupName, String cloudHsmClusterName,
         BackupRequestProperties backupRequestProperties) {
-        final String accept = "application/json";
-        return service.backupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, backupRequestProperties,
-            Context.NONE);
+        return backupWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties, Context.NONE);
     }
 
     /**
@@ -1551,48 +1281,20 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginBackup(String resourceGroupName,
+    private SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginBackup(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
-        Response<BinaryData> response
-            = backupWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties);
-        return this.client.<BackupResultInner, BackupResultInner>getLroResult(response, BackupResultInner.class,
-            BackupResultInner.class, Context.NONE);
+        return beginBackup(resourceGroupName, cloudHsmClusterName, backupRequestProperties, Context.NONE);
     }
 
-    /**
-     * Create a backup of the Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginBackup(String resourceGroupName,
         String cloudHsmClusterName) {
         final BackupRequestProperties backupRequestProperties = null;
-        Response<BinaryData> response
-            = backupWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties);
-        return this.client.<BackupResultInner, BackupResultInner>getLroResult(response, BackupResultInner.class,
-            BackupResultInner.class, Context.NONE);
+        return beginBackup(resourceGroupName, cloudHsmClusterName, backupRequestProperties, Context.NONE);
     }
 
-    /**
-     * Create a backup of the Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param backupRequestProperties Azure storage Resource Uri.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginBackup(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties, Context context) {
@@ -1639,40 +1341,19 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a backup of the Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResultInner backup(String resourceGroupName, String cloudHsmClusterName) {
         final BackupRequestProperties backupRequestProperties = null;
-        return beginBackup(resourceGroupName, cloudHsmClusterName, backupRequestProperties).getFinalResult();
+        return backup(resourceGroupName, cloudHsmClusterName, backupRequestProperties, Context.NONE);
     }
 
-    /**
-     * Create a backup of the Cloud HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param backupRequestProperties Azure storage Resource Uri.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResultInner backup(String resourceGroupName, String cloudHsmClusterName,
         BackupRequestProperties backupRequestProperties, Context context) {
-        return beginBackup(resourceGroupName, cloudHsmClusterName, backupRequestProperties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginBackup(resourceGroupName, cloudHsmClusterName, backupRequestProperties, context));
     }
 
     /**
@@ -1713,9 +1394,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateRestorePropertiesWithResponse(String resourceGroupName,
         String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties) {
-        final String accept = "application/json";
-        return service.validateRestorePropertiesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, accept, restoreRequestProperties,
+        return validateRestorePropertiesWithResponse(resourceGroupName, cloudHsmClusterName, restoreRequestProperties,
             Context.NONE);
     }
 
@@ -1796,48 +1475,22 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner> beginValidateRestoreProperties(
+    private SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner> beginValidateRestoreProperties(
         String resourceGroupName, String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties) {
-        Response<BinaryData> response
-            = validateRestorePropertiesWithResponse(resourceGroupName, cloudHsmClusterName, restoreRequestProperties);
-        return this.client.<RestoreResultInner, RestoreResultInner>getLroResult(response, RestoreResultInner.class,
-            RestoreResultInner.class, Context.NONE);
+        return beginValidateRestoreProperties(resourceGroupName, cloudHsmClusterName, restoreRequestProperties,
+            Context.NONE);
     }
 
-    /**
-     * Queued validating pre restore operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner>
         beginValidateRestoreProperties(String resourceGroupName, String cloudHsmClusterName) {
         final RestoreRequestProperties restoreRequestProperties = null;
-        Response<BinaryData> response
-            = validateRestorePropertiesWithResponse(resourceGroupName, cloudHsmClusterName, restoreRequestProperties);
-        return this.client.<RestoreResultInner, RestoreResultInner>getLroResult(response, RestoreResultInner.class,
-            RestoreResultInner.class, Context.NONE);
+        return beginValidateRestoreProperties(resourceGroupName, cloudHsmClusterName, restoreRequestProperties,
+            Context.NONE);
     }
 
-    /**
-     * Queued validating pre restore operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param restoreRequestProperties Optional Parameters to validate prior performing a restore operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner> beginValidateRestoreProperties(
         String resourceGroupName, String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties,
@@ -1888,42 +1541,20 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Queued validating pre restore operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreResultInner validateRestoreProperties(String resourceGroupName, String cloudHsmClusterName) {
         final RestoreRequestProperties restoreRequestProperties = null;
-        return beginValidateRestoreProperties(resourceGroupName, cloudHsmClusterName, restoreRequestProperties)
-            .getFinalResult();
+        return validateRestoreProperties(resourceGroupName, cloudHsmClusterName, restoreRequestProperties,
+            Context.NONE);
     }
 
-    /**
-     * Queued validating pre restore operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param restoreRequestProperties Optional Parameters to validate prior performing a restore operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreResultInner validateRestoreProperties(String resourceGroupName, String cloudHsmClusterName,
         RestoreRequestProperties restoreRequestProperties, Context context) {
-        return beginValidateRestoreProperties(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateRestoreProperties(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, context));
     }
 
     /**
@@ -1965,11 +1596,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restoreWithResponse(String resourceGroupName, String cloudHsmClusterName,
         RestoreRequestProperties restoreRequestProperties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.restoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, contentType, accept,
-            restoreRequestProperties, Context.NONE);
+        return restoreWithResponse(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, Context.NONE);
     }
 
     /**
@@ -2016,40 +1643,14 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             RestoreResultInner.class, RestoreResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Restores all key materials of a specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param restoreRequestProperties Restore Operation Required properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner> beginRestore(String resourceGroupName,
         String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties) {
-        Response<BinaryData> response
-            = restoreWithResponse(resourceGroupName, cloudHsmClusterName, restoreRequestProperties);
-        return this.client.<RestoreResultInner, RestoreResultInner>getLroResult(response, RestoreResultInner.class,
-            RestoreResultInner.class, Context.NONE);
+        return beginRestore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, Context.NONE);
     }
 
-    /**
-     * Restores all key materials of a specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param restoreRequestProperties Restore Operation Required properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner> beginRestore(String resourceGroupName,
         String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties, Context context) {
@@ -2078,41 +1679,19 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restores all key materials of a specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param restoreRequestProperties Restore Operation Required properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreResultInner restore(String resourceGroupName, String cloudHsmClusterName,
         RestoreRequestProperties restoreRequestProperties) {
-        return beginRestore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties).getFinalResult();
+        return restore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, Context.NONE);
     }
 
-    /**
-     * Restores all key materials of a specified Cloud HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param restoreRequestProperties Restore Operation Required properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreResultInner restore(String resourceGroupName, String cloudHsmClusterName,
         RestoreRequestProperties restoreRequestProperties, Context context) {
-        return beginRestore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRestore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, context));
     }
 
     /**
@@ -2147,11 +1726,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudHsmClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2205,11 +1780,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudHsmClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudHsmClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

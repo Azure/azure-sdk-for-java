@@ -62,7 +62,7 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String localRulestackName) {
-        this.serviceClient().delete(resourceGroupName, localRulestackName);
+        this.delete(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String localRulestackName, Context context) {
@@ -70,8 +70,7 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public PagedIterable<LocalRulestackResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<LocalRulestackResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocalRulestackResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<LocalRulestackResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -81,8 +80,7 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public PagedIterable<LocalRulestackResource> list() {
-        PagedIterable<LocalRulestackResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocalRulestackResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<LocalRulestackResource> list(Context context) {
@@ -91,7 +89,7 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public void commit(String resourceGroupName, String localRulestackName) {
-        this.serviceClient().commit(resourceGroupName, localRulestackName);
+        this.commit(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     public void commit(String resourceGroupName, String localRulestackName, Context context) {
@@ -228,62 +226,34 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public void revert(String resourceGroupName, String localRulestackName) {
-        this.serviceClient().revert(resourceGroupName, localRulestackName);
+        this.revertWithResponse(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     public LocalRulestackResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, localRulestackName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<LocalRulestackResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String localRulestackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "localRulestackName", "localRulestacks", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, localRulestackName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
-        this.delete(resourceGroupName, localRulestackName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
-        if (localRulestackName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String localRulestackName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "localRulestackName", "localRulestacks", LOGGER);
         this.delete(resourceGroupName, localRulestackName, context);
     }
 

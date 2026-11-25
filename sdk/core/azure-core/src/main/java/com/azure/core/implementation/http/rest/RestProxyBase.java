@@ -27,6 +27,8 @@ import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.MalformedValueException;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -35,13 +37,17 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -211,6 +217,48 @@ public abstract class RestProxyBase {
         // body as an Object.
         ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
+    }
+
+    /**
+     * Gets the response body as {@link BinaryData} without buffering it. A non-replayable body is tied to the response
+     * so the response is closed when the body terminates.
+     *
+     * @param response The HTTP response.
+     * @return The response body.
+     */
+    static BinaryData getOwnedResponseBody(HttpResponse response) {
+        BinaryData responseBody = response.getBodyAsBinaryData();
+        if (responseBody == null || responseBody.isReplayable()) {
+            return responseBody;
+        }
+
+        ResponseBodyOwner responseBodyOwner = new ResponseBodyOwner(response);
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(
+            responseBodyOwner.getBody(responseBody.toFluxByteBuffer()), responseBody.getLength(), false));
+    }
+
+    static final class ResponseBodyOwner implements Closeable {
+        private final AtomicBoolean closed = new AtomicBoolean();
+        private final HttpResponse response;
+
+        ResponseBodyOwner(HttpResponse response) {
+            this.response = response;
+        }
+
+        Flux<ByteBuffer> getBody() {
+            return getBody(response.getBody());
+        }
+
+        Flux<ByteBuffer> getBody(Flux<ByteBuffer> responseBody) {
+            return Flux.using(() -> this, ignored -> responseBody, ResponseBodyOwner::close);
+        }
+
+        @Override
+        public void close() {
+            if (closed.compareAndSet(false, true)) {
+                response.close();
+            }
+        }
     }
 
     /**

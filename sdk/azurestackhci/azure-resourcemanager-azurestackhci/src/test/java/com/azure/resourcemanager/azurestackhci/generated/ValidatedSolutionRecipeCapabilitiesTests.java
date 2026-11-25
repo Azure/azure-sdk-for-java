@@ -12,9 +12,9 @@ public final class ValidatedSolutionRecipeCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidatedSolutionRecipeCapabilities model = BinaryData.fromString(
-            "{\"clusterCapabilities\":[{\"capabilityName\":\"atjhdhzybspijhf\"},{\"capabilityName\":\"zgdkkagvwu\"},{\"capabilityName\":\"hsusmmor\"},{\"capabilityName\":\"mzhwilzzhni\"}],\"nodeCapabilities\":[{\"capabilityName\":\"riprlkdneytt\"},{\"capabilityName\":\"rcxivcbkut\"}]}")
+            "{\"clusterCapabilities\":[{\"capabilityName\":\"vpsozjiihjri\"},{\"capabilityName\":\"bmrzoepnx\"}],\"nodeCapabilities\":[{\"capabilityName\":\"v\"},{\"capabilityName\":\"njkgvfnmx\"},{\"capabilityName\":\"ursqf\"},{\"capabilityName\":\"ibtyibuyvpirfqjp\"}]}")
             .toObject(ValidatedSolutionRecipeCapabilities.class);
-        Assertions.assertEquals("atjhdhzybspijhf", model.clusterCapabilities().get(0).capabilityName());
-        Assertions.assertEquals("riprlkdneytt", model.nodeCapabilities().get(0).capabilityName());
+        Assertions.assertEquals("vpsozjiihjri", model.clusterCapabilities().get(0).capabilityName());
+        Assertions.assertEquals("v", model.nodeCapabilities().get(0).capabilityName());
     }
 }

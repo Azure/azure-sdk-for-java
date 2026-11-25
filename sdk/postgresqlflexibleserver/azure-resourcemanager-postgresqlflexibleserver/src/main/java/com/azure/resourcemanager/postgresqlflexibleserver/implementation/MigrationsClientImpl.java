@@ -201,17 +201,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a migration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String migrationName) {
@@ -222,35 +212,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a migration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationInner> getAsync(String resourceGroupName, String serverName, String migrationName) {
         return getWithResponseAsync(resourceGroupName, serverName, migrationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a migration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationInner> getWithResponse(String resourceGroupName, String serverName, String migrationName,
         Context context) {
@@ -259,34 +228,13 @@ public final class MigrationsClientImpl implements MigrationsClient {
             resourceGroupName, serverName, migrationName, accept, context);
     }
 
-    /**
-     * Gets information about a migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a migration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationInner get(String resourceGroupName, String serverName, String migrationName) {
         return getWithResponse(resourceGroupName, serverName, migrationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required for creating a migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationInner>> createWithResponseAsync(String resourceGroupName, String serverName,
         String migrationName, MigrationInner parameters) {
@@ -299,18 +247,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Creates a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required for creating a migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationInner> createAsync(String resourceGroupName, String serverName, String migrationName,
         MigrationInner parameters) {
@@ -318,19 +255,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required for creating a migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationInner> createWithResponse(String resourceGroupName, String serverName,
         String migrationName, MigrationInner parameters, Context context) {
@@ -341,37 +266,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
             parameters, context);
     }
 
-    /**
-     * Creates a new migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required for creating a migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationInner create(String resourceGroupName, String serverName, String migrationName,
         MigrationInner parameters) {
         return createWithResponse(resourceGroupName, serverName, migrationName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
-     * migration definition. Certain property updates initiate migration state transitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required to update an existing migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationInner>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String migrationName, MigrationResourceForPatch parameters) {
@@ -384,19 +286,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
-     * migration definition. Certain property updates initiate migration state transitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required to update an existing migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationInner> updateAsync(String resourceGroupName, String serverName, String migrationName,
         MigrationResourceForPatch parameters) {
@@ -404,20 +294,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
-     * migration definition. Certain property updates initiate migration state transitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required to update an existing migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationInner> updateWithResponse(String resourceGroupName, String serverName,
         String migrationName, MigrationResourceForPatch parameters, Context context) {
@@ -428,36 +305,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
             parameters, context);
     }
 
-    /**
-     * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
-     * migration definition. Certain property updates initiate migration state transitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param parameters Parameters required to update an existing migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationInner update(String resourceGroupName, String serverName, String migrationName,
         MigrationResourceForPatch parameters) {
         return updateWithResponse(resourceGroupName, serverName, migrationName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Cancels an active migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationInner>> cancelWithResponseAsync(String resourceGroupName, String serverName,
         String migrationName) {
@@ -468,35 +323,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Cancels an active migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationInner> cancelAsync(String resourceGroupName, String serverName, String migrationName) {
         return cancelWithResponseAsync(resourceGroupName, serverName, migrationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Cancels an active migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationInner> cancelWithResponse(String resourceGroupName, String serverName,
         String migrationName, Context context) {
@@ -505,17 +339,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             this.client.getSubscriptionId(), resourceGroupName, serverName, migrationName, accept, context);
     }
 
-    /**
-     * Cancels an active migration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationName Name of migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a migration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationInner cancel(String resourceGroupName, String serverName, String migrationName) {
         return cancelWithResponse(resourceGroupName, serverName, migrationName, Context.NONE).getValue();
@@ -545,18 +369,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all migrations of a target flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationListFilter Migration list filter. Indicates if the request should retrieve only active migrations
-     * or all migrations. Defaults to Active.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of migrations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MigrationInner> listByTargetServerAsync(String resourceGroupName, String serverName,
         MigrationListFilter migrationListFilter) {
@@ -565,16 +378,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             nextLink -> listByTargetServerNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all migrations of a target flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of migrations as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MigrationInner> listByTargetServerAsync(String resourceGroupName, String serverName) {
         final MigrationListFilter migrationListFilter = null;
@@ -598,12 +402,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationInner> listByTargetServerSinglePage(String resourceGroupName, String serverName,
         MigrationListFilter migrationListFilter) {
-        final String accept = "application/json";
-        Response<MigrationList> res = service.listByTargetServerSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, serverName,
-            migrationListFilter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTargetServerSinglePage(resourceGroupName, serverName, migrationListFilter, Context.NONE);
     }
 
     /**
@@ -630,37 +429,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all migrations of a target flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of migrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationInner> listByTargetServer(String resourceGroupName, String serverName) {
         final MigrationListFilter migrationListFilter = null;
-        return new PagedIterable<>(
-            () -> listByTargetServerSinglePage(resourceGroupName, serverName, migrationListFilter),
-            nextLink -> listByTargetServerNextSinglePage(nextLink));
+        return listByTargetServer(resourceGroupName, serverName, migrationListFilter, Context.NONE);
     }
 
-    /**
-     * Lists all migrations of a target flexible server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param migrationListFilter Migration list filter. Indicates if the request should retrieve only active migrations
-     * or all migrations. Defaults to Active.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of migrations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MigrationInner> listByTargetServer(String resourceGroupName, String serverName,
         MigrationListFilter migrationListFilter, Context context) {
@@ -669,19 +445,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             nextLink -> listByTargetServerNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Check the validity and availability of the given name, to assign it to a new migration.
-     * 
-     * Checks if a proposed migration name is valid and available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Parameters required to check if a migration name is valid and available.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a migration name along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
         String resourceGroupName, String serverName, MigrationNameAvailabilityInner parameters) {
@@ -694,19 +458,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Check the validity and availability of the given name, to assign it to a new migration.
-     * 
-     * Checks if a proposed migration name is valid and available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Parameters required to check if a migration name is valid and available.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a migration name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrationNameAvailabilityInner> checkNameAvailabilityAsync(String resourceGroupName, String serverName,
         MigrationNameAvailabilityInner parameters) {
@@ -714,20 +466,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the validity and availability of the given name, to assign it to a new migration.
-     * 
-     * Checks if a proposed migration name is valid and available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Parameters required to check if a migration name is valid and available.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a migration name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationNameAvailabilityInner> checkNameAvailabilityWithResponse(String resourceGroupName,
         String serverName, MigrationNameAvailabilityInner parameters, Context context) {
@@ -737,19 +476,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
             this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Check the validity and availability of the given name, to assign it to a new migration.
-     * 
-     * Checks if a proposed migration name is valid and available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Parameters required to check if a migration name is valid and available.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return availability of a migration name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrationNameAvailabilityInner checkNameAvailability(String resourceGroupName, String serverName,
         MigrationNameAvailabilityInner parameters) {
@@ -787,11 +514,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MigrationInner> listByTargetServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MigrationList> res
-            = service.listByTargetServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTargetServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

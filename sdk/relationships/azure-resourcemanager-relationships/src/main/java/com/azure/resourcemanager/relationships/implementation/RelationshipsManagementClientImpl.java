@@ -22,10 +22,13 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.relationships.fluent.ContainsRelationshipsClient;
+import com.azure.resourcemanager.relationships.fluent.DependencyOfRelationshipsByServiceGroupsClient;
 import com.azure.resourcemanager.relationships.fluent.DependencyOfRelationshipsClient;
 import com.azure.resourcemanager.relationships.fluent.OperationsClient;
 import com.azure.resourcemanager.relationships.fluent.RelationshipsManagementClient;
@@ -70,6 +73,20 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
      */
     public String getApiVersion() {
         return this.apiVersion;
+    }
+
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
+    private final String subscriptionId;
+
+    /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String getSubscriptionId() {
+        return this.subscriptionId;
     }
 
     /**
@@ -143,6 +160,20 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
     }
 
     /**
+     * The DependencyOfRelationshipsByServiceGroupsClient object to access its operations.
+     */
+    private final DependencyOfRelationshipsByServiceGroupsClient dependencyOfRelationshipsByServiceGroups;
+
+    /**
+     * Gets the DependencyOfRelationshipsByServiceGroupsClient object to access its operations.
+     * 
+     * @return the DependencyOfRelationshipsByServiceGroupsClient object.
+     */
+    public DependencyOfRelationshipsByServiceGroupsClient getDependencyOfRelationshipsByServiceGroups() {
+        return this.dependencyOfRelationshipsByServiceGroups;
+    }
+
+    /**
      * The ServiceGroupMemberRelationshipsClient object to access its operations.
      */
     private final ServiceGroupMemberRelationshipsClient serviceGroupMemberRelationships;
@@ -157,6 +188,20 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
     }
 
     /**
+     * The ContainsRelationshipsClient object to access its operations.
+     */
+    private final ContainsRelationshipsClient containsRelationships;
+
+    /**
+     * Gets the ContainsRelationshipsClient object to access its operations.
+     * 
+     * @return the ContainsRelationshipsClient object.
+     */
+    public ContainsRelationshipsClient getContainsRelationships() {
+        return this.containsRelationships;
+    }
+
+    /**
      * Initializes an instance of RelationshipsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -164,17 +209,21 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param endpoint Service host.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     RelationshipsManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval, AzureEnvironment environment, String endpoint) {
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-09-01-preview";
+        this.subscriptionId = subscriptionId;
+        this.apiVersion = "2026-08-01";
         this.operations = new OperationsClientImpl(this);
         this.dependencyOfRelationships = new DependencyOfRelationshipsClientImpl(this);
+        this.dependencyOfRelationshipsByServiceGroups = new DependencyOfRelationshipsByServiceGroupsClientImpl(this);
         this.serviceGroupMemberRelationships = new ServiceGroupMemberRelationshipsClientImpl(this);
+        this.containsRelationships = new ContainsRelationshipsClientImpl(this);
     }
 
     /**
@@ -232,6 +281,24 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
     }
 
     /**
+     * Waits for completion and gets the final result, or throws an error.
+     * 
+     * @param poller the synchronous poller.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return the final result.
+     * @throws ManagementException if the long running operation fails.
+     */
+    public <T, U> U getLroFinalResultOrError(SyncPoller<PollResult<T>, U> poller) {
+        PollResponse<PollResult<T>> response = poller.waitForCompletion();
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            throw exception;
+        }
+        return poller.getFinalResult();
+    }
+
+    /**
      * Gets the final result, or an error, based on last async poll response.
      * 
      * @param response the last async poll response.
@@ -240,17 +307,25 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
      * @return the final result, or an error.
      */
     public <T, U> Mono<U> getLroFinalResultOrError(AsyncPollResponse<PollResult<T>, U> response) {
-        if (response.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+        ManagementException exception = getLroException(response.getStatus(), response.getValue());
+        if (exception != null) {
+            return Mono.error(exception);
+        }
+        return response.getFinalResult();
+    }
+
+    private ManagementException getLroException(LongRunningOperationStatus status, PollResult<?> result) {
+        PollResult.Error lroError = result == null ? null : result.getError();
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED || lroError != null) {
             String errorMessage;
             ManagementError managementError = null;
             HttpResponse errorResponse = null;
-            PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
                 errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
                     lroError.getResponseBody());
 
-                errorMessage = response.getValue().getError().getMessage();
-                String errorBody = response.getValue().getError().getResponseBody();
+                errorMessage = lroError.getMessage();
+                String errorBody = lroError.getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
@@ -269,12 +344,11 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
             }
             if (managementError == null) {
                 // fallback to default ManagementError
-                managementError = new ManagementError(response.getStatus().toString(), errorMessage);
+                managementError = new ManagementError(status.toString(), errorMessage);
             }
-            return Mono.error(new ManagementException(errorMessage, errorResponse, managementError));
-        } else {
-            return response.getFinalResult();
+            return new ManagementException(errorMessage, errorResponse, managementError);
         }
+        return null;
     }
 
     private static final class HttpResponseImpl extends HttpResponse {

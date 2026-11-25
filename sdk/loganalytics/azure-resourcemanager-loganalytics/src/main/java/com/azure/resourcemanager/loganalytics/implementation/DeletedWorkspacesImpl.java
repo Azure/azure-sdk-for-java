@@ -26,8 +26,7 @@ public final class DeletedWorkspacesImpl implements DeletedWorkspaces {
     }
 
     public PagedIterable<Workspace> list() {
-        PagedIterable<WorkspaceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Workspace> list(Context context) {
@@ -36,8 +35,7 @@ public final class DeletedWorkspacesImpl implements DeletedWorkspaces {
     }
 
     public PagedIterable<Workspace> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<WorkspaceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Workspace> listByResourceGroup(String resourceGroupName, Context context) {

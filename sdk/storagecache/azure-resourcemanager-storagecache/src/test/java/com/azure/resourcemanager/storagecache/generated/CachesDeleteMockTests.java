@@ -27,7 +27,7 @@ public final class CachesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.caches().delete("gc", "elvezrypq", com.azure.core.util.Context.NONE);
+        manager.caches().delete("bgye", "rymsgaojfmw", com.azure.core.util.Context.NONE);
 
     }
 }

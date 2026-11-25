@@ -47,7 +47,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
     }
 
     public void delete(String resourceGroupName, String accountName, String snapshotPolicyName) {
-        this.serviceClient().delete(resourceGroupName, accountName, snapshotPolicyName);
+        this.delete(resourceGroupName, accountName, snapshotPolicyName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
@@ -55,8 +55,7 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
     }
 
     public PagedIterable<SnapshotPolicy> list(String resourceGroupName, String accountName) {
-        PagedIterable<SnapshotPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SnapshotPolicyImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<SnapshotPolicy> list(String resourceGroupName, String accountName, Context context) {
@@ -84,78 +83,36 @@ public final class SnapshotPoliciesImpl implements SnapshotPolicies {
     }
 
     public SnapshotPolicy getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String snapshotPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "snapshotPolicies");
-        if (snapshotPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshotPolicies'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, snapshotPolicyName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SnapshotPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String snapshotPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "snapshotPolicies");
-        if (snapshotPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshotPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}",
+            "accountName", "netAppAccounts", LOGGER);
+        String snapshotPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}",
+            "snapshotPolicyName", "snapshotPolicies", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, snapshotPolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String snapshotPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "snapshotPolicies");
-        if (snapshotPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshotPolicies'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, snapshotPolicyName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String snapshotPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "snapshotPolicies");
-        if (snapshotPolicyName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'snapshotPolicies'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}",
+            "accountName", "netAppAccounts", LOGGER);
+        String snapshotPolicyName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/snapshotPolicies/{snapshotPolicyName}",
+            "snapshotPolicyName", "snapshotPolicies", LOGGER);
         this.delete(resourceGroupName, accountName, snapshotPolicyName, context);
     }
 

@@ -121,17 +121,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer backend address pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackendAddressPoolInner>> getWithResponseAsync(String resourceGroupName,
         String loadBalancerName, String backendAddressPoolName) {
@@ -155,7 +145,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             return Mono.error(
                 new IllegalArgumentException("Parameter backendAddressPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -198,24 +188,14 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             return Mono.error(
                 new IllegalArgumentException("Parameter backendAddressPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             loadBalancerName, backendAddressPoolName, accept, context);
     }
 
-    /**
-     * Gets load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer backend address pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackendAddressPoolInner> getAsync(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName) {
@@ -223,53 +203,21 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer backend address pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackendAddressPoolInner> getWithResponse(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, context).block();
     }
 
-    /**
-     * Gets load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer backend address pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackendAddressPoolInner get(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName) {
         return getWithResponse(resourceGroupName, loadBalancerName, backendAddressPoolName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String loadBalancerName, String backendAddressPoolName, BackendAddressPoolInner parameters) {
@@ -298,7 +246,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -349,7 +297,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -357,18 +305,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             resourceGroupName, loadBalancerName, backendAddressPoolName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of pool of backend IP addresses.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName,
@@ -404,18 +341,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             this.client.getHttpPipeline(), BackendAddressPoolInner.class, BackendAddressPoolInner.class, context);
     }
 
-    /**
-     * Creates or updates a load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of pool of backend IP addresses.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName,
@@ -424,19 +350,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of pool of backend IP addresses.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName,
@@ -446,18 +360,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackendAddressPoolInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName, BackendAddressPoolInner parameters) {
@@ -485,37 +388,14 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackendAddressPoolInner createOrUpdate(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName, BackendAddressPoolInner parameters) {
         return createOrUpdateAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, parameters).block();
     }
 
-    /**
-     * Creates or updates a load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackendAddressPoolInner createOrUpdate(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName, BackendAddressPoolInner parameters, Context context) {
@@ -523,17 +403,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             .block();
     }
 
-    /**
-     * Deletes the specified load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName) {
@@ -557,7 +427,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             return Mono.error(
                 new IllegalArgumentException("Parameter backendAddressPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, backendAddressPoolName, context))
@@ -599,23 +469,13 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             return Mono.error(
                 new IllegalArgumentException("Parameter backendAddressPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             loadBalancerName, backendAddressPoolName, context);
     }
 
-    /**
-     * Deletes the specified load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName) {
@@ -647,35 +507,14 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             context);
     }
 
-    /**
-     * Deletes the specified load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName) {
         return this.beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
         String backendAddressPoolName, Context context) {
@@ -683,17 +522,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
         return beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName).last()
@@ -719,32 +548,13 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
         deleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName).block();
     }
 
-    /**
-     * Deletes the specified load balancer backend address pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String loadBalancerName, String backendAddressPoolName,
         Context context) {
@@ -781,7 +591,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -822,7 +632,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -832,16 +642,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the load balancer backed address pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer backed address pools as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BackendAddressPoolInner> listAsync(String resourceGroupName, String loadBalancerName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, loadBalancerName),
@@ -866,32 +667,13 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the load balancer backed address pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer backed address pools as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackendAddressPoolInner> list(String resourceGroupName, String loadBalancerName) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName));
     }
 
-    /**
-     * Gets all the load balancer backed address pools.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancer backed address pools as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackendAddressPoolInner> list(String resourceGroupName, String loadBalancerName,
         Context context) {

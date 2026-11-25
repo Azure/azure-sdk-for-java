@@ -144,11 +144,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupInstanceResourceInner> listSinglePage(String resourceId) {
-        final String accept = "application/json";
-        Response<BackupInstanceResourceList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceId, Context.NONE);
     }
 
     /**
@@ -170,32 +166,13 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of backup instances associated with a tracked resource.
-     * 
-     * @param resourceId ARM path of the resource to be protected using Microsoft.DataProtection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of backup instances associated with a tracked resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceId) {
-        return new PagedIterable<>(() -> listSinglePage(resourceId), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceId, Context.NONE);
     }
 
-    /**
-     * Gets a list of backup instances associated with a tracked resource.
-     * 
-     * @param resourceId ARM path of the resource to be protected using Microsoft.DataProtection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of backup instances associated with a tracked resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceId, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceId, context),
@@ -232,11 +209,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupInstanceResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupInstanceResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

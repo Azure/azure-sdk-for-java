@@ -10,11 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.purestorageblock.fluent.ReservationsClient;
+import com.azure.resourcemanager.purestorageblock.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.LimitDetailsInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingStatusInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationBillingUsageReportInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationInner;
+import com.azure.resourcemanager.purestorageblock.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.purestorageblock.models.LimitDetails;
+import com.azure.resourcemanager.purestorageblock.models.LinkSaaSRequest;
 import com.azure.resourcemanager.purestorageblock.models.Reservation;
 import com.azure.resourcemanager.purestorageblock.models.ReservationBillingStatus;
 import com.azure.resourcemanager.purestorageblock.models.ReservationBillingUsageReport;
@@ -51,7 +54,7 @@ public final class ReservationsImpl implements Reservations {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String reservationName) {
-        this.serviceClient().delete(resourceGroupName, reservationName);
+        this.delete(resourceGroupName, reservationName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String reservationName, Context context) {
@@ -59,8 +62,7 @@ public final class ReservationsImpl implements Reservations {
     }
 
     public PagedIterable<Reservation> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ReservationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Reservation> listByResourceGroup(String resourceGroupName, Context context) {
@@ -69,8 +71,7 @@ public final class ReservationsImpl implements Reservations {
     }
 
     public PagedIterable<Reservation> list() {
-        PagedIterable<ReservationInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Reservation> list(Context context) {
@@ -130,59 +131,62 @@ public final class ReservationsImpl implements Reservations {
         }
     }
 
+    public Reservation linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body) {
+        return this.linkSaaS(resourceGroupName, reservationName, body, Context.NONE);
+    }
+
+    public Reservation linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body,
+        Context context) {
+        ReservationInner inner = this.serviceClient().linkSaaS(resourceGroupName, reservationName, body, context);
+        if (inner != null) {
+            return new ReservationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String reservationName, Context context) {
+        Response<LatestLinkedSaaSResponseInner> inner
+            = this.serviceClient().latestLinkedSaaSWithResponse(resourceGroupName, reservationName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LatestLinkedSaaSResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS(String resourceGroupName, String reservationName) {
+        LatestLinkedSaaSResponseInner inner = this.serviceClient().latestLinkedSaaS(resourceGroupName, reservationName);
+        if (inner != null) {
+            return new LatestLinkedSaaSResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Reservation getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String reservationName = ResourceManagerUtils.getValueFromIdByName(id, "reservations");
-        if (reservationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'reservations'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, reservationName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Reservation> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String reservationName = ResourceManagerUtils.getValueFromIdByName(id, "reservations");
-        if (reservationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'reservations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String reservationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}",
+            "reservationName", "reservations", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, reservationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String reservationName = ResourceManagerUtils.getValueFromIdByName(id, "reservations");
-        if (reservationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'reservations'.", id)));
-        }
-        this.delete(resourceGroupName, reservationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String reservationName = ResourceManagerUtils.getValueFromIdByName(id, "reservations");
-        if (reservationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'reservations'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String reservationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}",
+            "reservationName", "reservations", LOGGER);
         this.delete(resourceGroupName, reservationName, context);
     }
 

@@ -91,10 +91,7 @@ public final class AssetEndpointProfileImpl
     }
 
     public AssetEndpointProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssetEndpointProfiles()
-            .createOrReplace(resourceGroupName, assetEndpointProfileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AssetEndpointProfile create(Context context) {
@@ -117,10 +114,7 @@ public final class AssetEndpointProfileImpl
     }
 
     public AssetEndpointProfile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssetEndpointProfiles()
-            .update(resourceGroupName, assetEndpointProfileName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AssetEndpointProfile apply(Context context) {
@@ -134,17 +128,16 @@ public final class AssetEndpointProfileImpl
         com.azure.resourcemanager.deviceregistry.DeviceRegistryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.assetEndpointProfileName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assetEndpointProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}",
+            "resourceGroupName");
+        this.assetEndpointProfileName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/{assetEndpointProfileName}",
+            "assetEndpointProfileName");
     }
 
     public AssetEndpointProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssetEndpointProfiles()
-            .getByResourceGroupWithResponse(resourceGroupName, assetEndpointProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AssetEndpointProfile refresh(Context context) {

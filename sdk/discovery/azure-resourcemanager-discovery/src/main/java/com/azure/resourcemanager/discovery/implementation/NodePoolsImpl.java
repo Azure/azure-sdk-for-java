@@ -45,7 +45,7 @@ public final class NodePoolsImpl implements NodePools {
     }
 
     public void delete(String resourceGroupName, String supercomputerName, String nodePoolName) {
-        this.serviceClient().delete(resourceGroupName, supercomputerName, nodePoolName);
+        this.delete(resourceGroupName, supercomputerName, nodePoolName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String supercomputerName, String nodePoolName, Context context) {
@@ -53,9 +53,7 @@ public final class NodePoolsImpl implements NodePools {
     }
 
     public PagedIterable<NodePool> listBySupercomputer(String resourceGroupName, String supercomputerName) {
-        PagedIterable<NodePoolInner> inner
-            = this.serviceClient().listBySupercomputer(resourceGroupName, supercomputerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodePoolImpl(inner1, this.manager()));
+        return this.listBySupercomputer(resourceGroupName, supercomputerName, Context.NONE);
     }
 
     public PagedIterable<NodePool> listBySupercomputer(String resourceGroupName, String supercomputerName,
@@ -66,78 +64,36 @@ public final class NodePoolsImpl implements NodePools {
     }
 
     public NodePool getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, supercomputerName, nodePoolName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<NodePool> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String supercomputerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "supercomputerName", "supercomputers", LOGGER);
+        String nodePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "nodePoolName", "nodePools", LOGGER);
         return this.getWithResponse(resourceGroupName, supercomputerName, nodePoolName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
-        this.delete(resourceGroupName, supercomputerName, nodePoolName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String supercomputerName = ResourceManagerUtils.getValueFromIdByName(id, "supercomputers");
-        if (supercomputerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'supercomputers'.", id)));
-        }
-        String nodePoolName = ResourceManagerUtils.getValueFromIdByName(id, "nodePools");
-        if (nodePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'nodePools'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String supercomputerName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "supercomputerName", "supercomputers", LOGGER);
+        String nodePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/supercomputers/{supercomputerName}/nodePools/{nodePoolName}",
+            "nodePoolName", "nodePools", LOGGER);
         this.delete(resourceGroupName, supercomputerName, nodePoolName, context);
     }
 

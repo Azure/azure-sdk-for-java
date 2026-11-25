@@ -324,17 +324,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FirewallResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String firewallName,
         Context context) {
@@ -343,16 +333,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getSubscriptionId(), resourceGroupName, firewallName, accept, context);
     }
 
-    /**
-     * Get a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a FirewallResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallResourceInner getByResourceGroup(String resourceGroupName, String firewallName) {
         return getByResourceGroupWithResponse(resourceGroupName, firewallName, Context.NONE).getValue();
@@ -395,11 +376,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String firewallName,
         FirewallResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, firewallName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, firewallName, resource, Context.NONE);
     }
 
     /**
@@ -444,37 +421,14 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of paloAltoNetworks Firewall.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallResourceInner>, FirewallResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String firewallName, FirewallResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, firewallName, resource);
-        return this.client.<FirewallResourceInner, FirewallResourceInner>getLroResult(response,
-            FirewallResourceInner.class, FirewallResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, firewallName, resource, Context.NONE);
     }
 
-    /**
-     * Create a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of paloAltoNetworks Firewall.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallResourceInner>, FirewallResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String firewallName, FirewallResourceInner resource, Context context) {
@@ -501,39 +455,19 @@ public final class FirewallsClientImpl implements FirewallsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks Firewall.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallResourceInner createOrUpdate(String resourceGroupName, String firewallName,
         FirewallResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, firewallName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, firewallName, resource, Context.NONE);
     }
 
-    /**
-     * Create a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks Firewall.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallResourceInner createOrUpdate(String resourceGroupName, String firewallName,
         FirewallResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, firewallName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, firewallName, resource, context));
     }
 
     /**
@@ -575,18 +509,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks Firewall along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallResourceInner> updateWithResponse(String resourceGroupName, String firewallName,
         FirewallResourceUpdate properties, Context context) {
@@ -596,17 +519,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getSubscriptionId(), resourceGroupName, firewallName, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paloAltoNetworks Firewall.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallResourceInner update(String resourceGroupName, String firewallName,
         FirewallResourceUpdate properties) {
@@ -643,8 +556,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String firewallName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, firewallName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, firewallName, Context.NONE);
     }
 
     /**
@@ -681,33 +593,13 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, firewallName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, firewallName, Context.NONE);
     }
 
-    /**
-     * Delete a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallName,
         Context context) {
@@ -730,33 +622,16 @@ public final class FirewallsClientImpl implements FirewallsClient {
         return beginDeleteAsync(resourceGroupName, firewallName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallName) {
-        beginDelete(resourceGroupName, firewallName).getFinalResult();
+        delete(resourceGroupName, firewallName, Context.NONE);
     }
 
-    /**
-     * Delete a FirewallResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallName, Context context) {
-        beginDelete(resourceGroupName, firewallName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, firewallName, context));
     }
 
     /**
@@ -806,11 +681,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<FirewallResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -833,31 +704,13 @@ public final class FirewallsClientImpl implements FirewallsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FirewallResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List FirewallResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -905,11 +758,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<FirewallResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -930,27 +779,13 @@ public final class FirewallsClientImpl implements FirewallsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List FirewallResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List FirewallResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FirewallResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -994,17 +829,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Global Rulestack associated with the Firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return global Rulestack associated with the Firewall along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GlobalRulestackInfoInner> getGlobalRulestackWithResponse(String resourceGroupName,
         String firewallName, Context context) {
@@ -1013,16 +838,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getSubscriptionId(), resourceGroupName, firewallName, accept, context);
     }
 
-    /**
-     * Get Global Rulestack associated with the Firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return global Rulestack associated with the Firewall.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GlobalRulestackInfoInner getGlobalRulestack(String resourceGroupName, String firewallName) {
         return getGlobalRulestackWithResponse(resourceGroupName, firewallName, Context.NONE).getValue();
@@ -1064,17 +880,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Log Profile for Firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log Settings for Firewall along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogSettingsInner> getLogProfileWithResponse(String resourceGroupName, String firewallName,
         Context context) {
@@ -1083,16 +889,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getSubscriptionId(), resourceGroupName, firewallName, accept, context);
     }
 
-    /**
-     * Log Profile for Firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log Settings for Firewall.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogSettingsInner getLogProfile(String resourceGroupName, String firewallName) {
         return getLogProfileWithResponse(resourceGroupName, firewallName, Context.NONE).getValue();
@@ -1137,18 +934,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * support info for firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param email email address on behalf of which this API called.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SupportInfoInner> getSupportInfoWithResponse(String resourceGroupName, String firewallName,
         String email, Context context) {
@@ -1157,16 +943,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getSubscriptionId(), resourceGroupName, firewallName, email, accept, context);
     }
 
-    /**
-     * support info for firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupportInfoInner getSupportInfo(String resourceGroupName, String firewallName) {
         final String email = null;
@@ -1210,18 +987,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Log Profile for Firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @param logSettings The logSettings parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> saveLogProfileWithResponse(String resourceGroupName, String firewallName,
         LogSettingsInner logSettings, Context context) {
@@ -1229,15 +995,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
             this.client.getSubscriptionId(), resourceGroupName, firewallName, logSettings, context);
     }
 
-    /**
-     * Log Profile for Firewall.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallName Firewall resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void saveLogProfile(String resourceGroupName, String firewallName) {
         final LogSettingsInner logSettings = null;
@@ -1276,11 +1034,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FirewallResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1334,11 +1088,7 @@ public final class FirewallsClientImpl implements FirewallsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FirewallResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FirewallResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

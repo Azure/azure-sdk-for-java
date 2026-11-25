@@ -158,18 +158,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a distributed availability group info.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a distributed availability group info along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DistributedAvailabilityGroupInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName) {
@@ -243,17 +232,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, accept, context);
     }
 
-    /**
-     * Gets a distributed availability group info.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a distributed availability group info on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributedAvailabilityGroupInner> getAsync(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName) {
@@ -261,18 +240,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a distributed availability group info.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a distributed availability group info along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributedAvailabilityGroupInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName, Context context) {
@@ -280,17 +248,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .block();
     }
 
-    /**
-     * Gets a distributed availability group info.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a distributed availability group info.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner get(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName) {
@@ -298,19 +256,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getValue();
     }
 
-    /**
-     * Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName,
@@ -400,19 +346,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName,
@@ -450,19 +384,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             DistributedAvailabilityGroupInner.class, context);
     }
 
-    /**
-     * Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -473,20 +395,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String managedInstanceName,
@@ -497,19 +406,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributedAvailabilityGroupInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName,
@@ -540,18 +437,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupInner parameters) {
@@ -559,19 +445,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .block();
     }
 
-    /**
-     * Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner createOrUpdate(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupInner parameters, Context context) {
@@ -579,19 +453,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context).block();
     }
 
-    /**
-     * Updates a distributed availability group replication mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName,
@@ -681,19 +543,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context);
     }
 
-    /**
-     * Updates a distributed availability group replication mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
         beginUpdateAsync(String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -731,19 +581,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             DistributedAvailabilityGroupInner.class, context);
     }
 
-    /**
-     * Updates a distributed availability group replication mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginUpdate(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -753,20 +591,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Updates a distributed availability group replication mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginUpdate(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -777,19 +602,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Updates a distributed availability group replication mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributedAvailabilityGroupInner> updateAsync(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupInner parameters) {
@@ -819,18 +632,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a distributed availability group replication mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner update(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupInner parameters) {
@@ -838,19 +640,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .block();
     }
 
-    /**
-     * Updates a distributed availability group replication mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group info.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner update(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupInner parameters, Context context) {
@@ -858,17 +648,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context).block();
     }
 
-    /**
-     * Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName) {
@@ -939,17 +719,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             resourceGroupName, managedInstanceName, distributedAvailabilityGroupName, context);
     }
 
-    /**
-     * Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName) {
@@ -981,17 +751,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context);
     }
 
-    /**
-     * Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName) {
@@ -999,18 +759,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, Context context) {
@@ -1018,17 +767,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName) {
@@ -1056,32 +795,13 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName) {
         deleteAsync(resourceGroupName, managedInstanceName, distributedAvailabilityGroupName).block();
     }
 
-    /**
-     * Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
         Context context) {
@@ -1167,16 +887,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of a distributed availability groups in instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of a distributed availability groups in instance as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DistributedAvailabilityGroupInner> listByInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -1202,52 +913,21 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             nextLink -> listByInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of a distributed availability groups in instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of a distributed availability groups in instance as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DistributedAvailabilityGroupInner> listByInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of a distributed availability groups in instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of a distributed availability groups in instance as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DistributedAvailabilityGroupInner> listByInstance(String resourceGroupName,
         String managedInstanceName, Context context) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
-    /**
-     * Performs requested failover type in this distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group failover request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName,
@@ -1337,19 +1017,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context);
     }
 
-    /**
-     * Performs requested failover type in this distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group failover request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
         beginFailoverAsync(String resourceGroupName, String managedInstanceName,
@@ -1388,19 +1056,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             DistributedAvailabilityGroupInner.class, context);
     }
 
-    /**
-     * Performs requested failover type in this distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group failover request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginFailover(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -1410,20 +1066,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Performs requested failover type in this distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group failover request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginFailover(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -1434,19 +1077,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Performs requested failover type in this distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group failover request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributedAvailabilityGroupInner> failoverAsync(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupsFailoverRequest parameters) {
@@ -1477,18 +1108,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Performs requested failover type in this distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group failover request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner failover(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupsFailoverRequest parameters) {
@@ -1496,19 +1116,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .block();
     }
 
-    /**
-     * Performs requested failover type in this distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group failover request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner failover(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupsFailoverRequest parameters,
@@ -1517,19 +1125,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context).block();
     }
 
-    /**
-     * Sets the role for managed instance in a distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group set role request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> setRoleWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String distributedAvailabilityGroupName,
@@ -1619,19 +1215,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context);
     }
 
-    /**
-     * Sets the role for managed instance in a distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group set role request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner>
         beginSetRoleAsync(String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -1669,19 +1253,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             DistributedAvailabilityGroupInner.class, context);
     }
 
-    /**
-     * Sets the role for managed instance in a distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group set role request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginSetRole(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -1691,20 +1263,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Sets the role for managed instance in a distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group set role request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of distributed availability group between box and Sql Managed
-     * Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DistributedAvailabilityGroupInner>, DistributedAvailabilityGroupInner> beginSetRole(
         String resourceGroupName, String managedInstanceName, String distributedAvailabilityGroupName,
@@ -1715,19 +1274,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .getSyncPoller();
     }
 
-    /**
-     * Sets the role for managed instance in a distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group set role request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DistributedAvailabilityGroupInner> setRoleAsync(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupSetRole parameters) {
@@ -1757,18 +1304,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Sets the role for managed instance in a distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group set role request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner setRole(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupSetRole parameters) {
@@ -1776,19 +1312,7 @@ public final class DistributedAvailabilityGroupsClientImpl implements Distribute
             .block();
     }
 
-    /**
-     * Sets the role for managed instance in a distributed availability group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param distributedAvailabilityGroupName The distributed availability group name.
-     * @param parameters The distributed availability group set role request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return distributed availability group between box and Sql Managed Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributedAvailabilityGroupInner setRole(String resourceGroupName, String managedInstanceName,
         String distributedAvailabilityGroupName, DistributedAvailabilityGroupSetRole parameters, Context context) {

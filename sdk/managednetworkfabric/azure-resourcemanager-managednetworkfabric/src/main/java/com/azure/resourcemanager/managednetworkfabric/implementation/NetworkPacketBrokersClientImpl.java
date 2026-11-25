@@ -256,17 +256,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves details of this Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkPacketBroker resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkPacketBrokerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkPacketBrokerName, Context context) {
@@ -275,16 +265,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             this.client.getSubscriptionId(), resourceGroupName, networkPacketBrokerName, accept, context);
     }
 
-    /**
-     * Retrieves details of this Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkPacketBrokerInner getByResourceGroup(String resourceGroupName, String networkPacketBrokerName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, Context.NONE).getValue();
@@ -328,11 +309,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkPacketBrokerName,
         NetworkPacketBrokerInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkPacketBrokerName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, networkPacketBrokerName, body, Context.NONE);
     }
 
     /**
@@ -378,37 +355,14 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             this.client.getContext());
     }
 
-    /**
-     * Creates a Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner>
         beginCreate(String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, networkPacketBrokerName, body);
-        return this.client.<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(response,
-            NetworkPacketBrokerInner.class, NetworkPacketBrokerInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkPacketBrokerName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginCreate(
         String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerInner body, Context context) {
@@ -435,39 +389,19 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
         NetworkPacketBrokerInner body) {
-        return beginCreate(resourceGroupName, networkPacketBrokerName, body).getFinalResult();
+        return create(resourceGroupName, networkPacketBrokerName, body, Context.NONE);
     }
 
-    /**
-     * Creates a Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkPacketBrokerInner create(String resourceGroupName, String networkPacketBrokerName,
         NetworkPacketBrokerInner body, Context context) {
-        return beginCreate(resourceGroupName, networkPacketBrokerName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, networkPacketBrokerName, body, context));
     }
 
     /**
@@ -508,11 +442,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkPacketBrokerName,
         NetworkPacketBrokerPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkPacketBrokerName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkPacketBrokerName, body, Context.NONE);
     }
 
     /**
@@ -558,37 +488,14 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             this.client.getContext());
     }
 
-    /**
-     * API to update certain properties of the Network Packet Broker resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Network Packet Broker properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner>
         beginUpdate(String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkPacketBrokerName, body);
-        return this.client.<NetworkPacketBrokerInner, NetworkPacketBrokerInner>getLroResult(response,
-            NetworkPacketBrokerInner.class, NetworkPacketBrokerInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkPacketBrokerName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the Network Packet Broker resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Network Packet Broker properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkPacketBrokerInner>, NetworkPacketBrokerInner> beginUpdate(
         String resourceGroupName, String networkPacketBrokerName, NetworkPacketBrokerPatch body, Context context) {
@@ -615,39 +522,19 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * API to update certain properties of the Network Packet Broker resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Network Packet Broker properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
         NetworkPacketBrokerPatch body) {
-        return beginUpdate(resourceGroupName, networkPacketBrokerName, body).getFinalResult();
+        return update(resourceGroupName, networkPacketBrokerName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the Network Packet Broker resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param body Network Packet Broker properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkPacketBroker resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkPacketBrokerInner update(String resourceGroupName, String networkPacketBrokerName,
         NetworkPacketBrokerPatch body, Context context) {
-        return beginUpdate(resourceGroupName, networkPacketBrokerName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, networkPacketBrokerName, body, context));
     }
 
     /**
@@ -681,8 +568,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkPacketBrokerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkPacketBrokerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkPacketBrokerName, Context.NONE);
     }
 
     /**
@@ -721,33 +607,13 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             this.client.getContext());
     }
 
-    /**
-     * Deletes Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkPacketBrokerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkPacketBrokerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkPacketBrokerName, Context.NONE);
     }
 
-    /**
-     * Deletes Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkPacketBrokerName,
         Context context) {
@@ -771,33 +637,16 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkPacketBrokerName) {
-        beginDelete(resourceGroupName, networkPacketBrokerName).getFinalResult();
+        delete(resourceGroupName, networkPacketBrokerName, Context.NONE);
     }
 
-    /**
-     * Deletes Network Packet Broker.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkPacketBrokerName Name of the Network Packet Broker.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkPacketBrokerName, Context context) {
-        beginDelete(resourceGroupName, networkPacketBrokerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkPacketBrokerName, context));
     }
 
     /**
@@ -847,11 +696,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkPacketBrokerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkPacketBrokersListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -874,31 +719,13 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays NetworkPacketBrokers list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkPacketBroker items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkPacketBrokerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Displays NetworkPacketBrokers list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkPacketBroker items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkPacketBrokerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -946,11 +773,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkPacketBrokerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkPacketBrokersListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -971,27 +794,13 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays Network Packet Brokers list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkPacketBroker items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkPacketBrokerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Displays Network Packet Brokers list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkPacketBroker items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkPacketBrokerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1030,11 +839,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkPacketBrokerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkPacketBrokersListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1089,11 +894,7 @@ public final class NetworkPacketBrokersClientImpl implements NetworkPacketBroker
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkPacketBrokerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkPacketBrokersListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

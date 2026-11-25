@@ -202,18 +202,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified API Key of the given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param apiKeyName The resource name of the API key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified API Key of the given Nginx deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxDeploymentApiKeyResponseInner> getWithResponse(String resourceGroupName, String deploymentName,
         String apiKeyName, Context context) {
@@ -222,17 +211,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             resourceGroupName, deploymentName, apiKeyName, accept, context);
     }
 
-    /**
-     * Get the specified API Key of the given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param apiKeyName The resource name of the API key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified API Key of the given Nginx deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentApiKeyResponseInner get(String resourceGroupName, String deploymentName, String apiKeyName) {
         return getWithResponse(resourceGroupName, deploymentName, apiKeyName, Context.NONE).getValue();
@@ -279,19 +258,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update an API Key for the Nginx deployment in order to access the dataplane API endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param apiKeyName The resource name of the API key.
-     * @param body The API Key object containing fields (e.g. secret text, expiration date) to upsert the key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Api Key Response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxDeploymentApiKeyResponseInner> createOrUpdateWithResponse(String resourceGroupName,
         String deploymentName, String apiKeyName, NginxDeploymentApiKeyRequest body, Context context) {
@@ -300,17 +267,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, apiKeyName, accept, body, context);
     }
 
-    /**
-     * Create or update an API Key for the Nginx deployment in order to access the dataplane API endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param apiKeyName The resource name of the API key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Api Key Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentApiKeyResponseInner createOrUpdate(String resourceGroupName, String deploymentName,
         String apiKeyName) {
@@ -354,18 +311,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         return deleteWithResponseAsync(resourceGroupName, deploymentName, apiKeyName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete API key for Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param apiKeyName The resource name of the API key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String deploymentName, String apiKeyName,
         Context context) {
@@ -373,16 +319,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, apiKeyName, context);
     }
 
-    /**
-     * Delete API key for Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param apiKeyName The resource name of the API key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, String apiKeyName) {
         deleteWithResponse(resourceGroupName, deploymentName, apiKeyName, Context.NONE);
@@ -440,12 +377,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentApiKeyResponseInner> listSinglePage(String resourceGroupName,
         String deploymentName) {
-        final String accept = "application/json";
-        Response<NginxDeploymentApiKeyListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, deploymentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, deploymentName, Context.NONE);
     }
 
     /**
@@ -470,33 +402,13 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all API Keys of the given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Api Key List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentApiKeyResponseInner> list(String resourceGroupName, String deploymentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, deploymentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * List all API Keys of the given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nginx Deployment Api Key List Response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NginxDeploymentApiKeyResponseInner> list(String resourceGroupName, String deploymentName,
         Context context) {
@@ -534,11 +446,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NginxDeploymentApiKeyResponseInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NginxDeploymentApiKeyListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

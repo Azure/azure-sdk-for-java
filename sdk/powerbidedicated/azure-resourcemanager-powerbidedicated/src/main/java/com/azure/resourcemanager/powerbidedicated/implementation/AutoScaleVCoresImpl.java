@@ -50,12 +50,11 @@ public final class AutoScaleVCoresImpl implements AutoScaleVCores {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String vcoreName) {
-        this.serviceClient().delete(resourceGroupName, vcoreName);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE);
     }
 
     public PagedIterable<AutoScaleVCore> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<AutoScaleVCoreInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AutoScaleVCoreImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<AutoScaleVCore> listByResourceGroup(String resourceGroupName, Context context) {
@@ -64,8 +63,7 @@ public final class AutoScaleVCoresImpl implements AutoScaleVCores {
     }
 
     public PagedIterable<AutoScaleVCore> list() {
-        PagedIterable<AutoScaleVCoreInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AutoScaleVCoreImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<AutoScaleVCore> list(Context context) {
@@ -74,58 +72,30 @@ public final class AutoScaleVCoresImpl implements AutoScaleVCores {
     }
 
     public AutoScaleVCore getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vcoreName = ResourceManagerUtils.getValueFromIdByName(id, "autoScaleVCores");
-        if (vcoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoScaleVCores'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AutoScaleVCore> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vcoreName = ResourceManagerUtils.getValueFromIdByName(id, "autoScaleVCores");
-        if (vcoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoScaleVCores'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String vcoreName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}",
+            "vcoreName", "autoScaleVCores", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, vcoreName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vcoreName = ResourceManagerUtils.getValueFromIdByName(id, "autoScaleVCores");
-        if (vcoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoScaleVCores'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String vcoreName = ResourceManagerUtils.getValueFromIdByName(id, "autoScaleVCores");
-        if (vcoreName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autoScaleVCores'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String vcoreName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}",
+            "vcoreName", "autoScaleVCores", LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceGroupName, vcoreName, context);
     }
 

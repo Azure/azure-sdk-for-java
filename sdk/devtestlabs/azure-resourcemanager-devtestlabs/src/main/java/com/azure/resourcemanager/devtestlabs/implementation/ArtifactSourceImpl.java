@@ -129,11 +129,7 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArtifactSources()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ArtifactSource create(Context context) {
@@ -156,11 +152,7 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getArtifactSources()
-            .updateWithResponse(resourceGroupName, labName, name, updateArtifactSource, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ArtifactSource apply(Context context) {
@@ -175,18 +167,19 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "artifactsources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{name}",
+            "resourceGroupName");
+        this.labName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{name}",
+            "labName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/artifactsources/{name}",
+            "name");
     }
 
     public ArtifactSource refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getArtifactSources()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ArtifactSource refresh(Context context) {

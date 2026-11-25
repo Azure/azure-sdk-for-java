@@ -115,11 +115,7 @@ public final class SecurityConnectorImpl
     }
 
     public SecurityConnector create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityConnectors()
-            .createOrUpdateWithResponse(resourceGroupName, securityConnectorName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityConnector create(Context context) {
@@ -141,11 +137,7 @@ public final class SecurityConnectorImpl
     }
 
     public SecurityConnector apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityConnectors()
-            .updateWithResponse(resourceGroupName, securityConnectorName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecurityConnector apply(Context context) {
@@ -160,16 +152,16 @@ public final class SecurityConnectorImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.securityConnectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "securityConnectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}",
+            "resourceGroupName");
+        this.securityConnectorName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}",
+            "securityConnectorName");
     }
 
     public SecurityConnector refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityConnectors()
-            .getByResourceGroupWithResponse(resourceGroupName, securityConnectorName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityConnector refresh(Context context) {

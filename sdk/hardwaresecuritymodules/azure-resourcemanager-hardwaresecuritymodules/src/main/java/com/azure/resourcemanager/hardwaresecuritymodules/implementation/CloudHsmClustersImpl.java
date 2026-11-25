@@ -51,7 +51,7 @@ public final class CloudHsmClustersImpl implements CloudHsmClusters {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String cloudHsmClusterName) {
-        this.serviceClient().delete(resourceGroupName, cloudHsmClusterName);
+        this.delete(resourceGroupName, cloudHsmClusterName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String cloudHsmClusterName, Context context) {
@@ -143,13 +143,7 @@ public final class CloudHsmClustersImpl implements CloudHsmClusters {
 
     public RestoreResult restore(String resourceGroupName, String cloudHsmClusterName,
         RestoreRequestProperties restoreRequestProperties) {
-        RestoreResultInner inner
-            = this.serviceClient().restore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties);
-        if (inner != null) {
-            return new RestoreResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.restore(resourceGroupName, cloudHsmClusterName, restoreRequestProperties, Context.NONE);
     }
 
     public RestoreResult restore(String resourceGroupName, String cloudHsmClusterName,
@@ -164,58 +158,30 @@ public final class CloudHsmClustersImpl implements CloudHsmClusters {
     }
 
     public CloudHsmCluster getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "cloudHsmClusters");
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudHsmClusters'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CloudHsmCluster> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "cloudHsmClusters");
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudHsmClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudHsmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}",
+            "cloudHsmClusterName", "cloudHsmClusters", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "cloudHsmClusters");
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudHsmClusters'.", id)));
-        }
-        this.delete(resourceGroupName, cloudHsmClusterName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudHsmClusterName = ResourceManagerUtils.getValueFromIdByName(id, "cloudHsmClusters");
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudHsmClusters'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudHsmClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}",
+            "cloudHsmClusterName", "cloudHsmClusters", LOGGER);
         this.delete(resourceGroupName, cloudHsmClusterName, context);
     }
 

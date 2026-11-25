@@ -1,6 +1,6 @@
 ## Release History
 
-### 7.5.0-beta.1 (Unreleased)
+### 7.6.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,14 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 7.5.0 (2026-11-24)
+
+#### Bugs Fixed
+
+* Fixed a `NullPointerException` when a bulk operation fails without an item response. Bulk insert and delete operations
+  now fail fast when an item response contains an exception, is missing, or has an unsuccessful status code
+  ([50148](https://github.com/Azure/azure-sdk-for-java/issues/50148)).
 
 ### 6.5.0 (2026-07-29)
 

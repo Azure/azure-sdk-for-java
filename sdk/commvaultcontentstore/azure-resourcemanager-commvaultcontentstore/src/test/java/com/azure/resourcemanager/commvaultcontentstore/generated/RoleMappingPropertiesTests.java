@@ -17,42 +17,48 @@ public final class RoleMappingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoleMappingProperties model = BinaryData.fromString(
-            "{\"roles\":[{\"roleName\":\"BackupAdmin\",\"entities\":[{\"id\":\"bpkkpwdre\",\"displayName\":\"ovvqfovljxywsu\",\"entityType\":\"User\"},{\"id\":\"s\",\"displayName\":\"sytgadgvraea\",\"entityType\":\"User\"}]},{\"roleName\":\"BackupOperator\",\"entities\":[{\"id\":\"rwlqu\",\"displayName\":\"jfqka\",\"entityType\":\"User\"},{\"id\":\"ipfpubji\",\"displayName\":\"wifto\",\"entityType\":\"Group\"}]},{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{\"id\":\"sgplsakn\",\"displayName\":\"fsynljphuop\",\"entityType\":\"Group\"},{\"id\":\"qiy\",\"displayName\":\"orzihle\",\"entityType\":\"Group\"},{\"id\":\"w\",\"displayName\":\"mslyzrpzbchckqqz\",\"entityType\":\"User\"},{\"id\":\"iysui\",\"displayName\":\"ynkedyatrwyhqmib\",\"entityType\":\"User\"}]},{\"roleName\":\"BackupOperator\",\"entities\":[{\"id\":\"ypyynpcdpumnzg\",\"displayName\":\"z\",\"entityType\":\"User\"},{\"id\":\"iknsorgjh\",\"displayName\":\"ldtlwwr\",\"entityType\":\"User\"},{\"id\":\"tncvokot\",\"displayName\":\"xdy\",\"entityType\":\"Group\"}]}],\"provisioningState\":\"Succeeded\"}")
+            "{\"roles\":[{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{\"id\":\"orgjhxbldt\",\"displayName\":\"wrlkdmtn\",\"entityType\":\"User\"},{\"id\":\"otllxdyhgsyo\",\"displayName\":\"gjltdtbnnhado\",\"entityType\":\"Group\"},{\"id\":\"vcikhnvpamqgx\",\"displayName\":\"u\",\"entityType\":\"User\"}]},{\"roleName\":\"BackupUser\",\"entities\":[{\"id\":\"ggxkallatmelwuip\",\"displayName\":\"cjzkzivgvvcna\",\"entityType\":\"User\"},{\"id\":\"rnxxmueed\",\"displayName\":\"rdvstkwqqtch\",\"entityType\":\"Group\"}]},{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{\"id\":\"tdaaygdvwvg\",\"displayName\":\"ohgwxrtfudxepxg\",\"entityType\":\"Group\"},{\"id\":\"vrvmnpkukghim\",\"displayName\":\"lxgwimfnjhf\",\"entityType\":\"User\"},{\"id\":\"szkkfoqre\",\"displayName\":\"kzikfjawneaivxwc\",\"entityType\":\"Group\"},{\"id\":\"c\",\"displayName\":\"elsfeaen\",\"entityType\":\"Group\"}]}],\"provisioningState\":\"Canceled\"}")
             .toObject(RoleMappingProperties.class);
-        Assertions.assertEquals(RoleName.BACKUP_ADMIN, model.roles().get(0).roleName());
-        Assertions.assertEquals("bpkkpwdre", model.roles().get(0).entities().get(0).id());
-        Assertions.assertEquals("ovvqfovljxywsu", model.roles().get(0).entities().get(0).displayName());
+        Assertions.assertEquals(RoleName.MULTI_PERSON_AUTHORIZATION, model.roles().get(0).roleName());
+        Assertions.assertEquals("orgjhxbldt", model.roles().get(0).entities().get(0).id());
+        Assertions.assertEquals("wrlkdmtn", model.roles().get(0).entities().get(0).displayName());
         Assertions.assertEquals(EntityType.USER, model.roles().get(0).entities().get(0).entityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleMappingProperties model = new RoleMappingProperties().withRoles(Arrays.asList(new RoleAssignment()
-            .withRoleName(RoleName.BACKUP_ADMIN)
-            .withEntities(Arrays.asList(
-                new EntityInfo().withId("bpkkpwdre").withDisplayName("ovvqfovljxywsu").withEntityType(EntityType.USER),
-                new EntityInfo().withId("s").withDisplayName("sytgadgvraea").withEntityType(EntityType.USER))),
-            new RoleAssignment().withRoleName(RoleName.BACKUP_OPERATOR)
-                .withEntities(Arrays.asList(
-                    new EntityInfo().withId("rwlqu").withDisplayName("jfqka").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("ipfpubji").withDisplayName("wifto").withEntityType(EntityType.GROUP))),
+        RoleMappingProperties model = new RoleMappingProperties().withRoles(Arrays.asList(
             new RoleAssignment().withRoleName(RoleName.MULTI_PERSON_AUTHORIZATION)
                 .withEntities(Arrays.asList(
-                    new EntityInfo().withId("sgplsakn").withDisplayName("fsynljphuop").withEntityType(EntityType.GROUP),
-                    new EntityInfo().withId("qiy").withDisplayName("orzihle").withEntityType(EntityType.GROUP),
-                    new EntityInfo().withId("w").withDisplayName("mslyzrpzbchckqqz").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("iysui")
-                        .withDisplayName("ynkedyatrwyhqmib")
-                        .withEntityType(EntityType.USER))),
-            new RoleAssignment().withRoleName(RoleName.BACKUP_OPERATOR)
+                    new EntityInfo().withId("orgjhxbldt").withDisplayName("wrlkdmtn").withEntityType(EntityType.USER),
+                    new EntityInfo().withId("otllxdyhgsyo")
+                        .withDisplayName("gjltdtbnnhado")
+                        .withEntityType(EntityType.GROUP),
+                    new EntityInfo().withId("vcikhnvpamqgx").withDisplayName("u").withEntityType(EntityType.USER))),
+            new RoleAssignment().withRoleName(RoleName.BACKUP_USER)
                 .withEntities(Arrays.asList(
-                    new EntityInfo().withId("ypyynpcdpumnzg").withDisplayName("z").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("iknsorgjh").withDisplayName("ldtlwwr").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("tncvokot").withDisplayName("xdy").withEntityType(EntityType.GROUP)))));
+                    new EntityInfo().withId("ggxkallatmelwuip")
+                        .withDisplayName("cjzkzivgvvcna")
+                        .withEntityType(EntityType.USER),
+                    new EntityInfo().withId("rnxxmueed")
+                        .withDisplayName("rdvstkwqqtch")
+                        .withEntityType(EntityType.GROUP))),
+            new RoleAssignment().withRoleName(RoleName.MULTI_PERSON_AUTHORIZATION)
+                .withEntities(Arrays.asList(
+                    new EntityInfo().withId("tdaaygdvwvg")
+                        .withDisplayName("ohgwxrtfudxepxg")
+                        .withEntityType(EntityType.GROUP),
+                    new EntityInfo().withId("vrvmnpkukghim")
+                        .withDisplayName("lxgwimfnjhf")
+                        .withEntityType(EntityType.USER),
+                    new EntityInfo().withId("szkkfoqre")
+                        .withDisplayName("kzikfjawneaivxwc")
+                        .withEntityType(EntityType.GROUP),
+                    new EntityInfo().withId("c").withDisplayName("elsfeaen").withEntityType(EntityType.GROUP)))));
         model = BinaryData.fromObject(model).toObject(RoleMappingProperties.class);
-        Assertions.assertEquals(RoleName.BACKUP_ADMIN, model.roles().get(0).roleName());
-        Assertions.assertEquals("bpkkpwdre", model.roles().get(0).entities().get(0).id());
-        Assertions.assertEquals("ovvqfovljxywsu", model.roles().get(0).entities().get(0).displayName());
+        Assertions.assertEquals(RoleName.MULTI_PERSON_AUTHORIZATION, model.roles().get(0).roleName());
+        Assertions.assertEquals("orgjhxbldt", model.roles().get(0).entities().get(0).id());
+        Assertions.assertEquals("wrlkdmtn", model.roles().get(0).entities().get(0).displayName());
         Assertions.assertEquals(EntityType.USER, model.roles().get(0).entities().get(0).entityType());
     }
 }

@@ -124,10 +124,7 @@ public final class NetworkInterfaceImpl
     }
 
     public NetworkInterface create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkInterfaces()
-            .create(resourceGroupName, networkDeviceName, networkInterfaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkInterface create(Context context) {
@@ -150,10 +147,7 @@ public final class NetworkInterfaceImpl
     }
 
     public NetworkInterface apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkInterfaces()
-            .update(resourceGroupName, networkDeviceName, networkInterfaceName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkInterface apply(Context context) {
@@ -167,17 +161,19 @@ public final class NetworkInterfaceImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkDeviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkDevices");
-        this.networkInterfaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkInterfaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
+            "resourceGroupName");
+        this.networkDeviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
+            "networkDeviceName");
+        this.networkInterfaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/networkInterfaces/{networkInterfaceName}",
+            "networkInterfaceName");
     }
 
     public NetworkInterface refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkInterfaces()
-            .getWithResponse(resourceGroupName, networkDeviceName, networkInterfaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkInterface refresh(Context context) {

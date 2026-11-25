@@ -14,27 +14,27 @@ public final class SpotPlacementScoresInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpotPlacementScoresInput model = BinaryData.fromString(
-            "{\"desiredLocations\":[\"qkgfgibma\",\"gakeqsr\"],\"desiredSizes\":[{\"sku\":\"qqedqytbciqfou\"},{\"sku\":\"mmnkzsmodmgl\"},{\"sku\":\"gpbkwtmut\"},{\"sku\":\"qktapspwgcuert\"}],\"desiredCount\":1634659545,\"availabilityZones\":false}")
+            "{\"desiredLocations\":[\"umjgrtfwvuk\",\"gaudcc\",\"nhsjcnyej\"],\"desiredSizes\":[{\"sku\":\"yhtnapczwlokjye\"},{\"sku\":\"kvnipjoxz\"},{\"sku\":\"chgejspodm\"},{\"sku\":\"lzydehojwyahux\"}],\"desiredCount\":1511051439,\"availabilityZones\":false}")
             .toObject(SpotPlacementScoresInput.class);
-        Assertions.assertEquals("qkgfgibma", model.desiredLocations().get(0));
-        Assertions.assertEquals("qqedqytbciqfou", model.desiredSizes().get(0).sku());
-        Assertions.assertEquals(1634659545, model.desiredCount());
+        Assertions.assertEquals("umjgrtfwvuk", model.desiredLocations().get(0));
+        Assertions.assertEquals("yhtnapczwlokjye", model.desiredSizes().get(0).sku());
+        Assertions.assertEquals(1511051439, model.desiredCount());
         Assertions.assertFalse(model.availabilityZones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SpotPlacementScoresInput model
-            = new SpotPlacementScoresInput().withDesiredLocations(Arrays.asList("qkgfgibma", "gakeqsr"))
-                .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("qqedqytbciqfou"),
-                    new ResourceSize().withSku("mmnkzsmodmgl"), new ResourceSize().withSku("gpbkwtmut"),
-                    new ResourceSize().withSku("qktapspwgcuert")))
-                .withDesiredCount(1634659545)
+            = new SpotPlacementScoresInput().withDesiredLocations(Arrays.asList("umjgrtfwvuk", "gaudcc", "nhsjcnyej"))
+                .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("yhtnapczwlokjye"),
+                    new ResourceSize().withSku("kvnipjoxz"), new ResourceSize().withSku("chgejspodm"),
+                    new ResourceSize().withSku("lzydehojwyahux")))
+                .withDesiredCount(1511051439)
                 .withAvailabilityZones(false);
         model = BinaryData.fromObject(model).toObject(SpotPlacementScoresInput.class);
-        Assertions.assertEquals("qkgfgibma", model.desiredLocations().get(0));
-        Assertions.assertEquals("qqedqytbciqfou", model.desiredSizes().get(0).sku());
-        Assertions.assertEquals(1634659545, model.desiredCount());
+        Assertions.assertEquals("umjgrtfwvuk", model.desiredLocations().get(0));
+        Assertions.assertEquals("yhtnapczwlokjye", model.desiredSizes().get(0).sku());
+        Assertions.assertEquals(1511051439, model.desiredCount());
         Assertions.assertFalse(model.availabilityZones());
     }
 }

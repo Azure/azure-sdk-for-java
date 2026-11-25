@@ -72,11 +72,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PrivateEndpointConnection create(Context context) {
@@ -99,11 +95,7 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .createOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PrivateEndpointConnection apply(Context context) {
@@ -118,18 +110,19 @@ public final class PrivateEndpointConnectionImpl
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.configStoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationStores");
-        this.privateEndpointConnectionName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "resourceGroupName");
+        this.configStoreName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "configStoreName");
+        this.privateEndpointConnectionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}",
+            "privateEndpointConnectionName");
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PrivateEndpointConnection refresh(Context context) {

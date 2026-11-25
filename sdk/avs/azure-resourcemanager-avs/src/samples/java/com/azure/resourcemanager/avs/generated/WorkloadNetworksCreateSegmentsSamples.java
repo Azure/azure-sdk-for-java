@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworksCreateSegmentsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_CreateSegments.json
+     * x-ms-original-file: 2026-03-01/WorkloadNetworks_CreateSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateSegments.

@@ -166,22 +166,7 @@ public final class SkusClientImpl implements SkusClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get SKU resource details within a offer of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @param offerName The name of the offer available within HCI cluster.
-     * @param skuName The name of the SKU available within HCI cluster.
-     * @param expand Specify $expand=content,contentVersion to populate additional fields related to the marketplace
-     * offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sKU resource details within a offer of HCI Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuInner> getWithResponse(String resourceGroupName, String clusterName, String publisherName,
         String offerName, String skuName, String expand, Context context) {
@@ -190,19 +175,7 @@ public final class SkusClientImpl implements SkusClient {
             resourceGroupName, clusterName, publisherName, offerName, skuName, expand, accept, context);
     }
 
-    /**
-     * Get SKU resource details within a offer of HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @param offerName The name of the offer available within HCI cluster.
-     * @param skuName The name of the SKU available within HCI cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sKU resource details within a offer of HCI Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuInner get(String resourceGroupName, String clusterName, String publisherName, String offerName,
         String skuName) {
@@ -299,12 +272,7 @@ public final class SkusClientImpl implements SkusClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuInner> listByOfferSinglePage(String resourceGroupName, String clusterName,
         String publisherName, String offerName, String expand) {
-        final String accept = "application/json";
-        Response<SkuList> res = service.listByOfferSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, publisherName, offerName, expand, accept,
-            Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByOfferSinglePage(resourceGroupName, clusterName, publisherName, offerName, expand, Context.NONE);
     }
 
     /**
@@ -333,42 +301,15 @@ public final class SkusClientImpl implements SkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Skus available for a offer within the HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @param offerName The name of the offer available within HCI cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU proxy resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInner> listByOffer(String resourceGroupName, String clusterName, String publisherName,
         String offerName) {
         final String expand = null;
-        return new PagedIterable<>(
-            () -> listByOfferSinglePage(resourceGroupName, clusterName, publisherName, offerName, expand),
-            nextLink -> listByOfferNextSinglePage(nextLink));
+        return listByOffer(resourceGroupName, clusterName, publisherName, offerName, expand, Context.NONE);
     }
 
-    /**
-     * List Skus available for a offer within the HCI Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param publisherName The name of the publisher available within HCI cluster.
-     * @param offerName The name of the offer available within HCI cluster.
-     * @param expand Specify $expand=content,contentVersion to populate additional fields related to the marketplace
-     * offer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU proxy resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInner> listByOffer(String resourceGroupName, String clusterName, String publisherName,
         String offerName, String expand, Context context) {
@@ -408,10 +349,7 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuInner> listByOfferNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SkuList> res = service.listByOfferNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByOfferNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

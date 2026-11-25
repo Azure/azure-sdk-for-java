@@ -294,6 +294,11 @@ public class Netty4PipelineCleanupHandlerTests {
 
     private static class MockEventLoop extends DefaultEventLoop {
         @Override
+        public boolean inEventLoop(Thread thread) {
+            return true;
+        }
+
+        @Override
         public void execute(Runnable task) {
             if (task == null) {
                 throw new NullPointerException("task");

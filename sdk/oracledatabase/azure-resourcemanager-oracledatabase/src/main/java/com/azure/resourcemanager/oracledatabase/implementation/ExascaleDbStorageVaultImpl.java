@@ -95,10 +95,7 @@ public final class ExascaleDbStorageVaultImpl
     }
 
     public ExascaleDbStorageVault create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExascaleDbStorageVaults()
-            .create(resourceGroupName, exascaleDbStorageVaultName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ExascaleDbStorageVault create(Context context) {
@@ -121,10 +118,7 @@ public final class ExascaleDbStorageVaultImpl
     }
 
     public ExascaleDbStorageVault apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExascaleDbStorageVaults()
-            .update(resourceGroupName, exascaleDbStorageVaultName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ExascaleDbStorageVault apply(Context context) {
@@ -138,17 +132,16 @@ public final class ExascaleDbStorageVaultImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.exascaleDbStorageVaultName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "exascaleDbStorageVaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "resourceGroupName");
+        this.exascaleDbStorageVaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exascaleDbStorageVaults/{exascaleDbStorageVaultName}",
+            "exascaleDbStorageVaultName");
     }
 
     public ExascaleDbStorageVault refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExascaleDbStorageVaults()
-            .getByResourceGroupWithResponse(resourceGroupName, exascaleDbStorageVaultName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ExascaleDbStorageVault refresh(Context context) {

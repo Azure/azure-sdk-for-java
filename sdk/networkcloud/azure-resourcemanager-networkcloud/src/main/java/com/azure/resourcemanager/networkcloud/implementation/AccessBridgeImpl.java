@@ -146,10 +146,7 @@ public final class AccessBridgeImpl implements AccessBridge, AccessBridge.Defini
     }
 
     public AccessBridge create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessBridges()
-            .createOrUpdate(resourceGroupName, accessBridgeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessBridge create(Context context) {
@@ -174,11 +171,7 @@ public final class AccessBridgeImpl implements AccessBridge, AccessBridge.Defini
     }
 
     public AccessBridge apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessBridges()
-            .update(resourceGroupName, accessBridgeName, updateIfMatch, updateIfNoneMatch,
-                updateAccessBridgeUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessBridge apply(Context context) {
@@ -193,17 +186,17 @@ public final class AccessBridgeImpl implements AccessBridge, AccessBridge.Defini
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accessBridgeName = AccessBridgeAllowedName
-            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessBridges"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}",
+            "resourceGroupName");
+        this.accessBridgeName = AccessBridgeAllowedName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(
+            innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}",
+            "accessBridgeName"));
     }
 
     public AccessBridge refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessBridges()
-            .getByResourceGroupWithResponse(resourceGroupName, accessBridgeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessBridge refresh(Context context) {

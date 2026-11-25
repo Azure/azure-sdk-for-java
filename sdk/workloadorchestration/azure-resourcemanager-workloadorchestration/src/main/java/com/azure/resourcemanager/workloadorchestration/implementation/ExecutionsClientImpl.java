@@ -237,20 +237,7 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return execution Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExecutionInner> getWithResponse(String resourceGroupName, String contextName, String workflowName,
         String versionName, String executionName, Context context) {
@@ -259,19 +246,7 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             resourceGroupName, contextName, workflowName, versionName, executionName, accept, context);
     }
 
-    /**
-     * Get Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionInner get(String resourceGroupName, String contextName, String workflowName, String versionName,
         String executionName) {
@@ -322,11 +297,8 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String contextName,
         String workflowName, String versionName, String executionName, ExecutionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, versionName, executionName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName,
+            resource, Context.NONE);
     }
 
     /**
@@ -377,44 +349,15 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             ExecutionInner.class, ExecutionInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExecutionInner>, ExecutionInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, String workflowName, String versionName, String executionName, ExecutionInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, contextName, workflowName,
-            versionName, executionName, resource);
-        return this.client.<ExecutionInner, ExecutionInner>getLroResult(response, ExecutionInner.class,
-            ExecutionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExecutionInner>, ExecutionInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, String workflowName, String versionName, String executionName, ExecutionInner resource,
@@ -446,47 +389,20 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionInner createOrUpdate(String resourceGroupName, String contextName, String workflowName,
         String versionName, String executionName, ExecutionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionInner createOrUpdate(String resourceGroupName, String contextName, String workflowName,
         String versionName, String executionName, ExecutionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, resource,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, contextName, workflowName,
+            versionName, executionName, resource, context));
     }
 
     /**
@@ -532,11 +448,8 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName, String workflowName,
         String versionName, String executionName, ExecutionInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, versionName, executionName,
-            contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName, properties,
+            Context.NONE);
     }
 
     /**
@@ -587,44 +500,15 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             ExecutionInner.class, ExecutionInner.class, this.client.getContext());
     }
 
-    /**
-     * update an Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExecutionInner>, ExecutionInner> beginUpdate(String resourceGroupName,
         String contextName, String workflowName, String versionName, String executionName, ExecutionInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName, properties);
-        return this.client.<ExecutionInner, ExecutionInner>getLroResult(response, ExecutionInner.class,
-            ExecutionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, properties,
+            Context.NONE);
     }
 
-    /**
-     * update an Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExecutionInner>, ExecutionInner> beginUpdate(String resourceGroupName,
         String contextName, String workflowName, String versionName, String executionName, ExecutionInner properties,
@@ -657,47 +541,20 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * update an Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionInner update(String resourceGroupName, String contextName, String workflowName, String versionName,
         String executionName, ExecutionInner properties) {
-        return beginUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, properties)
-            .getFinalResult();
+        return update(resourceGroupName, contextName, workflowName, versionName, executionName, properties,
+            Context.NONE);
     }
 
-    /**
-     * update an Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return execution Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionInner update(String resourceGroupName, String contextName, String workflowName, String versionName,
         String executionName, ExecutionInner properties, Context context) {
-        return beginUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, properties,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, contextName, workflowName, versionName, executionName, properties, context));
     }
 
     /**
@@ -739,8 +596,7 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String contextName, String workflowName,
         String versionName, String executionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, versionName, executionName,
+        return deleteWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName,
             Context.NONE);
     }
 
@@ -788,41 +644,14 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName,
         String workflowName, String versionName, String executionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, contextName, workflowName, versionName, executionName, Context.NONE);
     }
 
-    /**
-     * Delete Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName,
         String workflowName, String versionName, String executionName, Context context) {
@@ -851,41 +680,19 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName, String workflowName, String versionName,
         String executionName) {
-        beginDelete(resourceGroupName, contextName, workflowName, versionName, executionName).getFinalResult();
+        delete(resourceGroupName, contextName, workflowName, versionName, executionName, Context.NONE);
     }
 
-    /**
-     * Delete Execution Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param executionName The name of the Execution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName, String workflowName, String versionName,
         String executionName, Context context) {
-        beginDelete(resourceGroupName, contextName, workflowName, versionName, executionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, contextName, workflowName, versionName, executionName, context));
     }
 
     /**
@@ -949,12 +756,7 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExecutionInner> listByWorkflowVersionSinglePage(String resourceGroupName, String contextName,
         String workflowName, String versionName) {
-        final String accept = "application/json";
-        Response<ExecutionListResult> res = service.listByWorkflowVersionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName,
-            versionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkflowVersionSinglePage(resourceGroupName, contextName, workflowName, versionName, Context.NONE);
     }
 
     /**
@@ -981,39 +783,14 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Execution Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Execution list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExecutionInner> listByWorkflowVersion(String resourceGroupName, String contextName,
         String workflowName, String versionName) {
-        return new PagedIterable<>(
-            () -> listByWorkflowVersionSinglePage(resourceGroupName, contextName, workflowName, versionName),
-            nextLink -> listByWorkflowVersionNextSinglePage(nextLink));
+        return listByWorkflowVersion(resourceGroupName, contextName, workflowName, versionName, Context.NONE);
     }
 
-    /**
-     * List Execution Resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param versionName The name of the workflowVersion.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Execution list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExecutionInner> listByWorkflowVersion(String resourceGroupName, String contextName,
         String workflowName, String versionName, Context context) {
@@ -1054,11 +831,7 @@ public final class ExecutionsClientImpl implements ExecutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExecutionInner> listByWorkflowVersionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExecutionListResult> res
-            = service.listByWorkflowVersionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkflowVersionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

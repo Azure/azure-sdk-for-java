@@ -68,12 +68,11 @@ public final class ProviderMonitorSettingsImpl implements ProviderMonitorSetting
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String providerMonitorSettingName) {
-        this.serviceClient().delete(resourceGroupName, providerMonitorSettingName);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE);
     }
 
     public PagedIterable<ProviderMonitorSetting> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ProviderMonitorSettingInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderMonitorSettingImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ProviderMonitorSetting> listByResourceGroup(String resourceGroupName, Context context) {
@@ -83,8 +82,7 @@ public final class ProviderMonitorSettingsImpl implements ProviderMonitorSetting
     }
 
     public PagedIterable<ProviderMonitorSetting> list() {
-        PagedIterable<ProviderMonitorSettingInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProviderMonitorSettingImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ProviderMonitorSetting> list(Context context) {
@@ -93,59 +91,30 @@ public final class ProviderMonitorSettingsImpl implements ProviderMonitorSetting
     }
 
     public ProviderMonitorSetting getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String providerMonitorSettingName = ResourceManagerUtils.getValueFromIdByName(id, "providerMonitorSettings");
-        if (providerMonitorSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'providerMonitorSettings'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ProviderMonitorSetting> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String providerMonitorSettingName = ResourceManagerUtils.getValueFromIdByName(id, "providerMonitorSettings");
-        if (providerMonitorSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'providerMonitorSettings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String providerMonitorSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}",
+            "providerMonitorSettingName", "providerMonitorSettings", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String providerMonitorSettingName = ResourceManagerUtils.getValueFromIdByName(id, "providerMonitorSettings");
-        if (providerMonitorSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'providerMonitorSettings'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String providerMonitorSettingName = ResourceManagerUtils.getValueFromIdByName(id, "providerMonitorSettings");
-        if (providerMonitorSettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'providerMonitorSettings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String providerMonitorSettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}",
+            "providerMonitorSettingName", "providerMonitorSettings", LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, context);
     }
 

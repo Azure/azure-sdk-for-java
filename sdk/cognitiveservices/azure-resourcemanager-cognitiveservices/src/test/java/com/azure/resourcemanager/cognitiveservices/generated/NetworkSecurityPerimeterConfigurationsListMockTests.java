@@ -22,7 +22,7 @@ public final class NetworkSecurityPerimeterConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"efzq\",\"provisioningIssues\":[{\"name\":\"w\",\"properties\":{\"issueType\":\"cytesmf\",\"severity\":\"r\",\"description\":\"odqhuauzmzivrt\",\"suggestedResourceIds\":[\"hhezvhjudxdy\",\"rudmahswtvdkx\",\"qssgfenffdx\",\"vwfqjch\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"j\",\"perimeterGuid\":\"xndmuvar\",\"location\":\"mzjotprrmuh\"},\"resourceAssociation\":{\"name\":\"tuzlxiw\",\"accessMode\":\"pgarpfctw\"},\"profile\":{\"name\":\"czd\",\"accessRulesVersion\":6547807221049913945,\"accessRules\":[{\"name\":\"sipiysnjqyowa\",\"properties\":{}}],\"diagnosticSettingsVersion\":7847864421913402234,\"enabledLogCategories\":[\"a\"]}},\"id\":\"ndtsewkaupw\",\"name\":\"lzyckremgjlm\",\"type\":\"vdorsirx\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"zoteikffjqdfa\",\"provisioningIssues\":[{\"name\":\"ylavetqj\",\"properties\":{\"issueType\":\"ys\",\"severity\":\"gjtpbtkogf\",\"description\":\"ylyz\",\"suggestedResourceIds\":[\"vwsgseqjteoax\",\"rmgisw\"],\"suggestedAccessRules\":[{}]}},{\"name\":\"pvsobamt\",\"properties\":{\"issueType\":\"rdzdgvqof\",\"severity\":\"ukegougxpyp\",\"description\":\"zqsxblmnxrxkul\",\"suggestedResourceIds\":[\"vviyqonbxxyf\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"dywxjikfrxvlu\",\"perimeterGuid\":\"dpnkzimqax\",\"location\":\"vmycvjpa\"},\"resourceAssociation\":{\"name\":\"qvvyjehyv\",\"accessMode\":\"jngoq\"},\"profile\":{\"name\":\"v\",\"accessRulesVersion\":817618963981712004,\"accessRules\":[{\"name\":\"hxunwenbphylnuz\",\"properties\":{}}],\"diagnosticSettingsVersion\":861243109249046171,\"enabledLogCategories\":[\"sebkc\",\"etxpun\"]}},\"id\":\"rmasuiqrsnm\",\"name\":\"tubqwxv\",\"type\":\"xrbiyzjlgrw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class NetworkSecurityPerimeterConfigurationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NetworkSecurityPerimeterConfiguration> response = manager.networkSecurityPerimeterConfigurations()
-            .list("uarlcjiwgsxfaioc", "dgujjgnfgrzxbarc", com.azure.core.util.Context.NONE);
+            .list("yplavbvs", "cedsoqwexi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("w", response.iterator().next().properties().provisioningIssues().get(0).name());
-        Assertions.assertEquals("cytesmf",
+        Assertions.assertEquals("ylavetqj", response.iterator().next().properties().provisioningIssues().get(0).name());
+        Assertions.assertEquals("ys",
             response.iterator().next().properties().provisioningIssues().get(0).properties().issueType());
-        Assertions.assertEquals("r",
+        Assertions.assertEquals("gjtpbtkogf",
             response.iterator().next().properties().provisioningIssues().get(0).properties().severity());
-        Assertions.assertEquals("odqhuauzmzivrt",
+        Assertions.assertEquals("ylyz",
             response.iterator().next().properties().provisioningIssues().get(0).properties().description());
-        Assertions.assertEquals("hhezvhjudxdy",
+        Assertions.assertEquals("vwsgseqjteoax",
             response.iterator()
                 .next()
                 .properties()
@@ -50,21 +50,22 @@ public final class NetworkSecurityPerimeterConfigurationsListMockTests {
                 .properties()
                 .suggestedResourceIds()
                 .get(0));
-        Assertions.assertEquals("j", response.iterator().next().properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("xndmuvar",
+        Assertions.assertEquals("dywxjikfrxvlu",
+            response.iterator().next().properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("dpnkzimqax",
             response.iterator().next().properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("mzjotprrmuh",
+        Assertions.assertEquals("vmycvjpa",
             response.iterator().next().properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("tuzlxiw", response.iterator().next().properties().resourceAssociation().name());
-        Assertions.assertEquals("pgarpfctw",
-            response.iterator().next().properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("czd", response.iterator().next().properties().profile().name());
-        Assertions.assertEquals(6547807221049913945L,
+        Assertions.assertEquals("qvvyjehyv", response.iterator().next().properties().resourceAssociation().name());
+        Assertions.assertEquals("jngoq", response.iterator().next().properties().resourceAssociation().accessMode());
+        Assertions.assertEquals("v", response.iterator().next().properties().profile().name());
+        Assertions.assertEquals(817618963981712004L,
             response.iterator().next().properties().profile().accessRulesVersion());
-        Assertions.assertEquals("sipiysnjqyowa",
+        Assertions.assertEquals("hxunwenbphylnuz",
             response.iterator().next().properties().profile().accessRules().get(0).name());
-        Assertions.assertEquals(7847864421913402234L,
+        Assertions.assertEquals(861243109249046171L,
             response.iterator().next().properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("a", response.iterator().next().properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("sebkc",
+            response.iterator().next().properties().profile().enabledLogCategories().get(0));
     }
 }

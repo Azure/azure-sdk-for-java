@@ -81,10 +81,7 @@ public final class BackupInstanceResourceImpl
     }
 
     public BackupInstanceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupInstances()
-            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BackupInstanceResource create(Context context) {
@@ -106,10 +103,7 @@ public final class BackupInstanceResourceImpl
     }
 
     public BackupInstanceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupInstances()
-            .createOrUpdate(resourceGroupName, vaultName, backupInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BackupInstanceResource apply(Context context) {
@@ -123,17 +117,19 @@ public final class BackupInstanceResourceImpl
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
-        this.backupInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}",
+            "vaultName");
+        this.backupInstanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}",
+            "backupInstanceName");
     }
 
     public BackupInstanceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupInstances()
-            .getWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BackupInstanceResource refresh(Context context) {

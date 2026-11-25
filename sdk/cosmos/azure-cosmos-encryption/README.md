@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>2.30.0</version>
+  <version>2.32.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -150,6 +150,52 @@ However, because Azure Cosmos DB is accessed via network calls there are client-
 - [Performance][perf_guide] guide covers these client-side optimizations.
 
 - [Troubleshooting Guide][troubleshooting] covers common issues, workarounds, diagnostic steps, and tools when you use Azure Cosmos DB Java SDK v4 with Azure Cosmos DB SQL API accounts.
+
+### Legacy mixed-type arrays
+
+Earlier SDK versions could leave scalar array elements unencrypted inside an encrypted property when the first
+array element was an object or another array. For example, with `/sensitive` included in the encryption policy,
+writing `[{"label":"secret"},42]` encrypted `"secret"` but left `42` in plaintext. This can occur in nested arrays
+as well. The old reader skipped the same scalar elements, so reads could succeed despite the missing encryption.
+
+The corrected reader decrypts every non-null scalar array element. If an element cannot be decrypted, it throws
+`IllegalStateException` with the encrypted property name, the array-local index, migration guidance, and the original
+exception as its cause. It does not silently return the value as plaintext. This failure can also indicate incorrect
+keys or damaged ciphertext; it is not proof that the item was written by an older SDK.
+
+#### Temporary compatibility opt-out
+
+The fix is enabled by default. To temporarily restore legacy array traversal for **both reads and writes**
+(including PATCH), set either of the following before creating encryption clients:
+
+- JVM system property: `-DCOSMOS.ENCRYPTION_MIXED_ARRAYS_ENABLED=false`
+- Environment variable: `COSMOS_ENCRYPTION_MIXED_ARRAYS_ENABLED=false`
+
+A non-empty JVM property takes precedence over the environment variable. Values are case-insensitive `true` or
+`false`; invalid values are rejected rather than silently disabling encryption. Each encryption client
+captures the setting when it is created and shares it with its container processors; restart the application
+to change modes consistently.
+The setting is implemented in the encryption package and does not require a new `azure-cosmos` config getter.
+
+**Warning:** legacy mode restores the first-element-based behavior, including the bug that leaves scalar elements
+unencrypted after an object or array. It logs a warning once per JVM and is a migration bridge, not a long-term fix.
+It also retains legacy failures for unsupported scalar-first mixed arrays. Legacy readers skip scalar elements
+after a leading container, so they cannot correctly read mixed arrays already written with the fix enabled.
+Do not use the two modes interchangeably on the same data or switch to legacy mode after writing corrected data.
+Opt-out is an explicit traversal choice, not a fallback for decoding or authentication failures.
+
+If you confirm that an item contains legacy mixed-type arrays:
+
+1. Coordinate a migration so old clients do not read rewritten items or write more legacy items during the cutover.
+2. Read the affected items with the SDK version that wrote them, or with the compatibility opt-out in a separate
+   migration reader process, to recover their decrypted values.
+3. Pass the decrypted items to a separate encryption-enabled writer process with the fix enabled and rewrite the
+   complete items. Use ETags to prevent overwriting concurrent changes; do not first read the legacy items through
+   the corrected reader. Do not copy raw encrypted values into the writer.
+4. Resume normal access with the fix enabled after the affected items have been migrated.
+
+These items are partially encrypted, not wholly unencrypted: existing encrypted fields still require decryption.
+Do not treat authentication failures as plaintext or assume that raw stored items can be rewritten without decryption.
 
 ### Enable Client Logging
 Azure Cosmos DB Java SDK v4 uses SLF4j as the logging facade that supports logging into popular logging frameworks such as log4j and logback.

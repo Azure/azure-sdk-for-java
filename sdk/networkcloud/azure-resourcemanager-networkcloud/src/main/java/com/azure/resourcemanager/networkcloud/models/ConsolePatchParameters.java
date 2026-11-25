@@ -116,7 +116,7 @@ public final class ConsolePatchParameters implements JsonSerializable<ConsolePat
      * 
      * @return the sshPublicKey value.
      */
-    public SshPublicKey sshPublicKey() {
+    public SshPublicKeyPatch sshPublicKey() {
         return this.innerProperties() == null ? null : this.innerProperties().sshPublicKey();
     }
 
@@ -127,7 +127,7 @@ public final class ConsolePatchParameters implements JsonSerializable<ConsolePat
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the ConsolePatchParameters object itself.
      */
-    public ConsolePatchParameters withSshPublicKey(SshPublicKey sshPublicKey) {
+    public ConsolePatchParameters withSshPublicKey(SshPublicKeyPatch sshPublicKey) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ConsolePatchProperties();
         }

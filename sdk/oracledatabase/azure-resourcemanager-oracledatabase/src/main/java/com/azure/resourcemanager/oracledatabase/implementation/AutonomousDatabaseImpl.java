@@ -93,10 +93,7 @@ public final class AutonomousDatabaseImpl
     }
 
     public AutonomousDatabase create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabases()
-            .createOrUpdate(resourceGroupName, autonomousdatabasename, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutonomousDatabase create(Context context) {
@@ -118,10 +115,7 @@ public final class AutonomousDatabaseImpl
     }
 
     public AutonomousDatabase apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabases()
-            .update(resourceGroupName, autonomousdatabasename, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutonomousDatabase apply(Context context) {
@@ -135,17 +129,16 @@ public final class AutonomousDatabaseImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.autonomousdatabasename
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autonomousDatabases");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName");
+        this.autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename");
     }
 
     public AutonomousDatabase refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutonomousDatabases()
-            .getByResourceGroupWithResponse(resourceGroupName, autonomousdatabasename, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutonomousDatabase refresh(Context context) {

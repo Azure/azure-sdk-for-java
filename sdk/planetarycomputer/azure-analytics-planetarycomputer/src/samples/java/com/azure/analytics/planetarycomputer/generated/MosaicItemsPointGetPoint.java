@@ -6,10 +6,14 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicItemsPointGetPoint {
     public static void main(String[] args) {
@@ -18,9 +22,11 @@ public class MosaicItemsPointGetPoint {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-point.mosaic-items-point-get-point
-        TilerCoreModelsResponsesPoint response = dataClient.getItemPoint("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            -84.386, 33.676, null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null);
+        TilerCoreModelsResponsesPoint response
+            = dataClient.getItemPoint("naip-atl", "ga_m_3308421_se_16_060_20211114", -84.386, 33.676,
+                (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+                (String) null, (Boolean) null, (WarpKernelResampling) null, (String) null, (List<Integer>) null,
+                (String) null, (String) null, (List<String>) null, (SelMethod) null, (String) null, (Resampling) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-point.mosaic-items-point-get-point
     }
 }

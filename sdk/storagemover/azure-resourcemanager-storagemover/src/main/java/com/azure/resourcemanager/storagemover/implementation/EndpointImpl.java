@@ -69,12 +69,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .createOrUpdateWithResponse(resourceGroupName, storageMoverName, endpointName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Endpoint create(Context context) {
@@ -97,11 +92,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     }
 
     public Endpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .updateWithResponse(resourceGroupName, storageMoverName, endpointName, updateEndpointParam, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Endpoint apply(Context context) {
@@ -115,17 +106,19 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
     EndpointImpl(EndpointInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.endpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "endpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "resourceGroupName");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "storageMoverName");
+        this.endpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/endpoints/{endpointName}",
+            "endpointName");
     }
 
     public Endpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEndpoints()
-            .getWithResponse(resourceGroupName, storageMoverName, endpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Endpoint refresh(Context context) {

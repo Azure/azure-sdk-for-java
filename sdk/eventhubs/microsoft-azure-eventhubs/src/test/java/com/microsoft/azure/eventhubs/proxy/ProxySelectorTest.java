@@ -9,8 +9,8 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -53,11 +53,11 @@ public class ProxySelectorTest extends ApiTestBase {
 
             try {
                 EventHubClient.createFromConnectionStringSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
-                Assert.fail();
+                Assertions.fail();
             } catch (EventHubException ex) {
                 // The message can vary because it is returned from proton-j, so we don't want to compare against that.
                 // This is a transient error from ExceptionUtil.java: line 67.
-                Assert.assertTrue(ex.getIsTransient());
+                Assertions.assertTrue(ex.getIsTransient());
             }
 
             connectFailedTask.get(2, TimeUnit.SECONDS);

@@ -118,15 +118,15 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
     }
 
     /**
-     * Get a GoalResource.
+     * Gets a goal resource.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @param goalResourceName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
+     * @param goalResourceName The name of the goal resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalResource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a goal resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GoalResourceInner>> getWithResponseAsync(String serviceGroupName, String goalAssignmentName,
@@ -139,15 +139,15 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
     }
 
     /**
-     * Get a GoalResource.
+     * Gets a goal resource.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @param goalResourceName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
+     * @param goalResourceName The name of the goal resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalResource on successful completion of {@link Mono}.
+     * @return a goal resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GoalResourceInner> getAsync(String serviceGroupName, String goalAssignmentName,
@@ -156,18 +156,7 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a GoalResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @param goalResourceName The name of the GoalAssignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GoalResourceInner> getWithResponse(String serviceGroupName, String goalAssignmentName,
         String goalResourceName, Context context) {
@@ -176,27 +165,17 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
             goalAssignmentName, goalResourceName, accept, context);
     }
 
-    /**
-     * Get a GoalResource.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @param goalResourceName The name of the GoalAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoalResourceInner get(String serviceGroupName, String goalAssignmentName, String goalResourceName) {
         return getWithResponse(serviceGroupName, goalAssignmentName, goalResourceName, Context.NONE).getValue();
     }
 
     /**
-     * List GoalResource resources by GoalAssignment.
+     * Lists goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param skipToken Skip over when retrieving results.
      * @param top Number of elements to return when retrieving results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,10 +197,10 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
     }
 
     /**
-     * List GoalResource resources by GoalAssignment.
+     * Lists goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param skipToken Skip over when retrieving results.
      * @param top Number of elements to return when retrieving results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,10 +216,10 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
     }
 
     /**
-     * List GoalResource resources by GoalAssignment.
+     * Lists goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -255,10 +234,10 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
     }
 
     /**
-     * List GoalResource resources by GoalAssignment.
+     * Lists goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param skipToken Skip over when retrieving results.
      * @param top Number of elements to return when retrieving results.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,18 +248,14 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GoalResourceInner> listSinglePage(String serviceGroupName, String goalAssignmentName,
         String skipToken, Integer top) {
-        final String accept = "application/json";
-        Response<GoalResourceListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), skipToken, top, goalAssignmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, goalAssignmentName, skipToken, top, Context.NONE);
     }
 
     /**
-     * List GoalResource resources by GoalAssignment.
+     * Lists goal resources under a goal assignment.
      * 
      * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
+     * @param goalAssignmentName The name of the goal assignment.
      * @param skipToken Skip over when retrieving results.
      * @param top Number of elements to return when retrieving results.
      * @param context The context to associate with this operation.
@@ -299,37 +274,15 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List GoalResource resources by GoalAssignment.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GoalResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GoalResourceInner> list(String serviceGroupName, String goalAssignmentName) {
         final String skipToken = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, goalAssignmentName, skipToken, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, goalAssignmentName, skipToken, top, Context.NONE);
     }
 
-    /**
-     * List GoalResource resources by GoalAssignment.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param goalAssignmentName The name of the GoalAssignment.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GoalResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GoalResourceInner> list(String serviceGroupName, String goalAssignmentName, String skipToken,
         Integer top, Context context) {
@@ -367,11 +320,7 @@ public final class GoalResourcesClientImpl implements GoalResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GoalResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GoalResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

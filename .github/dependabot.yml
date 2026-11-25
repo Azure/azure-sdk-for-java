@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    groups:
+      github-actions:
+        patterns: ["*"]
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+  - package-ecosystem: "npm"
+    directory: "/eng/common"
+    schedule:
+      interval: "weekly"
+    # Dependency updates under eng/common should only come from sync PRs
+    # from Azure/azure-sdk-tools.
+    # https://github.com/Azure/azure-sdk-tools/blob/main/doc/common/common_engsys.md
+    exclude-paths:
+      - "**/*"

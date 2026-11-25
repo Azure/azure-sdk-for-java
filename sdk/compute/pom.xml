@@ -12,5 +12,6 @@
     <module>azure-resourcemanager-compute</module>
     <module>azure-resourcemanager-compute-bulkactions</module>
     <module>azure-resourcemanager-compute-recommender</module>
+    <module>azure-resourcemanager-compute-workloadmanager</module>
   </modules>
 </project>

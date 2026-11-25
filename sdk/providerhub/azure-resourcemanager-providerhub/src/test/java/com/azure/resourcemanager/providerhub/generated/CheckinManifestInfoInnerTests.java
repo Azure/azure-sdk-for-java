@@ -11,26 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckinManifestInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckinManifestInfoInner model = BinaryData
-            .fromString(
-                "{\"isCheckedIn\":false,\"statusMessage\":\"bzhfepgzgqexz\",\"pullRequest\":\"c\",\"commitId\":\"c\"}")
+        CheckinManifestInfoInner model = BinaryData.fromString(
+            "{\"isCheckedIn\":false,\"statusMessage\":\"xzlocxscp\",\"pullRequest\":\"erhhbcsglumm\",\"commitId\":\"tjaodxobnb\"}")
             .toObject(CheckinManifestInfoInner.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("bzhfepgzgqexz", model.statusMessage());
-        Assertions.assertEquals("c", model.pullRequest());
-        Assertions.assertEquals("c", model.commitId());
+        Assertions.assertEquals("xzlocxscp", model.statusMessage());
+        Assertions.assertEquals("erhhbcsglumm", model.pullRequest());
+        Assertions.assertEquals("tjaodxobnb", model.commitId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckinManifestInfoInner model = new CheckinManifestInfoInner().withIsCheckedIn(false)
-            .withStatusMessage("bzhfepgzgqexz")
-            .withPullRequest("c")
-            .withCommitId("c");
+            .withStatusMessage("xzlocxscp")
+            .withPullRequest("erhhbcsglumm")
+            .withCommitId("tjaodxobnb");
         model = BinaryData.fromObject(model).toObject(CheckinManifestInfoInner.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("bzhfepgzgqexz", model.statusMessage());
-        Assertions.assertEquals("c", model.pullRequest());
-        Assertions.assertEquals("c", model.commitId());
+        Assertions.assertEquals("xzlocxscp", model.statusMessage());
+        Assertions.assertEquals("erhhbcsglumm", model.pullRequest());
+        Assertions.assertEquals("tjaodxobnb", model.commitId());
     }
 }

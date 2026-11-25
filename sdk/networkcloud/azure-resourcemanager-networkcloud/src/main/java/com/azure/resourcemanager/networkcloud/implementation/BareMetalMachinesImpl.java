@@ -123,7 +123,7 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
     }
 
     public OperationStatusResult restart(String resourceGroupName, String bareMetalMachineName) {
-        return this.serviceClient().restart(resourceGroupName, bareMetalMachineName);
+        return this.restart(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
     public OperationStatusResult restart(String resourceGroupName, String bareMetalMachineName, Context context) {
@@ -132,8 +132,8 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
 
     public OperationStatusResult runCommand(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters) {
-        return this.serviceClient()
-            .runCommand(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters);
+        return this.runCommand(resourceGroupName, bareMetalMachineName, bareMetalMachineRunCommandParameters,
+            Context.NONE);
     }
 
     public OperationStatusResult runCommand(String resourceGroupName, String bareMetalMachineName,
@@ -144,8 +144,8 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
 
     public OperationStatusResult runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters) {
-        return this.serviceClient()
-            .runDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters);
+        return this.runDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters,
+            Context.NONE);
     }
 
     public OperationStatusResult runDataExtracts(String resourceGroupName, String bareMetalMachineName,
@@ -157,9 +157,8 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
 
     public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
-        return this.serviceClient()
-            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
-                bareMetalMachineRunDataExtractsRestrictedParameters);
+        return this.runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+            bareMetalMachineRunDataExtractsRestrictedParameters, Context.NONE);
     }
 
     public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
@@ -172,8 +171,8 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
 
     public OperationStatusResult runReadCommands(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
-        return this.serviceClient()
-            .runReadCommands(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters);
+        return this.runReadCommands(resourceGroupName, bareMetalMachineName, bareMetalMachineRunReadCommandsParameters,
+            Context.NONE);
     }
 
     public OperationStatusResult runReadCommands(String resourceGroupName, String bareMetalMachineName,
@@ -184,7 +183,7 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
     }
 
     public OperationStatusResult start(String resourceGroupName, String bareMetalMachineName) {
-        return this.serviceClient().start(resourceGroupName, bareMetalMachineName);
+        return this.start(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
     public OperationStatusResult start(String resourceGroupName, String bareMetalMachineName, Context context) {
@@ -192,7 +191,7 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
     }
 
     public OperationStatusResult uncordon(String resourceGroupName, String bareMetalMachineName) {
-        return this.serviceClient().uncordon(resourceGroupName, bareMetalMachineName);
+        return this.uncordon(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
     public OperationStatusResult uncordon(String resourceGroupName, String bareMetalMachineName, Context context) {
@@ -200,60 +199,32 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
     }
 
     public BareMetalMachine getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
-        if (bareMetalMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, bareMetalMachineName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<BareMetalMachine> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
-        if (bareMetalMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String bareMetalMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}",
+            "bareMetalMachineName", "bareMetalMachines", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, bareMetalMachineName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
-        if (bareMetalMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
-        }
         String localIfMatch = null;
         String localIfNoneMatch = null;
-        this.delete(resourceGroupName, bareMetalMachineName, localIfMatch, localIfNoneMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
-        if (bareMetalMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String bareMetalMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/bareMetalMachines/{bareMetalMachineName}",
+            "bareMetalMachineName", "bareMetalMachines", LOGGER);
         this.delete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, context);
     }
 

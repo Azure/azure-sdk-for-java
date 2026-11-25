@@ -46,7 +46,7 @@ public final class RegistryEndpointsImpl implements RegistryEndpoints {
     }
 
     public void delete(String resourceGroupName, String instanceName, String registryEndpointName) {
-        this.serviceClient().delete(resourceGroupName, instanceName, registryEndpointName);
+        this.delete(resourceGroupName, instanceName, registryEndpointName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String instanceName, String registryEndpointName, Context context) {
@@ -55,9 +55,7 @@ public final class RegistryEndpointsImpl implements RegistryEndpoints {
 
     public PagedIterable<RegistryEndpointResource> listByInstanceResource(String resourceGroupName,
         String instanceName) {
-        PagedIterable<RegistryEndpointResourceInner> inner
-            = this.serviceClient().listByInstanceResource(resourceGroupName, instanceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistryEndpointResourceImpl(inner1, this.manager()));
+        return this.listByInstanceResource(resourceGroupName, instanceName, Context.NONE);
     }
 
     public PagedIterable<RegistryEndpointResource> listByInstanceResource(String resourceGroupName, String instanceName,
@@ -68,78 +66,36 @@ public final class RegistryEndpointsImpl implements RegistryEndpoints {
     }
 
     public RegistryEndpointResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String registryEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "registryEndpoints");
-        if (registryEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registryEndpoints'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, instanceName, registryEndpointName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RegistryEndpointResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String registryEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "registryEndpoints");
-        if (registryEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registryEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}",
+            "instanceName", "instances", LOGGER);
+        String registryEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}",
+            "registryEndpointName", "registryEndpoints", LOGGER);
         return this.getWithResponse(resourceGroupName, instanceName, registryEndpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String registryEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "registryEndpoints");
-        if (registryEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registryEndpoints'.", id)));
-        }
-        this.delete(resourceGroupName, instanceName, registryEndpointName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String registryEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "registryEndpoints");
-        if (registryEndpointName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registryEndpoints'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}",
+            "instanceName", "instances", LOGGER);
+        String registryEndpointName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}",
+            "registryEndpointName", "registryEndpoints", LOGGER);
         this.delete(resourceGroupName, instanceName, registryEndpointName, context);
     }
 

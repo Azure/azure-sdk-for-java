@@ -48,7 +48,7 @@ public final class AkriConnectorsImpl implements AkriConnectors {
 
     public void delete(String resourceGroupName, String instanceName, String akriConnectorTemplateName,
         String connectorName) {
-        this.serviceClient().delete(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName);
+        this.delete(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String instanceName, String akriConnectorTemplateName,
@@ -58,9 +58,7 @@ public final class AkriConnectorsImpl implements AkriConnectors {
 
     public PagedIterable<AkriConnectorResource> listByTemplate(String resourceGroupName, String instanceName,
         String akriConnectorTemplateName) {
-        PagedIterable<AkriConnectorResourceInner> inner
-            = this.serviceClient().listByTemplate(resourceGroupName, instanceName, akriConnectorTemplateName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AkriConnectorResourceImpl(inner1, this.manager()));
+        return this.listByTemplate(resourceGroupName, instanceName, akriConnectorTemplateName, Context.NONE);
     }
 
     public PagedIterable<AkriConnectorResource> listByTemplate(String resourceGroupName, String instanceName,
@@ -71,100 +69,42 @@ public final class AkriConnectorsImpl implements AkriConnectors {
     }
 
     public AkriConnectorResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String akriConnectorTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "akriConnectorTemplates");
-        if (akriConnectorTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'akriConnectorTemplates'.", id)));
-        }
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
-        if (connectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AkriConnectorResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String akriConnectorTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "akriConnectorTemplates");
-        if (akriConnectorTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'akriConnectorTemplates'.", id)));
-        }
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
-        if (connectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "instanceName", "instances", LOGGER);
+        String akriConnectorTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "akriConnectorTemplateName", "akriConnectorTemplates", LOGGER);
+        String connectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "connectorName", "connectors", LOGGER);
         return this.getWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String akriConnectorTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "akriConnectorTemplates");
-        if (akriConnectorTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'akriConnectorTemplates'.", id)));
-        }
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
-        if (connectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
-        }
-        this.delete(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String instanceName = ResourceManagerUtils.getValueFromIdByName(id, "instances");
-        if (instanceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'instances'.", id)));
-        }
-        String akriConnectorTemplateName = ResourceManagerUtils.getValueFromIdByName(id, "akriConnectorTemplates");
-        if (akriConnectorTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'akriConnectorTemplates'.", id)));
-        }
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
-        if (connectorName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String instanceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "instanceName", "instances", LOGGER);
+        String akriConnectorTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "akriConnectorTemplateName", "akriConnectorTemplates", LOGGER);
+        String connectorName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}",
+            "connectorName", "connectors", LOGGER);
         this.delete(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName, context);
     }
 

@@ -45,7 +45,7 @@ public final class RaiToolLabelsImpl implements RaiToolLabels {
     }
 
     public void delete(String resourceGroupName, String accountName, String raiToolConnectionName) {
-        this.serviceClient().delete(resourceGroupName, accountName, raiToolConnectionName);
+        this.delete(resourceGroupName, accountName, raiToolConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String accountName, String raiToolConnectionName, Context context) {
@@ -53,8 +53,7 @@ public final class RaiToolLabelsImpl implements RaiToolLabels {
     }
 
     public PagedIterable<RaiToolLabel> list(String resourceGroupName, String accountName) {
-        PagedIterable<RaiToolLabelInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RaiToolLabelImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<RaiToolLabel> list(String resourceGroupName, String accountName, Context context) {
@@ -63,78 +62,36 @@ public final class RaiToolLabelsImpl implements RaiToolLabels {
     }
 
     public RaiToolLabel getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiToolConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "raiToolLabels");
-        if (raiToolConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiToolLabels'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, raiToolConnectionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RaiToolLabel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiToolConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "raiToolLabels");
-        if (raiToolConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiToolLabels'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}",
+            "accountName", "accounts", LOGGER);
+        String raiToolConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}",
+            "raiToolConnectionName", "raiToolLabels", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, raiToolConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiToolConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "raiToolLabels");
-        if (raiToolConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiToolLabels'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, raiToolConnectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String raiToolConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "raiToolLabels");
-        if (raiToolConnectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'raiToolLabels'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}",
+            "accountName", "accounts", LOGGER);
+        String raiToolConnectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiToolLabels/{raiToolConnectionName}",
+            "raiToolConnectionName", "raiToolLabels", LOGGER);
         this.delete(resourceGroupName, accountName, raiToolConnectionName, context);
     }
 

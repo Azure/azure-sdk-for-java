@@ -13,18 +13,18 @@ public final class CapacityOveragePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityOverageProperties model
-            = BinaryData.fromString("{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":1521405587}")
+            = BinaryData.fromString("{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":673031799}")
                 .toObject(CapacityOverageProperties.class);
         Assertions.assertEquals(CapacityOverageState.ENABLED, model.state());
-        Assertions.assertEquals(1521405587, model.thresholdCapacityUnitHours());
+        Assertions.assertEquals(673031799, model.thresholdCapacityUnitHours());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CapacityOverageProperties model = new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
-            .withThresholdCapacityUnitHours(1521405587);
+            .withThresholdCapacityUnitHours(673031799);
         model = BinaryData.fromObject(model).toObject(CapacityOverageProperties.class);
         Assertions.assertEquals(CapacityOverageState.ENABLED, model.state());
-        Assertions.assertEquals(1521405587, model.thresholdCapacityUnitHours());
+        Assertions.assertEquals(673031799, model.thresholdCapacityUnitHours());
     }
 }

@@ -70,12 +70,7 @@ public final class HcxEnterpriseSiteImpl
     }
 
     public HcxEnterpriseSite create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcxEnterpriseSites()
-            .createOrUpdateWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HcxEnterpriseSite create(Context context) {
@@ -98,12 +93,7 @@ public final class HcxEnterpriseSiteImpl
     }
 
     public HcxEnterpriseSite apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcxEnterpriseSites()
-            .createOrUpdateWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HcxEnterpriseSite apply(Context context) {
@@ -118,17 +108,19 @@ public final class HcxEnterpriseSiteImpl
     HcxEnterpriseSiteImpl(HcxEnterpriseSiteInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.hcxEnterpriseSiteName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hcxEnterpriseSites");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "privateCloudName");
+        this.hcxEnterpriseSiteName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites/{hcxEnterpriseSiteName}",
+            "hcxEnterpriseSiteName");
     }
 
     public HcxEnterpriseSite refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcxEnterpriseSites()
-            .getWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HcxEnterpriseSite refresh(Context context) {

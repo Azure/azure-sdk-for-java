@@ -106,10 +106,7 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     }
 
     public Fleet create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleets()
-            .createOrUpdate(resourceGroupName, fleetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Fleet create(Context context) {
@@ -131,10 +128,7 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     }
 
     public Fleet apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleets()
-            .update(resourceGroupName, fleetName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Fleet apply(Context context) {
@@ -147,16 +141,16 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     FleetImpl(FleetInner innerObject, com.azure.resourcemanager.computefleet.ComputeFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}",
+            "resourceGroupName");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}",
+            "fleetName");
     }
 
     public Fleet refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleets()
-            .getByResourceGroupWithResponse(resourceGroupName, fleetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Fleet refresh(Context context) {

@@ -46,8 +46,7 @@ public final class DefenderForAISettingsImpl implements DefenderForAISettings {
     }
 
     public PagedIterable<DefenderForAISetting> list(String resourceGroupName, String accountName) {
-        PagedIterable<DefenderForAISettingInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DefenderForAISettingImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, Context.NONE);
     }
 
     public PagedIterable<DefenderForAISetting> list(String resourceGroupName, String accountName, Context context) {
@@ -57,40 +56,19 @@ public final class DefenderForAISettingsImpl implements DefenderForAISettings {
     }
 
     public DefenderForAISetting getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String defenderForAISettingName = ResourceManagerUtils.getValueFromIdByName(id, "defenderForAISettings");
-        if (defenderForAISettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'defenderForAISettings'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, defenderForAISettingName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<DefenderForAISetting> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String defenderForAISettingName = ResourceManagerUtils.getValueFromIdByName(id, "defenderForAISettings");
-        if (defenderForAISettingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'defenderForAISettings'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings/{defenderForAISettingName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String accountName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings/{defenderForAISettingName}",
+            "accountName", "accounts", LOGGER);
+        String defenderForAISettingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings/{defenderForAISettingName}",
+            "defenderForAISettingName", "defenderForAISettings", LOGGER);
         return this.getWithResponse(resourceGroupName, accountName, defenderForAISettingName, context);
     }
 

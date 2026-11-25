@@ -189,10 +189,7 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     }
 
     public BatchAccount create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchAccounts()
-            .create(resourceGroupName, accountName, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BatchAccount create(Context context) {
@@ -214,11 +211,7 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     }
 
     public BatchAccount apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchAccounts()
-            .updateWithResponse(resourceGroupName, accountName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BatchAccount apply(Context context) {
@@ -232,16 +225,16 @@ public final class BatchAccountImpl implements BatchAccount, BatchAccount.Defini
     BatchAccountImpl(BatchAccountInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "batchAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}",
+            "accountName");
     }
 
     public BatchAccount refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BatchAccount refresh(Context context) {

@@ -83,10 +83,7 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateObjectLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateObjectLocalRulestackResource create(Context context) {
@@ -108,10 +105,7 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateObjectLocalRulestacks()
-            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CertificateObjectLocalRulestackResource apply(Context context) {
@@ -125,17 +119,19 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}",
+            "resourceGroupName");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}",
+            "localRulestackName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}",
+            "name");
     }
 
     public CertificateObjectLocalRulestackResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateObjectLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateObjectLocalRulestackResource refresh(Context context) {

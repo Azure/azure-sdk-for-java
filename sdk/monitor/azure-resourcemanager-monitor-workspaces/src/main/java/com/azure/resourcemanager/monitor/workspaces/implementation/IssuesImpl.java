@@ -65,13 +65,11 @@ public final class IssuesImpl implements Issues {
     }
 
     public void delete(String resourceGroupName, String azureMonitorWorkspaceName, String issueName) {
-        this.serviceClient().delete(resourceGroupName, azureMonitorWorkspaceName, issueName);
+        this.deleteWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, Context.NONE);
     }
 
     public PagedIterable<IssueResource> list(String resourceGroupName, String azureMonitorWorkspaceName) {
-        PagedIterable<IssueResourceInner> inner
-            = this.serviceClient().list(resourceGroupName, azureMonitorWorkspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new IssueResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     public PagedIterable<IssueResource> list(String resourceGroupName, String azureMonitorWorkspaceName,
@@ -224,82 +222,41 @@ public final class IssuesImpl implements Issues {
 
     public void setBackgroundVisualization(String resourceGroupName, String azureMonitorWorkspaceName, String issueName,
         BackgroundVisualizationInner body) {
-        this.serviceClient().setBackgroundVisualization(resourceGroupName, azureMonitorWorkspaceName, issueName, body);
+        this.setBackgroundVisualizationWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, body,
+            Context.NONE);
     }
 
     public IssueResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (azureMonitorWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String issueName = ResourceManagerUtils.getValueFromIdByName(id, "issues");
-        if (issueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<IssueResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (azureMonitorWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String issueName = ResourceManagerUtils.getValueFromIdByName(id, "issues");
-        if (issueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureMonitorWorkspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "azureMonitorWorkspaceName", "accounts", LOGGER);
+        String issueName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "issueName", "issues", LOGGER);
         return this.getWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (azureMonitorWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String issueName = ResourceManagerUtils.getValueFromIdByName(id, "issues");
-        if (issueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureMonitorWorkspaceName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
-        if (azureMonitorWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
-        }
-        String issueName = ResourceManagerUtils.getValueFromIdByName(id, "issues");
-        if (issueName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureMonitorWorkspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "azureMonitorWorkspaceName", "accounts", LOGGER);
+        String issueName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues/{issueName}",
+            "issueName", "issues", LOGGER);
         return this.deleteWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, context);
     }
 

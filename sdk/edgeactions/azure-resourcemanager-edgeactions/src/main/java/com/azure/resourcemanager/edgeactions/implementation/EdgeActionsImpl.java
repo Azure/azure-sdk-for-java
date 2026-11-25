@@ -45,7 +45,7 @@ public final class EdgeActionsImpl implements EdgeActions {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String edgeActionName) {
-        this.serviceClient().delete(resourceGroupName, edgeActionName);
+        this.delete(resourceGroupName, edgeActionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String edgeActionName, Context context) {
@@ -53,8 +53,7 @@ public final class EdgeActionsImpl implements EdgeActions {
     }
 
     public PagedIterable<EdgeAction> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<EdgeActionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeActionImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<EdgeAction> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class EdgeActionsImpl implements EdgeActions {
     }
 
     public PagedIterable<EdgeAction> list() {
-        PagedIterable<EdgeActionInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeActionImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<EdgeAction> list(Context context) {
@@ -73,58 +71,30 @@ public final class EdgeActionsImpl implements EdgeActions {
     }
 
     public EdgeAction getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, edgeActionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<EdgeAction> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "edgeActionName", "edgeActions", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, edgeActionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
-        this.delete(resourceGroupName, edgeActionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String edgeActionName = ResourceManagerUtils.getValueFromIdByName(id, "edgeActions");
-        if (edgeActionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeActions'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String edgeActionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}",
+            "edgeActionName", "edgeActions", LOGGER);
         this.delete(resourceGroupName, edgeActionName, context);
     }
 

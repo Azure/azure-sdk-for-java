@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class AIManagerNamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagerNamespaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagerNamespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates an AI Manager namespace resource.

@@ -12,21 +12,21 @@ public final class AccessCreateRoleBindingRequestModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessCreateRoleBindingRequestModel model
-            = BinaryData.fromString("{\"principal\":\"xmrhu\",\"role_name\":\"wp\",\"crn_pattern\":\"sutrgjup\"}")
+            = BinaryData.fromString("{\"principal\":\"f\",\"role_name\":\"mrqemvvhmx\",\"crn_pattern\":\"rjfut\"}")
                 .toObject(AccessCreateRoleBindingRequestModel.class);
-        Assertions.assertEquals("xmrhu", model.principal());
-        Assertions.assertEquals("wp", model.roleName());
-        Assertions.assertEquals("sutrgjup", model.crnPattern());
+        Assertions.assertEquals("f", model.principal());
+        Assertions.assertEquals("mrqemvvhmx", model.roleName());
+        Assertions.assertEquals("rjfut", model.crnPattern());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessCreateRoleBindingRequestModel model = new AccessCreateRoleBindingRequestModel().withPrincipal("xmrhu")
-            .withRoleName("wp")
-            .withCrnPattern("sutrgjup");
+        AccessCreateRoleBindingRequestModel model = new AccessCreateRoleBindingRequestModel().withPrincipal("f")
+            .withRoleName("mrqemvvhmx")
+            .withCrnPattern("rjfut");
         model = BinaryData.fromObject(model).toObject(AccessCreateRoleBindingRequestModel.class);
-        Assertions.assertEquals("xmrhu", model.principal());
-        Assertions.assertEquals("wp", model.roleName());
-        Assertions.assertEquals("sutrgjup", model.crnPattern());
+        Assertions.assertEquals("f", model.principal());
+        Assertions.assertEquals("mrqemvvhmx", model.roleName());
+        Assertions.assertEquals("rjfut", model.crnPattern());
     }
 }

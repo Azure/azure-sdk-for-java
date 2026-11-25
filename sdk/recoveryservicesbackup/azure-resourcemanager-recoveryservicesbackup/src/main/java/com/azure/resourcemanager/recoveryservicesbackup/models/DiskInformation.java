@@ -26,6 +26,16 @@ public final class DiskInformation implements JsonSerializable<DiskInformation> 
      */
     private String name;
 
+    /*
+     * Size of the disk in GB.
+     */
+    private Integer diskSizeInGb;
+
+    /*
+     * Storage type of the disk.
+     */
+    private String storageType;
+
     /**
      * Creates an instance of DiskInformation class.
      */
@@ -51,6 +61,24 @@ public final class DiskInformation implements JsonSerializable<DiskInformation> 
     }
 
     /**
+     * Get the diskSizeInGb property: Size of the disk in GB.
+     * 
+     * @return the diskSizeInGb value.
+     */
+    public Integer diskSizeInGb() {
+        return this.diskSizeInGb;
+    }
+
+    /**
+     * Get the storageType property: Storage type of the disk.
+     * 
+     * @return the storageType value.
+     */
+    public String storageType() {
+        return this.storageType;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -58,6 +86,8 @@ public final class DiskInformation implements JsonSerializable<DiskInformation> 
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("lun", this.lun);
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("diskSizeInGb", this.diskSizeInGb);
+        jsonWriter.writeStringField("storageType", this.storageType);
         return jsonWriter.writeEndObject();
     }
 
@@ -80,6 +110,10 @@ public final class DiskInformation implements JsonSerializable<DiskInformation> 
                     deserializedDiskInformation.lun = reader.getNullable(JsonReader::getInt);
                 } else if ("name".equals(fieldName)) {
                     deserializedDiskInformation.name = reader.getString();
+                } else if ("diskSizeInGb".equals(fieldName)) {
+                    deserializedDiskInformation.diskSizeInGb = reader.getNullable(JsonReader::getInt);
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedDiskInformation.storageType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

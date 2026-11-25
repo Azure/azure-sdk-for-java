@@ -248,17 +248,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements IP Prefix GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Prefix resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpPrefixInner> getByResourceGroupWithResponse(String resourceGroupName, String ipPrefixName,
         Context context) {
@@ -267,16 +257,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             this.client.getSubscriptionId(), resourceGroupName, ipPrefixName, accept, context);
     }
 
-    /**
-     * Implements IP Prefix GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner getByResourceGroup(String resourceGroupName, String ipPrefixName) {
         return getByResourceGroupWithResponse(resourceGroupName, ipPrefixName, Context.NONE).getValue();
@@ -317,10 +298,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String ipPrefixName, IpPrefixInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ipPrefixName, contentType, accept, body, Context.NONE);
+        return createWithResponse(resourceGroupName, ipPrefixName, body, Context.NONE);
     }
 
     /**
@@ -363,37 +341,14 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             IpPrefixInner.class, IpPrefixInner.class, this.client.getContext());
     }
 
-    /**
-     * Implements IP Prefix PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(String resourceGroupName,
         String ipPrefixName, IpPrefixInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, ipPrefixName, body);
-        return this.client.<IpPrefixInner, IpPrefixInner>getLroResult(response, IpPrefixInner.class,
-            IpPrefixInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, ipPrefixName, body, Context.NONE);
     }
 
-    /**
-     * Implements IP Prefix PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(String resourceGroupName,
         String ipPrefixName, IpPrefixInner body, Context context) {
@@ -419,37 +374,16 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements IP Prefix PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner create(String resourceGroupName, String ipPrefixName, IpPrefixInner body) {
-        return beginCreate(resourceGroupName, ipPrefixName, body).getFinalResult();
+        return create(resourceGroupName, ipPrefixName, body, Context.NONE);
     }
 
-    /**
-     * Implements IP Prefix PUT method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner create(String resourceGroupName, String ipPrefixName, IpPrefixInner body, Context context) {
-        return beginCreate(resourceGroupName, ipPrefixName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, ipPrefixName, body, context));
     }
 
     /**
@@ -487,10 +421,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String ipPrefixName, IpPrefixPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ipPrefixName, contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, ipPrefixName, body, Context.NONE);
     }
 
     /**
@@ -533,37 +464,14 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             IpPrefixInner.class, IpPrefixInner.class, this.client.getContext());
     }
 
-    /**
-     * API to update certain properties of the IP Prefix resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body IP Prefix properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(String resourceGroupName,
         String ipPrefixName, IpPrefixPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, ipPrefixName, body);
-        return this.client.<IpPrefixInner, IpPrefixInner>getLroResult(response, IpPrefixInner.class,
-            IpPrefixInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, ipPrefixName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the IP Prefix resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body IP Prefix properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(String resourceGroupName,
         String ipPrefixName, IpPrefixPatch body, Context context) {
@@ -589,37 +497,16 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * API to update certain properties of the IP Prefix resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body IP Prefix properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner update(String resourceGroupName, String ipPrefixName, IpPrefixPatch body) {
-        return beginUpdate(resourceGroupName, ipPrefixName, body).getFinalResult();
+        return update(resourceGroupName, ipPrefixName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the IP Prefix resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param body IP Prefix properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IP Prefix resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner update(String resourceGroupName, String ipPrefixName, IpPrefixPatch body, Context context) {
-        return beginUpdate(resourceGroupName, ipPrefixName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, ipPrefixName, body, context));
     }
 
     /**
@@ -652,8 +539,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String ipPrefixName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ipPrefixName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, ipPrefixName, Context.NONE);
     }
 
     /**
@@ -690,33 +576,13 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             this.client.getContext());
     }
 
-    /**
-     * Implements IP Prefix DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipPrefixName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, ipPrefixName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, ipPrefixName, Context.NONE);
     }
 
-    /**
-     * Implements IP Prefix DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipPrefixName,
         Context context) {
@@ -739,33 +605,16 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
         return beginDeleteAsync(resourceGroupName, ipPrefixName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Implements IP Prefix DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ipPrefixName) {
-        beginDelete(resourceGroupName, ipPrefixName).getFinalResult();
+        delete(resourceGroupName, ipPrefixName, Context.NONE);
     }
 
-    /**
-     * Implements IP Prefix DELETE method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ipPrefixName Name of the IP Prefix.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ipPrefixName, Context context) {
-        beginDelete(resourceGroupName, ipPrefixName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, ipPrefixName, context));
     }
 
     /**
@@ -815,11 +664,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpPrefixInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<IpPrefixesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -841,31 +686,13 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements IpPrefixes list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpPrefix items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Implements IpPrefixes list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpPrefix items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -913,11 +740,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpPrefixInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<IpPrefixesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -938,27 +761,13 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Implements IpPrefixes list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpPrefix items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Implements IpPrefixes list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of IpPrefix items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -997,11 +806,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpPrefixInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IpPrefixesListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1055,11 +860,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IpPrefixInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IpPrefixesListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

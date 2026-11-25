@@ -70,10 +70,7 @@ public final class NginxConfigurationResponseImpl
     }
 
     public NginxConfigurationResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .createOrUpdate(resourceGroupName, deploymentName, configurationName, createBody, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxConfigurationResponse create(Context context) {
@@ -95,10 +92,7 @@ public final class NginxConfigurationResponseImpl
     }
 
     public NginxConfigurationResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .createOrUpdate(resourceGroupName, deploymentName, configurationName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NginxConfigurationResponse apply(Context context) {
@@ -112,17 +106,19 @@ public final class NginxConfigurationResponseImpl
         com.azure.resourcemanager.nginx.NginxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "nginxDeployments");
-        this.configurationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}",
+            "resourceGroupName");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}",
+            "deploymentName");
+        this.configurationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}",
+            "configurationName");
     }
 
     public NginxConfigurationResponse refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .getWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxConfigurationResponse refresh(Context context) {

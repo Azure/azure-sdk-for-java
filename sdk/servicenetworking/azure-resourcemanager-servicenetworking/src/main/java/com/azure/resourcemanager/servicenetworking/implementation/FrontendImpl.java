@@ -88,10 +88,7 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontendsInterfaces()
-            .createOrUpdate(resourceGroupName, trafficControllerName, frontendName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Frontend create(Context context) {
@@ -113,11 +110,7 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontendsInterfaces()
-            .updateWithResponse(resourceGroupName, trafficControllerName, frontendName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Frontend apply(Context context) {
@@ -132,17 +125,19 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trafficControllers");
-        this.frontendName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "frontends");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}",
+            "resourceGroupName");
+        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}",
+            "trafficControllerName");
+        this.frontendName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}",
+            "frontendName");
     }
 
     public Frontend refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFrontendsInterfaces()
-            .getWithResponse(resourceGroupName, trafficControllerName, frontendName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Frontend refresh(Context context) {

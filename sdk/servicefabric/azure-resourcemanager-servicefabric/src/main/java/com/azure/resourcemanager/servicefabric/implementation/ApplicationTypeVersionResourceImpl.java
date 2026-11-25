@@ -105,11 +105,7 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypeVersions()
-            .createOrUpdate(resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationTypeVersionResource create(Context context) {
@@ -131,11 +127,7 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypeVersions()
-            .createOrUpdate(resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ApplicationTypeVersionResource apply(Context context) {
@@ -149,18 +141,22 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.applicationTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationTypes");
-        this.version = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "versions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}",
+            "clusterName");
+        this.applicationTypeName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}",
+            "applicationTypeName");
+        this.version = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}",
+            "version");
     }
 
     public ApplicationTypeVersionResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationTypeVersions()
-            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationTypeVersionResource refresh(Context context) {

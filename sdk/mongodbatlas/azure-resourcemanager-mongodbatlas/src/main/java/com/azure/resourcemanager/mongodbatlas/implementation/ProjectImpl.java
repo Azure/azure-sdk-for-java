@@ -63,10 +63,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Project create(Context context) {
@@ -87,10 +84,7 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     }
 
     public Project apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .createOrUpdate(resourceGroupName, organizationName, projectName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Project apply(Context context) {
@@ -103,17 +97,19 @@ public final class ProjectImpl implements Project, Project.Definition, Project.U
     ProjectImpl(ProjectInner innerObject, com.azure.resourcemanager.mongodbatlas.MongoDBAtlasManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}",
+            "organizationName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MongoDB.Atlas/organizations/{organizationName}/projects/{projectName}",
+            "projectName");
     }
 
     public Project refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProjects()
-            .getWithResponse(resourceGroupName, organizationName, projectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Project refresh(Context context) {

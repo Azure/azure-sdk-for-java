@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DiffDiskSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiffDiskSettings model = BinaryData.fromString("{\"option\":\"Local\",\"placement\":\"CacheDisk\"}")
+        DiffDiskSettings model = BinaryData.fromString("{\"option\":\"Local\",\"placement\":\"NvmeDisk\"}")
             .toObject(DiffDiskSettings.class);
         Assertions.assertEquals(DiffDiskOptions.LOCAL, model.option());
-        Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.placement());
+        Assertions.assertEquals(DiffDiskPlacement.NVME_DISK, model.placement());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiffDiskSettings model
-            = new DiffDiskSettings().withOption(DiffDiskOptions.LOCAL).withPlacement(DiffDiskPlacement.CACHE_DISK);
+            = new DiffDiskSettings().withOption(DiffDiskOptions.LOCAL).withPlacement(DiffDiskPlacement.NVME_DISK);
         model = BinaryData.fromObject(model).toObject(DiffDiskSettings.class);
         Assertions.assertEquals(DiffDiskOptions.LOCAL, model.option());
-        Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.placement());
+        Assertions.assertEquals(DiffDiskPlacement.NVME_DISK, model.placement());
     }
 }

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
@@ -44,6 +45,21 @@ public final class VolumeGroupUpdateProperties implements JsonSerializable<Volum
      * A boolean indicating whether or not Data Integrity Check is enabled
      */
     private Boolean enforceDataIntegrityCheckForIscsi;
+
+    /*
+     * Reserved IOPS allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+     */
+    private Integer reservedIops;
+
+    /*
+     * Reserved MBps allocated for this volume group, applicable for QualityOfService PerformanceCritical only.
+     */
+    private Integer reservedMBps;
+
+    /*
+     * The retention policy for the soft deleted volume group and its associated resources
+     */
+    private DeleteRetentionPolicy deleteRetentionPolicy;
 
     /**
      * Creates an instance of VolumeGroupUpdateProperties class.
@@ -155,6 +171,72 @@ public final class VolumeGroupUpdateProperties implements JsonSerializable<Volum
     }
 
     /**
+     * Get the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedIops value.
+     */
+    public Integer reservedIops() {
+        return this.reservedIops;
+    }
+
+    /**
+     * Set the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedIops the reservedIops value to set.
+     * @return the VolumeGroupUpdateProperties object itself.
+     */
+    public VolumeGroupUpdateProperties withReservedIops(Integer reservedIops) {
+        this.reservedIops = reservedIops;
+        return this;
+    }
+
+    /**
+     * Get the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedMBps value.
+     */
+    public Integer reservedMBps() {
+        return this.reservedMBps;
+    }
+
+    /**
+     * Set the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @param reservedMBps the reservedMBps value to set.
+     * @return the VolumeGroupUpdateProperties object itself.
+     */
+    public VolumeGroupUpdateProperties withReservedMBps(Integer reservedMBps) {
+        this.reservedMBps = reservedMBps;
+        return this;
+    }
+
+    /**
+     * Get the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.deleteRetentionPolicy;
+    }
+
+    /**
+     * Set the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
+     * @return the VolumeGroupUpdateProperties object itself.
+     */
+    public VolumeGroupUpdateProperties withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        this.deleteRetentionPolicy = deleteRetentionPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -165,6 +247,9 @@ public final class VolumeGroupUpdateProperties implements JsonSerializable<Volum
         }
         if (networkAcls() != null) {
             networkAcls().validate();
+        }
+        if (deleteRetentionPolicy() != null) {
+            deleteRetentionPolicy().validate();
         }
     }
 
@@ -179,6 +264,9 @@ public final class VolumeGroupUpdateProperties implements JsonSerializable<Volum
         jsonWriter.writeJsonField("encryptionProperties", this.encryptionProperties);
         jsonWriter.writeJsonField("networkAcls", this.networkAcls);
         jsonWriter.writeBooleanField("enforceDataIntegrityCheckForIscsi", this.enforceDataIntegrityCheckForIscsi);
+        jsonWriter.writeNumberField("reservedIops", this.reservedIops);
+        jsonWriter.writeNumberField("reservedMBps", this.reservedMBps);
+        jsonWriter.writeJsonField("deleteRetentionPolicy", this.deleteRetentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -210,6 +298,13 @@ public final class VolumeGroupUpdateProperties implements JsonSerializable<Volum
                 } else if ("enforceDataIntegrityCheckForIscsi".equals(fieldName)) {
                     deserializedVolumeGroupUpdateProperties.enforceDataIntegrityCheckForIscsi
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reservedIops".equals(fieldName)) {
+                    deserializedVolumeGroupUpdateProperties.reservedIops = reader.getNullable(JsonReader::getInt);
+                } else if ("reservedMBps".equals(fieldName)) {
+                    deserializedVolumeGroupUpdateProperties.reservedMBps = reader.getNullable(JsonReader::getInt);
+                } else if ("deleteRetentionPolicy".equals(fieldName)) {
+                    deserializedVolumeGroupUpdateProperties.deleteRetentionPolicy
+                        = DeleteRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

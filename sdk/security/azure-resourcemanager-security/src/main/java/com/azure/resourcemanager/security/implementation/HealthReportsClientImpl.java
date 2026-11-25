@@ -165,32 +165,13 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
         return getWithResponseAsync(resourceId, healthReportName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get health report of resource.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param healthReportName The health report key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health report of resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HealthReportInner> getWithResponse(String resourceId, String healthReportName, Context context) {
         return getWithResponseAsync(resourceId, healthReportName, context).block();
     }
 
-    /**
-     * Get health report of resource.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param healthReportName The health report key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health report of resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthReportInner get(String resourceId, String healthReportName) {
         return getWithResponse(resourceId, healthReportName, Context.NONE).getValue();
@@ -290,34 +271,13 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
-     * 'subscriptions/{subscriptionId}'), or security connector (format:
-     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all health reports inside a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthReportInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
-     * 'subscriptions/{subscriptionId}'), or security connector (format:
-     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all health reports inside a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthReportInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));

@@ -135,6 +135,10 @@ public final class KnowledgeBaseFabricOntologyActivityRecord extends KnowledgeBa
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeStringField("startedAt",
+            getStartedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getStartedAt()));
+        jsonWriter.writeStringField("completedAt",
+            getCompletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCompletedAt()));
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("warning", getWarning());
@@ -161,6 +165,8 @@ public final class KnowledgeBaseFabricOntologyActivityRecord extends KnowledgeBa
     public static KnowledgeBaseFabricOntologyActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int id = 0;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
@@ -175,6 +181,12 @@ public final class KnowledgeBaseFabricOntologyActivityRecord extends KnowledgeBa
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -200,6 +212,8 @@ public final class KnowledgeBaseFabricOntologyActivityRecord extends KnowledgeBa
             }
             KnowledgeBaseFabricOntologyActivityRecord deserializedKnowledgeBaseFabricOntologyActivityRecord
                 = new KnowledgeBaseFabricOntologyActivityRecord(id);
+            deserializedKnowledgeBaseFabricOntologyActivityRecord.setStartedAt(startedAt);
+            deserializedKnowledgeBaseFabricOntologyActivityRecord.setCompletedAt(completedAt);
             deserializedKnowledgeBaseFabricOntologyActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseFabricOntologyActivityRecord.setError(error);
             deserializedKnowledgeBaseFabricOntologyActivityRecord.setWarning(warning);

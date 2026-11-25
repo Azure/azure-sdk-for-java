@@ -61,11 +61,7 @@ public final class VirtualNetworkAddressImpl
     }
 
     public VirtualNetworkAddress create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkAddresses()
-            .createOrUpdate(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualNetworkAddress create(Context context) {
@@ -88,11 +84,7 @@ public final class VirtualNetworkAddressImpl
     }
 
     public VirtualNetworkAddress apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkAddresses()
-            .createOrUpdate(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualNetworkAddress apply(Context context) {
@@ -107,18 +99,19 @@ public final class VirtualNetworkAddressImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.cloudvmclustername = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "cloudVmClusters");
-        this.virtualnetworkaddressname
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkAddresses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
+            "resourceGroupName");
+        this.cloudvmclustername = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
+            "cloudvmclustername");
+        this.virtualnetworkaddressname = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/virtualNetworkAddresses/{virtualnetworkaddressname}",
+            "virtualnetworkaddressname");
     }
 
     public VirtualNetworkAddress refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkAddresses()
-            .getWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualNetworkAddress refresh(Context context) {

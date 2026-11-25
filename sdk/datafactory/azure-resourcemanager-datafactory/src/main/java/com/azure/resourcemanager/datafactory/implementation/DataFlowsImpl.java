@@ -50,12 +50,11 @@ public final class DataFlowsImpl implements DataFlows {
     }
 
     public void delete(String resourceGroupName, String factoryName, String dataFlowName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, dataFlowName);
+        this.deleteWithResponse(resourceGroupName, factoryName, dataFlowName, Context.NONE);
     }
 
     public PagedIterable<DataFlowResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<DataFlowResourceInner> inner = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataFlowResourceImpl(inner1, this.manager()));
+        return this.listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
     public PagedIterable<DataFlowResource> listByFactory(String resourceGroupName, String factoryName,
@@ -66,80 +65,37 @@ public final class DataFlowsImpl implements DataFlows {
     }
 
     public DataFlowResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String dataFlowName = ResourceManagerUtils.getValueFromIdByName(id, "dataflows");
-        if (dataFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflows'.", id)));
-        }
         String localIfNoneMatch = null;
-        return this.getWithResponse(resourceGroupName, factoryName, dataFlowName, localIfNoneMatch, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, localIfNoneMatch, Context.NONE).getValue();
     }
 
     public Response<DataFlowResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String dataFlowName = ResourceManagerUtils.getValueFromIdByName(id, "dataflows");
-        if (dataFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflows'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}",
+            "factoryName", "factories", LOGGER);
+        String dataFlowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}",
+            "dataFlowName", "dataflows", LOGGER);
         return this.getWithResponse(resourceGroupName, factoryName, dataFlowName, ifNoneMatch, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String dataFlowName = ResourceManagerUtils.getValueFromIdByName(id, "dataflows");
-        if (dataFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflows'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, factoryName, dataFlowName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String dataFlowName = ResourceManagerUtils.getValueFromIdByName(id, "dataflows");
-        if (dataFlowName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'dataflows'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}",
+            "factoryName", "factories", LOGGER);
+        String dataFlowName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}",
+            "dataFlowName", "dataflows", LOGGER);
         return this.deleteWithResponse(resourceGroupName, factoryName, dataFlowName, context);
     }
 

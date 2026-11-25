@@ -97,11 +97,7 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
     }
 
     public AutoScaleVCore create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoScaleVCores()
-            .createWithResponse(resourceGroupName, vcoreName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutoScaleVCore create(Context context) {
@@ -124,11 +120,7 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
     }
 
     public AutoScaleVCore apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoScaleVCores()
-            .updateWithResponse(resourceGroupName, vcoreName, updateVCoreUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutoScaleVCore apply(Context context) {
@@ -143,16 +135,16 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vcoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autoScaleVCores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}",
+            "resourceGroupName");
+        this.vcoreName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores/{vcoreName}",
+            "vcoreName");
     }
 
     public AutoScaleVCore refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoScaleVCores()
-            .getByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutoScaleVCore refresh(Context context) {

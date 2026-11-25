@@ -112,11 +112,7 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
     }
 
     public InboundEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundEndpoints()
-            .createOrUpdate(resourceGroupName, dnsResolverName, inboundEndpointName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InboundEndpoint create(Context context) {
@@ -142,11 +138,7 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
     }
 
     public InboundEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundEndpoints()
-            .update(resourceGroupName, dnsResolverName, inboundEndpointName, updateParameters, updateIfMatch,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InboundEndpoint apply(Context context) {
@@ -160,17 +152,19 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
         com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsResolverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsResolvers");
-        this.inboundEndpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "inboundEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/inboundEndpoints/{inboundEndpointName}",
+            "resourceGroupName");
+        this.dnsResolverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/inboundEndpoints/{inboundEndpointName}",
+            "dnsResolverName");
+        this.inboundEndpointName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}/inboundEndpoints/{inboundEndpointName}",
+            "inboundEndpointName");
     }
 
     public InboundEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundEndpoints()
-            .getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InboundEndpoint refresh(Context context) {

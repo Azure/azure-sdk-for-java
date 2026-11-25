@@ -80,18 +80,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             @BodyParam("application/json") Workflow validate, Context context);
     }
 
-    /**
-     * Regenerates the callback URL access key for request triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param keyType The access key type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(String resourceGroupName, String name,
         String workflowName, RegenerateActionParameter keyType) {
@@ -170,18 +159,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             this.client.getSubscriptionId(), resourceGroupName, name, workflowName, contentType, keyType, context);
     }
 
-    /**
-     * Regenerates the callback URL access key for request triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param keyType The access key type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> regenerateAccessKeyAsync(String resourceGroupName, String name, String workflowName,
         RegenerateActionParameter keyType) {
@@ -189,54 +167,21 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Regenerates the callback URL access key for request triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param keyType The access key type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> regenerateAccessKeyWithResponse(String resourceGroupName, String name, String workflowName,
         RegenerateActionParameter keyType, Context context) {
         return regenerateAccessKeyWithResponseAsync(resourceGroupName, name, workflowName, keyType, context).block();
     }
 
-    /**
-     * Regenerates the callback URL access key for request triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param keyType The access key type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void regenerateAccessKey(String resourceGroupName, String name, String workflowName,
         RegenerateActionParameter keyType) {
         regenerateAccessKeyWithResponse(resourceGroupName, name, workflowName, keyType, Context.NONE);
     }
 
-    /**
-     * Validates the workflow definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param validate The workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> validateWithResponseAsync(String resourceGroupName, String name, String workflowName,
         Workflow validate) {
@@ -315,54 +260,21 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             resourceGroupName, name, workflowName, contentType, validate, context);
     }
 
-    /**
-     * Validates the workflow definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param validate The workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateAsync(String resourceGroupName, String name, String workflowName, Workflow validate) {
         return validateWithResponseAsync(resourceGroupName, name, workflowName, validate)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Validates the workflow definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param validate The workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> validateWithResponse(String resourceGroupName, String name, String workflowName,
         Workflow validate, Context context) {
         return validateWithResponseAsync(resourceGroupName, name, workflowName, validate, context).block();
     }
 
-    /**
-     * Validates the workflow definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param validate The workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validate(String resourceGroupName, String name, String workflowName, Workflow validate) {
         validateWithResponse(resourceGroupName, name, workflowName, validate, Context.NONE);

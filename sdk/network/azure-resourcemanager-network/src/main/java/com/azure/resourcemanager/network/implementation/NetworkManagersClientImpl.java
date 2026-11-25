@@ -151,16 +151,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Manager along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkManagerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String networkManagerName) {
@@ -180,7 +171,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -218,72 +209,34 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, networkManagerName, accept, context);
     }
 
-    /**
-     * Gets the specified Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Manager on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkManagerInner> getByResourceGroupAsync(String resourceGroupName, String networkManagerName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkManagerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Manager along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkManagerInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkManagerName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkManagerName, context).block();
     }
 
-    /**
-     * Gets the specified Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Network Manager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkManagerInner getByResourceGroup(String resourceGroupName, String networkManagerName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkManagerName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkManagerInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkManagerName, NetworkManagerInner parameters) {
@@ -308,7 +261,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -354,7 +307,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -362,17 +315,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             resourceGroupName, networkManagerName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkManagerInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName,
         NetworkManagerInner parameters) {
@@ -380,52 +323,21 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkManagerInner> createOrUpdateWithResponse(String resourceGroupName, String networkManagerName,
         NetworkManagerInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, networkManagerName, parameters, context).block();
     }
 
-    /**
-     * Creates or updates a Network Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkManagerInner createOrUpdate(String resourceGroupName, String networkManagerName,
         NetworkManagerInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, networkManagerName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Patch NetworkManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkManagerInner>> patchWithResponseAsync(String resourceGroupName,
         String networkManagerName, PatchObject parameters) {
@@ -450,7 +362,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -496,7 +408,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -504,17 +416,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             networkManagerName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Patch NetworkManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkManagerInner> patchAsync(String resourceGroupName, String networkManagerName,
         PatchObject parameters) {
@@ -522,52 +424,20 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Patch NetworkManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkManagerInner> patchWithResponse(String resourceGroupName, String networkManagerName,
         PatchObject parameters, Context context) {
         return patchWithResponseAsync(resourceGroupName, networkManagerName, parameters, context).block();
     }
 
-    /**
-     * Patch NetworkManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which network manager is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Managed Network resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkManagerInner patch(String resourceGroupName, String networkManagerName, PatchObject parameters) {
         return patchWithResponse(resourceGroupName, networkManagerName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         Boolean force) {
@@ -587,7 +457,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkManagerName, force, context))
@@ -626,24 +496,13 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkManagerName, force, context);
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         Boolean force) {
@@ -652,16 +511,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             this.client.getContext());
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName) {
         final Boolean force = null;
@@ -693,69 +543,28 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             context);
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName) {
         final Boolean force = null;
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, force).getSyncPoller();
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         Boolean force, Context context) {
         return this.beginDeleteAsync(resourceGroupName, networkManagerName, force, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, Boolean force) {
         return beginDeleteAsync(resourceGroupName, networkManagerName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName) {
         final Boolean force = null;
@@ -783,33 +592,14 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName) {
         final Boolean force = null;
         deleteAsync(resourceGroupName, networkManagerName, force).block();
     }
 
-    /**
-     * Deletes a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, Boolean force, Context context) {
         deleteAsync(resourceGroupName, networkManagerName, force, context).block();
@@ -845,7 +635,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -886,7 +676,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -896,20 +686,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List network managers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkManagerInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
         String skipToken) {
@@ -917,15 +694,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List network managers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkManagerInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
@@ -956,15 +725,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List network managers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkManagerInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
@@ -972,21 +733,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, skipToken));
     }
 
-    /**
-     * List network managers in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkManagerInner> listByResourceGroup(String resourceGroupName, Integer top,
         String skipToken, Context context) {
@@ -1017,7 +764,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1053,7 +800,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1063,32 +810,14 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all network managers in a subscription.
-     * 
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkManagerInner> listAsync(Integer top, String skipToken) {
         return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List all network managers in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkManagerInner> listAsync() {
         final Integer top = null;
@@ -1117,13 +846,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all network managers in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkManagerInner> list() {
         final Integer top = null;
@@ -1131,20 +854,7 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
         return new PagedIterable<>(listAsync(top, skipToken));
     }
 
-    /**
-     * List all network managers in a subscription.
-     * 
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkManagerInner> list(Integer top, String skipToken, Context context) {
         return new PagedIterable<>(listAsync(top, skipToken, context));

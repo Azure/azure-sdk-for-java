@@ -164,10 +164,7 @@ public final class AutoExportJobImpl implements AutoExportJob, AutoExportJob.Def
     }
 
     public AutoExportJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoExportJobs()
-            .createOrUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutoExportJob create(Context context) {
@@ -189,10 +186,7 @@ public final class AutoExportJobImpl implements AutoExportJob, AutoExportJob.Def
     }
 
     public AutoExportJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoExportJobs()
-            .update(resourceGroupName, amlFilesystemName, autoExportJobName, updateAutoExportJob, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutoExportJob apply(Context context) {
@@ -206,17 +200,19 @@ public final class AutoExportJobImpl implements AutoExportJob, AutoExportJob.Def
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "amlFilesystems");
-        this.autoExportJobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autoExportJobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}",
+            "resourceGroupName");
+        this.amlFilesystemName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}",
+            "amlFilesystemName");
+        this.autoExportJobName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoExportJobs/{autoExportJobName}",
+            "autoExportJobName");
     }
 
     public AutoExportJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoExportJobs()
-            .getWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutoExportJob refresh(Context context) {

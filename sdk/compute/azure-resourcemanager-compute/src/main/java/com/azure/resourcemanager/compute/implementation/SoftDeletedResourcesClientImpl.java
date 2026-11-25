@@ -120,7 +120,7 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
         if (artifactName == null) {
             return Mono.error(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByArtifactName(this.client.getEndpoint(), apiVersion,
@@ -171,7 +171,7 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
         if (artifactName == null) {
             return Mono.error(new IllegalArgumentException("Parameter artifactName is required and cannot be null."));
         }
-        final String apiVersion = "2025-12-03";
+        final String apiVersion = "2026-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -181,20 +181,7 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
-     * image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param artifactType The type of the artifact to be listed, such as gallery image version.
-     * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
-     * the gallery image name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Soft-deleted Resources operation response as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GallerySoftDeletedResourceInner> listByArtifactNameAsync(String resourceGroupName,
         String galleryName, String artifactType, String artifactName) {
@@ -225,41 +212,14 @@ public final class SoftDeletedResourcesClientImpl implements SoftDeletedResource
             artifactName, context), nextLink -> listByArtifactNameNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
-     * image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param artifactType The type of the artifact to be listed, such as gallery image version.
-     * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
-     * the gallery image name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Soft-deleted Resources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GallerySoftDeletedResourceInner> listByArtifactName(String resourceGroupName,
         String galleryName, String artifactType, String artifactName) {
         return new PagedIterable<>(listByArtifactNameAsync(resourceGroupName, galleryName, artifactType, artifactName));
     }
 
-    /**
-     * List soft-deleted resources of an artifact in the gallery, such as soft-deleted gallery image version of an
-     * image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryName The name of the Shared Image Gallery.
-     * @param artifactType The type of the artifact to be listed, such as gallery image version.
-     * @param artifactName The artifact name to be listed. If artifact type is Images, then the artifact name should be
-     * the gallery image name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Soft-deleted Resources operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GallerySoftDeletedResourceInner> listByArtifactName(String resourceGroupName,
         String galleryName, String artifactType, String artifactName, Context context) {

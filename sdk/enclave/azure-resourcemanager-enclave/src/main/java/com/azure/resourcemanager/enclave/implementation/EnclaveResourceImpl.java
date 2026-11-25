@@ -93,10 +93,7 @@ public final class EnclaveResourceImpl implements EnclaveResource, EnclaveResour
     }
 
     public EnclaveResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEnclaves()
-            .createOrUpdate(resourceGroupName, virtualEnclaveName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EnclaveResource create(Context context) {
@@ -118,10 +115,7 @@ public final class EnclaveResourceImpl implements EnclaveResource, EnclaveResour
     }
 
     public EnclaveResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEnclaves()
-            .update(resourceGroupName, virtualEnclaveName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EnclaveResource apply(Context context) {
@@ -135,16 +129,16 @@ public final class EnclaveResourceImpl implements EnclaveResource, EnclaveResour
         com.azure.resourcemanager.enclave.AzureEnclaveManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.virtualEnclaveName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualEnclaves");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
+            "resourceGroupName");
+        this.virtualEnclaveName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}",
+            "virtualEnclaveName");
     }
 
     public EnclaveResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualEnclaves()
-            .getByResourceGroupWithResponse(resourceGroupName, virtualEnclaveName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EnclaveResource refresh(Context context) {

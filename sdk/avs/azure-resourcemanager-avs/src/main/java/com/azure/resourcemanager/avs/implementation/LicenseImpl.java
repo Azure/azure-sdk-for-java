@@ -68,10 +68,7 @@ public final class LicenseImpl implements License, License.Definition, License.U
     }
 
     public License create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenses()
-            .createOrUpdate(resourceGroupName, privateCloudName, licenseName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public License create(Context context) {
@@ -92,10 +89,7 @@ public final class LicenseImpl implements License, License.Definition, License.U
     }
 
     public License apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenses()
-            .createOrUpdate(resourceGroupName, privateCloudName, licenseName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public License apply(Context context) {
@@ -108,18 +102,19 @@ public final class LicenseImpl implements License, License.Definition, License.U
     LicenseImpl(LicenseInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.licenseName
-            = LicenseName.fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "licenses"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/licenses/{licenseName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/licenses/{licenseName}",
+            "privateCloudName");
+        this.licenseName = LicenseName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/licenses/{licenseName}",
+            "licenseName"));
     }
 
     public License refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getLicenses()
-            .getWithResponse(resourceGroupName, privateCloudName, licenseName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public License refresh(Context context) {

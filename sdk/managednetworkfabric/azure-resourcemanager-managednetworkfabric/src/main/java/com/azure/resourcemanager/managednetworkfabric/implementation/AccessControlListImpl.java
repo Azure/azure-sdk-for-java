@@ -186,10 +186,7 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessControlLists()
-            .create(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessControlList create(Context context) {
@@ -212,10 +209,7 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessControlLists()
-            .update(resourceGroupName, accessControlListName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessControlList apply(Context context) {
@@ -229,16 +223,16 @@ public final class AccessControlListImpl
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accessControlListName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessControlLists");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}",
+            "resourceGroupName");
+        this.accessControlListName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/accessControlLists/{accessControlListName}",
+            "accessControlListName");
     }
 
     public AccessControlList refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessControlLists()
-            .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessControlList refresh(Context context) {

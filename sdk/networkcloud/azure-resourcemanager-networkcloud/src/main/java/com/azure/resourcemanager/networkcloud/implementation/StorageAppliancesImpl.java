@@ -79,7 +79,7 @@ public final class StorageAppliancesImpl implements StorageAppliances {
     }
 
     public OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        return this.serviceClient().disableRemoteVendorManagement(resourceGroupName, storageApplianceName);
+        return this.disableRemoteVendorManagement(resourceGroupName, storageApplianceName, Context.NONE);
     }
 
     public OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
@@ -101,8 +101,8 @@ public final class StorageAppliancesImpl implements StorageAppliances {
 
     public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
         StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        return this.serviceClient()
-            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters);
+        return this.runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+            Context.NONE);
     }
 
     public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
@@ -113,60 +113,32 @@ public final class StorageAppliancesImpl implements StorageAppliances {
     }
 
     public StorageAppliance getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
-        if (storageApplianceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, storageApplianceName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StorageAppliance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
-        if (storageApplianceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageApplianceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}",
+            "storageApplianceName", "storageAppliances", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, storageApplianceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
-        if (storageApplianceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
-        }
         String localIfMatch = null;
         String localIfNoneMatch = null;
-        this.delete(resourceGroupName, storageApplianceName, localIfMatch, localIfNoneMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageApplianceName = ResourceManagerUtils.getValueFromIdByName(id, "storageAppliances");
-        if (storageApplianceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
-        }
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}",
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageApplianceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}",
+            "storageApplianceName", "storageAppliances", LOGGER);
         this.delete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context);
     }
 
