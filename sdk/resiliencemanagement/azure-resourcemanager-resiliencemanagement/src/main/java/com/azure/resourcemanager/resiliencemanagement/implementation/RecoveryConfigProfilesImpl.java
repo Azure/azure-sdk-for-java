@@ -48,13 +48,8 @@ public final class RecoveryConfigProfilesImpl implements RecoveryConfigProfiles 
 
     public RecoveryConfigProfile createOrUpdate(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner resource) {
-        RecoveryConfigProfileInner inner = this.serviceClient()
-            .createOrUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource);
-        if (inner != null) {
-            return new RecoveryConfigProfileImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource,
+            Context.NONE);
     }
 
     public RecoveryConfigProfile createOrUpdate(String serviceGroupName, String recoveryPlanName,
@@ -70,13 +65,7 @@ public final class RecoveryConfigProfilesImpl implements RecoveryConfigProfiles 
 
     public RecoveryConfigProfile update(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner properties) {
-        RecoveryConfigProfileInner inner
-            = this.serviceClient().update(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties);
-        if (inner != null) {
-            return new RecoveryConfigProfileImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties, Context.NONE);
     }
 
     public RecoveryConfigProfile update(String serviceGroupName, String recoveryPlanName,
@@ -91,8 +80,7 @@ public final class RecoveryConfigProfilesImpl implements RecoveryConfigProfiles 
     }
 
     public PagedIterable<RecoveryConfigProfile> list(String serviceGroupName, String recoveryPlanName) {
-        PagedIterable<RecoveryConfigProfileInner> inner = this.serviceClient().list(serviceGroupName, recoveryPlanName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryConfigProfileImpl(inner1, this.manager()));
+        return this.list(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
     public PagedIterable<RecoveryConfigProfile> list(String serviceGroupName, String recoveryPlanName,
@@ -103,7 +91,7 @@ public final class RecoveryConfigProfilesImpl implements RecoveryConfigProfiles 
     }
 
     public void delete(String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName) {
-        this.serviceClient().delete(serviceGroupName, recoveryPlanName, recoveryConfigProfileName);
+        this.delete(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, Context.NONE);
     }
 
     public void delete(String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName,

@@ -224,18 +224,7 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery configuration profile along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryConfigProfileInner> getWithResponse(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, Context context) {
@@ -244,17 +233,7 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             recoveryPlanName, recoveryConfigProfileName, accept, context);
     }
 
-    /**
-     * Gets a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery configuration profile.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryConfigProfileInner get(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName) {
@@ -301,10 +280,8 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            recoveryPlanName, recoveryConfigProfileName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource,
+            Context.NONE);
     }
 
     /**
@@ -352,41 +329,16 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryConfigProfileInner>, RecoveryConfigProfileInner> beginCreateOrUpdate(
         String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName,
         RecoveryConfigProfileInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource);
-        return this.client.<RecoveryConfigProfileInner, RecoveryConfigProfileInner>getLroResult(response,
-            RecoveryConfigProfileInner.class, RecoveryConfigProfileInner.class, Context.NONE);
+        return beginCreateOrUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Creates or replaces a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryConfigProfileInner>, RecoveryConfigProfileInner> beginCreateOrUpdate(
         String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName,
@@ -416,43 +368,19 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryConfigProfileInner createOrUpdate(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner resource) {
-        return beginCreateOrUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource)
-            .getFinalResult();
+        return createOrUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryConfigProfileInner createOrUpdate(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner resource, Context context) {
-        return beginCreateOrUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, resource, context));
     }
 
     /**
@@ -495,10 +423,8 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            recoveryPlanName, recoveryConfigProfileName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties,
+            Context.NONE);
     }
 
     /**
@@ -546,41 +472,15 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             this.client.getContext());
     }
 
-    /**
-     * Updates a recovery configuration profile. Omitted fields remain unchanged.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryConfigProfileInner>, RecoveryConfigProfileInner> beginUpdate(
         String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName,
         RecoveryConfigProfileInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties);
-        return this.client.<RecoveryConfigProfileInner, RecoveryConfigProfileInner>getLroResult(response,
-            RecoveryConfigProfileInner.class, RecoveryConfigProfileInner.class, Context.NONE);
+        return beginUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a recovery configuration profile. Omitted fields remain unchanged.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryConfigProfileInner>, RecoveryConfigProfileInner> beginUpdate(
         String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName,
@@ -610,42 +510,19 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a recovery configuration profile. Omitted fields remain unchanged.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryConfigProfileInner update(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner properties) {
-        return beginUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties).getFinalResult();
+        return update(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a recovery configuration profile. Omitted fields remain unchanged.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable, plan-scoped clean-room recovery configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryConfigProfileInner update(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, RecoveryConfigProfileInner properties, Context context) {
-        return beginUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, properties, context));
     }
 
     /**
@@ -699,11 +576,7 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryConfigProfileInner> listSinglePage(String serviceGroupName, String recoveryPlanName) {
-        final String accept = "application/json";
-        Response<RecoveryConfigProfileListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), recoveryPlanName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -727,33 +600,13 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists recovery configuration profiles under a recovery plan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryConfigProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryConfigProfileInner> list(String serviceGroupName, String recoveryPlanName) {
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, recoveryPlanName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * Lists recovery configuration profiles under a recovery plan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryConfigProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryConfigProfileInner> list(String serviceGroupName, String recoveryPlanName,
         Context context) {
@@ -795,8 +648,7 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName) {
-        return service.deleteSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            recoveryPlanName, recoveryConfigProfileName, Context.NONE);
+        return deleteWithResponse(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, Context.NONE);
     }
 
     /**
@@ -838,37 +690,14 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             this.client.getContext());
     }
 
-    /**
-     * Deletes a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName) {
-        Response<BinaryData> response
-            = deleteWithResponse(serviceGroupName, recoveryPlanName, recoveryConfigProfileName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, Context.NONE);
     }
 
-    /**
-     * Deletes a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String recoveryPlanName,
         String recoveryConfigProfileName, Context context) {
@@ -894,36 +723,18 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName) {
-        beginDelete(serviceGroupName, recoveryPlanName, recoveryConfigProfileName).getFinalResult();
+        delete(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, Context.NONE);
     }
 
-    /**
-     * Deletes a recovery configuration profile.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryConfigProfileName The name of the recovery configuration profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String recoveryPlanName, String recoveryConfigProfileName,
         Context context) {
-        beginDelete(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(serviceGroupName, recoveryPlanName, recoveryConfigProfileName, context));
     }
 
     /**
@@ -956,11 +767,7 @@ public final class RecoveryConfigProfilesClientImpl implements RecoveryConfigPro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryConfigProfileInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryConfigProfileListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
