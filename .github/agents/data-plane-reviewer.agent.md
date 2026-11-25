@@ -59,18 +59,20 @@ workflow.
 
 ## Review sequence
 
-1. **Eligibility.** Apply every scope and Java-change gate in the skill.
-2. **Pin and classify.** Record the head SHA, package, package version, API
+1. **Snapshot preflight.** Your first tool call must run
+   `cat "$DATA_PLANE_REVIEW_MANIFEST"`. Do not read PR metadata or source first.
+   When the manifest lists bundles, immediately run `cat` on every exact
+   `api.md` and `api.metadata.yml` path. Record its `headSha`; do not continue
+   until these reads complete. A `source-only` status uses the source-only path.
+2. **Eligibility.** Apply every scope and Java-change gate in the skill.
+3. **Pin and classify.** Record the head SHA, package, package version, API
    versions, release type, and whether this is a new module.
-3. **Prior state.** Read the latest workflow comment. Stop if it already covers
+   Verify it matches the manifest `headSha`.
+4. **Prior state.** Read the latest workflow comment. Stop if it already covers
    the same head SHA. Revalidate each prior finding and question. Classify it
    as carried forward, resolved, or no longer applicable. A replacement report
    must contain the complete still-valid state, not only newly introduced
    items.
-4. **API snapshot.** Run `cat "$DATA_PLANE_REVIEW_MANIFEST"` rather than
-   searching for it. When it lists bundles for the pinned head, run `cat` on
-   every exact `api.md` and `api.metadata.yml` path before reviewing the
-   surface. Otherwise use the source-only path.
 5. **Surface pass.** Use `api.md` as the complete public API inventory, then
    trace candidates to changed Java source. Review public clients, builders,
    methods, models, enums, exceptions, and module exports. For parameter-count
