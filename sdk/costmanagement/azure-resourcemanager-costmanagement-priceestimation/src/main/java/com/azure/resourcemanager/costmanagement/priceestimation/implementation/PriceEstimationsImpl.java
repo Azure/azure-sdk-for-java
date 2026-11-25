@@ -26,12 +26,7 @@ public final class PriceEstimationsImpl implements PriceEstimations {
     }
 
     public EstimateResult estimatePrices(EstimateContent body) {
-        EstimateResultInner inner = this.serviceClient().estimatePrices(body);
-        if (inner != null) {
-            return new EstimateResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.estimatePrices(body, Context.NONE);
     }
 
     public EstimateResult estimatePrices(EstimateContent body, Context context) {
