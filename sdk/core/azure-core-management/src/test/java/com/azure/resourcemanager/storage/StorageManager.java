@@ -20,6 +20,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ExternalEvaluationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -106,6 +107,7 @@ public final class StorageManager {
         private RetryPolicy retryPolicy;
         private RetryOptions retryOptions;
         private Duration defaultPollInterval;
+        private boolean externalEvaluationEnabled;
 
         private Configurable() {
         }
@@ -140,6 +142,16 @@ public final class StorageManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Enables external policy evaluation.
+         *
+         * @return the configurable object itself.
+         */
+        public Configurable withExternalEvaluation() {
+            this.externalEvaluationEnabled = true;
             return this;
         }
 
@@ -235,6 +247,31 @@ public final class StorageManager {
                     retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
                 }
             }
+            HttpPipeline acquisitionPipeline = null;
+            HttpClient pipelineHttpClient = this.httpClient;
+            if (externalEvaluationEnabled) {
+                List<HttpPipelinePolicy> acquisitionPolicies = new ArrayList<>();
+                acquisitionPolicies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+                acquisitionPolicies.add(new AddHeadersFromContextPolicy());
+                acquisitionPolicies.add(new RequestIdPolicy());
+                acquisitionPolicies.addAll(this.policies.stream()
+                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                    .collect(Collectors.toList()));
+                HttpPolicyProviders.addBeforeRetryPolicies(acquisitionPolicies);
+                acquisitionPolicies.add(retryPolicy);
+                acquisitionPolicies.add(new AddDatePolicy());
+                acquisitionPolicies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+                acquisitionPolicies.addAll(this.policies.stream()
+                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                    .collect(Collectors.toList()));
+                HttpPolicyProviders.addAfterRetryPolicies(acquisitionPolicies);
+                acquisitionPolicies.add(new HttpLoggingPolicy(httpLogOptions));
+                acquisitionPipeline = new HttpPipelineBuilder().httpClient(this.httpClient)
+                    .policies(acquisitionPolicies.toArray(new HttpPipelinePolicy[0]))
+                    .build();
+                pipelineHttpClient = acquisitionPipeline.getHttpClient();
+            }
+
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
@@ -243,6 +280,9 @@ public final class StorageManager {
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
+            if (acquisitionPipeline != null) {
+                policies.add(new ExternalEvaluationPolicy(acquisitionPipeline));
+            }
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
@@ -251,7 +291,7 @@ public final class StorageManager {
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(pipelineHttpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
             return new StorageManager(httpPipeline, profile, defaultPollInterval);
