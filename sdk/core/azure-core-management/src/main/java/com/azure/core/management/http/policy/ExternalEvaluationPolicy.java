@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -391,8 +392,8 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
 
         private URL acquireUrl(URL originalUrl) {
             try {
-                return new URL(originalUrl.getProtocol(), originalUrl.getHost(), originalUrl.getPort(), acquirePath);
-            } catch (MalformedURLException e) {
+                return originalUrl.toURI().resolve(acquirePath).toURL();
+            } catch (MalformedURLException | URISyntaxException e) {
                 throw LOGGER.logExceptionAsError(
                     new IllegalStateException("Failed to construct the policy token acquisition URL.", e));
             }
