@@ -46,9 +46,7 @@ public final class EdgeMachineNetworkAdaptersImpl implements EdgeMachineNetworkA
     }
 
     public PagedIterable<EdgeMachineNetworkAdapter> list(String resourceGroupName, String edgeMachineName) {
-        PagedIterable<EdgeMachineNetworkAdapterInner> inner
-            = this.serviceClient().list(resourceGroupName, edgeMachineName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeMachineNetworkAdapterImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     public PagedIterable<EdgeMachineNetworkAdapter> list(String resourceGroupName, String edgeMachineName,

@@ -128,16 +128,7 @@ public final class SkuMixPlacementScoresClientImpl implements SkuMixPlacementSco
         return getWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets SkuMixPlacement scoring metadata.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return skuMixPlacement scoring metadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuMixPlacementBaseInner> getWithResponse(String location, Context context) {
         final String accept = "application/json";
@@ -145,15 +136,7 @@ public final class SkuMixPlacementScoresClientImpl implements SkuMixPlacementSco
             location, accept, context);
     }
 
-    /**
-     * Gets SkuMixPlacement scoring metadata.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return skuMixPlacement scoring metadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuMixPlacementBaseInner get(String location) {
         return getWithResponse(location, Context.NONE).getValue();
@@ -196,17 +179,7 @@ public final class SkuMixPlacementScoresClientImpl implements SkuMixPlacementSco
         return postWithResponseAsync(location, skuMixPlacementRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates placement scores for VM SKU mix placement.
-     * 
-     * @param location The name of the Azure region.
-     * @param skuMixPlacementRequest SkuMixPlacement request object supplied in the body of the generate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sku Mix Placement API response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuMixPlacementResponseInner> postWithResponse(String location,
         SkuMixPlacementRequest skuMixPlacementRequest, Context context) {
@@ -216,16 +189,7 @@ public final class SkuMixPlacementScoresClientImpl implements SkuMixPlacementSco
             location, contentType, accept, skuMixPlacementRequest, context);
     }
 
-    /**
-     * Generates placement scores for VM SKU mix placement.
-     * 
-     * @param location The name of the Azure region.
-     * @param skuMixPlacementRequest SkuMixPlacement request object supplied in the body of the generate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sku Mix Placement API response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuMixPlacementResponseInner post(String location, SkuMixPlacementRequest skuMixPlacementRequest) {
         return postWithResponse(location, skuMixPlacementRequest, Context.NONE).getValue();

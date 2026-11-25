@@ -14,21 +14,21 @@ public final class GatewayPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"gatewayId\":\"haq\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"mwutwbdsre\",\"allowedFeatures\":[\"rhneuyowq\",\"d\",\"ytisibir\"],\"gatewayBypass\":[\"ikpzimejza\",\"lfzxiavrmbzonoki\"]}")
+            "{\"provisioningState\":\"Accepted\",\"gatewayId\":\"tpipiwyczuhx\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"jlihhyus\",\"allowedFeatures\":[\"asdvl\",\"fwdgzxulucvp\"],\"gatewayBypass\":[\"sreuzvxurisjnh\"]}")
             .toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("rhneuyowq", model.allowedFeatures().get(0));
-        Assertions.assertEquals("ikpzimejza", model.gatewayBypass().get(0));
+        Assertions.assertEquals("asdvl", model.allowedFeatures().get(0));
+        Assertions.assertEquals("sreuzvxurisjnh", model.gatewayBypass().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayProperties model = new GatewayProperties().withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("rhneuyowq", "d", "ytisibir"))
-            .withGatewayBypass(Arrays.asList("ikpzimejza", "lfzxiavrmbzonoki"));
+            .withAllowedFeatures(Arrays.asList("asdvl", "fwdgzxulucvp"))
+            .withGatewayBypass(Arrays.asList("sreuzvxurisjnh"));
         model = BinaryData.fromObject(model).toObject(GatewayProperties.class);
         Assertions.assertEquals(GatewayType.PUBLIC, model.gatewayType());
-        Assertions.assertEquals("rhneuyowq", model.allowedFeatures().get(0));
-        Assertions.assertEquals("ikpzimejza", model.gatewayBypass().get(0));
+        Assertions.assertEquals("asdvl", model.allowedFeatures().get(0));
+        Assertions.assertEquals("sreuzvxurisjnh", model.gatewayBypass().get(0));
     }
 }

@@ -146,11 +146,7 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceExtensionResourceInner> listOccurrenceByVmsSinglePage(String resourceUri) {
-        final String accept = "application/json";
-        Response<OccurrenceExtensionResourceListResult> res = service.listOccurrenceByVmsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOccurrenceByVmsSinglePage(resourceUri, Context.NONE);
     }
 
     /**
@@ -173,33 +169,13 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List OccurrenceExtensionResource resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OccurrenceExtensionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OccurrenceExtensionResourceInner> listOccurrenceByVms(String resourceUri) {
-        return new PagedIterable<>(() -> listOccurrenceByVmsSinglePage(resourceUri),
-            nextLink -> listOccurrenceByVmsNextSinglePage(nextLink));
+        return listOccurrenceByVms(resourceUri, Context.NONE);
     }
 
-    /**
-     * List OccurrenceExtensionResource resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OccurrenceExtensionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OccurrenceExtensionResourceInner> listOccurrenceByVms(String resourceUri, Context context) {
         return new PagedIterable<>(() -> listOccurrenceByVmsSinglePage(resourceUri, context),
@@ -239,11 +215,7 @@ public final class OccurrenceExtensionsClientImpl implements OccurrenceExtension
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceExtensionResourceInner> listOccurrenceByVmsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OccurrenceExtensionResourceListResult> res
-            = service.listOccurrenceByVmsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOccurrenceByVmsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

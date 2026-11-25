@@ -140,24 +140,7 @@ public final class CGProfilesClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group. The operation returns the properties of container group profile including containers, image
-     * registry credentials, restart policy, IP address type, OS type, volumes, current revision number, etc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param revisionNumber The revision number of the container group profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerGroupProfileInner>> getByRevisionNumberWithResponseAsync(String resourceGroupName,
         String containerGroupProfileName, String revisionNumber) {
@@ -236,24 +219,7 @@ public final class CGProfilesClientImpl
             context);
     }
 
-    /**
-     * Get the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group. The operation returns the properties of container group profile including containers, image
-     * registry credentials, restart policy, IP address type, OS type, volumes, current revision number, etc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param revisionNumber The revision number of the container group profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupProfileInner> getByRevisionNumberAsync(String resourceGroupName,
         String containerGroupProfileName, String revisionNumber) {
@@ -261,25 +227,7 @@ public final class CGProfilesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group. The operation returns the properties of container group profile including containers, image
-     * registry credentials, restart policy, IP address type, OS type, volumes, current revision number, etc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param revisionNumber The revision number of the container group profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerGroupProfileInner> getByRevisionNumberWithResponse(String resourceGroupName,
         String containerGroupProfileName, String revisionNumber, Context context) {
@@ -287,24 +235,7 @@ public final class CGProfilesClientImpl
             context).block();
     }
 
-    /**
-     * Get the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group. The operation returns the properties of container group profile including containers, image
-     * registry credentials, restart policy, IP address type, OS type, volumes, current revision number, etc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param revisionNumber The revision number of the container group profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified revision of the container group profile.
-     * 
-     * Gets the properties of the specified revision of the container group profile in the given subscription and
-     * resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerGroupProfileInner getByRevisionNumber(String resourceGroupName, String containerGroupProfileName,
         String revisionNumber) {
@@ -407,25 +338,7 @@ public final class CGProfilesClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group.
-     * 
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group. This operation returns properties of each revision of the specified container group profile including
-     * containers, image registry credentials, restart policy, IP address type, OS type volumes, revision number, etc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the revisions of the specified container group profile in the given subscription and
-     * resource group.
-     * 
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerGroupProfileInner> listAllRevisionsAsync(String resourceGroupName,
         String containerGroupProfileName) {
@@ -461,69 +374,21 @@ public final class CGProfilesClientImpl
             nextLink -> listAllRevisionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group.
-     * 
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group. This operation returns properties of each revision of the specified container group profile including
-     * containers, image registry credentials, restart policy, IP address type, OS type volumes, revision number, etc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the revisions of the specified container group profile in the given subscription and
-     * resource group.
-     * 
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupProfileInner> listAllRevisions(String resourceGroupName,
         String containerGroupProfileName) {
         return new PagedIterable<>(listAllRevisionsAsync(resourceGroupName, containerGroupProfileName));
     }
 
-    /**
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group.
-     * 
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group. This operation returns properties of each revision of the specified container group profile including
-     * containers, image registry credentials, restart policy, IP address type, OS type volumes, revision number, etc.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the revisions of the specified container group profile in the given subscription and
-     * resource group.
-     * 
-     * Get a list of all the revisions of the specified container group profile in the given subscription and resource
-     * group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupProfileInner> listAllRevisions(String resourceGroupName,
         String containerGroupProfileName, Context context) {
         return new PagedIterable<>(listAllRevisionsAsync(resourceGroupName, containerGroupProfileName, context));
     }
 
-    /**
-     * Display information about a specified ContainerGroupProfile.
-     * 
-     * Get the properties of the specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerGroupProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String containerGroupProfileName) {
@@ -588,18 +453,7 @@ public final class CGProfilesClientImpl
             this.client.getSubscriptionId(), resourceGroupName, containerGroupProfileName, accept, context);
     }
 
-    /**
-     * Display information about a specified ContainerGroupProfile.
-     * 
-     * Get the properties of the specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupProfileInner> getByResourceGroupAsync(String resourceGroupName,
         String containerGroupProfileName) {
@@ -607,55 +461,20 @@ public final class CGProfilesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Display information about a specified ContainerGroupProfile.
-     * 
-     * Get the properties of the specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerGroupProfileInner> getByResourceGroupWithResponse(String resourceGroupName,
         String containerGroupProfileName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, containerGroupProfileName, context).block();
     }
 
-    /**
-     * Display information about a specified ContainerGroupProfile.
-     * 
-     * Get the properties of the specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerGroupProfileInner getByResourceGroup(String resourceGroupName, String containerGroupProfileName) {
         return getByResourceGroupWithResponse(resourceGroupName, containerGroupProfileName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or Update a ContainerGroupProfile
-     * 
-     * Create a CGProfile if it doesn't exist or update an existing CGProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param containerGroupProfile The ContainerGroupProfile object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CGProfilesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
         String containerGroupProfileName, ContainerGroupProfileInner containerGroupProfile) {
@@ -737,19 +556,7 @@ public final class CGProfilesClientImpl
             containerGroupProfile, context);
     }
 
-    /**
-     * Create or Update a ContainerGroupProfile
-     * 
-     * Create a CGProfile if it doesn't exist or update an existing CGProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param containerGroupProfile The ContainerGroupProfile object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupProfileInner> createOrUpdateAsync(String resourceGroupName,
         String containerGroupProfileName, ContainerGroupProfileInner containerGroupProfile) {
@@ -757,20 +564,7 @@ public final class CGProfilesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or Update a ContainerGroupProfile
-     * 
-     * Create a CGProfile if it doesn't exist or update an existing CGProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param containerGroupProfile The ContainerGroupProfile object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CGProfilesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
         String containerGroupProfileName, ContainerGroupProfileInner containerGroupProfile, Context context) {
@@ -778,19 +572,7 @@ public final class CGProfilesClientImpl
             context).block();
     }
 
-    /**
-     * Create or Update a ContainerGroupProfile
-     * 
-     * Create a CGProfile if it doesn't exist or update an existing CGProfile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param containerGroupProfile The ContainerGroupProfile object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerGroupProfileInner createOrUpdate(String resourceGroupName, String containerGroupProfileName,
         ContainerGroupProfileInner containerGroupProfile) {
@@ -798,19 +580,7 @@ public final class CGProfilesClientImpl
             Context.NONE).getValue();
     }
 
-    /**
-     * Container group profile PATCH REST API.
-     * 
-     * Update a specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param properties The container group profile properties that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CGProfilesUpdateResponse> updateWithResponseAsync(String resourceGroupName,
         String containerGroupProfileName, ContainerGroupProfilePatch properties) {
@@ -889,19 +659,7 @@ public final class CGProfilesClientImpl
             resourceGroupName, containerGroupProfileName, contentType, accept, properties, context);
     }
 
-    /**
-     * Container group profile PATCH REST API.
-     * 
-     * Update a specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param properties The container group profile properties that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupProfileInner> updateAsync(String resourceGroupName, String containerGroupProfileName,
         ContainerGroupProfilePatch properties) {
@@ -909,57 +667,21 @@ public final class CGProfilesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Container group profile PATCH REST API.
-     * 
-     * Update a specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param properties The container group profile properties that need to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CGProfilesUpdateResponse updateWithResponse(String resourceGroupName, String containerGroupProfileName,
         ContainerGroupProfilePatch properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, containerGroupProfileName, properties, context).block();
     }
 
-    /**
-     * Container group profile PATCH REST API.
-     * 
-     * Update a specified container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param properties The container group profile properties that need to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container group profile object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContainerGroupProfileInner update(String resourceGroupName, String containerGroupProfileName,
         ContainerGroupProfilePatch properties) {
         return updateWithResponse(resourceGroupName, containerGroupProfileName, properties, Context.NONE).getValue();
     }
 
-    /**
-     * Container group profile DELETE REST API.
-     * 
-     * Deletes a container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String containerGroupProfileName) {
         if (this.client.getEndpoint() == null) {
@@ -1021,53 +743,20 @@ public final class CGProfilesClientImpl
             resourceGroupName, containerGroupProfileName, context);
     }
 
-    /**
-     * Container group profile DELETE REST API.
-     * 
-     * Deletes a container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String containerGroupProfileName) {
         return deleteWithResponseAsync(resourceGroupName, containerGroupProfileName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Container group profile DELETE REST API.
-     * 
-     * Deletes a container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String containerGroupProfileName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, containerGroupProfileName, context).block();
     }
 
-    /**
-     * Container group profile DELETE REST API.
-     * 
-     * Deletes a container group profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerGroupProfileName ContainerGroupProfile name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerGroupProfileName) {
         deleteWithResponse(resourceGroupName, containerGroupProfileName, Context.NONE);

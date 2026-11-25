@@ -25,7 +25,7 @@ public final class BackupsUnderBackupVaultsImpl implements BackupsUnderBackupVau
 
     public void restoreFiles(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         BackupRestoreFiles body) {
-        this.serviceClient().restoreFiles(resourceGroupName, accountName, backupVaultName, backupName, body);
+        this.restoreFiles(resourceGroupName, accountName, backupVaultName, backupName, body, Context.NONE);
     }
 
     public void restoreFiles(String resourceGroupName, String accountName, String backupVaultName, String backupName,

@@ -77,8 +77,8 @@ public final class TargetsImpl implements Targets {
 
     public void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
         String parentResourceName, String targetName) {
-        this.serviceClient()
-            .delete(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName);
+        this.deleteWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName, Context.NONE);
     }
 
     public PagedIterable<Target> list(String resourceGroupName, String parentProviderNamespace,

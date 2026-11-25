@@ -1,18 +1,92 @@
 # Release History
 
-## 12.33.0-beta.1 (Unreleased)
+## 12.34.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
-### Bugs Fixed
+- File and directory rename operations now treat percent-encoded-looking source paths literally instead of decoding
+  them. For example, a client path of `a%20b` now renames the literal `a%20b` resource, not `a b`.
+  Applications that supplied pre-encoded source paths, including through `ShareFileClientBuilder.endpoint`, must
+  instead supply the raw path using `resourcePath("a b")`, `getFileClient("a b")`, or `getDirectoryClient("a b")`.
 
+### Bugs Fixed
+- Fixed `ShareFileAsyncClient.rename`/`renameWithResponse` and `ShareDirectoryAsyncClient.rename`/`renameWithResponse`
+  returning a client whose path was URL-encoded a second time, so paths containing `/` or characters that need
+  encoding addressed the wrong resource.
+- Fixed `ShareFileAsyncClient.beginCopy` throwing invalid-argument and unsupported-operation errors directly instead
+  of emitting them through the returned `PollerFlux`.
+- Fixed `ShareFileClient.beginCopy` and `ShareFileAsyncClient.beginCopy` sending a file permission without a
+  `PermissionCopyModeType`, which the service rejects. They now fail with `IllegalArgumentException` before sending the
+  request, as they already did for a file permission key or for `PermissionCopyModeType.SOURCE`.
+- Fixed `ShareFileClient` and `ShareFileAsyncClient` rename operations for files whose names contain a literal `%`.
+  Previously the source path was decoded before being encoded, so such renames could fail or move a different file
+  (for example, a file named `a%20b` was treated as `a b`). The source path is now encoded once, without decoding.
+- Fixed `ShareDirectoryClient` and `ShareDirectoryAsyncClient` rename operations for directories whose names contain
+  `#`, a `%` sequence, or non-ASCII characters. Previously the rename-source header was sent unencoded, so such
+  renames could fail or move a different directory. The source path is now URL-encoded in the header.
+- Fixed `createIfNotExists`, `createDirectoryIfNotExists`, and `createSubdirectoryIfNotExists` (and their `WithResponse`
+  variants) on `ShareAsyncClient` and `ShareDirectoryAsyncClient` treating every 409 as "already exists". Like the
+  synchronous clients, they now do so only for `ShareAlreadyExists` and `ResourceAlreadyExists`, and emit
+  `ShareStorageException` for other conflicts, such as `ShareBeingDeleted` or `ResourceTypeMismatch`.
+
+### Other Changes
+
+## 12.34.0-beta.1 (2026-11-05)
+
+### Features Added
+- Added support for retrieving file and directory properties by file ID
+- Added support for retrieving a file's hard links by file ID on SMB shares.
+- Added support for change feed on premium file shares. Added `ShareCreateOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` and `ShareSetPropertiesOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` to enable and configure change feed.
+- Added `ShareProperties.isChangeFeedEnabled()`, `getChangeFeedRetentionInDays()` and
+  `getChangeFeedBlobContainerName()`.
+- Added `ShareProperties.getCreationTime()` and `ShareProperties.setCreationTime(OffsetDateTime)` to expose the share
+  creation time returned in list and get properties responses.
+- Added support for service version 2027-03-07.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
+
+## 12.33.2 (2026-11-03)
+
+### Bugs Fixed
 - Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
   `ShareFileUploadOptions` that were split into ranges also uploaded the bytes before a buffer's position, when that
   position was not 0 and the buffer was larger than the range size.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.1` to version `12.36.2`.
+
+## 12.33.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.36.1`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.32.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
+  `ShareFileUploadOptions` that were split into ranges also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the range size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.35.1`.
 
 ## 12.32.0 (2026-10-07)
 

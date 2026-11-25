@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.compute.recommender.fluent.models.ComputeDiagnosticBaseInner;
+import com.azure.resourcemanager.compute.recommender.fluent.models.SpotPlacementScoresBaseInner;
 import com.azure.resourcemanager.compute.recommender.fluent.models.SpotPlacementScoresResponseInner;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScoresInput;
 
@@ -27,7 +27,7 @@ public interface SpotPlacementScoresClient {
      * @return spot Placement Scores metadata along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComputeDiagnosticBaseInner> getWithResponse(String location, Context context);
+    Response<SpotPlacementScoresBaseInner> getWithResponse(String location, Context context);
 
     /**
      * Gets Spot Placement Scores metadata.
@@ -39,7 +39,7 @@ public interface SpotPlacementScoresClient {
      * @return spot Placement Scores metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeDiagnosticBaseInner get(String location);
+    SpotPlacementScoresBaseInner get(String location);
 
     /**
      * Generates placement scores for Spot VM skus.

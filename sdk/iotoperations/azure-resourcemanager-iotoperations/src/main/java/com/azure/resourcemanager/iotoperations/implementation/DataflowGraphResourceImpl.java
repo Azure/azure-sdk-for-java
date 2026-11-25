@@ -70,11 +70,7 @@ public final class DataflowGraphResourceImpl
     }
 
     public DataflowGraphResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowGraphs()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataflowGraphResource create(Context context) {
@@ -97,11 +93,7 @@ public final class DataflowGraphResourceImpl
     }
 
     public DataflowGraphResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowGraphs()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataflowGraphResource apply(Context context) {
@@ -131,11 +123,7 @@ public final class DataflowGraphResourceImpl
     }
 
     public DataflowGraphResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowGraphs()
-            .getWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataflowGraphResource refresh(Context context) {

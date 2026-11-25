@@ -124,17 +124,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstancePrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName) {
@@ -207,17 +197,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             resourceGroupName, managedInstanceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstancePrivateEndpointConnectionInner> getAsync(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName) {
@@ -225,18 +205,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstancePrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName, Context context) {
@@ -244,17 +213,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .block();
     }
 
-    /**
-     * Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstancePrivateEndpointConnectionInner get(String resourceGroupName, String managedInstanceName,
         String privateEndpointConnectionName) {
@@ -262,18 +221,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .getValue();
     }
 
-    /**
-     * Approve or reject a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName,
@@ -362,18 +310,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Approve or reject a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
@@ -415,18 +352,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                 ManagedInstancePrivateEndpointConnectionInner.class, context);
     }
 
-    /**
-     * Approve or reject a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
@@ -437,19 +363,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Approve or reject a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ManagedInstancePrivateEndpointConnectionInner>, ManagedInstancePrivateEndpointConnectionInner>
@@ -461,18 +375,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Approve or reject a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstancePrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName,
@@ -502,18 +405,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Approve or reject a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstancePrivateEndpointConnectionInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName,
@@ -522,19 +414,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .block();
     }
 
-    /**
-     * Approve or reject a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstancePrivateEndpointConnectionInner createOrUpdate(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName,
@@ -543,17 +423,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             context).block();
     }
 
-    /**
-     * Deletes a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String privateEndpointConnectionName) {
@@ -624,17 +494,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             resourceGroupName, managedInstanceName, privateEndpointConnectionName, context);
     }
 
-    /**
-     * Deletes a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
         String privateEndpointConnectionName) {
@@ -666,17 +526,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             context);
     }
 
-    /**
-     * Deletes a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String privateEndpointConnectionName) {
@@ -684,18 +534,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
         String privateEndpointConnectionName, Context context) {
@@ -703,17 +542,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName,
         String privateEndpointConnectionName) {
@@ -740,32 +569,13 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName) {
         deleteAsync(resourceGroupName, managedInstanceName, privateEndpointConnectionName).block();
     }
 
-    /**
-     * Deletes a private endpoint connection with a given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String managedInstanceName, String privateEndpointConnectionName,
         Context context) {
@@ -853,16 +663,7 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all private endpoint connections on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -889,33 +690,14 @@ public final class ManagedInstancePrivateEndpointConnectionsClientImpl
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all private endpoint connections on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets all private endpoint connections on a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstancePrivateEndpointConnectionInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

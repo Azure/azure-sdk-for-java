@@ -201,35 +201,14 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a monitored GitHub owner.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Owner resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubOwnerInner> getWithResponse(String resourceGroupName, String securityConnectorName,
         String ownerName, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, ownerName, context).block();
     }
 
-    /**
-     * Returns a monitored GitHub owner.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Owner resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GitHubOwnerInner get(String resourceGroupName, String securityConnectorName, String ownerName) {
         return getWithResponse(resourceGroupName, securityConnectorName, ownerName, Context.NONE).getValue();
@@ -350,32 +329,13 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns a list of GitHub owners onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitHubOwnerInner> list(String resourceGroupName, String securityConnectorName) {
         return new PagedIterable<>(listAsync(resourceGroupName, securityConnectorName));
     }
 
-    /**
-     * Returns a list of GitHub owners onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitHubOwnerInner> list(String resourceGroupName, String securityConnectorName,
         Context context) {
@@ -475,33 +435,14 @@ public final class GitHubOwnersClientImpl implements GitHubOwnersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a list of all GitHub owners accessible by the user token consumed by the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubOwnerListResponseInner> listAvailableWithResponse(String resourceGroupName,
         String securityConnectorName, Context context) {
         return listAvailableWithResponseAsync(resourceGroupName, securityConnectorName, context).block();
     }
 
-    /**
-     * Returns a list of all GitHub owners accessible by the user token consumed by the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GitHubOwnerListResponseInner listAvailable(String resourceGroupName, String securityConnectorName) {
         return listAvailableWithResponse(resourceGroupName, securityConnectorName, Context.NONE).getValue();

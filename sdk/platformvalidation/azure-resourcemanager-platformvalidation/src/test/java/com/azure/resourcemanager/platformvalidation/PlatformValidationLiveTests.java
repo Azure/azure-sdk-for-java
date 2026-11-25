@@ -25,6 +25,9 @@ import com.azure.resourcemanager.platformvalidation.fluent.PlatformValidationMan
 import com.azure.resourcemanager.platformvalidation.fluent.models.CloudValidationInner;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ExecutionPlanRunInner;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationExecutionPlanInner;
+import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestInner;
+import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestCategoryInner;
+import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestVersionInner;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestRunInner;
 import com.azure.resourcemanager.platformvalidation.implementation.PlatformValidationManagementClientBuilder;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationProperties;
@@ -58,6 +61,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
@@ -234,27 +238,36 @@ public class PlatformValidationLiveTests extends ResourceManagerTestProxyTestBas
 
     @Test
     public void validationTestsList() {
-        safeServiceCall(() -> Assertions.assertTrue(
-            client.getValidationTests().list().stream().anyMatch(test -> BOOT_TEST.equals(test.name())),
-            "Boot test should be discoverable."));
+        safeServiceCall(() -> {
+            List<ValidationTestInner> tests = client.getValidationTests().list().stream().collect(Collectors.toList());
+            tests.forEach(test -> assertCatalogId(test.id(), subscription, "validationTests/" + test.name()));
+            Assertions.assertTrue(tests.stream().anyMatch(test -> BOOT_TEST.equals(test.name())),
+                "Boot test should be discoverable.");
+        });
     }
 
     @Test
     public void validationTestGet() {
-        safeServiceCall(() -> Assertions.assertEquals(BOOT_TEST, client.getValidationTests().get(BOOT_TEST).name()));
+        safeServiceCall(() -> {
+            ValidationTestInner test = client.getValidationTests().get(BOOT_TEST);
+            Assertions.assertEquals(BOOT_TEST, test.name());
+            assertCatalogId(test.id(), subscription, "validationTests/" + BOOT_TEST);
+        });
     }
 
     @Test
     public void validationTestVersions() {
         safeServiceCall(() -> {
-            List<String> versions = client.getValidationTestVersions()
-                .list(BOOT_TEST)
-                .stream()
-                .map(version -> version.name())
-                .collect(Collectors.toList());
+            List<String> versions = client.getValidationTestVersions().list(BOOT_TEST).stream().map(version -> {
+                assertCatalogId(version.id(), subscription,
+                    "validationTests/" + BOOT_TEST + "/versions/" + version.name());
+                return version.name();
+            }).collect(Collectors.toList());
             Assertions.assertFalse(versions.isEmpty(), "No test version was discoverable; do not guess a version.");
             for (String version : versions) {
-                Assertions.assertEquals(version, client.getValidationTestVersions().get(BOOT_TEST, version).name());
+                ValidationTestVersionInner fetched = client.getValidationTestVersions().get(BOOT_TEST, version);
+                Assertions.assertEquals(version, fetched.name());
+                assertCatalogId(fetched.id(), subscription, "validationTests/" + BOOT_TEST + "/versions/" + version);
             }
         });
     }
@@ -262,16 +275,24 @@ public class PlatformValidationLiveTests extends ResourceManagerTestProxyTestBas
     @Test
     public void validationTestCategories() {
         safeServiceCall(() -> {
-            List<String> categories = client.getValidationTestCategories()
-                .list()
-                .stream()
-                .map(category -> category.name())
-                .collect(Collectors.toList());
+            List<String> categories = client.getValidationTestCategories().list().stream().map(category -> {
+                assertCatalogId(category.id(), subscription, "validationTestCategories/" + category.name());
+                return category.name();
+            }).collect(Collectors.toList());
             Assertions.assertFalse(categories.isEmpty(), "No category was discoverable; do not guess a category.");
             for (String category : categories) {
-                Assertions.assertEquals(category, client.getValidationTestCategories().get(category).name());
+                ValidationTestCategoryInner fetched = client.getValidationTestCategories().get(category);
+                Assertions.assertEquals(category, fetched.name());
+                assertCatalogId(fetched.id(), subscription, "validationTestCategories/" + category);
             }
         });
+    }
+
+    static void assertCatalogId(String id, String subscriptionId, String resource) {
+        Assertions.assertNotNull(id, "Catalog entries must return an ID.");
+        String expected = "/subscriptions/" + subscriptionId + "/providers/Microsoft.PlatformValidation/" + resource;
+        Assertions.assertEquals(expected.toLowerCase(Locale.ROOT), id.toLowerCase(Locale.ROOT),
+            "Catalog IDs must match the requested subscription and resource.");
     }
 
     private void exerciseExecution(String source, boolean execute) {

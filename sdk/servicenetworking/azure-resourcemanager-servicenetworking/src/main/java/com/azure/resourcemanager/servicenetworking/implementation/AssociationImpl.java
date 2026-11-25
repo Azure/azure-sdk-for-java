@@ -89,10 +89,7 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssociationsInterfaces()
-            .createOrUpdate(resourceGroupName, trafficControllerName, associationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Association create(Context context) {
@@ -114,12 +111,7 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssociationsInterfaces()
-            .updateWithResponse(resourceGroupName, trafficControllerName, associationName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Association apply(Context context) {
@@ -146,11 +138,7 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssociationsInterfaces()
-            .getWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Association refresh(Context context) {

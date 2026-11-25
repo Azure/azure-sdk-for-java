@@ -26,8 +26,7 @@ public final class ReplicasImpl implements Replicas {
     }
 
     public PagedIterable<Server> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<ServerInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<Server> listByServer(String resourceGroupName, String serverName, Context context) {

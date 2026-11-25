@@ -26,13 +26,6 @@ public final class MigrationValidationRequest implements JsonSerializable<Migrat
      */
     private Boolean skipDataMigration;
 
-    /*
-     * Sets whether to ignore warnings when validating if the source cache can be migrated to the target cache. If this
-     * property is true, the isValid property in the response will ignore warning-level disparities between the source
-     * and target resource. The default value is false.
-     */
-    private Boolean forceMigrate;
-
     /**
      * Creates an instance of MigrationValidationRequest class.
      */
@@ -84,30 +77,6 @@ public final class MigrationValidationRequest implements JsonSerializable<Migrat
     }
 
     /**
-     * Get the forceMigrate property: Sets whether to ignore warnings when validating if the source cache can be
-     * migrated to the target cache. If this property is true, the isValid property in the response will ignore
-     * warning-level disparities between the source and target resource. The default value is false.
-     * 
-     * @return the forceMigrate value.
-     */
-    public Boolean forceMigrate() {
-        return this.forceMigrate;
-    }
-
-    /**
-     * Set the forceMigrate property: Sets whether to ignore warnings when validating if the source cache can be
-     * migrated to the target cache. If this property is true, the isValid property in the response will ignore
-     * warning-level disparities between the source and target resource. The default value is false.
-     * 
-     * @param forceMigrate the forceMigrate value to set.
-     * @return the MigrationValidationRequest object itself.
-     */
-    public MigrationValidationRequest withForceMigrate(Boolean forceMigrate) {
-        this.forceMigrate = forceMigrate;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -115,7 +84,6 @@ public final class MigrationValidationRequest implements JsonSerializable<Migrat
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
         jsonWriter.writeBooleanField("skipDataMigration", this.skipDataMigration);
-        jsonWriter.writeBooleanField("forceMigrate", this.forceMigrate);
         return jsonWriter.writeEndObject();
     }
 
@@ -140,8 +108,6 @@ public final class MigrationValidationRequest implements JsonSerializable<Migrat
                 } else if ("skipDataMigration".equals(fieldName)) {
                     deserializedMigrationValidationRequest.skipDataMigration
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("forceMigrate".equals(fieldName)) {
-                    deserializedMigrationValidationRequest.forceMigrate = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

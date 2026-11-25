@@ -23,7 +23,7 @@ public final class DefaultParameterGroupsListBySubscriptionAndRegionMockTests {
     @Test
     public void testListBySubscriptionAndRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"parameters\":[{\"name\":\"hhvjhh\",\"description\":\"kzyb\",\"value\":\"jid\",\"defaultValue\":\"syxkyxvxevblb\",\"valueSource\":\"SystemDefault\",\"dataType\":\"ljlageuaulxu\",\"allowedValues\":\"mjbnk\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"nlsvxeiz\",\"unit\":\"wklnsrmffeyc\"}],\"description\":\"ktp\",\"postgreSqlVersion\":\"18\"},\"id\":\"erteeammxqiekk\",\"name\":\"zddrt\",\"type\":\"g\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"parameters\":[{\"name\":\"wpgdak\",\"description\":\"zyvli\",\"value\":\"nrkcxkj\",\"defaultValue\":\"nxm\",\"valueSource\":\"UserOverride\",\"dataType\":\"swqrntvlwijp\",\"allowedValues\":\"texoqqpwc\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"runcuwmqspkcd\",\"unit\":\"hlctddunqn\"},{\"name\":\"fpch\",\"description\":\"bnjj\",\"value\":\"gegydcwboxjum\",\"defaultValue\":\"qoli\",\"valueSource\":\"UserOverride\",\"dataType\":\"iouaubrjt\",\"allowedValues\":\"qxfuojrngif\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"ccbiuimzdlyjdfq\",\"unit\":\"kyoqufdv\"},{\"name\":\"zslzojhp\",\"description\":\"fnmdxotn\",\"value\":\"dgug\",\"defaultValue\":\"zihgrkyu\",\"valueSource\":\"SystemDefault\",\"dataType\":\"snmfpphojeevy\",\"allowedValues\":\"hsgz\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"mfg\",\"unit\":\"glqgleoh\"}],\"description\":\"etnluankrrfx\",\"postgreSqlVersion\":\"18\"},\"id\":\"btijvacvbm\",\"name\":\"z\",\"type\":\"qqxlajr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class DefaultParameterGroupsListBySubscriptionAndRegionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DefaultParameterGroup> response
-            = manager.defaultParameterGroups().listBySubscriptionAndRegion("pqg", com.azure.core.util.Context.NONE);
+            = manager.defaultParameterGroups().listBySubscriptionAndRegion("rzpgep", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhvjhh", response.iterator().next().properties().parameters().get(0).name());
-        Assertions.assertEquals("jid", response.iterator().next().properties().parameters().get(0).value());
-        Assertions.assertEquals("ktp", response.iterator().next().properties().description());
+        Assertions.assertEquals("wpgdak", response.iterator().next().properties().parameters().get(0).name());
+        Assertions.assertEquals("nrkcxkj", response.iterator().next().properties().parameters().get(0).value());
+        Assertions.assertEquals("etnluankrrfx", response.iterator().next().properties().description());
         Assertions.assertEquals(PostgreSqlVersion.V18, response.iterator().next().properties().postgreSqlVersion());
     }
 }

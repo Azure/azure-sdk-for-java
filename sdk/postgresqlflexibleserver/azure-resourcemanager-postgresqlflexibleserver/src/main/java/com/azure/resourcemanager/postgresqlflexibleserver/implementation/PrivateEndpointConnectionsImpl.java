@@ -48,13 +48,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
 
     public PrivateEndpointConnection update(String resourceGroupName, String serverName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters) {
-        PrivateEndpointConnectionInner inner
-            = this.serviceClient().update(resourceGroupName, serverName, privateEndpointConnectionName, parameters);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, serverName, privateEndpointConnectionName, parameters, Context.NONE);
     }
 
     public PrivateEndpointConnection update(String resourceGroupName, String serverName,
@@ -69,7 +63,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public void delete(String resourceGroupName, String serverName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, serverName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, serverName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String serverName, String privateEndpointConnectionName,
@@ -78,9 +72,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     }
 
     public PagedIterable<PrivateEndpointConnection> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner
-            = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> listByServer(String resourceGroupName, String serverName,

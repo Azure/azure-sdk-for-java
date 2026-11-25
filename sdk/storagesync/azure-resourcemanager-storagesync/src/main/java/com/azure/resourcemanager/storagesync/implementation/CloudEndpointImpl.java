@@ -117,11 +117,7 @@ public final class CloudEndpointImpl implements CloudEndpoint, CloudEndpoint.Def
     }
 
     public CloudEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudEndpoints()
-            .create(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, createParameters,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudEndpoint create(Context context) {
@@ -144,11 +140,7 @@ public final class CloudEndpointImpl implements CloudEndpoint, CloudEndpoint.Def
     }
 
     public CloudEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudEndpoints()
-            .update(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, updateProperties,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudEndpoint apply(Context context) {
@@ -178,11 +170,7 @@ public final class CloudEndpointImpl implements CloudEndpoint, CloudEndpoint.Def
     }
 
     public CloudEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudEndpoints()
-            .getWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudEndpoint refresh(Context context) {

@@ -138,9 +138,7 @@ public final class UpdateSummariesOperationGroupsClientImpl implements UpdateSum
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> checkUpdatesWithResponse(String resourceGroupName, String clusterName,
         CheckUpdatesRequest body) {
-        final String contentType = "application/json";
-        return service.checkUpdatesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, body, Context.NONE);
+        return checkUpdatesWithResponse(resourceGroupName, clusterName, body, Context.NONE);
     }
 
     /**
@@ -182,36 +180,14 @@ public final class UpdateSummariesOperationGroupsClientImpl implements UpdateSum
             this.client.getContext());
     }
 
-    /**
-     * Check for updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCheckUpdates(String resourceGroupName, String clusterName,
         CheckUpdatesRequest body) {
-        Response<BinaryData> response = checkUpdatesWithResponse(resourceGroupName, clusterName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCheckUpdates(resourceGroupName, clusterName, body, Context.NONE);
     }
 
-    /**
-     * Check for updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCheckUpdates(String resourceGroupName, String clusterName,
         CheckUpdatesRequest body, Context context) {
@@ -236,35 +212,16 @@ public final class UpdateSummariesOperationGroupsClientImpl implements UpdateSum
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Check for updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkUpdates(String resourceGroupName, String clusterName, CheckUpdatesRequest body) {
-        beginCheckUpdates(resourceGroupName, clusterName, body).getFinalResult();
+        checkUpdates(resourceGroupName, clusterName, body, Context.NONE);
     }
 
-    /**
-     * Check for updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkUpdates(String resourceGroupName, String clusterName, CheckUpdatesRequest body, Context context) {
-        beginCheckUpdates(resourceGroupName, clusterName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCheckUpdates(resourceGroupName, clusterName, body, context));
     }
 
     /**
@@ -298,8 +255,7 @@ public final class UpdateSummariesOperationGroupsClientImpl implements UpdateSum
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> checkHealthWithResponse(String resourceGroupName, String clusterName) {
-        return service.checkHealthSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, Context.NONE);
+        return checkHealthWithResponse(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -337,33 +293,13 @@ public final class UpdateSummariesOperationGroupsClientImpl implements UpdateSum
             this.client.getContext());
     }
 
-    /**
-     * Check health of UpdateSummaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCheckHealth(String resourceGroupName, String clusterName) {
-        Response<BinaryData> response = checkHealthWithResponse(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCheckHealth(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Check health of UpdateSummaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCheckHealth(String resourceGroupName, String clusterName,
         Context context) {
@@ -387,32 +323,15 @@ public final class UpdateSummariesOperationGroupsClientImpl implements UpdateSum
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Check health of UpdateSummaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkHealth(String resourceGroupName, String clusterName) {
-        beginCheckHealth(resourceGroupName, clusterName).getFinalResult();
+        checkHealth(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Check health of UpdateSummaries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkHealth(String resourceGroupName, String clusterName, Context context) {
-        beginCheckHealth(resourceGroupName, clusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCheckHealth(resourceGroupName, clusterName, context));
     }
 }

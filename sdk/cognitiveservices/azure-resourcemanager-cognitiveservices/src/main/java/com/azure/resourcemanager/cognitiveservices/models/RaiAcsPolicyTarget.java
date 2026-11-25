@@ -12,9 +12,24 @@ import java.util.Collection;
  */
 public final class RaiAcsPolicyTarget extends ExpandableStringEnum<RaiAcsPolicyTarget> {
     /**
+     * Selects the agent initialization payload.
+     */
+    public static final RaiAcsPolicyTarget AGENT_INITIALIZATION = fromString("$snap.agent_init");
+
+    /**
      * Selects the incoming user input.
      */
     public static final RaiAcsPolicyTarget INPUT = fromString("$snap.input");
+
+    /**
+     * Selects the model messages proposed for dispatch.
+     */
+    public static final RaiAcsPolicyTarget MODEL_MESSAGES = fromString("$snap.messages");
+
+    /**
+     * Selects the completed model response.
+     */
+    public static final RaiAcsPolicyTarget MODEL_RESPONSE = fromString("$snap.response");
 
     /**
      * Selects the assistant output.
@@ -30,6 +45,11 @@ public final class RaiAcsPolicyTarget extends ExpandableStringEnum<RaiAcsPolicyT
      * Selects a tool result.
      */
     public static final RaiAcsPolicyTarget TOOL_RESULT = fromString("$snap.tool_result.value");
+
+    /**
+     * Selects the final agent execution summary.
+     */
+    public static final RaiAcsPolicyTarget AGENT_SUMMARY = fromString("$snap.summary");
 
     /**
      * Creates a new instance of RaiAcsPolicyTarget value.

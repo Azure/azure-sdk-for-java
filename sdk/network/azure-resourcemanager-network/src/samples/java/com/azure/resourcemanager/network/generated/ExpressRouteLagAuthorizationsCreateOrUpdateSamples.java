@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteLagAuthorizationProp
  */
 public final class ExpressRouteLagAuthorizationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ExpressRouteLagAuthorizationCreate.json
+     * x-ms-original-file: 2026-05-01/ExpressRouteLagAuthorizationCreate.json
      */
     /**
      * Sample code: Create ExpressRouteLag Authorization.

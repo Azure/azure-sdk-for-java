@@ -94,7 +94,7 @@ public final class ProjectConnectionsImpl implements ProjectConnections {
     }
 
     public void delete(String resourceGroupName, String accountName, String projectName, String connectionName) {
-        this.serviceClient().delete(resourceGroupName, accountName, projectName, connectionName);
+        this.deleteWithResponse(resourceGroupName, accountName, projectName, connectionName, Context.NONE);
     }
 
     public PagedIterable<ConnectionPropertiesV2BasicResource> list(String resourceGroupName, String accountName,

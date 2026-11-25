@@ -146,17 +146,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a connection monitor by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection monitor by name along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConnectionMonitorResultInner>> getWithResponseAsync(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName) {
@@ -180,7 +170,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -223,24 +213,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkWatcherName, connectionMonitorName, accept, context);
     }
 
-    /**
-     * Gets a connection monitor by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection monitor by name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionMonitorResultInner> getAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
@@ -248,55 +228,21 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a connection monitor by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection monitor by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionMonitorResultInner> getWithResponse(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }
 
-    /**
-     * Gets a connection monitor by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connection monitor by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionMonitorResultInner get(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
         return getWithResponse(resourceGroupName, networkWatcherName, connectionMonitorName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters, String migrate) {
@@ -325,7 +271,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -379,7 +325,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -388,19 +334,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             context);
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of information about the connection monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName,
@@ -412,18 +346,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             this.client.getContext());
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of information about the connection monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName,
@@ -462,18 +385,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             context);
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about the connection monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName,
@@ -484,20 +396,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .getSyncPoller();
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about the connection monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
         String resourceGroupName, String networkWatcherName, String connectionMonitorName,
@@ -508,19 +407,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .getSyncPoller();
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, ConnectionMonitorInner parameters, String migrate) {
@@ -528,18 +415,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             migrate).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, ConnectionMonitorInner parameters) {
@@ -569,18 +445,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             migrate, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionMonitorResultInner createOrUpdate(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, ConnectionMonitorInner parameters) {
@@ -589,20 +454,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .block();
     }
 
-    /**
-     * Create or update a connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters that define the operation to create a connection monitor.
-     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionMonitorResultInner createOrUpdate(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, ConnectionMonitorInner parameters, String migrate, Context context) {
@@ -610,19 +462,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             context).block();
     }
 
-    /**
-     * Update tags of the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters supplied to update connection monitor tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConnectionMonitorResultInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName, TagsObject parameters) {
@@ -651,7 +491,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -703,7 +543,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -711,18 +551,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             resourceGroupName, networkWatcherName, connectionMonitorName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update tags of the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters supplied to update connection monitor tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionMonitorResultInner> updateTagsAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, TagsObject parameters) {
@@ -730,19 +559,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update tags of the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters supplied to update connection monitor tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionMonitorResultInner> updateTagsWithResponse(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName, TagsObject parameters, Context context) {
@@ -750,18 +567,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             context).block();
     }
 
-    /**
-     * Update tags of the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param parameters Parameters supplied to update connection monitor tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the connection monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionMonitorResultInner updateTags(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, TagsObject parameters) {
@@ -769,17 +575,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
@@ -803,7 +599,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkWatcherName, connectionMonitorName, context))
@@ -845,23 +641,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkWatcherName, connectionMonitorName, context);
     }
 
-    /**
-     * Deletes the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
@@ -893,35 +679,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             context);
     }
 
-    /**
-     * Deletes the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
         return this.beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, Context context) {
@@ -929,17 +694,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         return beginDeleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
@@ -965,32 +720,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         deleteAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
     }
 
-    /**
-     * Deletes the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
         Context context) {
@@ -1026,7 +762,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1066,7 +802,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1076,16 +812,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all connection monitors for the specified Network Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection monitors as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConnectionMonitorResultInner> listAsync(String resourceGroupName, String networkWatcherName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkWatcherName),
@@ -1110,49 +837,20 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all connection monitors for the specified Network Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection monitors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionMonitorResultInner> list(String resourceGroupName, String networkWatcherName) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkWatcherName));
     }
 
-    /**
-     * Lists all connection monitors for the specified Network Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of connection monitors as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionMonitorResultInner> list(String resourceGroupName, String networkWatcherName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkWatcherName, context));
     }
 
-    /**
-     * Stops the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
@@ -1176,7 +874,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, networkWatcherName, connectionMonitorName, context))
@@ -1218,23 +916,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionMonitorName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkWatcherName, connectionMonitorName, context);
     }
 
-    /**
-     * Stops the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
@@ -1266,35 +954,14 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             context);
     }
 
-    /**
-     * Stops the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
         return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
 
-    /**
-     * Stops the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, Context context) {
@@ -1302,17 +969,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .getSyncPoller();
     }
 
-    /**
-     * Stops the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
@@ -1338,32 +995,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
     }
 
-    /**
-     * Stops the specified connection monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkWatcherName The name of the network watcher.
-     * @param connectionMonitorName The name of the connection monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
         Context context) {

@@ -217,18 +217,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for a given managed environment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName, Context context) {
@@ -237,17 +226,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
             resourceGroupName, environmentName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Get a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection for a given managed environment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName) {
@@ -296,11 +275,8 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, privateEndpointConnectionName,
-            contentType, accept, privateEndpointConnectionEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, privateEndpointConnectionName,
+            privateEndpointConnectionEnvelope, Context.NONE);
     }
 
     /**
@@ -350,41 +326,16 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, environmentName,
-            privateEndpointConnectionName, privateEndpointConnectionEnvelope);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName,
+            privateEndpointConnectionEnvelope, Context.NONE);
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, String privateEndpointConnectionName,
@@ -414,44 +365,21 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
             privateEndpointConnectionEnvelope).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName,
-            privateEndpointConnectionEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName,
+            privateEndpointConnectionEnvelope, Context.NONE);
     }
 
-    /**
-     * Update the state of a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param privateEndpointConnectionEnvelope The resource of private endpoint and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnectionEnvelope,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, privateEndpointConnectionName,
-            privateEndpointConnectionEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, environmentName,
+            privateEndpointConnectionName, privateEndpointConnectionEnvelope, context));
     }
 
     /**
@@ -489,9 +417,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, environmentName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -534,37 +460,14 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Delete a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, environmentName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, environmentName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         String privateEndpointConnectionName, Context context) {
@@ -591,36 +494,18 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, environmentName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, environmentName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a private endpoint connection for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param privateEndpointConnectionName Name of the Private Endpoint Connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, environmentName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, environmentName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -675,12 +560,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listSinglePage(String resourceGroupName,
         String environmentName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -705,35 +585,13 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private endpoint connections for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * List private endpoint connections for a given managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the managed environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String environmentName,
         Context context) {
@@ -775,11 +633,7 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

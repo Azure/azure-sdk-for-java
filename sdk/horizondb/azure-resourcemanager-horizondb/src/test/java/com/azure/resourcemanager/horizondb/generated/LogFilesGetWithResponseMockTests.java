@@ -20,7 +20,7 @@ public final class LogFilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-06-08T12:29:12Z\",\"lastModifiedAtUtc\":\"2021-03-25T11:26:29Z\",\"retentionExpiresAtUtc\":\"2021-03-02T16:22:17Z\",\"isMutable\":false,\"sizeInKilobytes\":425600276705130335,\"pool\":\"lbyvictctbrxkjzw\",\"node\":\"gxffmshkwf\",\"role\":\"Unassigned\"},\"id\":\"ozxwopd\",\"name\":\"yd\",\"type\":\"izqaclnapxbiyg\"}";
+            = "{\"properties\":{\"logType\":\"PostgreSqlServer\",\"createdAtUtc\":\"2021-03-11T18:57:22Z\",\"lastModifiedAtUtc\":\"2021-03-02T08:23:47Z\",\"retentionExpiresAtUtc\":\"2021-02-10T02:08:01Z\",\"isMutable\":true,\"sizeInKilobytes\":4844860794100753520,\"pool\":\"ucoig\",\"node\":\"bxncnwfepbnw\",\"role\":\"Unassigned\"},\"id\":\"xjg\",\"name\":\"g\",\"type\":\"jbgdlfgtdysnaquf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class LogFilesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogFile response = manager.logFiles()
-            .getWithResponse("iixtmkzj", "kv", "irhgfgrwsdp", com.azure.core.util.Context.NONE)
+            .getWithResponse("cbuewmrswnjlxuz", "hwpusxj", "aqehg", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

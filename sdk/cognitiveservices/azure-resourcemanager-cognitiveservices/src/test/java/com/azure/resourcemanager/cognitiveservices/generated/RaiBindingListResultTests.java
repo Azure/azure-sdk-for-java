@@ -12,11 +12,11 @@ public final class RaiBindingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBindingListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ifrygzn\",\"value\":[{\"properties\":{\"boundResourceId\":\"xrizkzobgop\",\"targetPolicyName\":\"lhslnelxieixyn\"},\"etag\":\"xecwcro\",\"tags\":{\"fmvigorqjbttzh\":\"slhcawjutifd\",\"juj\":\"aglkafhon\"},\"id\":\"ckpzvcpopmxeln\",\"name\":\"clt\",\"type\":\"jedexxmlf\"},{\"properties\":{\"boundResourceId\":\"qscazuawxtz\",\"targetPolicyName\":\"puamwabzxr\"},\"etag\":\"cush\",\"tags\":{\"zwywako\":\"aivmxyasflvgs\",\"ljhlnymzotq\":\"hknsmjbl\"},\"id\":\"yuzcbmqqvxmvw\",\"name\":\"gtayxonsupeujlz\",\"type\":\"nh\"}]}")
+            "{\"nextLink\":\"jy\",\"value\":[{\"properties\":{\"boundResourceId\":\"velsz\",\"targetPolicyName\":\"rqz\"},\"etag\":\"xoqeintxwalj\",\"tags\":{\"lqwa\":\"o\",\"afjrqpjiyrqjcrg\":\"frqulhmzyqbhd\"},\"id\":\"wmzwdfkbnrzorpdl\",\"name\":\"bqc\",\"type\":\"qjf\"},{\"properties\":{\"boundResourceId\":\"xsaetg\",\"targetPolicyName\":\"dgvpyig\"},\"etag\":\"qqil\",\"tags\":{\"wjoe\":\"d\",\"fjqq\":\"xngucaifpaurwwgi\",\"yziakeciqchxrtu\":\"cdmkxwxdcvjw\"},\"id\":\"dsiwdfmmp\",\"name\":\"hzzwvywrgyngy\",\"type\":\"grpxncakiqaondjr\"},{\"properties\":{\"boundResourceId\":\"lamgglvlmfejdo\",\"targetPolicyName\":\"eyk\"},\"etag\":\"tygxhqfgq\",\"tags\":{\"gflwfgziiucijj\":\"ejsxt\",\"knxkvccxetyvkunm\":\"eatlijjjrtvamcas\"},\"id\":\"nohikkgq\",\"name\":\"g\",\"type\":\"wpin\"},{\"properties\":{\"boundResourceId\":\"dvabbxbhmedeilb\",\"targetPolicyName\":\"ywfcfxzi\"},\"etag\":\"zi\",\"tags\":{\"djsllfr\":\"ypusuvjslczwci\",\"frgnawbabgfbktyj\":\"vdmvxadqa\",\"xqmjeajcxn\":\"fczlfsyqkfrbzgow\"},\"id\":\"gxhlusr\",\"name\":\"xisimjceagbj\",\"type\":\"vl\"}]}")
             .toObject(RaiBindingListResult.class);
-        Assertions.assertEquals("ifrygzn", model.nextLink());
-        Assertions.assertEquals("xrizkzobgop", model.value().get(0).properties().boundResourceId());
-        Assertions.assertEquals("lhslnelxieixyn", model.value().get(0).properties().targetPolicyName());
-        Assertions.assertEquals("slhcawjutifd", model.value().get(0).tags().get("fmvigorqjbttzh"));
+        Assertions.assertEquals("jy", model.nextLink());
+        Assertions.assertEquals("velsz", model.value().get(0).properties().boundResourceId());
+        Assertions.assertEquals("rqz", model.value().get(0).properties().targetPolicyName());
+        Assertions.assertEquals("o", model.value().get(0).tags().get("lqwa"));
     }
 }

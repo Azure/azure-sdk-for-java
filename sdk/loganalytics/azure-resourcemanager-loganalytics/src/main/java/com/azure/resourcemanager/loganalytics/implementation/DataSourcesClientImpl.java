@@ -196,18 +196,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a datasource instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datasource instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceInner> getWithResponse(String resourceGroupName, String workspaceName,
         String dataSourceName, Context context) {
@@ -216,17 +205,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             resourceGroupName, workspaceName, dataSourceName, accept, context);
     }
 
-    /**
-     * Gets a datasource instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datasource instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataSourceInner get(String resourceGroupName, String workspaceName, String dataSourceName) {
         return getWithResponse(resourceGroupName, workspaceName, dataSourceName, Context.NONE).getValue();
@@ -275,19 +254,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a data source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
-     * @param parameters The parameters required to create or update a datasource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datasources under OMS Workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String dataSourceName, DataSourceInner parameters, Context context) {
@@ -298,18 +265,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             parameters, context);
     }
 
-    /**
-     * Create or update a data source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
-     * @param parameters The parameters required to create or update a datasource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datasources under OMS Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataSourceInner createOrUpdate(String resourceGroupName, String workspaceName, String dataSourceName,
         DataSourceInner parameters) {
@@ -354,18 +310,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a data source instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
         Context context) {
@@ -373,16 +318,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, dataSourceName, context);
     }
 
-    /**
-     * Deletes a data source instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String dataSourceName) {
         deleteWithResponse(resourceGroupName, workspaceName, dataSourceName, Context.NONE);
@@ -471,12 +407,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataSourceInner> listByWorkspaceSinglePage(String resourceGroupName, String workspaceName,
         String filter, String skiptoken) {
-        final String accept = "application/json";
-        Response<DataSourceListResult> res = service.listByWorkspaceSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, workspaceName, filter,
-            skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, filter, skiptoken, Context.NONE);
     }
 
     /**
@@ -504,40 +435,15 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the first page of data source instances in a workspace with the link to the next page.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
         String filter) {
         final String skiptoken = null;
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName, filter, skiptoken),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, filter, skiptoken, Context.NONE);
     }
 
-    /**
-     * Gets the first page of data source instances in a workspace with the link to the next page.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param filter The filter to apply on the operation.
-     * @param skiptoken Starting point of the collection of data source instances.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     * response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String filter,
         String skiptoken, Context context) {
@@ -578,11 +484,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataSourceInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataSourceListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

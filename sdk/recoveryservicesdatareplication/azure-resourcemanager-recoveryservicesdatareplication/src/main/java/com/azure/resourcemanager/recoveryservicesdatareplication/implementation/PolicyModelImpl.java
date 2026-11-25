@@ -19,6 +19,15 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}",
+            "resourceGroupName");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}",
+            "vaultName");
+        this.policyName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/replicationPolicies/{policyName}",
+            "policyName");
     }
 
     public String id() {
@@ -62,10 +71,7 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
     }
 
     public PolicyModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .create(resourceGroupName, vaultName, policyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicyModel create(Context context) {
@@ -83,11 +89,7 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
     }
 
     public PolicyModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .getWithResponse(resourceGroupName, vaultName, policyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicyModel refresh(Context context) {

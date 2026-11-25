@@ -200,37 +200,14 @@ public final class GitHubReposClientImpl implements GitHubReposClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a monitored GitHub repository.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param repoName The repoName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Repository resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubRepositoryInner> getWithResponse(String resourceGroupName, String securityConnectorName,
         String ownerName, String repoName, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, ownerName, repoName, context).block();
     }
 
-    /**
-     * Returns a monitored GitHub repository.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param repoName The repoName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Repository resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GitHubRepositoryInner get(String resourceGroupName, String securityConnectorName, String ownerName,
         String repoName) {
@@ -363,35 +340,14 @@ public final class GitHubReposClientImpl implements GitHubReposClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Returns a list of GitHub repositories onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitHubRepositoryInner> list(String resourceGroupName, String securityConnectorName,
         String ownerName) {
         return new PagedIterable<>(listAsync(resourceGroupName, securityConnectorName, ownerName));
     }
 
-    /**
-     * Returns a list of GitHub repositories onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ownerName The ownerName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RP resources which supports pagination as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitHubRepositoryInner> list(String resourceGroupName, String securityConnectorName,
         String ownerName, Context context) {

@@ -19,6 +19,15 @@ public final class SyncGroupImpl implements SyncGroup, SyncGroup.Definition {
     SyncGroupImpl(SyncGroupInner innerObject, com.azure.resourcemanager.storagesync.StorageSyncManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}",
+            "resourceGroupName");
+        this.storageSyncServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}",
+            "storageSyncServiceName");
+        this.syncGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups/{syncGroupName}",
+            "syncGroupName");
     }
 
     public String id() {
@@ -68,12 +77,7 @@ public final class SyncGroupImpl implements SyncGroup, SyncGroup.Definition {
     }
 
     public SyncGroup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSyncGroups()
-            .createWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, createParameters,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SyncGroup create(Context context) {
@@ -91,11 +95,7 @@ public final class SyncGroupImpl implements SyncGroup, SyncGroup.Definition {
     }
 
     public SyncGroup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSyncGroups()
-            .getWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SyncGroup refresh(Context context) {

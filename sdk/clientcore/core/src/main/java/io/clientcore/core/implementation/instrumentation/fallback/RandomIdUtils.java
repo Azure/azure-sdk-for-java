@@ -21,7 +21,6 @@ class RandomIdUtils {
     private static final int BYTE_BASE16 = 2;
     private static final long INVALID_ID = 0;
     private static final int TRACE_ID_HEX_LENGTH = 32;
-    private static final int SPAN_ID_HEX_LENGTH = 16;
     private static final char[] ENCODING = buildEncodingArray();
 
     public static String generateSpanId() {
@@ -46,9 +45,7 @@ class RandomIdUtils {
         if (id == 0) {
             return INVALID_SPAN_ID;
         }
-        char[] result = new char[SPAN_ID_HEX_LENGTH];
-        longToBase16String(id, result, 0);
-        return new String(result, 0, SPAN_ID_HEX_LENGTH);
+        return SpanIdFormatter.format(id);
     }
 
     private static String getTraceId(long traceIdLongHighPart, long traceIdLongLowPart) {
@@ -61,7 +58,7 @@ class RandomIdUtils {
         return new String(chars, 0, TRACE_ID_HEX_LENGTH);
     }
 
-    private static void longToBase16String(long value, char[] dest, int destOffset) {
+    static void longToBase16String(long value, char[] dest, int destOffset) {
         byteToBase16((byte) (value >> 56 & 0xFFL), dest, destOffset);
         byteToBase16((byte) (value >> 48 & 0xFFL), dest, destOffset + BYTE_BASE16);
         byteToBase16((byte) (value >> 40 & 0xFFL), dest, destOffset + 2 * BYTE_BASE16);

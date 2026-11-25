@@ -281,11 +281,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExadbVmClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ExadbVmClusterListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -306,27 +302,13 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ExadbVmCluster resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExadbVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExadbVmClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List ExadbVmCluster resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExadbVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExadbVmClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -370,11 +352,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String exadbVmClusterName,
         ExadbVmClusterInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exadbVmClusterName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, exadbVmClusterName, resource, Context.NONE);
     }
 
     /**
@@ -419,37 +397,14 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             ExadbVmClusterInner.class, ExadbVmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExadbVmClusterInner>, ExadbVmClusterInner>
         beginCreateOrUpdate(String resourceGroupName, String exadbVmClusterName, ExadbVmClusterInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, exadbVmClusterName, resource);
-        return this.client.<ExadbVmClusterInner, ExadbVmClusterInner>getLroResult(response, ExadbVmClusterInner.class,
-            ExadbVmClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, exadbVmClusterName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExadbVmClusterInner>, ExadbVmClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String exadbVmClusterName, ExadbVmClusterInner resource, Context context) {
@@ -477,39 +432,19 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExadbVmClusterInner createOrUpdate(String resourceGroupName, String exadbVmClusterName,
         ExadbVmClusterInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, exadbVmClusterName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, exadbVmClusterName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExadbVmClusterInner createOrUpdate(String resourceGroupName, String exadbVmClusterName,
         ExadbVmClusterInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, exadbVmClusterName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, exadbVmClusterName, resource, context));
     }
 
     /**
@@ -548,17 +483,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExadbVmCluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExadbVmClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String exadbVmClusterName, Context context) {
@@ -567,16 +492,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, exadbVmClusterName, accept, context);
     }
 
-    /**
-     * Get a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExadbVmCluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExadbVmClusterInner getByResourceGroup(String resourceGroupName, String exadbVmClusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, exadbVmClusterName, Context.NONE).getValue();
@@ -619,11 +535,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String exadbVmClusterName,
         ExadbVmClusterUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exadbVmClusterName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, exadbVmClusterName, properties, Context.NONE);
     }
 
     /**
@@ -668,37 +580,14 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             ExadbVmClusterInner.class, ExadbVmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExadbVmClusterInner>, ExadbVmClusterInner> beginUpdate(String resourceGroupName,
         String exadbVmClusterName, ExadbVmClusterUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, exadbVmClusterName, properties);
-        return this.client.<ExadbVmClusterInner, ExadbVmClusterInner>getLroResult(response, ExadbVmClusterInner.class,
-            ExadbVmClusterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, exadbVmClusterName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExadbVmClusterInner>, ExadbVmClusterInner> beginUpdate(String resourceGroupName,
         String exadbVmClusterName, ExadbVmClusterUpdate properties, Context context) {
@@ -725,39 +614,19 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExadbVmClusterInner update(String resourceGroupName, String exadbVmClusterName,
         ExadbVmClusterUpdate properties) {
-        return beginUpdate(resourceGroupName, exadbVmClusterName, properties).getFinalResult();
+        return update(resourceGroupName, exadbVmClusterName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExadbVmClusterInner update(String resourceGroupName, String exadbVmClusterName,
         ExadbVmClusterUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, exadbVmClusterName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, exadbVmClusterName, properties, context));
     }
 
     /**
@@ -791,8 +660,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String exadbVmClusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exadbVmClusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, exadbVmClusterName, Context.NONE);
     }
 
     /**
@@ -830,33 +698,13 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String exadbVmClusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, exadbVmClusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, exadbVmClusterName, Context.NONE);
     }
 
-    /**
-     * Delete a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String exadbVmClusterName,
         Context context) {
@@ -880,33 +728,16 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String exadbVmClusterName) {
-        beginDelete(resourceGroupName, exadbVmClusterName).getFinalResult();
+        delete(resourceGroupName, exadbVmClusterName, Context.NONE);
     }
 
-    /**
-     * Delete a ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String exadbVmClusterName, Context context) {
-        beginDelete(resourceGroupName, exadbVmClusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, exadbVmClusterName, context));
     }
 
     /**
@@ -956,11 +787,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExadbVmClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ExadbVmClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -983,31 +810,13 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ExadbVmCluster resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExadbVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExadbVmClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List ExadbVmCluster resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExadbVmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExadbVmClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1049,11 +858,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeVmsWithResponse(String resourceGroupName, String exadbVmClusterName,
         RemoveVirtualMachineFromExadbVmClusterDetails body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.removeVmsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exadbVmClusterName, contentType, accept, body,
-            Context.NONE);
+        return removeVmsWithResponse(resourceGroupName, exadbVmClusterName, body, Context.NONE);
     }
 
     /**
@@ -1096,37 +901,14 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             ExadbVmClusterInner.class, ExadbVmClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExadbVmClusterInner>, ExadbVmClusterInner> beginRemoveVms(String resourceGroupName,
         String exadbVmClusterName, RemoveVirtualMachineFromExadbVmClusterDetails body) {
-        Response<BinaryData> response = removeVmsWithResponse(resourceGroupName, exadbVmClusterName, body);
-        return this.client.<ExadbVmClusterInner, ExadbVmClusterInner>getLroResult(response, ExadbVmClusterInner.class,
-            ExadbVmClusterInner.class, Context.NONE);
+        return beginRemoveVms(resourceGroupName, exadbVmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExadbVmClusterInner>, ExadbVmClusterInner> beginRemoveVms(String resourceGroupName,
         String exadbVmClusterName, RemoveVirtualMachineFromExadbVmClusterDetails body, Context context) {
@@ -1153,39 +935,19 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExadbVmClusterInner removeVms(String resourceGroupName, String exadbVmClusterName,
         RemoveVirtualMachineFromExadbVmClusterDetails body) {
-        return beginRemoveVms(resourceGroupName, exadbVmClusterName, body).getFinalResult();
+        return removeVms(resourceGroupName, exadbVmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Remove VMs from the VM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exadbVmCluster resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExadbVmClusterInner removeVms(String resourceGroupName, String exadbVmClusterName,
         RemoveVirtualMachineFromExadbVmClusterDetails body, Context context) {
-        return beginRemoveVms(resourceGroupName, exadbVmClusterName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRemoveVms(resourceGroupName, exadbVmClusterName, body, context));
     }
 
     /**
@@ -1220,11 +982,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExadbVmClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExadbVmClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1278,11 +1036,7 @@ public final class ExadbVmClustersClientImpl implements ExadbVmClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExadbVmClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExadbVmClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

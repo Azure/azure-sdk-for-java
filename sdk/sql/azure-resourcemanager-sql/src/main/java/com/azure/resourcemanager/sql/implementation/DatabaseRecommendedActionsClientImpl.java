@@ -93,19 +93,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database recommended action along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecommendedActionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String advisorName, String recommendedActionName) {
@@ -190,19 +178,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             resourceGroupName, serverName, databaseName, advisorName, recommendedActionName, accept, context);
     }
 
-    /**
-     * Gets a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database recommended action on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecommendedActionInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String advisorName, String recommendedActionName) {
@@ -210,20 +186,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database recommended action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendedActionInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String advisorName, String recommendedActionName, Context context) {
@@ -231,19 +194,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             context).block();
     }
 
-    /**
-     * Gets a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database recommended action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendedActionInner get(String resourceGroupName, String serverName, String databaseName,
         String advisorName, String recommendedActionName) {
@@ -251,21 +202,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             Context.NONE).getValue();
     }
 
-    /**
-     * Updates a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @param parameters The requested recommended action resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Recommended Action along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecommendedActionInner>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String advisorName, String recommendedActionName, RecommendedActionInner parameters) {
@@ -366,20 +303,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             parameters, context);
     }
 
-    /**
-     * Updates a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @param parameters The requested recommended action resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Recommended Action on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecommendedActionInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
         String advisorName, String recommendedActionName, RecommendedActionInner parameters) {
@@ -387,21 +311,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @param parameters The requested recommended action resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Recommended Action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendedActionInner> updateWithResponse(String resourceGroupName, String serverName,
         String databaseName, String advisorName, String recommendedActionName, RecommendedActionInner parameters,
@@ -410,20 +320,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             parameters, context).block();
     }
 
-    /**
-     * Updates a database recommended action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param recommendedActionName The name of Database Recommended Action.
-     * @param parameters The requested recommended action resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Recommended Action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecommendedActionInner update(String resourceGroupName, String serverName, String databaseName,
         String advisorName, String recommendedActionName, RecommendedActionInner parameters) {
@@ -431,19 +328,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Gets list of Database Recommended Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Database Recommended Actions along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<RecommendedActionInner>>> listByDatabaseAdvisorWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, String advisorName) {
@@ -520,18 +405,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             this.client.getSubscriptionId(), resourceGroupName, serverName, databaseName, advisorName, accept, context);
     }
 
-    /**
-     * Gets list of Database Recommended Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Database Recommended Actions on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<RecommendedActionInner>> listByDatabaseAdvisorAsync(String resourceGroupName, String serverName,
         String databaseName, String advisorName) {
@@ -539,19 +413,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets list of Database Recommended Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Database Recommended Actions along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<RecommendedActionInner>> listByDatabaseAdvisorWithResponse(String resourceGroupName,
         String serverName, String databaseName, String advisorName, Context context) {
@@ -559,18 +421,7 @@ public final class DatabaseRecommendedActionsClientImpl implements DatabaseRecom
             .block();
     }
 
-    /**
-     * Gets list of Database Recommended Actions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param advisorName The name of the Database Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Database Recommended Actions.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<RecommendedActionInner> listByDatabaseAdvisor(String resourceGroupName, String serverName,
         String databaseName, String advisorName) {

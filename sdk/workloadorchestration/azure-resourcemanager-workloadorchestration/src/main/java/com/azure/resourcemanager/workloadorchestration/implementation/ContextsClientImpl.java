@@ -247,17 +247,7 @@ public final class ContextsClientImpl implements ContextsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return context Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContextInner> getByResourceGroupWithResponse(String resourceGroupName, String contextName,
         Context context) {
@@ -266,16 +256,7 @@ public final class ContextsClientImpl implements ContextsClient {
             this.client.getSubscriptionId(), resourceGroupName, contextName, accept, context);
     }
 
-    /**
-     * Get Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContextInner getByResourceGroup(String resourceGroupName, String contextName) {
         return getByResourceGroupWithResponse(resourceGroupName, contextName, Context.NONE).getValue();
@@ -318,11 +299,7 @@ public final class ContextsClientImpl implements ContextsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String contextName,
         ContextInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, contextName, resource, Context.NONE);
     }
 
     /**
@@ -366,37 +343,14 @@ public final class ContextsClientImpl implements ContextsClient {
             ContextInner.class, ContextInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContextInner>, ContextInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, ContextInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, contextName, resource);
-        return this.client.<ContextInner, ContextInner>getLroResult(response, ContextInner.class, ContextInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, contextName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContextInner>, ContextInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, ContextInner resource, Context context) {
@@ -423,38 +377,18 @@ public final class ContextsClientImpl implements ContextsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContextInner createOrUpdate(String resourceGroupName, String contextName, ContextInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, contextName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContextInner createOrUpdate(String resourceGroupName, String contextName, ContextInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, contextName, resource, context));
     }
 
     /**
@@ -492,11 +426,7 @@ public final class ContextsClientImpl implements ContextsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName,
         ContextUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, contextName, properties, Context.NONE);
     }
 
     /**
@@ -539,37 +469,14 @@ public final class ContextsClientImpl implements ContextsClient {
             ContextInner.class, ContextInner.class, this.client.getContext());
     }
 
-    /**
-     * update an Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContextInner>, ContextInner> beginUpdate(String resourceGroupName, String contextName,
         ContextUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, contextName, properties);
-        return this.client.<ContextInner, ContextInner>getLroResult(response, ContextInner.class, ContextInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, contextName, properties, Context.NONE);
     }
 
-    /**
-     * update an Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContextInner>, ContextInner> beginUpdate(String resourceGroupName, String contextName,
         ContextUpdate properties, Context context) {
@@ -595,38 +502,17 @@ public final class ContextsClientImpl implements ContextsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * update an Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContextInner update(String resourceGroupName, String contextName, ContextUpdate properties) {
-        return beginUpdate(resourceGroupName, contextName, properties).getFinalResult();
+        return update(resourceGroupName, contextName, properties, Context.NONE);
     }
 
-    /**
-     * update an Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return context Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ContextInner update(String resourceGroupName, String contextName, ContextUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, contextName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, contextName, properties, context));
     }
 
     /**
@@ -676,11 +562,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContextInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ContextListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -702,31 +584,13 @@ public final class ContextsClientImpl implements ContextsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContextInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List by specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContextInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -774,11 +638,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContextInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ContextListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -799,27 +659,13 @@ public final class ContextsClientImpl implements ContextsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContextInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Context list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContextInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -856,8 +702,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String contextName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, contextName, Context.NONE);
     }
 
     /**
@@ -894,33 +739,13 @@ public final class ContextsClientImpl implements ContextsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, contextName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, contextName, Context.NONE);
     }
 
-    /**
-     * Delete Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName,
         Context context) {
@@ -943,33 +768,16 @@ public final class ContextsClientImpl implements ContextsClient {
         return beginDeleteAsync(resourceGroupName, contextName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName) {
-        beginDelete(resourceGroupName, contextName).getFinalResult();
+        delete(resourceGroupName, contextName, Context.NONE);
     }
 
-    /**
-     * Delete Context Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName, Context context) {
-        beginDelete(resourceGroupName, contextName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, contextName, context));
     }
 
     /**
@@ -1004,11 +812,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContextInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContextListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1062,11 +866,7 @@ public final class ContextsClientImpl implements ContextsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContextInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContextListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

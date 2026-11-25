@@ -43,8 +43,7 @@ public final class PublicMaintenanceConfigurationsImpl implements PublicMaintena
     }
 
     public PagedIterable<MaintenanceConfiguration> list() {
-        PagedIterable<MaintenanceConfigurationInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<MaintenanceConfiguration> list(Context context) {

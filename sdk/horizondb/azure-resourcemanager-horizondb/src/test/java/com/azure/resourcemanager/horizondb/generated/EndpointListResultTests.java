@@ -12,8 +12,8 @@ public final class EndpointListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"scope\":\"Cluster\",\"associatedResourceId\":\"vexztvbtqgs\",\"fullyQualifiedDomainName\":\"ra\",\"role\":\"ReadWrite\"},\"id\":\"koowtl\",\"name\":\"nguxawqaldsy\",\"type\":\"uximerqfobw\"},{\"properties\":{\"scope\":\"Pool\",\"associatedResourceId\":\"kby\",\"fullyQualifiedDomainName\":\"utwpfhp\",\"role\":\"ReadWrite\"},\"id\":\"hrskdsnfd\",\"name\":\"doakgtdlmkkzevdl\",\"type\":\"ewpusdsttwvogvb\"}],\"nextLink\":\"jdcngqqm\"}")
+            "{\"value\":[{\"properties\":{\"scope\":\"Cluster\",\"associatedResourceId\":\"vmtgjqppy\",\"fullyQualifiedDomainName\":\"s\",\"role\":\"ReadWrite\"},\"id\":\"nzm\",\"name\":\"hgfipnsxkmcw\",\"type\":\"ekrrjr\"},{\"properties\":{\"scope\":\"Cluster\",\"associatedResourceId\":\"xt\",\"fullyQualifiedDomainName\":\"gumhjglikkxws\",\"role\":\"ReadOnly\"},\"id\":\"bq\",\"name\":\"vuzlm\",\"type\":\"felfktg\"}],\"nextLink\":\"crpw\"}")
             .toObject(EndpointListResult.class);
-        Assertions.assertEquals("jdcngqqm", model.nextLink());
+        Assertions.assertEquals("crpw", model.nextLink());
     }
 }

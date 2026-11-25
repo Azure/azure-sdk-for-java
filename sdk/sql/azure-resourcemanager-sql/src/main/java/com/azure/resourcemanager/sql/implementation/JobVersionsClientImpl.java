@@ -91,19 +91,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a job version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job version along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobVersionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, int jobVersion) {
@@ -180,19 +168,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             resourceGroupName, serverName, jobAgentName, jobName, jobVersion, accept, context);
     }
 
-    /**
-     * Gets a job version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job version on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobVersionInner> getAsync(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, int jobVersion) {
@@ -200,39 +176,14 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a job version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobVersionInner> getWithResponse(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, int jobVersion, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, context).block();
     }
 
-    /**
-     * Gets a job version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobVersionInner get(String resourceGroupName, String serverName, String jobAgentName, String jobName,
         int jobVersion) {
@@ -331,18 +282,7 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all versions of a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all versions of a job as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobVersionInner> listByJobAsync(String resourceGroupName, String serverName, String jobAgentName,
         String jobName) {
@@ -371,37 +311,14 @@ public final class JobVersionsClientImpl implements JobVersionsClient {
             nextLink -> listByJobNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all versions of a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all versions of a job as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobVersionInner> listByJob(String resourceGroupName, String serverName, String jobAgentName,
         String jobName) {
         return new PagedIterable<>(listByJobAsync(resourceGroupName, serverName, jobAgentName, jobName));
     }
 
-    /**
-     * Gets all versions of a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all versions of a job as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobVersionInner> listByJob(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, Context context) {

@@ -249,17 +249,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Databricks Access Connector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessConnectorInner> getByResourceGroupWithResponse(String resourceGroupName, String connectorName,
         Context context) {
@@ -268,16 +258,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             this.client.getSubscriptionId(), resourceGroupName, connectorName, accept, context);
     }
 
-    /**
-     * Gets an Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessConnectorInner getByResourceGroup(String resourceGroupName, String connectorName) {
         return getByResourceGroupWithResponse(resourceGroupName, connectorName, Context.NONE).getValue();
@@ -321,11 +302,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectorName,
         AccessConnectorInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectorName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, connectorName, parameters, Context.NONE);
     }
 
     /**
@@ -370,37 +347,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             AccessConnectorInner.class, AccessConnectorInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters Parameters supplied to the create or update an Azure Databricks Access Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner>
         beginCreateOrUpdate(String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectorName, parameters);
-        return this.client.<AccessConnectorInner, AccessConnectorInner>getLroResult(response,
-            AccessConnectorInner.class, AccessConnectorInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, connectorName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters Parameters supplied to the create or update an Azure Databricks Access Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdate(
         String resourceGroupName, String connectorName, AccessConnectorInner parameters, Context context) {
@@ -428,39 +382,19 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters Parameters supplied to the create or update an Azure Databricks Access Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessConnectorInner createOrUpdate(String resourceGroupName, String connectorName,
         AccessConnectorInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, connectorName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, connectorName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters Parameters supplied to the create or update an Azure Databricks Access Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessConnectorInner createOrUpdate(String resourceGroupName, String connectorName,
         AccessConnectorInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, connectorName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, connectorName, parameters, context));
     }
 
     /**
@@ -501,11 +435,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String connectorName,
         AccessConnectorUpdate parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectorName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, connectorName, parameters, Context.NONE);
     }
 
     /**
@@ -549,37 +479,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             AccessConnectorInner.class, AccessConnectorInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates an Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters The update to the Azure Databricks Access Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(String resourceGroupName,
         String connectorName, AccessConnectorUpdate parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, connectorName, parameters);
-        return this.client.<AccessConnectorInner, AccessConnectorInner>getLroResult(response,
-            AccessConnectorInner.class, AccessConnectorInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, connectorName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates an Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters The update to the Azure Databricks Access Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(String resourceGroupName,
         String connectorName, AccessConnectorUpdate parameters, Context context) {
@@ -606,39 +513,18 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters The update to the Azure Databricks Access Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessConnectorInner update(String resourceGroupName, String connectorName,
         AccessConnectorUpdate parameters) {
-        return beginUpdate(resourceGroupName, connectorName, parameters).getFinalResult();
+        return update(resourceGroupName, connectorName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates an Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param parameters The update to the Azure Databricks Access Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about Azure Databricks Access Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessConnectorInner update(String resourceGroupName, String connectorName, AccessConnectorUpdate parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, connectorName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, connectorName, parameters, context));
     }
 
     /**
@@ -671,8 +557,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String connectorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, connectorName, Context.NONE);
     }
 
     /**
@@ -709,33 +594,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             this.client.getContext());
     }
 
-    /**
-     * Deletes the Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, connectorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, connectorName, Context.NONE);
     }
 
-    /**
-     * Deletes the Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectorName,
         Context context) {
@@ -758,33 +623,16 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
         return beginDeleteAsync(resourceGroupName, connectorName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectorName) {
-        beginDelete(resourceGroupName, connectorName).getFinalResult();
+        delete(resourceGroupName, connectorName, Context.NONE);
     }
 
-    /**
-     * Deletes the Azure Databricks Access Connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectorName The name of the Azure Databricks Access Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectorName, Context context) {
-        beginDelete(resourceGroupName, connectorName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, connectorName, context));
     }
 
     /**
@@ -835,11 +683,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessConnectorInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AccessConnectorListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -862,33 +706,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the Azure Databricks Access Connectors within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Databricks Access Connectors within a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets all the Azure Databricks Access Connectors within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Databricks Access Connectors within a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -937,11 +761,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessConnectorInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AccessConnectorListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -962,29 +782,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the Azure Databricks Access Connectors within a subscription.
-     * 
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Databricks Access Connectors within a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets all the Azure Databricks Access Connectors within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Databricks Access Connectors within a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1023,11 +827,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessConnectorInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccessConnectorListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1081,11 +881,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessConnectorInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccessConnectorListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

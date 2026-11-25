@@ -415,19 +415,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given CloudEndpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointsGetResponse getWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, Context context) {
@@ -436,18 +424,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, accept, context);
     }
 
-    /**
-     * Get a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given CloudEndpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointInner get(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName) {
@@ -497,11 +474,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, CloudEndpointCreateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, contentType, accept, parameters, Context.NONE);
+        return createWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -551,43 +525,16 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             CloudEndpointInner.class, CloudEndpointInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a new CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudEndpointInner>, CloudEndpointInner> beginCreate(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
         CloudEndpointCreateParameters parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, parameters);
-        return this.client.<CloudEndpointInner, CloudEndpointInner>getLroResult(response, CloudEndpointInner.class,
-            CloudEndpointInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Create a new CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudEndpointInner>, CloudEndpointInner> beginCreate(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
@@ -619,45 +566,20 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointInner create(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, CloudEndpointCreateParameters parameters) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
-            .getFinalResult();
+        return create(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Create a new CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointInner create(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, CloudEndpointCreateParameters parameters, Context context) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, storageSyncServiceName,
+            syncGroupName, cloudEndpointName, parameters, context));
     }
 
     /**
@@ -702,11 +624,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, CloudEndpointUpdateParameters properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            properties, Context.NONE);
     }
 
     /**
@@ -756,43 +675,16 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             CloudEndpointInner.class, CloudEndpointInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudEndpointInner>, CloudEndpointInner> beginUpdate(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
         CloudEndpointUpdateParameters properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, properties);
-        return this.client.<CloudEndpointInner, CloudEndpointInner>getLroResult(response, CloudEndpointInner.class,
-            CloudEndpointInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, properties,
+            Context.NONE);
     }
 
-    /**
-     * Patch a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudEndpointInner>, CloudEndpointInner> beginUpdate(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
@@ -824,45 +716,20 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointInner update(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, CloudEndpointUpdateParameters properties) {
-        return beginUpdate(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, properties)
-            .getFinalResult();
+        return update(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, properties,
+            Context.NONE);
     }
 
-    /**
-     * Patch a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Endpoint object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointInner update(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, CloudEndpointUpdateParameters properties, Context context) {
-        return beginUpdate(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, properties,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, storageSyncServiceName,
+            syncGroupName, cloudEndpointName, properties, context));
     }
 
     /**
@@ -902,9 +769,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            Context.NONE);
     }
 
     /**
@@ -949,39 +815,14 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, Context context) {
@@ -1009,40 +850,19 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName) {
-        beginDelete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName).getFinalResult();
+        delete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, Context context) {
-        beginDelete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, context));
     }
 
     /**
@@ -1102,12 +922,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudEndpointInner> listBySyncGroupSinglePage(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName) {
-        final String accept = "application/json";
-        Response<CloudEndpointArray> res = service.listBySyncGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName,
-            syncGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySyncGroupSinglePage(resourceGroupName, storageSyncServiceName, syncGroupName, Context.NONE);
     }
 
     /**
@@ -1133,37 +948,14 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a CloudEndpoint List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudEndpoint List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudEndpointInner> listBySyncGroup(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName) {
-        return new PagedIterable<>(
-            () -> listBySyncGroupSinglePage(resourceGroupName, storageSyncServiceName, syncGroupName),
-            nextLink -> listBySyncGroupNextSinglePage(nextLink));
+        return listBySyncGroup(resourceGroupName, storageSyncServiceName, syncGroupName, Context.NONE);
     }
 
-    /**
-     * Get a CloudEndpoint List.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CloudEndpoint List as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudEndpointInner> listBySyncGroup(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, Context context) {
@@ -1212,10 +1004,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> preBackupWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, BackupRequest parameters) {
-        final String contentType = "application/json";
-        return service.preBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, contentType, parameters, Context.NONE);
+        return preBackupWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -1263,41 +1053,15 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Pre Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPreBackup(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, BackupRequest parameters) {
-        Response<BinaryData> response = preBackupWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPreBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Pre Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPreBackup(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, BackupRequest parameters, Context context) {
@@ -1326,43 +1090,20 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Pre Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void preBackup(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, BackupRequest parameters) {
-        beginPreBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
-            .getFinalResult();
+        preBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Pre Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void preBackup(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, BackupRequest parameters, Context context) {
-        beginPreBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginPreBackup(resourceGroupName, storageSyncServiceName, syncGroupName,
+            cloudEndpointName, parameters, context));
     }
 
     /**
@@ -1406,11 +1147,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> postBackupWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, BackupRequest parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.postBackupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, contentType, accept, parameters, Context.NONE);
+        return postBackupWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -1461,43 +1199,16 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Post Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of post Backup Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PostBackupResponseInner>, PostBackupResponseInner> beginPostBackup(
         String resourceGroupName, String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
         BackupRequest parameters) {
-        Response<BinaryData> response = postBackupWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, parameters);
-        return this.client.<PostBackupResponseInner, PostBackupResponseInner>getLroResult(response,
-            PostBackupResponseInner.class, PostBackupResponseInner.class, Context.NONE);
+        return beginPostBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Post Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of post Backup Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PostBackupResponseInner>, PostBackupResponseInner> beginPostBackup(
         String resourceGroupName, String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
@@ -1528,45 +1239,20 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return post Backup Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PostBackupResponseInner postBackup(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, BackupRequest parameters) {
-        return beginPostBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
-            .getFinalResult();
+        return postBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Post Backup a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Backup request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return post Backup Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PostBackupResponseInner postBackup(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, BackupRequest parameters, Context context) {
-        return beginPostBackup(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginPostBackup(resourceGroupName, storageSyncServiceName,
+            syncGroupName, cloudEndpointName, parameters, context));
     }
 
     /**
@@ -1609,10 +1295,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> preRestoreWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, PreRestoreRequest parameters) {
-        final String contentType = "application/json";
-        return service.preRestoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, contentType, parameters, Context.NONE);
+        return preRestoreWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -1660,41 +1344,15 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Pre Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPreRestore(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, PreRestoreRequest parameters) {
-        Response<BinaryData> response = preRestoreWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPreRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Pre Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPreRestore(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, PreRestoreRequest parameters, Context context) {
@@ -1723,43 +1381,20 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Pre Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void preRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, PreRestoreRequest parameters) {
-        beginPreRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
-            .getFinalResult();
+        preRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Pre Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void preRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, PreRestoreRequest parameters, Context context) {
-        beginPreRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
-            context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPreRestore(resourceGroupName, storageSyncServiceName, syncGroupName,
+            cloudEndpointName, parameters, context));
     }
 
     /**
@@ -1803,19 +1438,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             cloudEndpointName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Restore Heartbeat a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointsRestoreHeartbeatResponse restoreHeartbeatWithResponse(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName, Context context) {
@@ -1824,17 +1447,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             cloudEndpointName, context);
     }
 
-    /**
-     * Restore Heartbeat a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restoreHeartbeat(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName) {
@@ -1882,10 +1495,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> postRestoreWithResponse(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, PostRestoreRequest parameters) {
-        final String contentType = "application/json";
-        return service.postRestoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, contentType, parameters, Context.NONE);
+        return postRestoreWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -1933,41 +1544,15 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Post Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPostRestore(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, PostRestoreRequest parameters) {
-        Response<BinaryData> response = postRestoreWithResponse(resourceGroupName, storageSyncServiceName,
-            syncGroupName, cloudEndpointName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPostRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Post Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPostRestore(String resourceGroupName, String storageSyncServiceName,
         String syncGroupName, String cloudEndpointName, PostRestoreRequest parameters, Context context) {
@@ -1996,43 +1581,20 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Post Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void postRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, PostRestoreRequest parameters) {
-        beginPostRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters)
-            .getFinalResult();
+        postRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Post Restore a given CloudEndpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Body of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void postRestore(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, PostRestoreRequest parameters, Context context) {
-        beginPostRestore(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
-            context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPostRestore(resourceGroupName, storageSyncServiceName, syncGroupName,
+            cloudEndpointName, parameters, context));
     }
 
     /**
@@ -2079,10 +1641,8 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
     private Response<BinaryData> triggerChangeDetectionWithResponse(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
         TriggerChangeDetectionParameters parameters) {
-        final String contentType = "application/json";
-        return service.triggerChangeDetectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, syncGroupName,
-            cloudEndpointName, contentType, parameters, Context.NONE);
+        return triggerChangeDetectionWithResponse(resourceGroupName, storageSyncServiceName, syncGroupName,
+            cloudEndpointName, parameters, Context.NONE);
     }
 
     /**
@@ -2134,44 +1694,16 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Triggers detection of changes performed on Azure File share connected to the specified Azure File Sync Cloud
-     * Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Trigger Change Detection Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerChangeDetection(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
         TriggerChangeDetectionParameters parameters) {
-        Response<BinaryData> response = triggerChangeDetectionWithResponse(resourceGroupName, storageSyncServiceName,
-            syncGroupName, cloudEndpointName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTriggerChangeDetection(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
+            parameters, Context.NONE);
     }
 
-    /**
-     * Triggers detection of changes performed on Azure File share connected to the specified Azure File Sync Cloud
-     * Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Trigger Change Detection Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerChangeDetection(String resourceGroupName,
         String storageSyncServiceName, String syncGroupName, String cloudEndpointName,
@@ -2202,45 +1734,20 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             cloudEndpointName, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers detection of changes performed on Azure File share connected to the specified Azure File Sync Cloud
-     * Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Trigger Change Detection Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerChangeDetection(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, TriggerChangeDetectionParameters parameters) {
-        beginTriggerChangeDetection(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
-            parameters).getFinalResult();
+        triggerChangeDetection(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Triggers detection of changes performed on Azure File share connected to the specified Azure File Sync Cloud
-     * Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param parameters Trigger Change Detection Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerChangeDetection(String resourceGroupName, String storageSyncServiceName, String syncGroupName,
         String cloudEndpointName, TriggerChangeDetectionParameters parameters, Context context) {
-        beginTriggerChangeDetection(resourceGroupName, storageSyncServiceName, syncGroupName, cloudEndpointName,
-            parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginTriggerChangeDetection(resourceGroupName, storageSyncServiceName,
+            syncGroupName, cloudEndpointName, parameters, context));
     }
 
     /**
@@ -2286,19 +1793,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             syncGroupName, cloudEndpointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the AFS file share metadata signing certificate public keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AFS file share metadata signing certificate public keys.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointsAfsShareMetadataCertificatePublicKeysResponse
         afsShareMetadataCertificatePublicKeysWithResponse(String resourceGroupName, String storageSyncServiceName,
@@ -2309,18 +1804,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
             cloudEndpointName, accept, context);
     }
 
-    /**
-     * Get the AFS file share metadata signing certificate public keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param syncGroupName Name of Sync Group resource.
-     * @param cloudEndpointName Name of Cloud Endpoint object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AFS file share metadata signing certificate public keys.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudEndpointAfsShareMetadataCertificatePublicKeysInner afsShareMetadataCertificatePublicKeys(
         String resourceGroupName, String storageSyncServiceName, String syncGroupName, String cloudEndpointName) {
@@ -2358,11 +1842,7 @@ public final class CloudEndpointsClientImpl implements CloudEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CloudEndpointInner> listBySyncGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CloudEndpointArray> res
-            = service.listBySyncGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySyncGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

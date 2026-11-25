@@ -206,18 +206,7 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified trigger for the specified image template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified trigger for the specified image template resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerInner> getWithResponse(String resourceGroupName, String imageTemplateName,
         String triggerName, Context context) {
@@ -226,17 +215,7 @@ public final class TriggersClientImpl implements TriggersClient {
             resourceGroupName, imageTemplateName, triggerName, accept, context);
     }
 
-    /**
-     * Get the specified trigger for the specified image template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified trigger for the specified image template resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerInner get(String resourceGroupName, String imageTemplateName, String triggerName) {
         return getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE).getValue();
@@ -282,11 +261,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String imageTemplateName,
         String triggerName, TriggerInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, triggerName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, imageTemplateName, triggerName, parameters, Context.NONE);
     }
 
     /**
@@ -333,40 +308,14 @@ public final class TriggersClientImpl implements TriggersClient {
             TriggerInner.class, TriggerInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @param parameters Parameters supplied to the CreateTrigger operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a trigger that can invoke an image template build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String resourceGroupName,
         String imageTemplateName, String triggerName, TriggerInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, imageTemplateName, triggerName, parameters);
-        return this.client.<TriggerInner, TriggerInner>getLroResult(response, TriggerInner.class, TriggerInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, imageTemplateName, triggerName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @param parameters Parameters supplied to the CreateTrigger operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a trigger that can invoke an image template build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String resourceGroupName,
         String imageTemplateName, String triggerName, TriggerInner parameters, Context context) {
@@ -395,42 +344,19 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @param parameters Parameters supplied to the CreateTrigger operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a trigger that can invoke an image template build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerInner createOrUpdate(String resourceGroupName, String imageTemplateName, String triggerName,
         TriggerInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, imageTemplateName, triggerName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, imageTemplateName, triggerName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @param parameters Parameters supplied to the CreateTrigger operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a trigger that can invoke an image template build.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerInner createOrUpdate(String resourceGroupName, String imageTemplateName, String triggerName,
         TriggerInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, imageTemplateName, triggerName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, imageTemplateName, triggerName, parameters, context));
     }
 
     /**
@@ -467,8 +393,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String imageTemplateName,
         String triggerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, triggerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE);
     }
 
     /**
@@ -510,36 +435,14 @@ public final class TriggersClientImpl implements TriggersClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
         String triggerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, imageTemplateName, triggerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, imageTemplateName, triggerName, Context.NONE);
     }
 
-    /**
-     * Delete a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
         String triggerName, Context context) {
@@ -564,35 +467,16 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String imageTemplateName, String triggerName) {
-        beginDelete(resourceGroupName, imageTemplateName, triggerName).getFinalResult();
+        delete(resourceGroupName, imageTemplateName, triggerName, Context.NONE);
     }
 
-    /**
-     * Delete a trigger for the specified virtual machine image template.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param triggerName The name of the trigger.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String imageTemplateName, String triggerName, Context context) {
-        beginDelete(resourceGroupName, imageTemplateName, triggerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, imageTemplateName, triggerName, context));
     }
 
     /**
@@ -647,12 +531,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TriggerInner> listByImageTemplateSinglePage(String resourceGroupName,
         String imageTemplateName) {
-        final String accept = "application/json";
-        Response<TriggerCollection> res
-            = service.listByImageTemplateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByImageTemplateSinglePage(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     /**
@@ -677,33 +556,13 @@ public final class TriggersClientImpl implements TriggersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all triggers for the specified Image Template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List triggers operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerInner> listByImageTemplate(String resourceGroupName, String imageTemplateName) {
-        return new PagedIterable<>(() -> listByImageTemplateSinglePage(resourceGroupName, imageTemplateName),
-            nextLink -> listByImageTemplateNextSinglePage(nextLink));
+        return listByImageTemplate(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
-    /**
-     * List all triggers for the specified Image Template resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param imageTemplateName The name of the image Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of List triggers operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerInner> listByImageTemplate(String resourceGroupName, String imageTemplateName,
         Context context) {
@@ -743,11 +602,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TriggerInner> listByImageTemplateNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TriggerCollection> res
-            = service.listByImageTemplateNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByImageTemplateNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

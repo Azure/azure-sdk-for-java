@@ -110,18 +110,7 @@ public final class JobsClientImpl implements JobsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String jobName) {
@@ -196,73 +185,27 @@ public final class JobsClientImpl implements JobsClient {
             resourceGroupName, serverName, jobAgentName, jobName, accept, context);
     }
 
-    /**
-     * Gets a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobInner> getAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobInner> getWithResponse(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, context).block();
     }
 
-    /**
-     * Gets a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner get(String resourceGroupName, String serverName, String jobAgentName, String jobName) {
         return getWithResponse(resourceGroupName, serverName, jobAgentName, jobName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @param parameters The requested job state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, JobInner parameters) {
@@ -352,19 +295,7 @@ public final class JobsClientImpl implements JobsClient {
             parameters, context);
     }
 
-    /**
-     * Creates or updates a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @param parameters The requested job state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobInner> createOrUpdateAsync(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, JobInner parameters) {
@@ -372,20 +303,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @param parameters The requested job state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         String jobAgentName, String jobName, JobInner parameters, Context context) {
@@ -393,19 +311,7 @@ public final class JobsClientImpl implements JobsClient {
             context).block();
     }
 
-    /**
-     * Creates or updates a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @param parameters The requested job state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName, String jobName,
         JobInner parameters) {
@@ -413,18 +319,7 @@ public final class JobsClientImpl implements JobsClient {
             Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String jobAgentName, String jobName) {
@@ -497,54 +392,21 @@ public final class JobsClientImpl implements JobsClient {
             resourceGroupName, serverName, jobAgentName, jobName, context);
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName)
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String serverName, String jobAgentName,
         String jobName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, context).block();
     }
 
-    /**
-     * Deletes a job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String jobAgentName, String jobName) {
         deleteWithResponse(resourceGroupName, serverName, jobAgentName, jobName, Context.NONE);
@@ -633,17 +495,7 @@ public final class JobsClientImpl implements JobsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobInner> listByAgentAsync(String resourceGroupName, String serverName, String jobAgentName) {
         return new PagedFlux<>(() -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName),
@@ -669,34 +521,13 @@ public final class JobsClientImpl implements JobsClient {
             nextLink -> listByAgentNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> listByAgent(String resourceGroupName, String serverName, String jobAgentName) {
         return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName));
     }
 
-    /**
-     * Gets a list of jobs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobInner> listByAgent(String resourceGroupName, String serverName, String jobAgentName,
         Context context) {

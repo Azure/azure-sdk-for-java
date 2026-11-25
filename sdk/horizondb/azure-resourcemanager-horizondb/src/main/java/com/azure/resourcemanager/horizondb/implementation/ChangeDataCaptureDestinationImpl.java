@@ -69,10 +69,7 @@ public final class ChangeDataCaptureDestinationImpl implements ChangeDataCapture
     }
 
     public ChangeDataCaptureDestination create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptureDestinations()
-            .createOrReplace(resourceGroupName, clusterName, destinationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ChangeDataCaptureDestination create(Context context) {
@@ -94,10 +91,7 @@ public final class ChangeDataCaptureDestinationImpl implements ChangeDataCapture
     }
 
     public ChangeDataCaptureDestination apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptureDestinations()
-            .update(resourceGroupName, clusterName, destinationName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ChangeDataCaptureDestination apply(Context context) {
@@ -123,11 +117,7 @@ public final class ChangeDataCaptureDestinationImpl implements ChangeDataCapture
     }
 
     public ChangeDataCaptureDestination refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptureDestinations()
-            .getWithResponse(resourceGroupName, clusterName, destinationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ChangeDataCaptureDestination refresh(Context context) {

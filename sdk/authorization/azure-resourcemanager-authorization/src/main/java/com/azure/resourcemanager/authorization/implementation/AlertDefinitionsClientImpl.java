@@ -88,16 +88,7 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified alert definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertDefinitionId The name of the alert definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AlertDefinitionInner>> getWithResponseAsync(String scope, String alertDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -149,47 +140,19 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
         return service.get(this.client.getEndpoint(), apiVersion, scope, alertDefinitionId, accept, context);
     }
 
-    /**
-     * Get the specified alert definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertDefinitionId The name of the alert definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AlertDefinitionInner> getAsync(String scope, String alertDefinitionId) {
         return getWithResponseAsync(scope, alertDefinitionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified alert definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertDefinitionId The name of the alert definition to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertDefinitionInner> getWithResponse(String scope, String alertDefinitionId, Context context) {
         return getWithResponseAsync(scope, alertDefinitionId, context).block();
     }
 
-    /**
-     * Get the specified alert definition.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertDefinitionId The name of the alert definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertDefinitionInner get(String scope, String alertDefinitionId) {
         return getWithResponse(scope, alertDefinitionId, Context.NONE).getValue();
@@ -251,15 +214,7 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets alert definitions for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert definitions for a resource scope as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AlertDefinitionInner> listForScopeAsync(String scope) {
         return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope),
@@ -282,30 +237,13 @@ public final class AlertDefinitionsClientImpl implements AlertDefinitionsClient 
             nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets alert definitions for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert definitions for a resource scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertDefinitionInner> listForScope(String scope) {
         return new PagedIterable<>(listForScopeAsync(scope));
     }
 
-    /**
-     * Gets alert definitions for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert definitions for a resource scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertDefinitionInner> listForScope(String scope, Context context) {
         return new PagedIterable<>(listForScopeAsync(scope, context));

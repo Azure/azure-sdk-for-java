@@ -424,17 +424,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the Network Device resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Device resource details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkDeviceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkDeviceName, Context context) {
@@ -443,16 +433,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, accept, context);
     }
 
-    /**
-     * Gets the Network Device resource details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Device resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner getByResourceGroup(String resourceGroupName, String networkDeviceName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkDeviceName, Context.NONE).getValue();
@@ -494,11 +475,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkDeviceName,
         NetworkDeviceInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
     /**
@@ -541,37 +518,14 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             NetworkDeviceInner.class, NetworkDeviceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(String resourceGroupName,
         String networkDeviceName, NetworkDeviceInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, networkDeviceName, body);
-        return this.client.<NetworkDeviceInner, NetworkDeviceInner>getLroResult(response, NetworkDeviceInner.class,
-            NetworkDeviceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Create a Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(String resourceGroupName,
         String networkDeviceName, NetworkDeviceInner body, Context context) {
@@ -598,38 +552,17 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner create(String resourceGroupName, String networkDeviceName, NetworkDeviceInner body) {
-        return beginCreate(resourceGroupName, networkDeviceName, body).getFinalResult();
+        return create(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Create a Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner create(String resourceGroupName, String networkDeviceName, NetworkDeviceInner body,
         Context context) {
-        return beginCreate(resourceGroupName, networkDeviceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, networkDeviceName, body, context));
     }
 
     /**
@@ -668,11 +601,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkDeviceName,
         NetworkDevicePatchParameters body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
     /**
@@ -715,37 +644,14 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             NetworkDeviceInner.class, NetworkDeviceInner.class, this.client.getContext());
     }
 
-    /**
-     * Update certain properties of the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Network Device properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(String resourceGroupName,
         String networkDeviceName, NetworkDevicePatchParameters body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkDeviceName, body);
-        return this.client.<NetworkDeviceInner, NetworkDeviceInner>getLroResult(response, NetworkDeviceInner.class,
-            NetworkDeviceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Network Device properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(String resourceGroupName,
         String networkDeviceName, NetworkDevicePatchParameters body, Context context) {
@@ -772,39 +678,18 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update certain properties of the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Network Device properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner update(String resourceGroupName, String networkDeviceName,
         NetworkDevicePatchParameters body) {
-        return beginUpdate(resourceGroupName, networkDeviceName, body).getFinalResult();
+        return update(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Update certain properties of the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Network Device properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Network Device resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceInner update(String resourceGroupName, String networkDeviceName,
         NetworkDevicePatchParameters body, Context context) {
-        return beginUpdate(resourceGroupName, networkDeviceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, networkDeviceName, body, context));
     }
 
     /**
@@ -838,8 +723,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkDeviceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
     /**
@@ -877,33 +761,13 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkDeviceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkDeviceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Delete the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkDeviceName,
         Context context) {
@@ -927,33 +791,16 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkDeviceName) {
-        beginDelete(resourceGroupName, networkDeviceName).getFinalResult();
+        delete(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Delete the Network Device resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkDeviceName, Context context) {
-        beginDelete(resourceGroupName, networkDeviceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkDeviceName, context));
     }
 
     /**
@@ -1003,11 +850,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkDeviceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkDevicesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1029,31 +872,13 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the Network Device resources in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkDevice items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all the Network Device resources in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkDevice items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1101,11 +926,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkDeviceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkDevicesListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1126,27 +947,13 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the Network Device resources in a given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkDevice items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all the Network Device resources in a given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of NetworkDevice items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkDeviceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1189,11 +996,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rebootWithResponse(String resourceGroupName, String networkDeviceName,
         RebootProperties body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.rebootSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, contentType, accept, body,
-            Context.NONE);
+        return rebootWithResponse(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
     /**
@@ -1237,37 +1040,14 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             this.client.getContext());
     }
 
-    /**
-     * Reboot the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginReboot(String resourceGroupName, String networkDeviceName, RebootProperties body) {
-        Response<BinaryData> response = rebootWithResponse(resourceGroupName, networkDeviceName, body);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
-            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+        return beginReboot(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Reboot the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginReboot(String resourceGroupName, String networkDeviceName, RebootProperties body, Context context) {
@@ -1294,39 +1074,18 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reboot the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner reboot(String resourceGroupName, String networkDeviceName,
         RebootProperties body) {
-        return beginReboot(resourceGroupName, networkDeviceName, body).getFinalResult();
+        return reboot(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Reboot the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner reboot(String resourceGroupName, String networkDeviceName, RebootProperties body,
         Context context) {
-        return beginReboot(resourceGroupName, networkDeviceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginReboot(resourceGroupName, networkDeviceName, body, context));
     }
 
     /**
@@ -1362,9 +1121,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshConfigurationWithResponse(String resourceGroupName, String networkDeviceName) {
-        final String accept = "application/json";
-        return service.refreshConfigurationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, accept, Context.NONE);
+        return refreshConfigurationWithResponse(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
     /**
@@ -1408,38 +1165,15 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
                 NetworkDeviceRefreshConfigurationResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Refreshes the configuration the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkDeviceRefreshConfigurationResponseInner>, NetworkDeviceRefreshConfigurationResponseInner>
         beginRefreshConfiguration(String resourceGroupName, String networkDeviceName) {
-        Response<BinaryData> response = refreshConfigurationWithResponse(resourceGroupName, networkDeviceName);
-        return this.client
-            .<NetworkDeviceRefreshConfigurationResponseInner, NetworkDeviceRefreshConfigurationResponseInner>getLroResult(
-                response, NetworkDeviceRefreshConfigurationResponseInner.class,
-                NetworkDeviceRefreshConfigurationResponseInner.class, Context.NONE);
+        return beginRefreshConfiguration(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Refreshes the configuration the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkDeviceRefreshConfigurationResponseInner>, NetworkDeviceRefreshConfigurationResponseInner>
@@ -1468,37 +1202,19 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refreshes the configuration the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
         String networkDeviceName) {
-        return beginRefreshConfiguration(resourceGroupName, networkDeviceName).getFinalResult();
+        return refreshConfiguration(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Refreshes the configuration the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an refresh configuration async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRefreshConfigurationResponseInner refreshConfiguration(String resourceGroupName,
         String networkDeviceName, Context context) {
-        return beginRefreshConfiguration(resourceGroupName, networkDeviceName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRefreshConfiguration(resourceGroupName, networkDeviceName, context));
     }
 
     /**
@@ -1539,11 +1255,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
         String networkDeviceName, UpdateDeviceAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, contentType, accept, body,
-            Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
     /**
@@ -1591,42 +1303,16 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
                 NetworkDeviceUpdateAdministrativeStateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the Administrative state of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkDeviceUpdateAdministrativeStateResponseInner>, NetworkDeviceUpdateAdministrativeStateResponseInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkDeviceName,
             UpdateDeviceAdministrativeState body) {
-        Response<BinaryData> response
-            = updateAdministrativeStateWithResponse(resourceGroupName, networkDeviceName, body);
-        return this.client
-            .<NetworkDeviceUpdateAdministrativeStateResponseInner, NetworkDeviceUpdateAdministrativeStateResponseInner>getLroResult(
-                response, NetworkDeviceUpdateAdministrativeStateResponseInner.class,
-                NetworkDeviceUpdateAdministrativeStateResponseInner.class, Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Updates the Administrative state of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkDeviceUpdateAdministrativeStateResponseInner>, NetworkDeviceUpdateAdministrativeStateResponseInner>
@@ -1658,39 +1344,19 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the Administrative state of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String networkDeviceName, UpdateDeviceAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkDeviceName, body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Updates the Administrative state of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device Administrative State Update Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpdateAdministrativeStateResponseInner updateAdministrativeState(String resourceGroupName,
         String networkDeviceName, UpdateDeviceAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkDeviceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateAdministrativeState(resourceGroupName, networkDeviceName, body, context));
     }
 
     /**
@@ -1728,11 +1394,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> upgradeWithResponse(String resourceGroupName, String networkDeviceName,
         NetworkDeviceUpgradeRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.upgradeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, contentType, accept, body,
-            Context.NONE);
+        return upgradeWithResponse(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
     /**
@@ -1776,37 +1438,14 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             NetworkDeviceUpgradeResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Upgrades the version of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Device Upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceUpgradeResponseInner>, NetworkDeviceUpgradeResponseInner>
         beginUpgrade(String resourceGroupName, String networkDeviceName, NetworkDeviceUpgradeRequest body) {
-        Response<BinaryData> response = upgradeWithResponse(resourceGroupName, networkDeviceName, body);
-        return this.client.<NetworkDeviceUpgradeResponseInner, NetworkDeviceUpgradeResponseInner>getLroResult(response,
-            NetworkDeviceUpgradeResponseInner.class, NetworkDeviceUpgradeResponseInner.class, Context.NONE);
+        return beginUpgrade(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Upgrades the version of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of network Device Upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceUpgradeResponseInner>, NetworkDeviceUpgradeResponseInner> beginUpgrade(
         String resourceGroupName, String networkDeviceName, NetworkDeviceUpgradeRequest body, Context context) {
@@ -1833,39 +1472,18 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Upgrades the version of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device Upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpgradeResponseInner upgrade(String resourceGroupName, String networkDeviceName,
         NetworkDeviceUpgradeRequest body) {
-        return beginUpgrade(resourceGroupName, networkDeviceName, body).getFinalResult();
+        return upgrade(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Upgrades the version of the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Device Upgrade Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceUpgradeResponseInner upgrade(String resourceGroupName, String networkDeviceName,
         NetworkDeviceUpgradeRequest body, Context context) {
-        return beginUpgrade(resourceGroupName, networkDeviceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpgrade(resourceGroupName, networkDeviceName, body, context));
     }
 
     /**
@@ -1906,11 +1524,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runRoCommandWithResponse(String resourceGroupName, String networkDeviceName,
         DeviceRoCommand body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.runRoCommandSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, contentType, accept, body,
-            Context.NONE);
+        return runRoCommandWithResponse(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
     /**
@@ -1958,40 +1572,15 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
                 CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Run the RO Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>, CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>
         beginRunRoCommand(String resourceGroupName, String networkDeviceName, DeviceRoCommand body) {
-        Response<BinaryData> response = runRoCommandWithResponse(resourceGroupName, networkDeviceName, body);
-        return this.client
-            .<CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner, CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>getLroResult(
-                response, CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner.class,
-                CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner.class, Context.NONE);
+        return beginRunRoCommand(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Run the RO Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>, CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner>
@@ -2021,39 +1610,19 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run the RO Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner runRoCommand(String resourceGroupName,
         String networkDeviceName, DeviceRoCommand body) {
-        return beginRunRoCommand(resourceGroupName, networkDeviceName, body).getFinalResult();
+        return runRoCommand(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Run the RO Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForDeviceROCommandsOperationStatusResultInner runRoCommand(String resourceGroupName,
         String networkDeviceName, DeviceRoCommand body, Context context) {
-        return beginRunRoCommand(resourceGroupName, networkDeviceName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRunRoCommand(resourceGroupName, networkDeviceName, body, context));
     }
 
     /**
@@ -2094,11 +1663,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> runRwCommandWithResponse(String resourceGroupName, String networkDeviceName,
         DeviceRwCommand body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.runRwCommandSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, contentType, accept, body,
-            Context.NONE);
+        return runRwCommandWithResponse(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
     /**
@@ -2143,38 +1708,14 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             NetworkDeviceRunRwCommandResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Run the RW Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a RunRwCommand request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceRunRwCommandResponseInner>, NetworkDeviceRunRwCommandResponseInner>
         beginRunRwCommand(String resourceGroupName, String networkDeviceName, DeviceRwCommand body) {
-        Response<BinaryData> response = runRwCommandWithResponse(resourceGroupName, networkDeviceName, body);
-        return this.client.<NetworkDeviceRunRwCommandResponseInner, NetworkDeviceRunRwCommandResponseInner>getLroResult(
-            response, NetworkDeviceRunRwCommandResponseInner.class, NetworkDeviceRunRwCommandResponseInner.class,
-            Context.NONE);
+        return beginRunRwCommand(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Run the RW Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a RunRwCommand request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceRunRwCommandResponseInner>, NetworkDeviceRunRwCommandResponseInner>
         beginRunRwCommand(String resourceGroupName, String networkDeviceName, DeviceRwCommand body, Context context) {
@@ -2202,39 +1743,19 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Run the RW Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a RunRwCommand request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRunRwCommandResponseInner runRwCommand(String resourceGroupName, String networkDeviceName,
         DeviceRwCommand body) {
-        return beginRunRwCommand(resourceGroupName, networkDeviceName, body).getFinalResult();
+        return runRwCommand(resourceGroupName, networkDeviceName, body, Context.NONE);
     }
 
-    /**
-     * Run the RW Command on the Network Device.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param body Request the command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a RunRwCommand request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceRunRwCommandResponseInner runRwCommand(String resourceGroupName, String networkDeviceName,
         DeviceRwCommand body, Context context) {
-        return beginRunRwCommand(resourceGroupName, networkDeviceName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRunRwCommand(resourceGroupName, networkDeviceName, body, context));
     }
 
     /**
@@ -2276,9 +1797,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncPasswordsWithResponse(String resourceGroupName, String networkDeviceName) {
-        final String accept = "application/json";
-        return service.resyncPasswordsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, accept, Context.NONE);
+        return resyncPasswordsWithResponse(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
     /**
@@ -2326,43 +1845,14 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
                 NetworkDeviceResyncPasswordsResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Resync the latest passwords to the Network Device.
-     * 
-     * Updates the Network Device to use the latest passwords. Does not generate new passwords. Allows network devices
-     * missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceResyncPasswordsResponseInner>, NetworkDeviceResyncPasswordsResponseInner>
         beginResyncPasswords(String resourceGroupName, String networkDeviceName) {
-        Response<BinaryData> response = resyncPasswordsWithResponse(resourceGroupName, networkDeviceName);
-        return this.client
-            .<NetworkDeviceResyncPasswordsResponseInner, NetworkDeviceResyncPasswordsResponseInner>getLroResult(
-                response, NetworkDeviceResyncPasswordsResponseInner.class,
-                NetworkDeviceResyncPasswordsResponseInner.class, Context.NONE);
+        return beginResyncPasswords(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Resync the latest passwords to the Network Device.
-     * 
-     * Updates the Network Device to use the latest passwords. Does not generate new passwords. Allows network devices
-     * missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a ResyncPasswords request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkDeviceResyncPasswordsResponseInner>, NetworkDeviceResyncPasswordsResponseInner>
         beginResyncPasswords(String resourceGroupName, String networkDeviceName, Context context) {
@@ -2393,43 +1883,19 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resync the latest passwords to the Network Device.
-     * 
-     * Updates the Network Device to use the latest passwords. Does not generate new passwords. Allows network devices
-     * missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a ResyncPasswords request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName,
         String networkDeviceName) {
-        return beginResyncPasswords(resourceGroupName, networkDeviceName).getFinalResult();
+        return resyncPasswords(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Resync the latest passwords to the Network Device.
-     * 
-     * Updates the Network Device to use the latest passwords. Does not generate new passwords. Allows network devices
-     * missed during a previous password rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a ResyncPasswords request on a Network Device.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkDeviceResyncPasswordsResponseInner resyncPasswords(String resourceGroupName, String networkDeviceName,
         Context context) {
-        return beginResyncPasswords(resourceGroupName, networkDeviceName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginResyncPasswords(resourceGroupName, networkDeviceName, context));
     }
 
     /**
@@ -2471,9 +1937,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncCertificatesWithResponse(String resourceGroupName, String networkDeviceName) {
-        final String accept = "application/json";
-        return service.resyncCertificatesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkDeviceName, accept, Context.NONE);
+        return resyncCertificatesWithResponse(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
     /**
@@ -2523,44 +1987,15 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
                 NetworkFabricResyncCertificatesResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Resync the latest certificates to the Network Device.
-     * 
-     * Updates the Network Device to use the latest certificates. Does not generate new certificates. Allows network
-     * devices missed during a previous certificate rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a ResyncCertificates request on a Network Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkFabricResyncCertificatesResponseInner>, NetworkFabricResyncCertificatesResponseInner>
         beginResyncCertificates(String resourceGroupName, String networkDeviceName) {
-        Response<BinaryData> response = resyncCertificatesWithResponse(resourceGroupName, networkDeviceName);
-        return this.client
-            .<NetworkFabricResyncCertificatesResponseInner, NetworkFabricResyncCertificatesResponseInner>getLroResult(
-                response, NetworkFabricResyncCertificatesResponseInner.class,
-                NetworkFabricResyncCertificatesResponseInner.class, Context.NONE);
+        return beginResyncCertificates(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Resync the latest certificates to the Network Device.
-     * 
-     * Updates the Network Device to use the latest certificates. Does not generate new certificates. Allows network
-     * devices missed during a previous certificate rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for a ResyncCertificates request on a Network Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkFabricResyncCertificatesResponseInner>, NetworkFabricResyncCertificatesResponseInner>
@@ -2593,43 +2028,19 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resync the latest certificates to the Network Device.
-     * 
-     * Updates the Network Device to use the latest certificates. Does not generate new certificates. Allows network
-     * devices missed during a previous certificate rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a ResyncCertificates request on a Network Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricResyncCertificatesResponseInner resyncCertificates(String resourceGroupName,
         String networkDeviceName) {
-        return beginResyncCertificates(resourceGroupName, networkDeviceName).getFinalResult();
+        return resyncCertificates(resourceGroupName, networkDeviceName, Context.NONE);
     }
 
-    /**
-     * Resync the latest certificates to the Network Device.
-     * 
-     * Updates the Network Device to use the latest certificates. Does not generate new certificates. Allows network
-     * devices missed during a previous certificate rotation to be brought back into sync.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkDeviceName Name of the Network Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for a ResyncCertificates request on a Network Fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricResyncCertificatesResponseInner resyncCertificates(String resourceGroupName,
         String networkDeviceName, Context context) {
-        return beginResyncCertificates(resourceGroupName, networkDeviceName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginResyncCertificates(resourceGroupName, networkDeviceName, context));
     }
 
     /**
@@ -2664,11 +2075,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkDeviceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkDevicesListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2722,11 +2129,7 @@ public final class NetworkDevicesClientImpl implements NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkDeviceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkDevicesListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

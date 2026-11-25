@@ -185,16 +185,7 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
         return getByResourceGroupWithResponseAsync(resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the trace association at the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace association at the scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TraceAssociationResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         Context context) {
@@ -203,15 +194,7 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
             this.client.getSubscriptionId(), resourceGroupName, accept, context);
     }
 
-    /**
-     * Gets the trace association at the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace association at the scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceAssociationResourceInner getByResourceGroup(String resourceGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, Context.NONE).getValue();
@@ -257,18 +240,7 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces the trace association at the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an association between an Azure resource scope and an Azure Monitor Workspace along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TraceAssociationResourceInner> createOrUpdateWithResponse(String resourceGroupName,
         TraceAssociationResourceInner resource, Context context) {
@@ -278,16 +250,7 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
             this.client.getSubscriptionId(), resourceGroupName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or replaces the trace association at the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an association between an Azure resource scope and an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceAssociationResourceInner createOrUpdate(String resourceGroupName,
         TraceAssociationResourceInner resource) {
@@ -325,30 +288,14 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
         return deleteWithResponseAsync(resourceGroupName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the trace association at the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, context);
     }
 
-    /**
-     * Deletes the trace association at the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName) {
         deleteWithResponse(resourceGroupName, Context.NONE);
@@ -402,11 +349,7 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceAssociationResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<TraceAssociationResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -429,33 +372,13 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the trace associations that apply to the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceAssociationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceAssociationResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists the trace associations that apply to the scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceAssociationResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceAssociationResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -492,11 +415,7 @@ public final class TraceAssociationsAtResourceGroupsClientImpl implements TraceA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceAssociationResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TraceAssociationResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

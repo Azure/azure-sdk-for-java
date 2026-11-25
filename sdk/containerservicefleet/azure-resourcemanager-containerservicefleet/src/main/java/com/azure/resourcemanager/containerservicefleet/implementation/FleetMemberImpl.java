@@ -102,11 +102,7 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetMembers()
-            .create(resourceGroupName, fleetName, fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch,
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FleetMember create(Context context) {
@@ -133,10 +129,7 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetMembers()
-            .updateAsync(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FleetMember apply(Context context) {
@@ -162,11 +155,7 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFleetMembers()
-            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FleetMember refresh(Context context) {

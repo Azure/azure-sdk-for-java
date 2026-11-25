@@ -141,16 +141,7 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieve an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricAlertResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String ruleName) {
@@ -213,65 +204,27 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             resourceGroupName, ruleName, accept, context);
     }
 
-    /**
-     * Retrieve an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricAlertResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricAlertResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String ruleName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName, context).block();
     }
 
-    /**
-     * Retrieve an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricAlertResourceInner getByResourceGroup(String resourceGroupName, String ruleName) {
         return getByResourceGroupWithResponse(resourceGroupName, ruleName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricAlertResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String ruleName, MetricAlertResourceInner parameters) {
@@ -347,17 +300,7 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             resourceGroupName, ruleName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricAlertResourceInner> createOrUpdateAsync(String resourceGroupName, String ruleName,
         MetricAlertResourceInner parameters) {
@@ -365,52 +308,21 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricAlertResourceInner> createOrUpdateWithResponse(String resourceGroupName, String ruleName,
         MetricAlertResourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters, context).block();
     }
 
-    /**
-     * Create or update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricAlertResourceInner createOrUpdate(String resourceGroupName, String ruleName,
         MetricAlertResourceInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, ruleName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricAlertResourceInner>> updateWithResponseAsync(String resourceGroupName, String ruleName,
         MetricAlertResourcePatch parameters) {
@@ -486,17 +398,7 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             ruleName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricAlertResourceInner> updateAsync(String resourceGroupName, String ruleName,
         MetricAlertResourcePatch parameters) {
@@ -504,51 +406,21 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricAlertResourceInner> updateWithResponse(String resourceGroupName, String ruleName,
         MetricAlertResourcePatch parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, ruleName, parameters, context).block();
     }
 
-    /**
-     * Update an metric alert definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param parameters The parameters of the rule to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metric alert resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricAlertResourceInner update(String resourceGroupName, String ruleName,
         MetricAlertResourcePatch parameters) {
         return updateWithResponse(resourceGroupName, ruleName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Delete an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName) {
         if (this.client.getEndpoint() == null) {
@@ -607,46 +479,19 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             ruleName, context);
     }
 
-    /**
-     * Delete an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String ruleName) {
         return deleteWithResponseAsync(resourceGroupName, ruleName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String ruleName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, ruleName, context).block();
     }
 
-    /**
-     * Delete an alert rule definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ruleName) {
         deleteWithResponse(resourceGroupName, ruleName, Context.NONE);
@@ -722,15 +567,7 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieve alert rule definitions in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricAlertResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -753,30 +590,13 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieve alert rule definitions in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Retrieve alert rule definitions in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -838,13 +658,7 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieve alert rule definitions in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricAlertResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -866,27 +680,13 @@ public final class MetricAlertsClientImpl implements InnerSupportsGet<MetricAler
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieve alert rule definitions in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Retrieve alert rule definitions in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a collection of alert rule resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricAlertResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

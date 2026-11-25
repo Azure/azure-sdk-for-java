@@ -25,7 +25,7 @@ public final class AlertRuleOperationsImpl implements AlertRuleOperations {
 
     public void triggerRuleRun(String resourceGroupName, String workspaceName, String ruleId,
         AnalyticsRuleRunTrigger analyticsRuleRunTriggerParameter) {
-        this.serviceClient().triggerRuleRun(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter);
+        this.triggerRuleRun(resourceGroupName, workspaceName, ruleId, analyticsRuleRunTriggerParameter, Context.NONE);
     }
 
     public void triggerRuleRun(String resourceGroupName, String workspaceName, String ruleId,

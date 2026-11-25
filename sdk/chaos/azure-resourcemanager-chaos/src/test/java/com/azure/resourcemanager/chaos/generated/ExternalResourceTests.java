@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalResource model = BinaryData.fromString("{\"resourceId\":\"f\"}").toObject(ExternalResource.class);
-        Assertions.assertEquals("f", model.resourceId());
+        ExternalResource model = BinaryData.fromString("{\"resourceId\":\"nqqs\"}").toObject(ExternalResource.class);
+        Assertions.assertEquals("nqqs", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalResource model = new ExternalResource().withResourceId("f");
+        ExternalResource model = new ExternalResource().withResourceId("nqqs");
         model = BinaryData.fromObject(model).toObject(ExternalResource.class);
-        Assertions.assertEquals("f", model.resourceId());
+        Assertions.assertEquals("nqqs", model.resourceId());
     }
 }

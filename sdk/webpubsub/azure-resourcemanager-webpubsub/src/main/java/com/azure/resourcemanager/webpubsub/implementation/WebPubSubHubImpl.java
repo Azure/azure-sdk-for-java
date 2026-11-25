@@ -60,10 +60,7 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
     }
 
     public WebPubSubHub create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubHubs()
-            .createOrUpdate(resourceGroupName, resourceName, hubName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WebPubSubHub create(Context context) {
@@ -84,10 +81,7 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
     }
 
     public WebPubSubHub apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubHubs()
-            .createOrUpdate(resourceGroupName, resourceName, hubName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WebPubSubHub apply(Context context) {
@@ -113,11 +107,7 @@ public final class WebPubSubHubImpl implements WebPubSubHub, WebPubSubHub.Defini
     }
 
     public WebPubSubHub refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubHubs()
-            .getWithResponse(resourceGroupName, resourceName, hubName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WebPubSubHub refresh(Context context) {

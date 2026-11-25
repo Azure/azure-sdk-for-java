@@ -647,10 +647,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
-     *     model: String (Required)
+     *     category: String(quality/safety) (Optional)
+     *     model: String (Optional)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      * }
      * }
      * </pre>
@@ -716,13 +731,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -744,10 +760,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -849,13 +880,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -877,10 +909,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1014,13 +1061,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1042,10 +1090,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1144,13 +1207,14 @@ public final class EvaluatorsAsyncClient {
      *             String: String (Required)
      *         }
      *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     status: String(queued/in_progress/succeeded/failed/cancelled/skipped) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
      *         misalignment (Optional): {
+     *             review_target: String (Optional)
      *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
      *             detailed_explanation: String (Optional)
      *             steer (Optional): {
@@ -1172,10 +1236,25 @@ public final class EvaluatorsAsyncClient {
      *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     category: String(quality/safety) (Optional)
      *     model: String (Required)
      *     evaluator_name: String (Required)
      *     evaluator_display_name: String (Optional)
      *     evaluator_description: String (Optional)
+     *     scoring (Optional): {
+     *         mode: String(boolean/likert) (Optional)
+     *     }
+     *     pass_threshold: Double (Optional)
+     *     dimensions (Optional): [
+     *          (Optional){
+     *             id: String (Required)
+     *             description: String (Required)
+     *             allowed: Boolean (Optional)
+     *             weight: Integer (Optional)
+     *             generated_weight: Integer (Optional)
+     *             always_applicable: Boolean (Optional)
+     *         }
+     *     ]
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {

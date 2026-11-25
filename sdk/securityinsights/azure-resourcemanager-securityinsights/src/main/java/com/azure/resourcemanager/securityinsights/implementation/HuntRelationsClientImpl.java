@@ -200,19 +200,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a hunt relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param huntRelationId The hunt relation id (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hunt relation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HuntRelationInner> getWithResponse(String resourceGroupName, String workspaceName, String huntId,
         String huntRelationId, Context context) {
@@ -221,18 +209,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
             resourceGroupName, workspaceName, huntId, huntRelationId, accept, context);
     }
 
-    /**
-     * Gets a hunt relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param huntRelationId The hunt relation id (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hunt relation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HuntRelationInner get(String resourceGroupName, String workspaceName, String huntId, String huntRelationId) {
         return getWithResponse(resourceGroupName, workspaceName, huntId, huntRelationId, Context.NONE).getValue();
@@ -284,20 +261,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a hunt relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param huntRelationId The hunt relation id (GUID).
-     * @param huntRelation The hunt relation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Hunt Relation in Azure Security Insights along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HuntRelationInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String huntId, String huntRelationId, HuntRelationInner huntRelation, Context context) {
@@ -308,19 +272,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
             accept, huntRelation, context);
     }
 
-    /**
-     * Creates or updates a hunt relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param huntRelationId The hunt relation id (GUID).
-     * @param huntRelation The hunt relation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Hunt Relation in Azure Security Insights.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HuntRelationInner createOrUpdate(String resourceGroupName, String workspaceName, String huntId,
         String huntRelationId, HuntRelationInner huntRelation) {
@@ -368,19 +320,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a hunt relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param huntRelationId The hunt relation id (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String huntId,
         String huntRelationId, Context context) {
@@ -388,17 +328,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, huntId, huntRelationId, context);
     }
 
-    /**
-     * Delete a hunt relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param huntRelationId The hunt relation id (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String huntId, String huntRelationId) {
         deleteWithResponse(resourceGroupName, workspaceName, huntId, huntRelationId, Context.NONE);
@@ -501,12 +431,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HuntRelationInner> listSinglePage(String resourceGroupName, String workspaceName,
         String huntId, String filter, String orderby, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<HuntRelationList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, huntId, filter, orderby, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, huntId, filter, orderby, top, skipToken, Context.NONE);
     }
 
     /**
@@ -538,46 +463,17 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all hunt relations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hunt relations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HuntRelationInner> list(String resourceGroupName, String workspaceName, String huntId) {
         final String filter = null;
         final String orderby = null;
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, huntId, filter, orderby, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, huntId, filter, orderby, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets all hunt relations.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param huntId The hunt id (GUID).
-     * @param filter Filters the results, based on a Boolean condition. Optional.
-     * @param orderby Sorts the results. Optional.
-     * @param top Returns only the first n results. Optional.
-     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
-     * a starting point to use for subsequent calls. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all hunt relations as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HuntRelationInner> list(String resourceGroupName, String workspaceName, String huntId,
         String filter, String orderby, Integer top, String skipToken, Context context) {
@@ -615,11 +511,7 @@ public final class HuntRelationsClientImpl implements HuntRelationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HuntRelationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HuntRelationList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

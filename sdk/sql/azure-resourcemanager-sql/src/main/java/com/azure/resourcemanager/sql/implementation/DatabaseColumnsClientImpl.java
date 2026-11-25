@@ -119,20 +119,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get database column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database column along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatabaseColumnInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName) {
@@ -222,20 +209,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, accept, context);
     }
 
-    /**
-     * Get database column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database column on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatabaseColumnInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName) {
@@ -243,21 +217,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get database column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database column along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseColumnInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName, Context context) {
@@ -265,20 +225,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             context).block();
     }
 
-    /**
-     * Get database column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database column.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseColumnInner get(String resourceGroupName, String serverName, String databaseName, String schemaName,
         String tableName, String columnName) {
@@ -390,20 +337,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseColumnInner> listByTableAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String filter) {
@@ -411,19 +345,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             tableName, filter), nextLink -> listByTableNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseColumnInner> listByTableAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName) {
@@ -454,19 +376,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             tableName, filter, context), nextLink -> listByTableNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseColumnInner> listByTable(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName) {
@@ -475,21 +385,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             listByTableAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, filter));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseColumnInner> listByTable(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String filter, Context context) {
@@ -620,22 +516,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schema The schema parameter.
-     * @param table The table parameter.
-     * @param column The column parameter.
-     * @param orderBy The orderBy parameter.
-     * @param skiptoken An opaque token that identifies a starting point in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseColumnInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName, List<String> schema, List<String> table, List<String> column, List<String> orderBy,
@@ -644,17 +525,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             table, column, orderBy, skiptoken), nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseColumnInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -693,17 +564,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseColumnInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
@@ -716,23 +577,7 @@ public final class DatabaseColumnsClientImpl implements DatabaseColumnsClient {
             column, orderBy, skiptoken));
     }
 
-    /**
-     * List database columns.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schema The schema parameter.
-     * @param table The table parameter.
-     * @param column The column parameter.
-     * @param orderBy The orderBy parameter.
-     * @param skiptoken An opaque token that identifies a starting point in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DatabaseColumn list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseColumnInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, List<String> schema, List<String> table, List<String> column, List<String> orderBy,

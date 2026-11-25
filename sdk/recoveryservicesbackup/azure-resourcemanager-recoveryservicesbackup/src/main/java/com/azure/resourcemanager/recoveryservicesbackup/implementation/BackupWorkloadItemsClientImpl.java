@@ -196,12 +196,7 @@ public final class BackupWorkloadItemsClientImpl implements BackupWorkloadItemsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadItemResourceInner> listSinglePage(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String filter, String skipToken) {
-        final String accept = "application/json";
-        Response<WorkloadItemResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, vaultName, fabricName, containerName, filter, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(vaultName, resourceGroupName, fabricName, containerName, filter, skipToken, Context.NONE);
     }
 
     /**
@@ -232,47 +227,16 @@ public final class BackupWorkloadItemsClientImpl implements BackupWorkloadItemsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Provides a pageable list of workload item of a specific container according to the query filter and the
-     * pagination
-     * parameters.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of WorkloadItem resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadItemResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName, filter, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(vaultName, resourceGroupName, fabricName, containerName, filter, skipToken, Context.NONE);
     }
 
-    /**
-     * Provides a pageable list of workload item of a specific container according to the query filter and the
-     * pagination
-     * parameters.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param filter OData filter options.
-     * @param skipToken skipToken Filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of WorkloadItem resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadItemResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String filter, String skipToken, Context context) {
@@ -310,11 +274,7 @@ public final class BackupWorkloadItemsClientImpl implements BackupWorkloadItemsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadItemResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadItemResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -25,7 +25,7 @@ public final class RaiRegosCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"encoding\":\"None\",\"rego\":\"cjfa\"},\"etag\":\"ulp\",\"tags\":{\"forxsqtz\":\"krxifqn\",\"wguxcmmhipbvskci\":\"gxbsal\"},\"id\":\"y\",\"name\":\"kwfsaangfgbm\",\"type\":\"vm\"}";
+            = "{\"properties\":{\"encoding\":\"None\",\"rego\":\"ofxvqlauuagwa\"},\"etag\":\"mcer\",\"tags\":{\"zwjipssvnon\":\"eiqbast\",\"gpdqqbto\":\"jcqcjozzjk\"},\"id\":\"ocuzxllbpwa\",\"name\":\"hwettohgpzwx\",\"type\":\"vtkzbh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,17 @@ public final class RaiRegosCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiRego response = manager.raiRegos()
-            .define("n")
-            .withExistingAccount("u", "omzq")
-            .withTags(mapOf("egefxlieggot", "apialezaydpuzu", "kahhec", "smhssfnwh", "dgwuzron", "nfmkcuft",
-                "ysodcikgx", "dvhzfkdn"))
-            .withProperties(new RaiRegoProperties().withEncoding(RaiRegoEncoding.BASE64).withRego("i"))
-            .withIfMatch("xz")
-            .withIfNoneMatch("jwyfi")
+            .define("rmdwtbrnlsy")
+            .withExistingAccount("oa", "ovufakrxjjwn")
+            .withTags(mapOf("pxngzzxqbgq", "rin", "ifpucv", "zmzctbxzjk", "sk", "dozw"))
+            .withProperties(new RaiRegoProperties().withEncoding(RaiRegoEncoding.BASE64).withRego("istcjhatclpp"))
+            .withIfMatch("uxtwgbawshram")
+            .withIfNoneMatch("sugqcglma")
             .create();
 
         Assertions.assertEquals(RaiRegoEncoding.NONE, response.properties().encoding());
-        Assertions.assertEquals("cjfa", response.properties().rego());
-        Assertions.assertEquals("krxifqn", response.tags().get("forxsqtz"));
+        Assertions.assertEquals("ofxvqlauuagwa", response.properties().rego());
+        Assertions.assertEquals("eiqbast", response.tags().get("zwjipssvnon"));
     }
 
     // Use "Map.of" if available

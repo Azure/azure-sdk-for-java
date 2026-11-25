@@ -67,13 +67,7 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
 
     public RPExtendedInfoResourceList getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
         GetRPExtendedInfoRequestResource parameters) {
-        RPExtendedInfoResourceListInner inner
-            = this.serviceClient().getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters);
-        if (inner != null) {
-            return new RPExtendedInfoResourceListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.getRPExtendedInfo(resourceGroupName, vaultName, fabricName, parameters, Context.NONE);
     }
 
     public RPExtendedInfoResourceList getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,

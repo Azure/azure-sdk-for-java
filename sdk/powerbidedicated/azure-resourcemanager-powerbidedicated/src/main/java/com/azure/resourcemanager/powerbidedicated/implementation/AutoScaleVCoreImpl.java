@@ -97,11 +97,7 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
     }
 
     public AutoScaleVCore create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoScaleVCores()
-            .createWithResponse(resourceGroupName, vcoreName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutoScaleVCore create(Context context) {
@@ -124,11 +120,7 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
     }
 
     public AutoScaleVCore apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoScaleVCores()
-            .updateWithResponse(resourceGroupName, vcoreName, updateVCoreUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutoScaleVCore apply(Context context) {
@@ -152,11 +144,7 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
     }
 
     public AutoScaleVCore refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoScaleVCores()
-            .getByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutoScaleVCore refresh(Context context) {

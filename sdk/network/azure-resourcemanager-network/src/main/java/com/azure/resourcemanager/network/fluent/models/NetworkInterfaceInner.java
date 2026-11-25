@@ -264,6 +264,29 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
+     * Get the networkAdapterIndex property: The index of the physical network adapter.
+     * 
+     * @return the networkAdapterIndex value.
+     */
+    public Integer networkAdapterIndex() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAdapterIndex();
+    }
+
+    /**
+     * Set the networkAdapterIndex property: The index of the physical network adapter.
+     * 
+     * @param networkAdapterIndex the networkAdapterIndex value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withNetworkAdapterIndex(Integer networkAdapterIndex) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withNetworkAdapterIndex(networkAdapterIndex);
+        return this;
+    }
+
+    /**
      * Get the primary property: Whether this is a primary network interface on a virtual machine.
      * 
      * @return the primary value.

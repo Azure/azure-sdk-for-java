@@ -5,6 +5,7 @@
 package com.azure.messaging.webpubsub.chat.implementation;
 
 import com.azure.messaging.webpubsub.chat.models.ChatMessage;
+import com.azure.messaging.webpubsub.chat.models.ChatTopic;
 import com.azure.messaging.webpubsub.chat.models.MessageContent;
 
 /**
@@ -41,5 +42,21 @@ public class JsonMergePatchHelper {
 
     public static MessageContentAccessor getMessageContentAccessor() {
         return messageContentAccessor;
+    }
+
+    private static ChatTopicAccessor chatTopicAccessor;
+
+    public interface ChatTopicAccessor {
+        ChatTopic prepareModelForJsonMergePatch(ChatTopic chatTopic, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(ChatTopic chatTopic);
+    }
+
+    public static void setChatTopicAccessor(ChatTopicAccessor accessor) {
+        chatTopicAccessor = accessor;
+    }
+
+    public static ChatTopicAccessor getChatTopicAccessor() {
+        return chatTopicAccessor;
     }
 }

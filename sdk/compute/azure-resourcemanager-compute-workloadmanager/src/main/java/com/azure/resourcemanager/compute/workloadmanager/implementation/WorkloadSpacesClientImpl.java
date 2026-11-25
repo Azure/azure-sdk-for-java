@@ -248,17 +248,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload space along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadSpaceInner> getByResourceGroupWithResponse(String resourceGroupName, String spaceName,
         Context context) {
@@ -267,16 +257,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             this.client.getSubscriptionId(), resourceGroupName, spaceName, accept, context);
     }
 
-    /**
-     * Gets a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload space.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadSpaceInner getByResourceGroup(String resourceGroupName, String spaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, spaceName, Context.NONE).getValue();
@@ -319,10 +300,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String spaceName,
         WorkloadSpaceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, spaceName, resource, Context.NONE);
     }
 
     /**
@@ -365,37 +343,14 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             WorkloadSpaceInner.class, WorkloadSpaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadSpaceInner>, WorkloadSpaceInner> beginCreateOrUpdate(String resourceGroupName,
         String spaceName, WorkloadSpaceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, spaceName, resource);
-        return this.client.<WorkloadSpaceInner, WorkloadSpaceInner>getLroResult(response, WorkloadSpaceInner.class,
-            WorkloadSpaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, spaceName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadSpaceInner>, WorkloadSpaceInner> beginCreateOrUpdate(String resourceGroupName,
         String spaceName, WorkloadSpaceInner resource, Context context) {
@@ -423,38 +378,18 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadSpaceInner createOrUpdate(String resourceGroupName, String spaceName, WorkloadSpaceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, spaceName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a workload space.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadSpaceInner createOrUpdate(String resourceGroupName, String spaceName, WorkloadSpaceInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, spaceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, spaceName, resource, context));
     }
 
     /**
@@ -493,11 +428,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String spaceName,
         WorkloadSpaceUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, spaceName, properties, Context.NONE);
     }
 
     /**
@@ -540,37 +471,14 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             WorkloadSpaceInner.class, WorkloadSpaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates mutable workload space properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadSpaceInner>, WorkloadSpaceInner> beginUpdate(String resourceGroupName,
         String spaceName, WorkloadSpaceUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, spaceName, properties);
-        return this.client.<WorkloadSpaceInner, WorkloadSpaceInner>getLroResult(response, WorkloadSpaceInner.class,
-            WorkloadSpaceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, spaceName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable workload space properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadSpaceInner>, WorkloadSpaceInner> beginUpdate(String resourceGroupName,
         String spaceName, WorkloadSpaceUpdate properties, Context context) {
@@ -598,38 +506,17 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates mutable workload space properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadSpaceInner update(String resourceGroupName, String spaceName, WorkloadSpaceUpdate properties) {
-        return beginUpdate(resourceGroupName, spaceName, properties).getFinalResult();
+        return update(resourceGroupName, spaceName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable workload space properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a regional governance and lifecycle boundary for composed runtimes.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadSpaceInner update(String resourceGroupName, String spaceName, WorkloadSpaceUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, spaceName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, spaceName, properties, context));
     }
 
     /**
@@ -662,8 +549,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String spaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, spaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, spaceName, Context.NONE);
     }
 
     /**
@@ -700,33 +586,13 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a workload space and its owned resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, spaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, spaceName, Context.NONE);
     }
 
-    /**
-     * Deletes a workload space and its owned resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String spaceName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, spaceName, context);
@@ -748,33 +614,16 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
         return beginDeleteAsync(resourceGroupName, spaceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a workload space and its owned resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName) {
-        beginDelete(resourceGroupName, spaceName).getFinalResult();
+        delete(resourceGroupName, spaceName, Context.NONE);
     }
 
-    /**
-     * Deletes a workload space and its owned resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param spaceName The name of the WorkloadSpace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String spaceName, Context context) {
-        beginDelete(resourceGroupName, spaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, spaceName, context));
     }
 
     /**
@@ -824,11 +673,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadSpaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<WorkloadSpaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -850,31 +695,13 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists workload spaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadSpace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadSpaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists workload spaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadSpace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadSpaceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -922,11 +749,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadSpaceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<WorkloadSpaceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -947,27 +770,13 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists workload spaces in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadSpace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadSpaceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists workload spaces in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkloadSpace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadSpaceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1006,11 +815,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadSpaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadSpaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1064,11 +869,7 @@ public final class WorkloadSpacesClientImpl implements WorkloadSpacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadSpaceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadSpaceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -9,7 +9,22 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ScenarioRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ScenarioRuns_Get.json
+     * x-ms-original-file: 2026-11-01/ScenarioRuns_Get_Partially_Succeeded.json
+     */
+    /**
+     * Sample code: Get a scenario run that completed with suppressed action failures.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void
+        getAScenarioRunThatCompletedWithSuppressedActionFailures(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.scenarioRuns()
+            .getWithResponse("exampleRG", "exampleWorkspace", "12345678-1234-1234-1234-123456789012",
+                "abcd1234-5678-9012-3456-789012345678", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/ScenarioRuns_Get.json
      */
     /**
      * Sample code: Get a scenario run.

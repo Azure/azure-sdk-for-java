@@ -157,17 +157,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a redis cache as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateLinkResourceInner> listByRedisCacheAsync(String resourceGroupName, String cacheName) {
         return new PagedFlux<>(() -> listByRedisCacheSinglePageAsync(resourceGroupName, cacheName),
@@ -193,34 +183,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             nextLink -> listByRedisCacheNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a redis cache as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByRedisCache(String resourceGroupName, String cacheName) {
         return new PagedIterable<>(listByRedisCacheAsync(resourceGroupName, cacheName));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a redis cache.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cacheName The name of the Redis cache.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a redis cache as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByRedisCache(String resourceGroupName, String cacheName,
         Context context) {

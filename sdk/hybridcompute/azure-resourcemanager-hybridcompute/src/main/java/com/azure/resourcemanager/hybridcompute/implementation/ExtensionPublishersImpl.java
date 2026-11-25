@@ -26,8 +26,7 @@ public final class ExtensionPublishersImpl implements ExtensionPublishers {
     }
 
     public PagedIterable<ExtensionPublisher> list(String location) {
-        PagedIterable<ExtensionPublisherInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionPublisherImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<ExtensionPublisher> list(String location, Context context) {

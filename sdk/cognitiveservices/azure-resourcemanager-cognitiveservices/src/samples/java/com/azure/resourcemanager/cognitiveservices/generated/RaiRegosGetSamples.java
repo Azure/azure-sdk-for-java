@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiRegosGetSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/GetRaiRego.json
+     * x-ms-original-file: 2026-11-15-preview/GetRaiRego.json
      */
     /**
      * Sample code: Get a reusable Rego artifact.

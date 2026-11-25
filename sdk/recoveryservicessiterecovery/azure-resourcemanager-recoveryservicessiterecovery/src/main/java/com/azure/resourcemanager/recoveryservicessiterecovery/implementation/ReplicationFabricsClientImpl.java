@@ -346,23 +346,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of an ASR fabric.
-     * 
-     * Gets the details of an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an ASR fabric.
-     * 
-     * Gets the details of an Azure Site Recovery fabric along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricInner> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String filter, Context context) {
@@ -393,21 +377,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             resourceGroupName, resourceName, fabricName, filter, accept, context);
     }
 
-    /**
-     * Gets the details of an ASR fabric.
-     * 
-     * Gets the details of an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an ASR fabric.
-     * 
-     * Gets the details of an Azure Site Recovery fabric.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner get(String resourceGroupName, String resourceName, String fabricName) {
         final String filter = null;
@@ -480,38 +450,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         FabricCreationInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, contentType, accept, input,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, input, Context.NONE);
     }
 
     /**
@@ -589,43 +528,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates an Azure Site Recovery fabric.
-     * 
-     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param input Fabric creation input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(String resourceGroupName, String resourceName,
         String fabricName, FabricCreationInput input) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, resourceName, fabricName, input);
-        return this.client.<FabricInner, FabricInner>getLroResult(response, FabricInner.class, FabricInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, input, Context.NONE);
     }
 
-    /**
-     * Creates an Azure Site Recovery fabric.
-     * 
-     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param input Fabric creation input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(String resourceGroupName, String resourceName,
         String fabricName, FabricCreationInput input, Context context) {
@@ -655,45 +565,19 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates an Azure Site Recovery fabric.
-     * 
-     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param input Fabric creation input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner create(String resourceGroupName, String resourceName, String fabricName,
         FabricCreationInput input) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, input).getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, input, Context.NONE);
     }
 
-    /**
-     * Creates an Azure Site Recovery fabric.
-     * 
-     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param input Fabric creation input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner create(String resourceGroupName, String resourceName, String fabricName,
         FabricCreationInput input, Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, input, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, resourceName, fabricName, input, context));
     }
 
     /**
@@ -751,30 +635,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> purgeWithResponse(String resourceGroupName, String resourceName, String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        return service.purgeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, Context.NONE);
+        return purgeWithResponse(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -841,40 +702,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             this.client.getContext());
     }
 
-    /**
-     * Purges the site.
-     * 
-     * The operation to purge(force delete) an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
         String fabricName) {
-        Response<BinaryData> response = purgeWithResponse(resourceGroupName, resourceName, fabricName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPurge(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Purges the site.
-     * 
-     * The operation to purge(force delete) an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
@@ -901,39 +736,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Purges the site.
-     * 
-     * The operation to purge(force delete) an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String resourceName, String fabricName) {
-        beginPurge(resourceGroupName, resourceName, fabricName).getFinalResult();
+        purge(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Purges the site.
-     * 
-     * The operation to purge(force delete) an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purge(String resourceGroupName, String resourceName, String fabricName, Context context) {
-        beginPurge(resourceGroupName, resourceName, fabricName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPurge(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -1013,29 +825,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<FabricCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -1080,41 +870,13 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of ASR fabrics.
-     * 
-     * Gets a list of the Azure Site Recovery fabrics in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ASR fabrics.
-     * 
-     * Gets a list of the Azure Site Recovery fabrics in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of ASR fabrics.
-     * 
-     * Gets a list of the Azure Site Recovery fabrics in the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ASR fabrics.
-     * 
-     * Gets a list of the Azure Site Recovery fabrics in the vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FabricInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -1178,31 +940,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> checkConsistencyWithResponse(String resourceGroupName, String resourceName,
         String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return service.checkConsistencySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, accept, Context.NONE);
+        return checkConsistencyWithResponse(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -1271,41 +1009,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
-    /**
-     * Checks the consistency of the ASR fabric.
-     * 
-     * The operation to perform a consistency check on the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(String resourceGroupName,
         String resourceName, String fabricName) {
-        Response<BinaryData> response = checkConsistencyWithResponse(resourceGroupName, resourceName, fabricName);
-        return this.client.<FabricInner, FabricInner>getLroResult(response, FabricInner.class, FabricInner.class,
-            Context.NONE);
+        return beginCheckConsistency(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Checks the consistency of the ASR fabric.
-     * 
-     * The operation to perform a consistency check on the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(String resourceGroupName,
         String resourceName, String fabricName, Context context) {
@@ -1334,42 +1045,18 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Checks the consistency of the ASR fabric.
-     * 
-     * The operation to perform a consistency check on the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner checkConsistency(String resourceGroupName, String resourceName, String fabricName) {
-        return beginCheckConsistency(resourceGroupName, resourceName, fabricName).getFinalResult();
+        return checkConsistency(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Checks the consistency of the ASR fabric.
-     * 
-     * The operation to perform a consistency check on the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner checkConsistency(String resourceGroupName, String resourceName, String fabricName,
         Context context) {
-        return beginCheckConsistency(resourceGroupName, resourceName, fabricName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCheckConsistency(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -1428,30 +1115,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> migrateToAadWithResponse(String resourceGroupName, String resourceName,
         String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        return service.migrateToAadSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, Context.NONE);
+        return migrateToAadWithResponse(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -1519,40 +1183,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             this.client.getContext());
     }
 
-    /**
-     * Migrates the site to AAD.
-     * 
-     * The operation to migrate an Azure Site Recovery fabric to AAD.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(String resourceGroupName, String resourceName,
         String fabricName) {
-        Response<BinaryData> response = migrateToAadWithResponse(resourceGroupName, resourceName, fabricName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginMigrateToAad(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Migrates the site to AAD.
-     * 
-     * The operation to migrate an Azure Site Recovery fabric to AAD.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
@@ -1579,39 +1217,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrates the site to AAD.
-     * 
-     * The operation to migrate an Azure Site Recovery fabric to AAD.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrateToAad(String resourceGroupName, String resourceName, String fabricName) {
-        beginMigrateToAad(resourceGroupName, resourceName, fabricName).getFinalResult();
+        migrateToAad(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Migrates the site to AAD.
-     * 
-     * The operation to migrate an Azure Site Recovery fabric to AAD.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrateToAad(String resourceGroupName, String resourceName, String fabricName, Context context) {
-        beginMigrateToAad(resourceGroupName, resourceName, fabricName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginMigrateToAad(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -1681,40 +1296,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reassociateGatewayWithResponse(String resourceGroupName, String resourceName,
         String fabricName, FailoverProcessServerRequest failoverProcessServerRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (failoverProcessServerRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter failoverProcessServerRequest is required and cannot be null."));
-        } else {
-            failoverProcessServerRequest.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.reassociateGatewaySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, contentType, accept,
-            failoverProcessServerRequest, Context.NONE);
+        return reassociateGatewayWithResponse(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest,
+            Context.NONE);
     }
 
     /**
@@ -1794,44 +1377,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
-    /**
-     * Perform failover of the process server.
-     * 
-     * The operation to move replications from a process server to another process server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param failoverProcessServerRequest The input to the failover process server operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(String resourceGroupName,
         String resourceName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest) {
-        Response<BinaryData> response
-            = reassociateGatewayWithResponse(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest);
-        return this.client.<FabricInner, FabricInner>getLroResult(response, FabricInner.class, FabricInner.class,
+        return beginReassociateGateway(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest,
             Context.NONE);
     }
 
-    /**
-     * Perform failover of the process server.
-     * 
-     * The operation to move replications from a process server to another process server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param failoverProcessServerRequest The input to the failover process server operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(String resourceGroupName,
         String resourceName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest,
@@ -1864,47 +1418,20 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Perform failover of the process server.
-     * 
-     * The operation to move replications from a process server to another process server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param failoverProcessServerRequest The input to the failover process server operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner reassociateGateway(String resourceGroupName, String resourceName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
-        return beginReassociateGateway(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest)
-            .getFinalResult();
+        return reassociateGateway(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest,
+            Context.NONE);
     }
 
-    /**
-     * Perform failover of the process server.
-     * 
-     * The operation to move replications from a process server to another process server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param failoverProcessServerRequest The input to the failover process server operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner reassociateGateway(String resourceGroupName, String resourceName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest, Context context) {
-        return beginReassociateGateway(resourceGroupName, resourceName, fabricName, failoverProcessServerRequest,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginReassociateGateway(resourceGroupName, resourceName, fabricName,
+            failoverProcessServerRequest, context));
     }
 
     /**
@@ -1962,30 +1489,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -2052,40 +1556,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             this.client.getContext());
     }
 
-    /**
-     * Deletes the site.
-     * 
-     * The operation to delete or remove an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName, fabricName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Deletes the site.
-     * 
-     * The operation to delete or remove an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
@@ -2112,39 +1590,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the site.
-     * 
-     * The operation to delete or remove an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName) {
-        beginDelete(resourceGroupName, resourceName, fabricName).getFinalResult();
+        delete(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Deletes the site.
-     * 
-     * The operation to delete or remove an Azure Site Recovery fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, Context context) {
-        beginDelete(resourceGroupName, resourceName, fabricName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -2214,39 +1669,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> renewCertificateWithResponse(String resourceGroupName, String resourceName,
         String fabricName, RenewCertificateInput renewCertificate) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (renewCertificate == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter renewCertificate is required and cannot be null."));
-        } else {
-            renewCertificate.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.renewCertificateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, contentType, accept,
-            renewCertificate, Context.NONE);
+        return renewCertificateWithResponse(resourceGroupName, resourceName, fabricName, renewCertificate,
+            Context.NONE);
     }
 
     /**
@@ -2325,44 +1749,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
-    /**
-     * Renews certificate for the fabric.
-     * 
-     * Renews the connection certificate for the ASR replication fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param renewCertificate Renew certificate input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginRenewCertificate(String resourceGroupName,
         String resourceName, String fabricName, RenewCertificateInput renewCertificate) {
-        Response<BinaryData> response
-            = renewCertificateWithResponse(resourceGroupName, resourceName, fabricName, renewCertificate);
-        return this.client.<FabricInner, FabricInner>getLroResult(response, FabricInner.class, FabricInner.class,
-            Context.NONE);
+        return beginRenewCertificate(resourceGroupName, resourceName, fabricName, renewCertificate, Context.NONE);
     }
 
-    /**
-     * Renews certificate for the fabric.
-     * 
-     * Renews the connection certificate for the ASR replication fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param renewCertificate Renew certificate input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginRenewCertificate(String resourceGroupName,
         String resourceName, String fabricName, RenewCertificateInput renewCertificate, Context context) {
@@ -2393,46 +1787,19 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Renews certificate for the fabric.
-     * 
-     * Renews the connection certificate for the ASR replication fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param renewCertificate Renew certificate input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner renewCertificate(String resourceGroupName, String resourceName, String fabricName,
         RenewCertificateInput renewCertificate) {
-        return beginRenewCertificate(resourceGroupName, resourceName, fabricName, renewCertificate).getFinalResult();
+        return renewCertificate(resourceGroupName, resourceName, fabricName, renewCertificate, Context.NONE);
     }
 
-    /**
-     * Renews certificate for the fabric.
-     * 
-     * Renews the connection certificate for the ASR replication fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param renewCertificate Renew certificate input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return fabric definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FabricInner renewCertificate(String resourceGroupName, String resourceName, String fabricName,
         RenewCertificateInput renewCertificate, Context context) {
-        return beginRenewCertificate(resourceGroupName, resourceName, fabricName, renewCertificate, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRenewCertificate(resourceGroupName, resourceName, fabricName, renewCertificate, context));
     }
 
     /**
@@ -2487,30 +1854,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeInfraWithResponse(String resourceGroupName, String resourceName,
         String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        return service.removeInfraSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, Context.NONE);
+        return removeInfraWithResponse(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -2574,36 +1918,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             this.client.getContext());
     }
 
-    /**
-     * Removes the appliance's infrastructure under the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRemoveInfra(String resourceGroupName, String resourceName,
         String fabricName) {
-        Response<BinaryData> response = removeInfraWithResponse(resourceGroupName, resourceName, fabricName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRemoveInfra(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Removes the appliance's infrastructure under the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRemoveInfra(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
@@ -2628,35 +1950,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes the appliance's infrastructure under the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeInfra(String resourceGroupName, String resourceName, String fabricName) {
-        beginRemoveInfra(resourceGroupName, resourceName, fabricName).getFinalResult();
+        removeInfra(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Removes the appliance's infrastructure under the fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeInfra(String resourceGroupName, String resourceName, String fabricName, Context context) {
-        beginRemoveInfra(resourceGroupName, resourceName, fabricName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRemoveInfra(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -2704,20 +2007,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<FabricCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
