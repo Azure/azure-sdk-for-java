@@ -851,10 +851,11 @@ public final class BlobDownloadHeaders {
      * Gets the status of the tier being inferred for the blob.
      *
      * @return the status of the tier being inferred for the blob. This is only set for Page blobs on a premium storage
-     * account or for Block blobs on blob storage or general purpose V2 account.
+     * account or for Block blobs on blob storage or general purpose V2 account, and is {@code null} when the service
+     * does not return it.
      */
     public Boolean isAccessTierInferred() {
-        return Boolean.TRUE.equals(internalHeaders.isXMsAccessTierInferred());
+        return internalHeaders.isXMsAccessTierInferred();
     }
 
     /**

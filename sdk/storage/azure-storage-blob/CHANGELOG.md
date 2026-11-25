@@ -7,9 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed missing public accessors in `BlobDownloadHeaders` for access-tier headers already parsed by the generated
-  `BlobsDownloadHeaders`. Added `getAccessTier()`, `isAccessTierInferred()`, `getAccessTierChangeTime()`, and
-  `getSmartAccessTier()`, restoring previously documented support.
+- Fixed missing access-tier information on downloads. Added `getAccessTier()`, `isAccessTierInferred()`,
+  `getAccessTierChangeTime()`, and `getSmartAccessTier()` to `BlobDownloadHeaders`, restoring previously documented
+  support, and populated the same properties on the `BlobProperties` returned by `downloadToFile`, `openInputStream`,
+  and `openSeekableByteChannelRead`, which previously always reported `null`.
 - Fixed `createIfNotExists` on `BlobContainerClient` and `BlobContainerAsyncClient`, and
   `createBlobContainerIfNotExists` on `BlobServiceClient` and `BlobServiceAsyncClient`, reporting every 409 as a
   container that already exists. They now do so only for `ContainerAlreadyExists`, and throw for any other 409,

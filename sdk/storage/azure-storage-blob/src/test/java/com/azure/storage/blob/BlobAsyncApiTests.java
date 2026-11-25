@@ -54,6 +54,8 @@ import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -108,6 +110,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -410,11 +413,128 @@ public class BlobAsyncApiTests extends BlobTestBase {
         }).verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void downloadRangeWithOptionsAccessTierHeaders() {
+        BlobRange range = new BlobRange(0, 5L);
+        byte[] expected = Arrays.copyOf(DATA.getDefaultBytes(), 5);
+
+        Mono<BlobDownloadContentAsyncResponse> response = bc.setAccessTier(AccessTier.COOL)
+            .then(bc.downloadStreamWithResponse(new BlobDownloadStreamOptions().setRange(range)))
+            .flatMap(r -> {
+                assertEquals(206, r.getStatusCode());
+                assertExplicitAccessTierHeaders(AccessTier.COOL, r.getDeserializedHeaders());
+                return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+            })
+            .flatMap(r -> {
+                TestUtils.assertArraysEqual(expected, r);
+                return bc.downloadContentWithResponse(new BlobDownloadContentOptions().setRange(range));
+            });
+
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(206, r.getStatusCode());
+            assertExplicitAccessTierHeaders(AccessTier.COOL, r.getDeserializedHeaders());
+            TestUtils.assertArraysEqual(expected, r.getValue().toBytes());
+        }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void downloadInferredAccessTierHeaders() {
+        Mono<BlobDownloadContentAsyncResponse> response
+            = bc.downloadStreamWithResponse(null, null, null, false).flatMap(r -> {
+                assertInferredAccessTierHeaders(r.getDeserializedHeaders());
+                return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+            }).then(bc.downloadContentWithResponse(null, null));
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertInferredAccessTierHeaders(r.getDeserializedHeaders()))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @ParameterizedTest
+    @MethodSource("downloadExplicitAccessTierHeadersSupplier")
+    public void downloadExplicitAccessTierHeaders(AccessTier tier) {
+        Mono<BlobDownloadContentAsyncResponse> response
+            = bc.setAccessTier(tier).then(bc.downloadStreamWithResponse(null, null, null, false)).flatMap(r -> {
+                assertExplicitAccessTierHeaders(tier, r.getDeserializedHeaders());
+                return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+            }).then(bc.downloadContentWithResponse(null, null));
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertExplicitAccessTierHeaders(tier, r.getDeserializedHeaders()))
+            .verifyComplete();
+    }
+
+    private static Stream<AccessTier> downloadExplicitAccessTierHeadersSupplier() {
+        return Stream.of(AccessTier.HOT, AccessTier.COOL, AccessTier.COLD);
+    }
+
     private static void assertSmartAccessTierHeaders(BlobDownloadHeaders headers) {
         assertEquals(AccessTier.SMART, headers.getAccessTier());
         assertNotNull(headers.getSmartAccessTier());
-        assertFalse(headers.isAccessTierInferred());
-        assertNotEquals(OffsetDateTime.now(), headers.getAccessTierChangeTime());
+        assertNotEquals(AccessTier.SMART, headers.getSmartAccessTier());
+        assertNull(headers.isAccessTierInferred());
+        assertNotNull(headers.getAccessTierChangeTime());
+    }
+
+    private static void assertInferredAccessTierHeaders(BlobDownloadHeaders headers) {
+        assertEquals(AccessTier.HOT, headers.getAccessTier());
+        assertTrue(headers.isAccessTierInferred());
+        assertNull(headers.getSmartAccessTier());
+        assertNull(headers.getAccessTierChangeTime());
+    }
+
+    private static void assertExplicitAccessTierHeaders(AccessTier expectedTier, BlobDownloadHeaders headers) {
+        assertEquals(expectedTier, headers.getAccessTier());
+        assertNull(headers.isAccessTierInferred());
+        assertNull(headers.getSmartAccessTier());
+        assertNotNull(headers.getAccessTierChangeTime());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void downloadToFilePropertiesInferredAccessTier() throws IOException {
+        File testFile = new File(generateResourceName(entityNo) + ".txt");
+        Files.deleteIfExists(testFile.toPath());
+
+        try {
+            StepVerifier.create(bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.getPath())))
+                .assertNext(r -> {
+                    BlobProperties properties = r.getValue();
+                    assertEquals(AccessTier.HOT, properties.getAccessTier());
+                    assertTrue(properties.isAccessTierInferred());
+                    assertNull(properties.getSmartAccessTier());
+                    assertNull(properties.getAccessTierChangeTime());
+                })
+                .verifyComplete();
+        } finally {
+            Files.deleteIfExists(testFile.toPath());
+        }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void downloadToFilePropertiesExplicitAccessTier() throws IOException {
+        File testFile = new File(generateResourceName(entityNo) + ".txt");
+        Files.deleteIfExists(testFile.toPath());
+
+        try {
+            StepVerifier
+                .create(bc.setAccessTier(AccessTier.COOL)
+                    .then(bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.getPath()))))
+                .assertNext(r -> {
+                    BlobProperties properties = r.getValue();
+                    assertEquals(AccessTier.COOL, properties.getAccessTier());
+                    assertNull(properties.isAccessTierInferred());
+                    assertNull(properties.getSmartAccessTier());
+                    assertNotNull(properties.getAccessTierChangeTime());
+                })
+                .verifyComplete();
+        } finally {
+            Files.deleteIfExists(testFile.toPath());
+        }
     }
 
     @Test
