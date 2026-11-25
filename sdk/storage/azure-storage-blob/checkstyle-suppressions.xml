@@ -19,7 +19,6 @@
   <suppress files="com.azure.storage.blob.implementation.ServicesImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobInputStream.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobOutputStream.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.storage.blob.implementation.models.BlobHierarchyListSegment.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.blob.implementation.models.BlobLayoutEndpoints.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.blob.implementation.models.BlobLayoutRanges.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
 </suppressions>

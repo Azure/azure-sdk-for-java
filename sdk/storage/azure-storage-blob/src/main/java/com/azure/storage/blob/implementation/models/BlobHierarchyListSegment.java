@@ -16,7 +16,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The BlobHierarchyListSegment model.
+ * Represents an array of blobs.
  */
 @Immutable
 public final class BlobHierarchyListSegment implements XmlSerializable<BlobHierarchyListSegment> {
@@ -24,7 +24,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * The blob items.
      */
     @Generated
-    private List<BlobItemInternal> blobItems = new ArrayList<>();
+    private final List<BlobItemInternal> blobItems;
 
     /*
      * The blob prefixes.
@@ -34,9 +34,12 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
 
     /**
      * Creates an instance of BlobHierarchyListSegment class.
+     * 
+     * @param blobItems the blobItems value to set.
      */
     @Generated
-    private BlobHierarchyListSegment() {
+    private BlobHierarchyListSegment(List<BlobItemInternal> blobItems) {
+        this.blobItems = blobItems;
     }
 
     /**
@@ -68,7 +71,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blobs" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "BlobHierarchyList" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.blobItems != null) {
             for (BlobItemInternal element : this.blobItems) {
@@ -89,6 +92,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobHierarchyListSegment if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobHierarchyListSegment.
      */
     @Generated
@@ -104,26 +108,33 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobHierarchyListSegment if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobHierarchyListSegment.
      */
     @Generated
     public static BlobHierarchyListSegment fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Blobs" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "BlobHierarchyList" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobHierarchyListSegment deserializedBlobHierarchyListSegment = new BlobHierarchyListSegment();
+            List<BlobItemInternal> blobItems = null;
+            List<BlobPrefixInternal> blobPrefixes = new ArrayList<>();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
                 if ("Blob".equals(elementName.getLocalPart())) {
-                    deserializedBlobHierarchyListSegment.blobItems.add(BlobItemInternal.fromXml(reader, "Blob"));
+                    if (blobItems == null) {
+                        blobItems = new ArrayList<>();
+                    }
+                    blobItems.add(BlobItemInternal.fromXml(reader, "Blob"));
                 } else if ("BlobPrefix".equals(elementName.getLocalPart())) {
-                    deserializedBlobHierarchyListSegment.blobPrefixes
-                        .add(BlobPrefixInternal.fromXml(reader, "BlobPrefix"));
+                    blobPrefixes.add(BlobPrefixInternal.fromXml(reader, "BlobPrefix"));
                 } else {
                     reader.skipElement();
                 }
             }
+            BlobHierarchyListSegment deserializedBlobHierarchyListSegment = new BlobHierarchyListSegment(blobItems);
+            deserializedBlobHierarchyListSegment.blobPrefixes = blobPrefixes;
 
             return deserializedBlobHierarchyListSegment;
         });

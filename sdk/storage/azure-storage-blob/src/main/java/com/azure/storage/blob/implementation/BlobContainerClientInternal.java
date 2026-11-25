@@ -1202,8 +1202,8 @@ public final class BlobContainerClientInternal {
      *     Marker: String (Optional)
      *     MaxResults: Integer (Optional)
      *     Blobs (Required): {
-     *         Blob (Optional): [
-     *              (Optional){
+     *         Blob (Required): [
+     *              (Required){
      *                 Name (Required): {
      *                     Encoded: Boolean (Optional)
      *                     content: String (Optional)

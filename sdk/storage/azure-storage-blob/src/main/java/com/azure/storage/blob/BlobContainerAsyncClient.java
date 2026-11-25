@@ -22,6 +22,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobHierarchyListSegment;
+import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
@@ -1424,8 +1425,10 @@ public final class BlobContainerAsyncClient {
                 if (segment == null) {
                     value = Collections.emptyList();
                 } else {
-                    value = new ArrayList<>(segment.getBlobItems().size() + segment.getBlobPrefixes().size());
-                    segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                    List<BlobItemInternal> blobItems
+                        = segment.getBlobItems() == null ? Collections.emptyList() : segment.getBlobItems();
+                    value = new ArrayList<>(blobItems.size() + segment.getBlobPrefixes().size());
+                    blobItems.forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
                     segment.getBlobPrefixes()
                         .forEach(prefix -> value.add(
                             new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName())).setIsPrefix(true)));
@@ -1495,8 +1498,10 @@ public final class BlobContainerAsyncClient {
                             BlobHierarchyListSegment segment = xmlResponse.getHierarchicalList();
                             List<BlobItem> value = new ArrayList<>();
                             if (segment != null) {
-                                segment.getBlobItems()
-                                    .forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                                if (segment.getBlobItems() != null) {
+                                    segment.getBlobItems()
+                                        .forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                                }
                                 segment.getBlobPrefixes()
                                     .forEach(prefix -> value
                                         .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))

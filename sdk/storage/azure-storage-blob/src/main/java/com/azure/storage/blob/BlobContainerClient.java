@@ -1323,7 +1323,10 @@ public final class BlobContainerClient {
                         BlobHierarchyListSegment segment = xmlResponse.getHierarchicalList();
                         List<BlobItem> value = new ArrayList<>();
                         if (segment != null) {
-                            segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                            if (segment.getBlobItems() != null) {
+                                segment.getBlobItems()
+                                    .forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                            }
                             segment.getBlobPrefixes()
                                 .forEach(prefix -> value
                                     .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
@@ -1353,7 +1356,9 @@ public final class BlobContainerClient {
             BlobHierarchyListSegment segment = response.getValue().getHierarchicalList();
             List<BlobItem> value = new ArrayList<>();
             if (segment != null) {
-                segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                if (segment.getBlobItems() != null) {
+                    segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                }
                 segment.getBlobPrefixes()
                     .forEach(prefix -> value
                         .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName())).setIsPrefix(true)));
