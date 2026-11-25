@@ -248,17 +248,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ZkpRollup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ZkpRollupInner> getByResourceGroupWithResponse(String resourceGroupName, String zkpRollupName,
         Context context) {
@@ -267,16 +257,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             this.client.getSubscriptionId(), resourceGroupName, zkpRollupName, accept, context);
     }
 
-    /**
-     * Get a ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ZkpRollup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZkpRollupInner getByResourceGroup(String resourceGroupName, String zkpRollupName) {
         return getByResourceGroupWithResponse(resourceGroupName, zkpRollupName, Context.NONE).getValue();
@@ -319,11 +300,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String zkpRollupName,
         ZkpRollupInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, zkpRollupName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, zkpRollupName, resource, Context.NONE);
     }
 
     /**
@@ -367,37 +344,14 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             ZkpRollupInner.class, ZkpRollupInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a ZKP rollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ZkpRollupInner>, ZkpRollupInner> beginCreateOrUpdate(String resourceGroupName,
         String zkpRollupName, ZkpRollupInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, zkpRollupName, resource);
-        return this.client.<ZkpRollupInner, ZkpRollupInner>getLroResult(response, ZkpRollupInner.class,
-            ZkpRollupInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, zkpRollupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a ZKP rollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ZkpRollupInner>, ZkpRollupInner> beginCreateOrUpdate(String resourceGroupName,
         String zkpRollupName, ZkpRollupInner resource, Context context) {
@@ -424,38 +378,18 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a ZKP rollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZkpRollupInner createOrUpdate(String resourceGroupName, String zkpRollupName, ZkpRollupInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, zkpRollupName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, zkpRollupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a ZKP rollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZkpRollupInner createOrUpdate(String resourceGroupName, String zkpRollupName, ZkpRollupInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, zkpRollupName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, zkpRollupName, resource, context));
     }
 
     /**
@@ -499,11 +433,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String zkpRollupName,
         ZkpRollupUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, zkpRollupName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, zkpRollupName, properties, Context.NONE);
     }
 
     /**
@@ -551,41 +481,14 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             ZkpRollupInner.class, ZkpRollupInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates rollup tags, identity attachments or configuration. Metadata-only updates complete synchronously.
-     * Configuration changes reconcile the rollup and existing partition asynchronously, preserving checkpoints and
-     * discovered contracts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ZkpRollupInner>, ZkpRollupInner> beginUpdate(String resourceGroupName,
         String zkpRollupName, ZkpRollupUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, zkpRollupName, properties);
-        return this.client.<ZkpRollupInner, ZkpRollupInner>getLroResult(response, ZkpRollupInner.class,
-            ZkpRollupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, zkpRollupName, properties, Context.NONE);
     }
 
-    /**
-     * Updates rollup tags, identity attachments or configuration. Metadata-only updates complete synchronously.
-     * Configuration changes reconcile the rollup and existing partition asynchronously, preserving checkpoints and
-     * discovered contracts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ZkpRollupInner>, ZkpRollupInner> beginUpdate(String resourceGroupName,
         String zkpRollupName, ZkpRollupUpdate properties, Context context) {
@@ -614,42 +517,17 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates rollup tags, identity attachments or configuration. Metadata-only updates complete synchronously.
-     * Configuration changes reconcile the rollup and existing partition asynchronously, preserving checkpoints and
-     * discovered contracts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZkpRollupInner update(String resourceGroupName, String zkpRollupName, ZkpRollupUpdate properties) {
-        return beginUpdate(resourceGroupName, zkpRollupName, properties).getFinalResult();
+        return update(resourceGroupName, zkpRollupName, properties, Context.NONE);
     }
 
-    /**
-     * Updates rollup tags, identity attachments or configuration. Metadata-only updates complete synchronously.
-     * Configuration changes reconcile the rollup and existing partition asynchronously, preserving checkpoints and
-     * discovered contracts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DigitalAssets ZKP rollup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZkpRollupInner update(String resourceGroupName, String zkpRollupName, ZkpRollupUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, zkpRollupName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, zkpRollupName, properties, context));
     }
 
     /**
@@ -682,8 +560,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String zkpRollupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, zkpRollupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, zkpRollupName, Context.NONE);
     }
 
     /**
@@ -720,33 +597,13 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String zkpRollupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, zkpRollupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, zkpRollupName, Context.NONE);
     }
 
-    /**
-     * Delete a ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String zkpRollupName,
         Context context) {
@@ -769,33 +626,16 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
         return beginDeleteAsync(resourceGroupName, zkpRollupName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String zkpRollupName) {
-        beginDelete(resourceGroupName, zkpRollupName).getFinalResult();
+        delete(resourceGroupName, zkpRollupName, Context.NONE);
     }
 
-    /**
-     * Delete a ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String zkpRollupName, Context context) {
-        beginDelete(resourceGroupName, zkpRollupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, zkpRollupName, context));
     }
 
     /**
@@ -845,11 +685,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ZkpRollupInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ZkpRollupListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -871,31 +707,13 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ZkpRollup resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ZkpRollup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZkpRollupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List ZkpRollup resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ZkpRollup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZkpRollupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -943,11 +761,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ZkpRollupInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ZkpRollupListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -968,27 +782,13 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ZkpRollup resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ZkpRollup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZkpRollupInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List ZkpRollup resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ZkpRollup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZkpRollupInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1027,11 +827,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ZkpRollupInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ZkpRollupListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1085,11 +881,7 @@ public final class ZkpRollupsClientImpl implements ZkpRollupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ZkpRollupInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ZkpRollupListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

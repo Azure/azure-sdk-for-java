@@ -91,10 +91,7 @@ public final class ZkpRollupImpl implements ZkpRollup, ZkpRollup.Definition, Zkp
     }
 
     public ZkpRollup create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getZkpRollups()
-            .createOrUpdate(resourceGroupName, zkpRollupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ZkpRollup create(Context context) {
@@ -116,10 +113,7 @@ public final class ZkpRollupImpl implements ZkpRollup, ZkpRollup.Definition, Zkp
     }
 
     public ZkpRollup apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getZkpRollups()
-            .update(resourceGroupName, zkpRollupName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ZkpRollup apply(Context context) {
@@ -142,11 +136,7 @@ public final class ZkpRollupImpl implements ZkpRollup, ZkpRollup.Definition, Zkp
     }
 
     public ZkpRollup refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getZkpRollups()
-            .getByResourceGroupWithResponse(resourceGroupName, zkpRollupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ZkpRollup refresh(Context context) {

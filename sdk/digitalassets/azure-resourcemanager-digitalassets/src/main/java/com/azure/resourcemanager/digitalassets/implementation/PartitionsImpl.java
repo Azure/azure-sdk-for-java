@@ -45,7 +45,7 @@ public final class PartitionsImpl implements Partitions {
     }
 
     public void delete(String resourceGroupName, String zkpRollupName, String partitionName) {
-        this.serviceClient().delete(resourceGroupName, zkpRollupName, partitionName);
+        this.delete(resourceGroupName, zkpRollupName, partitionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String zkpRollupName, String partitionName, Context context) {
@@ -53,8 +53,7 @@ public final class PartitionsImpl implements Partitions {
     }
 
     public PagedIterable<Partition> listByParent(String resourceGroupName, String zkpRollupName) {
-        PagedIterable<PartitionInner> inner = this.serviceClient().listByParent(resourceGroupName, zkpRollupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartitionImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, zkpRollupName, Context.NONE);
     }
 
     public PagedIterable<Partition> listByParent(String resourceGroupName, String zkpRollupName, Context context) {
@@ -64,102 +63,36 @@ public final class PartitionsImpl implements Partitions {
     }
 
     public Partition getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String zkpRollupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "zkpRollupName");
-        if (zkpRollupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'zkpRollups'.", id)));
-        }
-        String partitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "partitionName");
-        if (partitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'partitions'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, zkpRollupName, partitionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Partition> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String zkpRollupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String zkpRollupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "zkpRollupName");
-        if (zkpRollupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'zkpRollups'.", id)));
-        }
-        String partitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "zkpRollupName", "zkpRollups", LOGGER);
+        String partitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "partitionName");
-        if (partitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'partitions'.", id)));
-        }
+            "partitionName", "partitions", LOGGER);
         return this.getWithResponse(resourceGroupName, zkpRollupName, partitionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String zkpRollupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "zkpRollupName");
-        if (zkpRollupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'zkpRollups'.", id)));
-        }
-        String partitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "partitionName");
-        if (partitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'partitions'.", id)));
-        }
-        this.delete(resourceGroupName, zkpRollupName, partitionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String zkpRollupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String zkpRollupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "zkpRollupName");
-        if (zkpRollupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'zkpRollups'.", id)));
-        }
-        String partitionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "zkpRollupName", "zkpRollups", LOGGER);
+        String partitionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalAssets/zkpRollups/{zkpRollupName}/partitions/{partitionName}",
-            "partitionName");
-        if (partitionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'partitions'.", id)));
-        }
+            "partitionName", "partitions", LOGGER);
         this.delete(resourceGroupName, zkpRollupName, partitionName, context);
     }
 

@@ -87,10 +87,7 @@ public final class PartitionImpl implements Partition, Partition.Definition, Par
     }
 
     public Partition create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartitions()
-            .createOrUpdate(resourceGroupName, zkpRollupName, partitionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Partition create(Context context) {
@@ -112,11 +109,7 @@ public final class PartitionImpl implements Partition, Partition.Definition, Par
     }
 
     public Partition apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartitions()
-            .updateWithResponse(resourceGroupName, zkpRollupName, partitionName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Partition apply(Context context) {
@@ -143,11 +136,7 @@ public final class PartitionImpl implements Partition, Partition.Definition, Par
     }
 
     public Partition refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPartitions()
-            .getWithResponse(resourceGroupName, zkpRollupName, partitionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Partition refresh(Context context) {

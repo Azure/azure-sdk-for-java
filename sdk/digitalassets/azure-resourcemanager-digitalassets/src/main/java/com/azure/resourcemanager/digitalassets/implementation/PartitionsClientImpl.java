@@ -222,18 +222,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Partition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartitionInner> getWithResponse(String resourceGroupName, String zkpRollupName,
         String partitionName, Context context) {
@@ -242,17 +231,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
             resourceGroupName, zkpRollupName, partitionName, accept, context);
     }
 
-    /**
-     * Get a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Partition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionInner get(String resourceGroupName, String zkpRollupName, String partitionName) {
         return getWithResponse(resourceGroupName, zkpRollupName, partitionName, Context.NONE).getValue();
@@ -298,11 +277,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String zkpRollupName,
         String partitionName, PartitionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, zkpRollupName, partitionName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, zkpRollupName, partitionName, resource, Context.NONE);
     }
 
     /**
@@ -349,40 +324,14 @@ public final class PartitionsClientImpl implements PartitionsClient {
             PartitionInner.class, PartitionInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a deployable partition of a ZkpRollup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartitionInner>, PartitionInner> beginCreateOrUpdate(String resourceGroupName,
         String zkpRollupName, String partitionName, PartitionInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, zkpRollupName, partitionName, resource);
-        return this.client.<PartitionInner, PartitionInner>getLroResult(response, PartitionInner.class,
-            PartitionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, zkpRollupName, partitionName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a deployable partition of a ZkpRollup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PartitionInner>, PartitionInner> beginCreateOrUpdate(String resourceGroupName,
         String zkpRollupName, String partitionName, PartitionInner resource, Context context) {
@@ -411,41 +360,19 @@ public final class PartitionsClientImpl implements PartitionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployable partition of a ZkpRollup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionInner createOrUpdate(String resourceGroupName, String zkpRollupName, String partitionName,
         PartitionInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, zkpRollupName, partitionName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, zkpRollupName, partitionName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployable partition of a ZkpRollup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionInner createOrUpdate(String resourceGroupName, String zkpRollupName, String partitionName,
         PartitionInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, zkpRollupName, partitionName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, zkpRollupName, partitionName, resource, context));
     }
 
     /**
@@ -492,19 +419,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployable partition of a ZkpRollup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartitionInner> updateWithResponse(String resourceGroupName, String zkpRollupName,
         String partitionName, PartitionTagsUpdate properties, Context context) {
@@ -515,18 +430,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
             properties, context);
     }
 
-    /**
-     * Update a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployable partition of a ZkpRollup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionInner update(String resourceGroupName, String zkpRollupName, String partitionName,
         PartitionTagsUpdate properties) {
@@ -567,8 +471,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String zkpRollupName,
         String partitionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, zkpRollupName, partitionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, zkpRollupName, partitionName, Context.NONE);
     }
 
     /**
@@ -610,36 +513,14 @@ public final class PartitionsClientImpl implements PartitionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String zkpRollupName,
         String partitionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, zkpRollupName, partitionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, zkpRollupName, partitionName, Context.NONE);
     }
 
-    /**
-     * Delete a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String zkpRollupName,
         String partitionName, Context context) {
@@ -664,35 +545,16 @@ public final class PartitionsClientImpl implements PartitionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String zkpRollupName, String partitionName) {
-        beginDelete(resourceGroupName, zkpRollupName, partitionName).getFinalResult();
+        delete(resourceGroupName, zkpRollupName, partitionName, Context.NONE);
     }
 
-    /**
-     * Delete a Partition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param partitionName The name of the partition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String zkpRollupName, String partitionName, Context context) {
-        beginDelete(resourceGroupName, zkpRollupName, partitionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, zkpRollupName, partitionName, context));
     }
 
     /**
@@ -746,12 +608,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartitionInner> listByParentSinglePage(String resourceGroupName, String zkpRollupName) {
-        final String accept = "application/json";
-        Response<PartitionListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, zkpRollupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, zkpRollupName, Context.NONE);
     }
 
     /**
@@ -776,33 +633,13 @@ public final class PartitionsClientImpl implements PartitionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Partition resources by ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Partition list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionInner> listByParent(String resourceGroupName, String zkpRollupName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, zkpRollupName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, zkpRollupName, Context.NONE);
     }
 
-    /**
-     * List Partition resources by ZkpRollup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param zkpRollupName The name of the ZKP rollup resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Partition list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionInner> listByParent(String resourceGroupName, String zkpRollupName, Context context) {
         return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, zkpRollupName, context),
@@ -840,11 +677,7 @@ public final class PartitionsClientImpl implements PartitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PartitionInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PartitionListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
