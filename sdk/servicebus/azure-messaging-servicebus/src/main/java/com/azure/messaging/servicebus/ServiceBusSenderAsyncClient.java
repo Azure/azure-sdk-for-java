@@ -489,8 +489,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         maxSize, maximumBatchSize)));
             }
             final int batchSize = maxSize > 0 ? maxSize : maximumBatchSize;
-            return Mono.just(new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer,
-                messageSerializer, context));
+            return Mono.just(
+                new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer, context));
         })).onErrorMap(this::mapError);
     }
 

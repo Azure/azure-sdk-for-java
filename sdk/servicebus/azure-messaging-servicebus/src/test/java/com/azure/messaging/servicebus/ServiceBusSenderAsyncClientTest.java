@@ -609,8 +609,8 @@ class ServiceBusSenderAsyncClientTest {
             final AtomicInteger batchSizeAttempts = new AtomicInteger();
             when(sendLink.getMaxBatchSize()).thenReturn(Mono.defer(() -> {
                 if ("batch-retry".equals(sendKind) && batchSizeAttempts.incrementAndGet() == 1) {
-                    return Mono.error(
-                        new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "batch-size negotiation retry", null));
+                    return Mono.error(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
+                        "batch-size negotiation retry", null));
                 }
                 return Mono.just(1024 * 1024);
             }));
@@ -663,7 +663,8 @@ class ServiceBusSenderAsyncClientTest {
                 assertTrue(spanProcessor.processed.await(10, TimeUnit.SECONDS));
                 assertNull(handlerError.get());
                 if ("batch-retry".equals(sendKind)) {
-                    assertEquals(2, batchSizeAttempts.get(), "Batch-size negotiation must retry before tracing the batch");
+                    assertEquals(2, batchSizeAttempts.get(),
+                        "Batch-size negotiation must retry before tracing the batch");
                 }
                 assertNotNull(ambient.get());
                 assertFalse(ambient.get().isValid(), "SDK-only tracing must not leak a thread-local process scope");
