@@ -1,0 +1,18 @@
+{
+  "repository": "Azure/azure-cosmos-driver",
+  "distributionCommit": "27015e3386073125e8536bb08a25945e34929bd1",
+  "nativeVersion": "0.3.0",
+  "rustSourceCommit": "1eb20f6aab4887b3e8cf13383761e3e6d97a826a",
+  "provenanceSha256": "9819e8c451c6a170831fb1d83e553f19491436dc41ff972ecf68813e00949783",
+  "headerSha256": "975e9de7abacd30a5c06abcd66b414e0f7272578d6820a965451a0579662895b",
+  "targets": {
+    "darwin-arm64": {
+      "modulePath": "darwin/arm64",
+      "archiveSha256": "310322d2a87c690b60b0ce8e4cfd080f20c393b795a3c05aaa518c3a2b9ae327"
+    },
+    "linux-amd64-glibc": {
+      "modulePath": "linux/amd64",
+      "archiveSha256": "9e6c037195dbc41a5531988aa65e17b9e13afdfe7f8b0f29cdf4d5f9ea48530b"
+    }
+  }
+}

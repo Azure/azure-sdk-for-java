@@ -1,8 +1,8 @@
 # Azure Cosmos DB SDK for Java - v5
 
 > **Not a functional SDK. Do not publish or use this build in an application.**
-> This is the first migration slice on `feature/cosmos/vnext`, not a release.
-> It contains no service clients, operations, native loader, or native binaries.
+> This is an early migration foundation on `feature/cosmos/vnext`, not a release.
+> It contains no service clients, operations, or bundled native binaries.
 
 The v5 foundation uses `com.azure.v2:azure-cosmos` and the `com.azure.v2.cosmos`
 Java namespace and module name, aligned with the new Azure Core family.
@@ -104,7 +104,7 @@ After that command succeeds, build the v5 module with its tests and quality chec
 mvn -B -ntp "-Dmaven.repo.local=$COSMOS_MAVEN_REPO" "-Dgpg.skip" -f sdk/cosmos-v5/pom.xml -pl com.azure.v2:azure-cosmos clean verify "-Dspotless.apply.skip=true"
 ```
 
-The second command runs six JUnit 5 metadata/coexistence tests, Checkstyle, SpotBugs,
+The second command runs ten JUnit 5 metadata/coexistence/loader tests, Checkstyle, SpotBugs,
 formatting verification, and artifact generation without disabling those checks
 for Cosmos. Outputs are under `sdk/cosmos-v5/azure-cosmos/target`. Reuse this
 Maven repository for iterative builds; rerun the bootstrap after changing the
@@ -117,8 +117,8 @@ It invokes the same Maven commands above, then checks invariants that a successf
 `mvn verify` alone does not establish: shared version-map consistency,
 unambiguous v4/v5 discovery, effective compiler-execution configuration, Java 17
 class-file versions, expected artifact contents, and the deployment guard.
-It also rejects implementation classes and native payloads for this initial
-migration slice. Those last assertions must evolve deliberately in later PRs.
+It permits only the internal native loader implementation and rejects public
+client implementations and native payloads. Those assertions must evolve deliberately in later PRs.
 Keep this validation when changing build, version, or packaging configuration.
 
 For this additional validation, install
@@ -187,24 +187,112 @@ is separately approved.
 SDK metadata lives at `com.azure.v2.cosmos.properties` so classpath
 resource lookup cannot shadow v4's root-level `azure-cosmos.properties`.
 
+### Published native driver validation
+
+Native acquisition follows the Go v2 distribution-first model, rather than
+building a developer's sibling Rust checkout. `native-driver.json` pins
+`Azure/azure-cosmos-driver` distribution commit
+`27015e3386073125e8536bb08a25945e34929bd1` (native interface `0.3.0`),
+the producing Rust source revision, and SHA-256 digests for the provenance,
+header, and platform archives. Updating the driver requires deliberately
+updating these pins together. Do not select a floating branch or `latest` tag.
+
+With **Python 3.9+, a host-architecture JDK 17+ (`JAVA_HOME`), and a C compiler**
+installed, run from the repository root:
+
+```bash
+python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_native_distribution.py
+python3 -B sdk/cosmos-v5/azure-cosmos/verify-native.py
+```
+
+The current validation targets are macOS ARM64 (Xcode command-line tools) and
+Linux AMD64 with glibc (a C compiler and libc development libraries). They are
+not a declaration of shipping SDK platform support. Other platforms, including
+musl Linux and Windows, fail explicitly instead of skipping native validation.
+No Rust installation, Go installation, Cosmos account, or emulator is required.
+
+The validator downloads only the selected prebuilt static archive and matching
+C header, verifies their hashes and source/version provenance, generates JNI
+headers with `javac -h`, and links the archive into a test-only JNI shared
+library. It loads a relocated copy from a temporary consumer directory outside
+the source/build tree, without driver library-path environment variables or an
+absolute rpath. The package-private `NativeLibraryLoader` requires an explicit
+regular-file path, loads a canonical path once, and rejects replacement after a
+successful load. Failed loads can be retried; there is no fallback to another
+driver, bundled resource, or library search path. The smoke exercises these
+behaviors using the real JNI library, then rejects an incompatible version pin before any
+struct-sensitive native call, then creates/frees the runtime three times.
+
+Verified downloads are cached under `target/native-validation` and rechecked
+before reuse. A corrupted download/cache entry fails the command; it never
+falls back to a local driver build. To recover from a reported checksum mismatch,
+investigate the mismatch and remove only the identified cache file before retrying.
+Generated JNI libraries/classes are temporary and do not enter the SDK JAR.
+The Linux CI job runs this command without an opt-out or skip-on-missing-tools path.
+
+This adopts distribution acquisition, an internal explicit-path loader, and
+JNI-link validation. The JNI lifecycle shim is test infrastructure, not a public
+client or the full operation shim. Resource extraction, operations, and
+multi-platform single-JAR packaging remain separate migration work.
+Future distribution must preserve the driver's license/NOTICE/SBOM metadata
+and qualify linking and execution on every claimed platform.
+
+### Pinned emulator fixture
+
+The test emulator is independent of the distributed driver. `emulator.json`
+pins Rust source `408c4eb145b189cb14771ed7ae1f52626e5873ef` and toolchain `1.95.0`,
+matching the Go v2 emulator baseline. Rust is required **only for this test
+fixture**, not for acquiring/linking the published driver.
+
+Install [rustup](https://rustup.rs/) and the pinned toolchain, then run:
+
+```bash
+rustup toolchain install 1.95.0 --profile minimal
+python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p 'test_*.py'
+python3 -B sdk/cosmos-v5/azure-cosmos/verify-emulator.py
+```
+
+The script fetches the exact commit into `target/emulator/source`, rejects a
+different or dirty cached checkout, and uses `cargo build --locked` with a
+separate Cargo cache and target directory. No sibling checkout is consulted.
+CI prepares the pinned Cargo feed configuration with `--prepare-only --configure-feed`,
+then authenticates with `NuGetAuthenticate@1` and `CargoAuthenticate@0` before
+building. Local runs use Cargo's normal registry unless their isolated Cargo
+cache has been explicitly configured otherwise.
+
+The fixture starts the emulator with the checked-in loopback/ephemeral-port
+configuration, reads its structured ready record, checks management health and
+gateway reachability, and terminates/reaps the exact child process in a `finally`
+block. Readiness is bounded; missing tools, build errors, early exit, invalid
+endpoints, and health failures are errors, never skipped tests. Runtime output
+is retained under `target/emulator/run`.
+
+The same context-managed fixture can surround later operation tests. This slice
+does not yet submit a Cosmos operation through JNI or claim service parity.
+The emulator is an engineering test tool, not a supported Azure product.
+
 ## Validation and release boundaries
 
 The separate `sdk/cosmos-v5/ci.yml` pipeline defines build validation on JDK 17,
 21, and 25. It does not import release stages, deploy Maven packages, sign
 packages, or publish to a dev feed. The module also disables Maven deployment.
-Pipeline registration and required-check configuration must be arranged with
+The Linux native-distribution job additionally exercises JNI linking/loading
+and the pinned emulator fixture;
+the ordinary Maven build remains pure Java. Pipeline registration and
+required-check configuration must be arranged with
 the repository maintainers; adding YAML does not create branch protection.
 
-The durable entrypoints are `verify-build.py` and the `cosmos-v5-validation.yml`
-pipeline template. Their current-slice assertions still forbid implementation
-classes, native payloads, and module exports/opens. Future native/API changes
+The durable entrypoints are `verify-build.py`, `verify-native.py`,
+`verify-emulator.py`, and the `cosmos-v5-validation.yml` pipeline template.
+The artifact validator allows only the internal loader and still forbids native
+payloads and public client implementations; JPMS tests reject exports/opens. Future native/API changes
 must deliberately evolve those assertions; the naming change does not relax
 them or the Java baseline, artifact, isolation, or deployment checks.
 
 Checkstyle now inherits the Core v2 parent's unmodified `vnext` ruleset:
 the `com.azure.v2.cosmos` namespace no longer needs a track2 override.
 No rules are modified or suppressed. SpotBugs includes the build metadata and
-coexistence tests because production still contains only module/package metadata.
+coexistence and loader tests. No quality rules or coverage thresholds are lowered.
 
 The default Cosmos reactor and both shared version-manifest columns remain on
 v4. The v5 foundation is not a replacement dependency for any existing consumer.
@@ -214,14 +302,16 @@ v4 is not a runtime dependency of the v5 artifact.
 
 ## Key concepts
 
-This slice establishes build and module boundaries only. No public packages are
-exported. Native acquisition, ABI validation, loader behavior, and emulator
-testing belong to the next migration slice, followed by service functionality.
+This slice establishes build and module boundaries, explicit-path native loading,
+distribution validation, and an isolated emulator fixture. No public packages are
+exported. Public client functionality and release packaging remain migration work.
 
 ## Examples
 
 The pure-Java build metadata tests exercise dependency loading and build metadata,
-not Cosmos operations. No v4 samples or documentation are copied into v5.
+not Cosmos operations. The separate native smoke exercises ABI checks and runtime
+allocation/teardown without a service connection. No v4 samples or documentation
+are copied into v5.
 
 ## Troubleshooting
 

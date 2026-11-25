@@ -81,8 +81,9 @@ def verify_artifacts():
     with zipfile.ZipFile(str(base) + ".jar") as jar:
         classes = [name for name in jar.namelist() if name.endswith(".class")]
         require("module-info.class" in classes, "Missing JPMS descriptor")
-        require(all(name.endswith("package-info.class") or name == "module-info.class" for name in classes),
-                "The foundation must not contain legacy implementation or placeholder public clients")
+        allowed = {"module-info.class", "com/azure/v2/cosmos/implementation/NativeLibraryLoader.class"}
+        require(all(name.endswith("package-info.class") or name in allowed for name in classes),
+                "Only the internal native loader is permitted; no placeholder public clients")
         require(not any(name.endswith((".dll", ".so", ".dylib")) for name in jar.namelist()),
                 "Native binaries belong to a later migration slice")
         require("com.azure.v2.cosmos.properties" in jar.namelist(),
@@ -105,7 +106,7 @@ def verify_artifacts():
         require(all(int(suite.get(key, "0")) == 0 for key in ("errors", "failures", "skipped")),
                 f"Failed or skipped build metadata tests: {report}")
         executed += int(suite.get("tests", "0"))
-    require(executed >= 6, "Expected metadata and v4/v5 coexistence tests to execute")
+    require(executed >= 10, "Expected metadata, v4/v5 coexistence and native loader tests to execute")
 
 
 def main():
