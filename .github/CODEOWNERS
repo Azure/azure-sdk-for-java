@@ -280,6 +280,9 @@
 # PRLabel: %Cosmos
 /sdk/cosmos/                                                       @Azure/azure-cosmos-sdk @kirankumarkolli
 
+# PRLabel: %Cosmos
+/sdk/cosmos-v5/                                                    @Azure/azure-cosmos-sdk @kirankumarkolli @kushagraThapar
+
 # ServiceLabel: %Cosmos
 # ServiceOwners:                                                   @kushagraThapar @pjohari-ms @TheovanKraay
 
@@ -973,3 +976,6 @@
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json        @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
+
+# Retain EngSys ownership alongside Cosmos owners for v5 validation.
+/eng/pipelines/templates/stages/cosmos-v5-validation.yml           @raych1 @praveenkuttappan @Azure/azure-cosmos-sdk @kirankumarkolli @kushagraThapar
