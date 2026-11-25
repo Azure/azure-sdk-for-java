@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-webpubsub-chat</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub-chat;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub-chat;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for WebPubSubChat</name>
@@ -69,7 +69,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.7</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

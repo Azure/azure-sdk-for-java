@@ -313,17 +313,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an edge machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineInner> getByResourceGroupWithResponse(String resourceGroupName, String edgeMachineName,
         Context context) {
@@ -332,16 +322,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, accept, context);
     }
 
-    /**
-     * Get an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an edge machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineInner getByResourceGroup(String resourceGroupName, String edgeMachineName) {
         return getByResourceGroupWithResponse(resourceGroupName, edgeMachineName, Context.NONE).getValue();
@@ -384,11 +365,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String edgeMachineName,
         EdgeMachineInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, edgeMachineName, resource, Context.NONE);
     }
 
     /**
@@ -433,37 +410,14 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             EdgeMachineInner.class, EdgeMachineInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineInner>, EdgeMachineInner> beginCreateOrUpdate(String resourceGroupName,
         String edgeMachineName, EdgeMachineInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, edgeMachineName, resource);
-        return this.client.<EdgeMachineInner, EdgeMachineInner>getLroResult(response, EdgeMachineInner.class,
-            EdgeMachineInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineInner>, EdgeMachineInner> beginCreateOrUpdate(String resourceGroupName,
         String edgeMachineName, EdgeMachineInner resource, Context context) {
@@ -491,39 +445,19 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         EdgeMachineInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, edgeMachineName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineInner createOrUpdate(String resourceGroupName, String edgeMachineName, EdgeMachineInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, edgeMachineName, resource, context));
     }
 
     /**
@@ -563,11 +497,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String edgeMachineName,
         EdgeMachinePatch properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, edgeMachineName, properties, Context.NONE);
     }
 
     /**
@@ -611,37 +541,14 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             EdgeMachineInner.class, EdgeMachineInner.class, this.client.getContext());
     }
 
-    /**
-     * Update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineInner>, EdgeMachineInner> beginUpdate(String resourceGroupName,
         String edgeMachineName, EdgeMachinePatch properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, edgeMachineName, properties);
-        return this.client.<EdgeMachineInner, EdgeMachineInner>getLroResult(response, EdgeMachineInner.class,
-            EdgeMachineInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, edgeMachineName, properties, Context.NONE);
     }
 
-    /**
-     * Update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineInner>, EdgeMachineInner> beginUpdate(String resourceGroupName,
         String edgeMachineName, EdgeMachinePatch properties, Context context) {
@@ -668,38 +575,18 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineInner update(String resourceGroupName, String edgeMachineName, EdgeMachinePatch properties) {
-        return beginUpdate(resourceGroupName, edgeMachineName, properties).getFinalResult();
+        return update(resourceGroupName, edgeMachineName, properties, Context.NONE);
     }
 
-    /**
-     * Update an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edgeMachine details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineInner update(String resourceGroupName, String edgeMachineName, EdgeMachinePatch properties,
         Context context) {
-        return beginUpdate(resourceGroupName, edgeMachineName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, edgeMachineName, properties, context));
     }
 
     /**
@@ -732,8 +619,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeMachineName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     /**
@@ -770,33 +656,13 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeMachineName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * Delete an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         Context context) {
@@ -820,33 +686,16 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName) {
-        beginDelete(resourceGroupName, edgeMachineName).getFinalResult();
+        delete(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * Delete an edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, Context context) {
-        beginDelete(resourceGroupName, edgeMachineName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, edgeMachineName, context));
     }
 
     /**
@@ -896,11 +745,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<EdgeMachineListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -922,31 +767,13 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all edge machines in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List all edge machines in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -994,11 +821,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<EdgeMachineListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1019,27 +842,13 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all edge machines in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List all edge machines in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachine list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1082,11 +891,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateWithResponse(String resourceGroupName, String edgeMachineName,
         EdgeMachineValidateRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, contentType, accept, body,
-            Context.NONE);
+        return validateWithResponse(resourceGroupName, edgeMachineName, body, Context.NONE);
     }
 
     /**
@@ -1130,37 +935,14 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             EdgeMachineValidateResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * A long-running resource action to validate the edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the validate response for Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineValidateResponseInner>, EdgeMachineValidateResponseInner>
         beginValidate(String resourceGroupName, String edgeMachineName, EdgeMachineValidateRequest body) {
-        Response<BinaryData> response = validateWithResponse(resourceGroupName, edgeMachineName, body);
-        return this.client.<EdgeMachineValidateResponseInner, EdgeMachineValidateResponseInner>getLroResult(response,
-            EdgeMachineValidateResponseInner.class, EdgeMachineValidateResponseInner.class, Context.NONE);
+        return beginValidate(resourceGroupName, edgeMachineName, body, Context.NONE);
     }
 
-    /**
-     * A long-running resource action to validate the edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the validate response for Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineValidateResponseInner>, EdgeMachineValidateResponseInner> beginValidate(
         String resourceGroupName, String edgeMachineName, EdgeMachineValidateRequest body, Context context) {
@@ -1187,39 +969,18 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * A long-running resource action to validate the edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validate response for Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineValidateResponseInner validate(String resourceGroupName, String edgeMachineName,
         EdgeMachineValidateRequest body) {
-        return beginValidate(resourceGroupName, edgeMachineName, body).getFinalResult();
+        return validate(resourceGroupName, edgeMachineName, body, Context.NONE);
     }
 
-    /**
-     * A long-running resource action to validate the edge machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the validate response for Edge Machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineValidateResponseInner validate(String resourceGroupName, String edgeMachineName,
         EdgeMachineValidateRequest body, Context context) {
-        return beginValidate(resourceGroupName, edgeMachineName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginValidate(resourceGroupName, edgeMachineName, body, context));
     }
 
     /**
@@ -1256,8 +1017,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshSecuritySettingsWithResponse(String resourceGroupName, String edgeMachineName) {
-        return service.refreshSecuritySettingsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, Context.NONE);
+        return refreshSecuritySettingsWithResponse(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     /**
@@ -1299,36 +1059,14 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Trigger an on-demand sync of edge machine security settings from Guest Configuration.
-     * Creates the default security settings child resource if it does not already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshSecuritySettings(String resourceGroupName,
         String edgeMachineName) {
-        Response<BinaryData> response = refreshSecuritySettingsWithResponse(resourceGroupName, edgeMachineName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRefreshSecuritySettings(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * Trigger an on-demand sync of edge machine security settings from Guest Configuration.
-     * Creates the default security settings child resource if it does not already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshSecuritySettings(String resourceGroupName,
         String edgeMachineName, Context context) {
@@ -1354,35 +1092,16 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger an on-demand sync of edge machine security settings from Guest Configuration.
-     * Creates the default security settings child resource if it does not already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshSecuritySettings(String resourceGroupName, String edgeMachineName) {
-        beginRefreshSecuritySettings(resourceGroupName, edgeMachineName).getFinalResult();
+        refreshSecuritySettings(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * Trigger an on-demand sync of edge machine security settings from Guest Configuration.
-     * Creates the default security settings child resource if it does not already exist.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshSecuritySettings(String resourceGroupName, String edgeMachineName, Context context) {
-        beginRefreshSecuritySettings(resourceGroupName, edgeMachineName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRefreshSecuritySettings(resourceGroupName, edgeMachineName, context));
     }
 
     /**
@@ -1420,8 +1139,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshApplicableUpdatesWithResponse(String resourceGroupName,
         String edgeMachineName) {
-        return service.refreshApplicableUpdatesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, Context.NONE);
+        return refreshApplicableUpdatesWithResponse(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     /**
@@ -1463,36 +1181,14 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Trigger an on-demand refresh of applicable updates for the edge machine.
-     * Creates or updates the default EdgeMachineUpdate child resource with the latest set of applicable updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshApplicableUpdates(String resourceGroupName,
         String edgeMachineName) {
-        Response<BinaryData> response = refreshApplicableUpdatesWithResponse(resourceGroupName, edgeMachineName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRefreshApplicableUpdates(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * Trigger an on-demand refresh of applicable updates for the edge machine.
-     * Creates or updates the default EdgeMachineUpdate child resource with the latest set of applicable updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshApplicableUpdates(String resourceGroupName,
         String edgeMachineName, Context context) {
@@ -1518,35 +1214,17 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger an on-demand refresh of applicable updates for the edge machine.
-     * Creates or updates the default EdgeMachineUpdate child resource with the latest set of applicable updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshApplicableUpdates(String resourceGroupName, String edgeMachineName) {
-        beginRefreshApplicableUpdates(resourceGroupName, edgeMachineName).getFinalResult();
+        refreshApplicableUpdates(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * Trigger an on-demand refresh of applicable updates for the edge machine.
-     * Creates or updates the default EdgeMachineUpdate child resource with the latest set of applicable updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshApplicableUpdates(String resourceGroupName, String edgeMachineName, Context context) {
-        beginRefreshApplicableUpdates(resourceGroupName, edgeMachineName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginRefreshApplicableUpdates(resourceGroupName, edgeMachineName, context));
     }
 
     /**
@@ -1581,11 +1259,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1639,11 +1313,7 @@ public final class EdgeMachinesClientImpl implements EdgeMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

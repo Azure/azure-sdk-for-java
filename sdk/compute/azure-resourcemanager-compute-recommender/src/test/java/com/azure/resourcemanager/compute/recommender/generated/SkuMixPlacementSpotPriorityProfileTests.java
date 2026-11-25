@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuMixPlacementSpotPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuMixPlacementSpotPriorityProfile model = BinaryData.fromString("{\"maxPricePerVm\":33.77051911745761}")
+        SkuMixPlacementSpotPriorityProfile model = BinaryData.fromString("{\"maxPricePerVm\":53.94881150809374}")
             .toObject(SkuMixPlacementSpotPriorityProfile.class);
-        Assertions.assertEquals(33.77051911745761D, model.maxPricePerVm());
+        Assertions.assertEquals(53.94881150809374D, model.maxPricePerVm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkuMixPlacementSpotPriorityProfile model
-            = new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(33.77051911745761D);
+            = new SkuMixPlacementSpotPriorityProfile().withMaxPricePerVm(53.94881150809374D);
         model = BinaryData.fromObject(model).toObject(SkuMixPlacementSpotPriorityProfile.class);
-        Assertions.assertEquals(33.77051911745761D, model.maxPricePerVm());
+        Assertions.assertEquals(53.94881150809374D, model.maxPricePerVm());
     }
 }

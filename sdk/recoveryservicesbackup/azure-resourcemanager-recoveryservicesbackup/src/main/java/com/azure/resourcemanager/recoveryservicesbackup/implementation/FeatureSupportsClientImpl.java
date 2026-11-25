@@ -115,17 +115,7 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
         return validateWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * It will validate if given feature with resource properties is supported in service.
-     * 
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Feature support request object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for feature support requests for Azure IaasVm along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureVMResourceFeatureSupportResponseInner> validateWithResponse(String azureRegion,
         FeatureSupportRequest parameters, Context context) {
@@ -135,16 +125,7 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * It will validate if given feature with resource properties is supported in service.
-     * 
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Feature support request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for feature support requests for Azure IaasVm.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureVMResourceFeatureSupportResponseInner validate(String azureRegion, FeatureSupportRequest parameters) {
         return validateWithResponse(azureRegion, parameters, Context.NONE).getValue();

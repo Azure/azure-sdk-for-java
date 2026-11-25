@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedClusterUpgradeSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedClusterUpgradeSpec model = BinaryData.fromString("{\"type\":\"Full\",\"kubernetesVersion\":\"wrck\"}")
-            .toObject(ManagedClusterUpgradeSpec.class);
+        ManagedClusterUpgradeSpec model
+            = BinaryData.fromString("{\"type\":\"Full\",\"kubernetesVersion\":\"ibthostgktstvd\"}")
+                .toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.type());
-        Assertions.assertEquals("wrck", model.kubernetesVersion());
+        Assertions.assertEquals("ibthostgktstvd", model.kubernetesVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedClusterUpgradeSpec model
-            = new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL).withKubernetesVersion("wrck");
+        ManagedClusterUpgradeSpec model = new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL)
+            .withKubernetesVersion("ibthostgktstvd");
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.type());
-        Assertions.assertEquals("wrck", model.kubernetesVersion());
+        Assertions.assertEquals("ibthostgktstvd", model.kubernetesVersion());
     }
 }

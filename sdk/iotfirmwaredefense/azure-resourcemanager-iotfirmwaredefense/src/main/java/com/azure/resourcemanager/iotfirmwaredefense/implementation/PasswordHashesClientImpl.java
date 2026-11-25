@@ -153,12 +153,7 @@ public final class PasswordHashesClientImpl implements PasswordHashesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PasswordHashResourceInner> listByFirmwareSinglePage(String resourceGroupName,
         String workspaceName, String firmwareId) {
-        final String accept = "application/json";
-        Response<PasswordHashResourceListResult> res
-            = service.listByFirmwareSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, firmwareId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirmwareSinglePage(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     /**
@@ -184,36 +179,14 @@ public final class PasswordHashesClientImpl implements PasswordHashesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists password hash analysis results of a firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PasswordHashResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PasswordHashResourceInner> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        return new PagedIterable<>(() -> listByFirmwareSinglePage(resourceGroupName, workspaceName, firmwareId),
-            nextLink -> listByFirmwareNextSinglePage(nextLink));
+        return listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
-    /**
-     * Lists password hash analysis results of a firmware.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PasswordHashResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PasswordHashResourceInner> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId, Context context) {
@@ -253,11 +226,7 @@ public final class PasswordHashesClientImpl implements PasswordHashesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PasswordHashResourceInner> listByFirmwareNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PasswordHashResourceListResult> res
-            = service.listByFirmwareNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFirmwareNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

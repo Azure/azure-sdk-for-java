@@ -112,11 +112,7 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
     }
 
     public InboundEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundEndpoints()
-            .createOrUpdate(resourceGroupName, dnsResolverName, inboundEndpointName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InboundEndpoint create(Context context) {
@@ -142,11 +138,7 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
     }
 
     public InboundEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundEndpoints()
-            .update(resourceGroupName, dnsResolverName, inboundEndpointName, updateParameters, updateIfMatch,
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InboundEndpoint apply(Context context) {
@@ -172,11 +164,7 @@ public final class InboundEndpointImpl implements InboundEndpoint, InboundEndpoi
     }
 
     public InboundEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInboundEndpoints()
-            .getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InboundEndpoint refresh(Context context) {

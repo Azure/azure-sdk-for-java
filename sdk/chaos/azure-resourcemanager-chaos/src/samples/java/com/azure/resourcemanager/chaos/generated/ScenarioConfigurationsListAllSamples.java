@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ScenarioConfigurationsListAllSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_ListAll.json
+     * x-ms-original-file: 2026-11-01/ScenarioConfigurations_ListAll.json
      */
     /**
      * Sample code: Get a list of scenario configurations.

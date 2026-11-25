@@ -21,7 +21,7 @@ public final class ChangeDataCaptureDestinationsActivateIdentityMockTests {
     @Test
     public void testActivateIdentity() throws Exception {
         String responseStr
-            = "{\"targetIdentityAssignmentResourceId\":\"vhdbevwqqxey\",\"previousIdentityAssignmentResourceId\":\"onqzinkfkbgbzbow\"}";
+            = "{\"targetIdentityAssignmentResourceId\":\"jgehkf\",\"previousIdentityAssignmentResourceId\":\"m\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ChangeDataCaptureDestinationsActivateIdentityMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ActivateChangeDataCaptureIdentityResult response = manager.changeDataCaptureDestinations()
-            .activateIdentity("bdb", "qgqqihedsvqwthmk", "ibcysihsgqc", "dhohsdtmcdzsuf",
-                new ActivateChangeDataCaptureIdentityRequest().withIdentityAssignmentResourceId("ohdxbzlmcmu")
-                    .withDrainExistingSessions(false),
+            .activateIdentity("ylkkshkbffmbm", "zjrgyww", "gjxsnptfu", "gicgaaoepttaq",
+                new ActivateChangeDataCaptureIdentityRequest().withIdentityAssignmentResourceId("tdewemxswvruu")
+                    .withDrainExistingSessions(true),
                 com.azure.core.util.Context.NONE);
 
     }

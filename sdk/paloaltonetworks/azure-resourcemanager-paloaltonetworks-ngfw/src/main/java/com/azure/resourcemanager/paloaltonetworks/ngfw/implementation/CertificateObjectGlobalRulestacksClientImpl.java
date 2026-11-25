@@ -190,17 +190,7 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
         return getWithResponseAsync(globalRulestackName, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CertificateObjectGlobalRulestackResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateObjectGlobalRulestackResourceInner> getWithResponse(String globalRulestackName,
         String name, Context context) {
@@ -209,16 +199,7 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
             accept, context);
     }
 
-    /**
-     * Get a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CertificateObjectGlobalRulestackResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateObjectGlobalRulestackResourceInner get(String globalRulestackName, String name) {
         return getWithResponse(globalRulestackName, name, Context.NONE).getValue();
@@ -260,10 +241,7 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String globalRulestackName, String name,
         CertificateObjectGlobalRulestackResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
-            name, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(globalRulestackName, name, resource, Context.NONE);
     }
 
     /**
@@ -310,41 +288,16 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
                 CertificateObjectGlobalRulestackResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of globalRulestack Certificate Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CertificateObjectGlobalRulestackResourceInner>, CertificateObjectGlobalRulestackResourceInner>
         beginCreateOrUpdate(String globalRulestackName, String name,
             CertificateObjectGlobalRulestackResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(globalRulestackName, name, resource);
-        return this.client
-            .<CertificateObjectGlobalRulestackResourceInner, CertificateObjectGlobalRulestackResourceInner>getLroResult(
-                response, CertificateObjectGlobalRulestackResourceInner.class,
-                CertificateObjectGlobalRulestackResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(globalRulestackName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of globalRulestack Certificate Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CertificateObjectGlobalRulestackResourceInner>, CertificateObjectGlobalRulestackResourceInner>
@@ -375,39 +328,18 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return globalRulestack Certificate Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateObjectGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
         CertificateObjectGlobalRulestackResourceInner resource) {
-        return beginCreateOrUpdate(globalRulestackName, name, resource).getFinalResult();
+        return createOrUpdate(globalRulestackName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return globalRulestack Certificate Object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateObjectGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
         CertificateObjectGlobalRulestackResourceInner resource, Context context) {
-        return beginCreateOrUpdate(globalRulestackName, name, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(globalRulestackName, name, resource, context));
     }
 
     /**
@@ -440,8 +372,7 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String globalRulestackName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, name,
-            Context.NONE);
+        return deleteWithResponse(globalRulestackName, name, Context.NONE);
     }
 
     /**
@@ -478,33 +409,13 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
             this.client.getContext());
     }
 
-    /**
-     * Delete a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, String name) {
-        Response<BinaryData> response = deleteWithResponse(globalRulestackName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(globalRulestackName, name, Context.NONE);
     }
 
-    /**
-     * Delete a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String globalRulestackName, String name, Context context) {
         Response<BinaryData> response = deleteWithResponse(globalRulestackName, name, context);
@@ -526,33 +437,16 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
         return beginDeleteAsync(globalRulestackName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName, String name) {
-        beginDelete(globalRulestackName, name).getFinalResult();
+        delete(globalRulestackName, name, Context.NONE);
     }
 
-    /**
-     * Delete a CertificateObjectGlobalRulestackResource.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param name certificate name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String globalRulestackName, String name, Context context) {
-        beginDelete(globalRulestackName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(globalRulestackName, name, context));
     }
 
     /**
@@ -606,11 +500,7 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateObjectGlobalRulestackResourceInner> listSinglePage(String globalRulestackName) {
-        final String accept = "application/json";
-        Response<CertificateObjectGlobalRulestackResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), globalRulestackName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(globalRulestackName, Context.NONE);
     }
 
     /**
@@ -634,32 +524,13 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CertificateObjectGlobalRulestackResource resources by Tenant.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CertificateObjectGlobalRulestackResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateObjectGlobalRulestackResourceInner> list(String globalRulestackName) {
-        return new PagedIterable<>(() -> listSinglePage(globalRulestackName), nextLink -> listNextSinglePage(nextLink));
+        return list(globalRulestackName, Context.NONE);
     }
 
-    /**
-     * List CertificateObjectGlobalRulestackResource resources by Tenant.
-     * 
-     * @param globalRulestackName GlobalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CertificateObjectGlobalRulestackResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateObjectGlobalRulestackResourceInner> list(String globalRulestackName,
         Context context) {
@@ -700,11 +571,7 @@ public final class CertificateObjectGlobalRulestacksClientImpl implements Certif
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CertificateObjectGlobalRulestackResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CertificateObjectGlobalRulestackResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

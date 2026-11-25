@@ -127,22 +127,7 @@ public final class ProtectionContainerRefreshOperationStatusesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the status of the fabric level asynchronous operation identified by the given operation id. The status
-     * can be in progress, completed or failed. You can refer to the OperationStatus enum for all the possible states of
-     * an operation. This is the endpoint reported in the Azure-AsyncOperation header of the fabric level operations
-     * that start one, such as RefreshContainers and GetRPExtendedInfo.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the operation.
-     * @param operationId OperationID which represents the operation whose status needs to be fetched.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String resourceGroupName, String vaultName, String fabricName,
         String operationId, Context context) {
@@ -151,21 +136,7 @@ public final class ProtectionContainerRefreshOperationStatusesClientImpl
             resourceGroupName, vaultName, fabricName, operationId, accept, context);
     }
 
-    /**
-     * Fetches the status of the fabric level asynchronous operation identified by the given operation id. The status
-     * can be in progress, completed or failed. You can refer to the OperationStatus enum for all the possible states of
-     * an operation. This is the endpoint reported in the Azure-AsyncOperation header of the fabric level operations
-     * that start one, such as RefreshContainers and GetRPExtendedInfo.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param fabricName Fabric name associated with the operation.
-     * @param operationId OperationID which represents the operation whose status needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String resourceGroupName, String vaultName, String fabricName, String operationId) {
         return getWithResponse(resourceGroupName, vaultName, fabricName, operationId, Context.NONE).getValue();

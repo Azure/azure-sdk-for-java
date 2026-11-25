@@ -50,12 +50,11 @@ public final class OfficeConsentsImpl implements OfficeConsents {
     }
 
     public void delete(String resourceGroupName, String workspaceName, String consentId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, consentId);
+        this.deleteWithResponse(resourceGroupName, workspaceName, consentId, Context.NONE);
     }
 
     public PagedIterable<OfficeConsent> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<OfficeConsentInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OfficeConsentImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<OfficeConsent> list(String resourceGroupName, String workspaceName, Context context) {

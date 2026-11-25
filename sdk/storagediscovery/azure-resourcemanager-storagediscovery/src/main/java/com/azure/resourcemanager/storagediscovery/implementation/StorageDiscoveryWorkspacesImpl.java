@@ -52,13 +52,11 @@ public final class StorageDiscoveryWorkspacesImpl implements StorageDiscoveryWor
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String storageDiscoveryWorkspaceName) {
-        this.serviceClient().delete(resourceGroupName, storageDiscoveryWorkspaceName);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, Context.NONE);
     }
 
     public PagedIterable<StorageDiscoveryWorkspace> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<StorageDiscoveryWorkspaceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageDiscoveryWorkspaceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<StorageDiscoveryWorkspace> listByResourceGroup(String resourceGroupName, Context context) {
@@ -68,8 +66,7 @@ public final class StorageDiscoveryWorkspacesImpl implements StorageDiscoveryWor
     }
 
     public PagedIterable<StorageDiscoveryWorkspace> list() {
-        PagedIterable<StorageDiscoveryWorkspaceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageDiscoveryWorkspaceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<StorageDiscoveryWorkspace> list(Context context) {
@@ -78,75 +75,30 @@ public final class StorageDiscoveryWorkspacesImpl implements StorageDiscoveryWor
     }
 
     public StorageDiscoveryWorkspace getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageDiscoveryWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "storageDiscoveryWorkspaceName");
-        if (storageDiscoveryWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'storageDiscoveryWorkspaces'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StorageDiscoveryWorkspace> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageDiscoveryWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageDiscoveryWorkspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "storageDiscoveryWorkspaceName");
-        if (storageDiscoveryWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'storageDiscoveryWorkspaces'.", id)));
-        }
+            "storageDiscoveryWorkspaceName", "storageDiscoveryWorkspaces", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageDiscoveryWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "storageDiscoveryWorkspaceName");
-        if (storageDiscoveryWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'storageDiscoveryWorkspaces'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String storageDiscoveryWorkspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String storageDiscoveryWorkspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/{storageDiscoveryWorkspaceName}",
-            "storageDiscoveryWorkspaceName");
-        if (storageDiscoveryWorkspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'storageDiscoveryWorkspaces'.", id)));
-        }
+            "storageDiscoveryWorkspaceName", "storageDiscoveryWorkspaces", LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, context);
     }
 

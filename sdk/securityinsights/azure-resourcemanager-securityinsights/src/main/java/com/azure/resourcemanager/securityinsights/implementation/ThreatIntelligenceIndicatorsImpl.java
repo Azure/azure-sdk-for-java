@@ -72,7 +72,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
     }
 
     public void delete(String resourceGroupName, String workspaceName, String name) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, name);
+        this.deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     public Response<Void> appendTagsWithResponse(String resourceGroupName, String workspaceName, String name,
@@ -83,7 +83,7 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
 
     public void appendTags(String resourceGroupName, String workspaceName, String name,
         ThreatIntelligenceAppendTags threatIntelligenceAppendTags) {
-        this.serviceClient().appendTags(resourceGroupName, workspaceName, name, threatIntelligenceAppendTags);
+        this.appendTagsWithResponse(resourceGroupName, workspaceName, name, threatIntelligenceAppendTags, Context.NONE);
     }
 
     public Response<ThreatIntelligenceInformation> replaceTagsWithResponse(String resourceGroupName,
@@ -127,10 +127,8 @@ public final class ThreatIntelligenceIndicatorsImpl implements ThreatIntelligenc
 
     public PagedIterable<ThreatIntelligenceInformation> queryIndicators(String resourceGroupName, String workspaceName,
         ThreatIntelligenceFilteringCriteria threatIntelligenceFilteringCriteria) {
-        PagedIterable<ThreatIntelligenceInformationInner> inner = this.serviceClient()
-            .queryIndicators(resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ThreatIntelligenceInformationImpl(inner1, this.manager()));
+        return this.queryIndicators(resourceGroupName, workspaceName, threatIntelligenceFilteringCriteria,
+            Context.NONE);
     }
 
     public PagedIterable<ThreatIntelligenceInformation> queryIndicators(String resourceGroupName, String workspaceName,

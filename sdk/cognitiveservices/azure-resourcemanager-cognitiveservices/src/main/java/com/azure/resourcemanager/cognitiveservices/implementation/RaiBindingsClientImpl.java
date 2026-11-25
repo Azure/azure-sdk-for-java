@@ -198,18 +198,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets one RAI binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBindingName The name of the RAI binding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one RAI binding.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBindingsGetResponse getWithResponse(String resourceGroupName, String accountName, String raiBindingName,
         Context context) {
@@ -218,17 +207,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
             resourceGroupName, accountName, raiBindingName, accept, context);
     }
 
-    /**
-     * Gets one RAI binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBindingName The name of the RAI binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one RAI binding.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBindingInner get(String resourceGroupName, String accountName, String raiBindingName) {
         return getWithResponse(resourceGroupName, accountName, raiBindingName, Context.NONE).getValue();
@@ -283,21 +262,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
             ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces one RAI binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBindingName The name of the RAI binding.
-     * @param raiBinding The RAI binding.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @param ifNoneMatch Proceed only when no current resource ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account-scoped binding from an Azure resource to an Agent Control Specification policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBindingsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String raiBindingName, RaiBindingInner raiBinding, String ifMatch, String ifNoneMatch, Context context) {
@@ -308,18 +273,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
             contentType, accept, raiBinding, context);
     }
 
-    /**
-     * Creates or replaces one RAI binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBindingName The name of the RAI binding.
-     * @param raiBinding The RAI binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an account-scoped binding from an Azure resource to an Agent Control Specification policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiBindingInner createOrUpdate(String resourceGroupName, String accountName, String raiBindingName,
         RaiBindingInner raiBinding) {
@@ -368,19 +322,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes one RAI binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBindingName The name of the RAI binding.
-     * @param ifMatch Proceed only when the current resource ETag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String raiBindingName,
         String ifMatch, Context context) {
@@ -388,16 +330,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
             this.client.getSubscriptionId(), resourceGroupName, accountName, raiBindingName, ifMatch, context);
     }
 
-    /**
-     * Deletes one RAI binding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiBindingName The name of the RAI binding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiBindingName) {
         final String ifMatch = null;
@@ -475,11 +408,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBindingInner> listSinglePage(String resourceGroupName, String accountName, Integer top) {
-        final String accept = "application/json";
-        Response<RaiBindingListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, top, Context.NONE);
     }
 
     /**
@@ -504,35 +433,14 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists RAI bindings on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of account-scoped RAI bindings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBindingInner> list(String resourceGroupName, String accountName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, top, Context.NONE);
     }
 
-    /**
-     * Lists RAI bindings on an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param top The maximum number of RAI bindings to return. Defaults to 50.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of account-scoped RAI bindings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiBindingInner> list(String resourceGroupName, String accountName, Integer top,
         Context context) {
@@ -570,11 +478,7 @@ public final class RaiBindingsClientImpl implements RaiBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiBindingInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RaiBindingListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

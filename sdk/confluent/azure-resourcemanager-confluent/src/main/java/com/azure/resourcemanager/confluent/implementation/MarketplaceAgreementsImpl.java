@@ -28,9 +28,7 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
     }
 
     public PagedIterable<ConfluentAgreementResource> list() {
-        PagedIterable<ConfluentAgreementResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ConfluentAgreementResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ConfluentAgreementResource> list(Context context) {

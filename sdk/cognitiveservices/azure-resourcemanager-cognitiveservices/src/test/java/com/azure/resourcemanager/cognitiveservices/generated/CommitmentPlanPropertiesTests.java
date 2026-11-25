@@ -14,34 +14,34 @@ public final class CommitmentPlanPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"commitmentPlanGuid\":\"buukzclewyhml\",\"hostingModel\":\"Web\",\"planType\":\"tzpofncckwyfzq\",\"current\":{\"tier\":\"xbuy\",\"count\":903263764,\"quota\":{\"quantity\":3336688530797945721,\"unit\":\"tpp\"},\"startDate\":\"o\",\"endDate\":\"or\"},\"autoRenew\":false,\"next\":{\"tier\":\"lmncw\",\"count\":980549756,\"quota\":{\"quantity\":4217034770382613848,\"unit\":\"bnwdcfh\"},\"startDate\":\"qdpfuvglsbjjca\",\"endDate\":\"xbvtvudu\"},\"last\":{\"tier\":\"ormrlxqtvcofudfl\",\"count\":360831817,\"quota\":{\"quantity\":8171649502486820994,\"unit\":\"knnqvsaznq\"},\"startDate\":\"orudsgsa\",\"endDate\":\"kycgrauwj\"},\"provisioningIssues\":[\"aeburuvdmo\",\"s\",\"zlxwabmqoefkifr\"]}")
+            "{\"provisioningState\":\"Accepted\",\"commitmentPlanGuid\":\"hyaomtbghhavgr\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"ovjzhpjbibgjmfx\",\"current\":{\"tier\":\"fcluyov\",\"count\":592416055,\"quota\":{\"quantity\":5112488142877936938,\"unit\":\"zxscyhwzdgirujb\"},\"startDate\":\"omvzzbtd\",\"endDate\":\"vp\"},\"autoRenew\":true,\"next\":{\"tier\":\"viylwdshfssnrbgy\",\"count\":692564067,\"quota\":{\"quantity\":3627330904700196596,\"unit\":\"ojfmwnco\"},\"startDate\":\"rfh\",\"endDate\":\"ctymoxoftp\"},\"last\":{\"tier\":\"wycz\",\"count\":1967043899,\"quota\":{\"quantity\":3651626673554341307,\"unit\":\"lihhyuspskasdvlm\"},\"startDate\":\"dgzxulucvpamrsr\",\"endDate\":\"zvxurisjnhny\"},\"provisioningIssues\":[\"fq\",\"zgxmr\"]}")
             .toObject(CommitmentPlanProperties.class);
-        Assertions.assertEquals("buukzclewyhml", model.commitmentPlanGuid());
-        Assertions.assertEquals(HostingModel.WEB, model.hostingModel());
-        Assertions.assertEquals("tzpofncckwyfzq", model.planType());
-        Assertions.assertEquals("xbuy", model.current().tier());
-        Assertions.assertEquals(903263764, model.current().count());
-        Assertions.assertFalse(model.autoRenew());
-        Assertions.assertEquals("lmncw", model.next().tier());
-        Assertions.assertEquals(980549756, model.next().count());
+        Assertions.assertEquals("hyaomtbghhavgr", model.commitmentPlanGuid());
+        Assertions.assertEquals(HostingModel.DISCONNECTED_CONTAINER, model.hostingModel());
+        Assertions.assertEquals("ovjzhpjbibgjmfx", model.planType());
+        Assertions.assertEquals("fcluyov", model.current().tier());
+        Assertions.assertEquals(592416055, model.current().count());
+        Assertions.assertTrue(model.autoRenew());
+        Assertions.assertEquals("viylwdshfssnrbgy", model.next().tier());
+        Assertions.assertEquals(692564067, model.next().count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanProperties model = new CommitmentPlanProperties().withCommitmentPlanGuid("buukzclewyhml")
-            .withHostingModel(HostingModel.WEB)
-            .withPlanType("tzpofncckwyfzq")
-            .withCurrent(new CommitmentPeriod().withTier("xbuy").withCount(903263764))
-            .withAutoRenew(false)
-            .withNext(new CommitmentPeriod().withTier("lmncw").withCount(980549756));
+        CommitmentPlanProperties model = new CommitmentPlanProperties().withCommitmentPlanGuid("hyaomtbghhavgr")
+            .withHostingModel(HostingModel.DISCONNECTED_CONTAINER)
+            .withPlanType("ovjzhpjbibgjmfx")
+            .withCurrent(new CommitmentPeriod().withTier("fcluyov").withCount(592416055))
+            .withAutoRenew(true)
+            .withNext(new CommitmentPeriod().withTier("viylwdshfssnrbgy").withCount(692564067));
         model = BinaryData.fromObject(model).toObject(CommitmentPlanProperties.class);
-        Assertions.assertEquals("buukzclewyhml", model.commitmentPlanGuid());
-        Assertions.assertEquals(HostingModel.WEB, model.hostingModel());
-        Assertions.assertEquals("tzpofncckwyfzq", model.planType());
-        Assertions.assertEquals("xbuy", model.current().tier());
-        Assertions.assertEquals(903263764, model.current().count());
-        Assertions.assertFalse(model.autoRenew());
-        Assertions.assertEquals("lmncw", model.next().tier());
-        Assertions.assertEquals(980549756, model.next().count());
+        Assertions.assertEquals("hyaomtbghhavgr", model.commitmentPlanGuid());
+        Assertions.assertEquals(HostingModel.DISCONNECTED_CONTAINER, model.hostingModel());
+        Assertions.assertEquals("ovjzhpjbibgjmfx", model.planType());
+        Assertions.assertEquals("fcluyov", model.current().tier());
+        Assertions.assertEquals(592416055, model.current().count());
+        Assertions.assertTrue(model.autoRenew());
+        Assertions.assertEquals("viylwdshfssnrbgy", model.next().tier());
+        Assertions.assertEquals(692564067, model.next().count());
     }
 }

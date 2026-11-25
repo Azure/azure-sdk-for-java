@@ -8,12 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Whether or not public endpoint access is allowed for this Mongo cluster. Value is optional and default value is
+ * Whether or not public endpoint access is allowed for this DocumentDB cluster. Value is optional and default value is
  * 'Enabled'.
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /**
-     * If set, mongo cluster can be accessed through private and public methods.
+     * If set, DocumentDB cluster can be accessed through private and public methods.
      */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
 

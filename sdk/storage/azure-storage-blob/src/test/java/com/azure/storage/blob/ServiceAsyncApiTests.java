@@ -26,8 +26,10 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.GeoReplicationStatus;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
@@ -936,6 +938,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
         Mono<List<BlobItem>> response = cc1.create()
             .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null))
+            .then(cc1.delete())
             .then(primaryBlobServiceAsyncClient
                 .listBlobContainers(new ListBlobContainersOptions().setPrefix(cc1.getBlobContainerName())
                     .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)))
@@ -943,7 +946,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .flatMap(blobContainerItem -> Mono.delay(Duration.ofMillis(delay))
                 .then(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
                     new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())))
-                .flatMap(r -> r.getValue().listBlobs().collectList()));
+                .flatMap(r -> r.getValue()
+                    .listBlobs(new ListBlobsOptions()
+                        .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML))
+                    .collectList()));
 
         StepVerifier.create(response).assertNext(r -> {
             assertEquals(1, r.size());
@@ -1068,6 +1074,47 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null), 201);
         assertAsyncResponseStatusCode(
             primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null), 409);
+    }
+
+    @Test
+    public void createContainerIfNotExistsOnContainerBeingDeleted() {
+        String containerName = cc.getBlobContainerName();
+
+        StepVerifier
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
+                .then(primaryBlobServiceAsyncClient.createBlobContainerIfNotExists(containerName)))
+            .verifyErrorSatisfies(
+                r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    @Test
+    public void createContainerOnContainerBeingDeleted() {
+        String containerName = cc.getBlobContainerName();
+
+        StepVerifier
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
+                .then(primaryBlobServiceAsyncClient.createBlobContainer(containerName)))
+            .verifyErrorSatisfies(
+                r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    // Live only: it waits for the service to finish deleting the container, typically 30 to 60 seconds (see
+    // createAfterContainerDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createContainerIfNotExistsAfterContainerDeleteCompletes() {
+        String containerName = cc.getBlobContainerName();
+
+        StepVerifier
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
+                .then(createAfterContainerDeleteCompletes(
+                    primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null))))
+            .assertNext(response -> assertResponseStatusCode(response, 201))
+            .verifyComplete();
+
+        StepVerifier.create(primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName).exists())
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @Test

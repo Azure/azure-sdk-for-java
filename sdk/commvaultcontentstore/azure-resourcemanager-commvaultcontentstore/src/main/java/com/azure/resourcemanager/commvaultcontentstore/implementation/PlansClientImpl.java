@@ -205,18 +205,7 @@ public final class PlansClientImpl implements PlansClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CommvaultPlan along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommvaultPlanInner> getWithResponse(String resourceGroupName, String cloudAccountName,
         String planName, Context context) {
@@ -225,17 +214,7 @@ public final class PlansClientImpl implements PlansClient {
             resourceGroupName, cloudAccountName, planName, accept, context);
     }
 
-    /**
-     * Get a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CommvaultPlan.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommvaultPlanInner get(String resourceGroupName, String cloudAccountName, String planName) {
         return getWithResponse(resourceGroupName, cloudAccountName, planName, Context.NONE).getValue();
@@ -280,11 +259,7 @@ public final class PlansClientImpl implements PlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrupdateWithResponse(String resourceGroupName, String cloudAccountName,
         String planName, CommvaultPlanInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrupdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, planName, contentType, accept,
-            resource, Context.NONE);
+        return createOrupdateWithResponse(resourceGroupName, cloudAccountName, planName, resource, Context.NONE);
     }
 
     /**
@@ -331,40 +306,14 @@ public final class PlansClientImpl implements PlansClient {
             CommvaultPlanInner.class, CommvaultPlanInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommvaultPlanInner>, CommvaultPlanInner> beginCreateOrupdate(String resourceGroupName,
         String cloudAccountName, String planName, CommvaultPlanInner resource) {
-        Response<BinaryData> response
-            = createOrupdateWithResponse(resourceGroupName, cloudAccountName, planName, resource);
-        return this.client.<CommvaultPlanInner, CommvaultPlanInner>getLroResult(response, CommvaultPlanInner.class,
-            CommvaultPlanInner.class, Context.NONE);
+        return beginCreateOrupdate(resourceGroupName, cloudAccountName, planName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommvaultPlanInner>, CommvaultPlanInner> beginCreateOrupdate(String resourceGroupName,
         String cloudAccountName, String planName, CommvaultPlanInner resource, Context context) {
@@ -393,41 +342,19 @@ public final class PlansClientImpl implements PlansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommvaultPlanInner createOrupdate(String resourceGroupName, String cloudAccountName, String planName,
         CommvaultPlanInner resource) {
-        return beginCreateOrupdate(resourceGroupName, cloudAccountName, planName, resource).getFinalResult();
+        return createOrupdate(resourceGroupName, cloudAccountName, planName, resource, Context.NONE);
     }
 
-    /**
-     * Create a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Commvault Plan Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommvaultPlanInner createOrupdate(String resourceGroupName, String cloudAccountName, String planName,
         CommvaultPlanInner resource, Context context) {
-        return beginCreateOrupdate(resourceGroupName, cloudAccountName, planName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrupdate(resourceGroupName, cloudAccountName, planName, resource, context));
     }
 
     /**
@@ -464,8 +391,7 @@ public final class PlansClientImpl implements PlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudAccountName,
         String planName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, planName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, cloudAccountName, planName, Context.NONE);
     }
 
     /**
@@ -506,36 +432,14 @@ public final class PlansClientImpl implements PlansClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName,
         String planName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudAccountName, planName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudAccountName, planName, Context.NONE);
     }
 
-    /**
-     * Delete a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudAccountName,
         String planName, Context context) {
@@ -560,35 +464,16 @@ public final class PlansClientImpl implements PlansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName, String planName) {
-        beginDelete(resourceGroupName, cloudAccountName, planName).getFinalResult();
+        delete(resourceGroupName, cloudAccountName, planName, Context.NONE);
     }
 
-    /**
-     * Delete a CommvaultPlan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param planName Name of the Plan resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudAccountName, String planName, Context context) {
-        beginDelete(resourceGroupName, cloudAccountName, planName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudAccountName, planName, context));
     }
 
     /**
@@ -643,12 +528,7 @@ public final class PlansClientImpl implements PlansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommvaultPlanInner> listByCloudAccountSinglePage(String resourceGroupName,
         String cloudAccountName) {
-        final String accept = "application/json";
-        Response<CommvaultPlanListResult> res
-            = service.listByCloudAccountSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudAccountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudAccountSinglePage(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     /**
@@ -673,33 +553,13 @@ public final class PlansClientImpl implements PlansClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List CommvaultPlan resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommvaultPlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommvaultPlanInner> listByCloudAccount(String resourceGroupName, String cloudAccountName) {
-        return new PagedIterable<>(() -> listByCloudAccountSinglePage(resourceGroupName, cloudAccountName),
-            nextLink -> listByCloudAccountNextSinglePage(nextLink));
+        return listByCloudAccount(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
-    /**
-     * List CommvaultPlan resources by CloudAccount.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudAccountName Name of the Cloud Account resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a CommvaultPlan list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommvaultPlanInner> listByCloudAccount(String resourceGroupName, String cloudAccountName,
         Context context) {
@@ -739,11 +599,7 @@ public final class PlansClientImpl implements PlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CommvaultPlanInner> listByCloudAccountNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CommvaultPlanListResult> res
-            = service.listByCloudAccountNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByCloudAccountNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

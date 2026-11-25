@@ -51,7 +51,7 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public void update(String resourceGroupName, String connectionName, ConnectionsPatch connection) {
-        this.serviceClient().update(resourceGroupName, connectionName, connection);
+        this.update(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
     public void update(String resourceGroupName, String connectionName, ConnectionsPatch connection, Context context) {
@@ -59,7 +59,7 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String connectionName) {
-        this.serviceClient().delete(resourceGroupName, connectionName);
+        this.delete(resourceGroupName, connectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String connectionName, Context context) {
@@ -67,8 +67,7 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public PagedIterable<Connection> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ConnectionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectionImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Connection> listByResourceGroup(String resourceGroupName, Context context) {
@@ -77,8 +76,7 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public PagedIterable<Connection> listBySubscription() {
-        PagedIterable<ConnectionInner> inner = this.serviceClient().listBySubscription();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectionImpl(inner1, this.manager()));
+        return this.listBySubscription(Context.NONE);
     }
 
     public PagedIterable<Connection> listBySubscription(Context context) {
@@ -87,12 +85,7 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public Connection link(String resourceGroupName, String connectionName, ResourceBody connection) {
-        ConnectionInner inner = this.serviceClient().link(resourceGroupName, connectionName, connection);
-        if (inner != null) {
-            return new ConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.link(resourceGroupName, connectionName, connection, Context.NONE);
     }
 
     public Connection link(String resourceGroupName, String connectionName, ResourceBody connection, Context context) {
@@ -105,8 +98,7 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public PagedIterable<PendingConnection> list(String resourceGroupName, String connectionName) {
-        PagedIterable<PendingConnectionInner> inner = this.serviceClient().list(resourceGroupName, connectionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PendingConnectionImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, connectionName, Context.NONE);
     }
 
     public PagedIterable<PendingConnection> list(String resourceGroupName, String connectionName, Context context) {
@@ -116,9 +108,7 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public PagedIterable<PendingFlow> listPendingFlowsList(String resourceGroupName, String connectionName) {
-        PagedIterable<PendingFlowInner> inner
-            = this.serviceClient().listPendingFlowsList(resourceGroupName, connectionName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PendingFlowImpl(inner1, this.manager()));
+        return this.listPendingFlowsList(resourceGroupName, connectionName, Context.NONE);
     }
 
     public PagedIterable<PendingFlow> listPendingFlowsList(String resourceGroupName, String connectionName,
@@ -129,74 +119,30 @@ public final class ConnectionsImpl implements Connections {
     }
 
     public Connection getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, connectionName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Connection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
+            "connectionName", "connections", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, connectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
-        this.delete(resourceGroupName, connectionName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String connectionName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String connectionName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/connections/{connectionName}",
-            "connectionName");
-        if (connectionName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
-        }
+            "connectionName", "connections", LOGGER);
         this.delete(resourceGroupName, connectionName, context);
     }
 

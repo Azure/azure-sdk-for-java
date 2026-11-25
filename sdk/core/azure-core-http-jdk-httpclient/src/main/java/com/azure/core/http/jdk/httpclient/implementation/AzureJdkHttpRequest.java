@@ -41,9 +41,10 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     private final URI uri;
     private final HttpHeaders headers;
     private final Optional<Duration> responseTimeout;
+    private final Optional<HttpClient.Version> httpVersion;
 
     /**
-     * Creates a request with callbacks for the start and completion of body publication.
+     * Creates a request with body publication callbacks and an optional protocol preference.
      *
      * @param azureCoreRequest The Azure Core request.
      * @param context The request context.
@@ -54,10 +55,11 @@ public final class AzureJdkHttpRequest extends HttpRequest {
      * @param writeStartedCallback Callback when the body is subscribed, or null.
      * @param writeCompletedCallback Callback after publishing the request body, or null to use the native request
      * timeout.
+     * @param httpVersion The protocol preference, or null to use the JDK client's preference.
      */
     public AzureJdkHttpRequest(com.azure.core.http.HttpRequest azureCoreRequest, Context context,
         Set<String> restrictedHeaders, ClientLogger logger, Duration writeTimeout, Duration responseTimeout,
-        Runnable writeStartedCallback, Runnable writeCompletedCallback) {
+        Runnable writeStartedCallback, Runnable writeCompletedCallback, HttpClient.Version httpVersion) {
         HttpMethod method = azureCoreRequest.getHttpMethod();
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
         responseTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
@@ -93,6 +95,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             && responseTimeout != null
             && !responseTimeout.isZero()
             && !responseTimeout.isNegative() ? Optional.of(responseTimeout) : Optional.empty();
+        this.httpVersion = Optional.ofNullable(httpVersion);
     }
 
     @Override
@@ -141,7 +144,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
 
     @Override
     public Optional<HttpClient.Version> version() {
-        return Optional.empty();
+        return httpVersion;
     }
 
     @Override

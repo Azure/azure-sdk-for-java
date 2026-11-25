@@ -86,10 +86,7 @@ public final class OperatorApiConnectionImpl
     }
 
     public OperatorApiConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOperatorApiConnections()
-            .create(resourceGroupName, operatorApiConnectionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OperatorApiConnection create(Context context) {
@@ -112,10 +109,7 @@ public final class OperatorApiConnectionImpl
     }
 
     public OperatorApiConnection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOperatorApiConnections()
-            .update(resourceGroupName, operatorApiConnectionName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OperatorApiConnection apply(Context context) {
@@ -138,11 +132,7 @@ public final class OperatorApiConnectionImpl
     }
 
     public OperatorApiConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOperatorApiConnections()
-            .getByResourceGroupWithResponse(resourceGroupName, operatorApiConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OperatorApiConnection refresh(Context context) {

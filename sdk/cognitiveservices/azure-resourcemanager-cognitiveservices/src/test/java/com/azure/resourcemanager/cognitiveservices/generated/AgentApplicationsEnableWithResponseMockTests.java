@@ -28,8 +28,7 @@ public final class AgentApplicationsEnableWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.agentApplications()
-            .enableWithResponse("ryhmmglv", "b", "nkpsvokkyankxvc", "tfgfbhnkxasomaf",
-                com.azure.core.util.Context.NONE);
+            .enableWithResponse("dkdlxd", "htal", "cjawkyxownoy", "qus", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -228,21 +228,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             targetName, capabilityName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Capability resource that extends a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param capabilityName String that represents a Capability resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Capability resource that extends a Target resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapabilityInner> getWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, String capabilityName,
@@ -253,20 +239,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             capabilityName, accept, context);
     }
 
-    /**
-     * Get a Capability resource that extends a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param capabilityName String that represents a Capability resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Capability resource that extends a Target resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
         String parentResourceName, String targetName, String capabilityName) {
@@ -326,22 +299,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             parentResourceName, targetName, capabilityName, resource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a Capability resource that extends a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param capabilityName String that represents a Capability resource name.
-     * @param resource Capability resource to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Capability resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapabilityInner> createOrUpdateWithResponse(String resourceGroupName,
         String parentProviderNamespace, String parentResourceType, String parentResourceName, String targetName,
@@ -353,21 +311,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             parentResourceName, targetName, capabilityName, contentType, accept, resource, context);
     }
 
-    /**
-     * Create or update a Capability resource that extends a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param capabilityName String that represents a Capability resource name.
-     * @param resource Capability resource to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Capability resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner createOrUpdate(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, String capabilityName,
@@ -421,21 +365,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             parentResourceName, targetName, capabilityName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Capability that extends a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param capabilityName String that represents a Capability resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, String capabilityName,
@@ -445,19 +375,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             parentResourceName, targetName, capabilityName, context);
     }
 
-    /**
-     * Delete a Capability that extends a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param capabilityName String that represents a Capability resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
         String parentResourceName, String targetName, String capabilityName) {
@@ -555,12 +473,8 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listSinglePage(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, String continuationToken) {
-        final String accept = "application/json";
-        Response<CapabilityListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
-            parentResourceName, continuationToken, targetName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName, continuationToken, Context.NONE);
     }
 
     /**
@@ -590,44 +504,16 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Capability resources that extend a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Capability resources that extend a Target resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, parentProviderNamespace, parentResourceType,
-            parentResourceName, targetName, continuationToken), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName,
+            continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Capability resources that extend a Target resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parentProviderNamespace The parent resource provider namespace.
-     * @param parentResourceType The parent resource type.
-     * @param parentResourceName The parent resource name.
-     * @param targetName String that represents a Target resource name.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Capability resources that extend a Target resource as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String resourceGroupName, String parentProviderNamespace,
         String parentResourceType, String parentResourceName, String targetName, String continuationToken,
@@ -667,11 +553,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CapabilityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

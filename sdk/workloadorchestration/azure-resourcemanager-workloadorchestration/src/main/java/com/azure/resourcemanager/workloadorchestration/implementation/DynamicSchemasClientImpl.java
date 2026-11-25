@@ -223,18 +223,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DynamicSchema Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DynamicSchemaInner> getWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, Context context) {
@@ -243,17 +232,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             resourceGroupName, schemaName, dynamicSchemaName, accept, context);
     }
 
-    /**
-     * Get a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DynamicSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaInner get(String resourceGroupName, String schemaName, String dynamicSchemaName) {
         return getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE).getValue();
@@ -298,11 +277,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, DynamicSchemaInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaName, dynamicSchemaName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, schemaName, dynamicSchemaName, resource, Context.NONE);
     }
 
     /**
@@ -349,40 +324,14 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             DynamicSchemaInner.class, DynamicSchemaInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dynamicSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DynamicSchemaInner>, DynamicSchemaInner> beginCreateOrUpdate(String resourceGroupName,
         String schemaName, String dynamicSchemaName, DynamicSchemaInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, schemaName, dynamicSchemaName, resource);
-        return this.client.<DynamicSchemaInner, DynamicSchemaInner>getLroResult(response, DynamicSchemaInner.class,
-            DynamicSchemaInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of dynamicSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DynamicSchemaInner>, DynamicSchemaInner> beginCreateOrUpdate(String resourceGroupName,
         String schemaName, String dynamicSchemaName, DynamicSchemaInner resource, Context context) {
@@ -411,42 +360,19 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamicSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaInner createOrUpdate(String resourceGroupName, String schemaName, String dynamicSchemaName,
         DynamicSchemaInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamicSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaInner createOrUpdate(String resourceGroupName, String schemaName, String dynamicSchemaName,
         DynamicSchemaInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, resource, context));
     }
 
     /**
@@ -492,19 +418,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * update a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamicSchema Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DynamicSchemaInner> updateWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName, DynamicSchemaInner properties, Context context) {
@@ -515,18 +429,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             properties, context);
     }
 
-    /**
-     * update a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dynamicSchema Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DynamicSchemaInner update(String resourceGroupName, String schemaName, String dynamicSchemaName,
         DynamicSchemaInner properties) {
@@ -568,8 +471,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schemaName,
         String dynamicSchemaName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
     }
 
     /**
@@ -611,36 +513,14 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaName,
         String dynamicSchemaName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, schemaName, dynamicSchemaName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
     }
 
-    /**
-     * Delete a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schemaName,
         String dynamicSchemaName, Context context) {
@@ -665,35 +545,16 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaName, String dynamicSchemaName) {
-        beginDelete(resourceGroupName, schemaName, dynamicSchemaName).getFinalResult();
+        delete(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE);
     }
 
-    /**
-     * Delete a DynamicSchema Resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param dynamicSchemaName The name of the DynamicSchema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schemaName, String dynamicSchemaName, Context context) {
-        beginDelete(resourceGroupName, schemaName, dynamicSchemaName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, schemaName, dynamicSchemaName, context));
     }
 
     /**
@@ -747,12 +608,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaInner> listBySchemaSinglePage(String resourceGroupName, String schemaName) {
-        final String accept = "application/json";
-        Response<DynamicSchemaListResult> res
-            = service.listBySchemaSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schemaName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchemaSinglePage(resourceGroupName, schemaName, Context.NONE);
     }
 
     /**
@@ -777,33 +633,13 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List by Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynamicSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DynamicSchemaInner> listBySchema(String resourceGroupName, String schemaName) {
-        return new PagedIterable<>(() -> listBySchemaSinglePage(resourceGroupName, schemaName),
-            nextLink -> listBySchemaNextSinglePage(nextLink));
+        return listBySchema(resourceGroupName, schemaName, Context.NONE);
     }
 
-    /**
-     * List by Schema.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schemaName The name of the Schema.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynamicSchema list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DynamicSchemaInner> listBySchema(String resourceGroupName, String schemaName,
         Context context) {
@@ -842,11 +678,7 @@ public final class DynamicSchemasClientImpl implements DynamicSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DynamicSchemaInner> listBySchemaNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DynamicSchemaListResult> res
-            = service.listBySchemaNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchemaNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

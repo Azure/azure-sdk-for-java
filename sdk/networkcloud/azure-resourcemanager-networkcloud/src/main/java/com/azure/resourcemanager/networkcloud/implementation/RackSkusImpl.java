@@ -43,8 +43,7 @@ public final class RackSkusImpl implements RackSkus {
     }
 
     public PagedIterable<RackSku> list() {
-        PagedIterable<RackSkuInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<RackSku> list(Context context) {

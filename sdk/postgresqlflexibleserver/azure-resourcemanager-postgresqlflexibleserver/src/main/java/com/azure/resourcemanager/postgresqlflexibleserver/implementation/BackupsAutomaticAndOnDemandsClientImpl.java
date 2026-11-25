@@ -159,18 +159,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information of an on demand backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of an on demand backup, given its name along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupAutomaticAndOnDemandInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String backupName) {
@@ -181,17 +170,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information of an on demand backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of an on demand backup, given its name on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupAutomaticAndOnDemandInner> getAsync(String resourceGroupName, String serverName,
         String backupName) {
@@ -199,18 +178,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information of an on demand backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of an on demand backup, given its name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupAutomaticAndOnDemandInner> getWithResponse(String resourceGroupName, String serverName,
         String backupName, Context context) {
@@ -219,33 +187,13 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             resourceGroupName, serverName, backupName, accept, context);
     }
 
-    /**
-     * Gets information of an on demand backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information of an on demand backup, given its name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupAutomaticAndOnDemandInner get(String resourceGroupName, String serverName, String backupName) {
         return getWithResponse(resourceGroupName, serverName, backupName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates an on demand backup of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
         String backupName) {
@@ -268,8 +216,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String serverName, String backupName) {
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, backupName, Context.NONE);
+        return createWithResponse(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
     /**
@@ -291,17 +238,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             this.client.getSubscriptionId(), resourceGroupName, serverName, backupName, context);
     }
 
-    /**
-     * Creates an on demand backup of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupAutomaticAndOnDemandInner>, BackupAutomaticAndOnDemandInner>
         beginCreateAsync(String resourceGroupName, String serverName, String backupName) {
@@ -311,37 +248,14 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             this.client.getContext());
     }
 
-    /**
-     * Creates an on demand backup of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupAutomaticAndOnDemandInner>, BackupAutomaticAndOnDemandInner>
         beginCreate(String resourceGroupName, String serverName, String backupName) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, serverName, backupName);
-        return this.client.<BackupAutomaticAndOnDemandInner, BackupAutomaticAndOnDemandInner>getLroResult(response,
-            BackupAutomaticAndOnDemandInner.class, BackupAutomaticAndOnDemandInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
-    /**
-     * Creates an on demand backup of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupAutomaticAndOnDemandInner>, BackupAutomaticAndOnDemandInner>
         beginCreate(String resourceGroupName, String serverName, String backupName, Context context) {
@@ -350,17 +264,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             BackupAutomaticAndOnDemandInner.class, BackupAutomaticAndOnDemandInner.class, context);
     }
 
-    /**
-     * Creates an on demand backup of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupAutomaticAndOnDemandInner> createAsync(String resourceGroupName, String serverName,
         String backupName) {
@@ -368,51 +272,20 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates an on demand backup of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupAutomaticAndOnDemandInner create(String resourceGroupName, String serverName, String backupName) {
-        return beginCreate(resourceGroupName, serverName, backupName).getFinalResult();
+        return create(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
-    /**
-     * Creates an on demand backup of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupAutomaticAndOnDemandInner create(String resourceGroupName, String serverName, String backupName,
         Context context) {
-        return beginCreate(resourceGroupName, serverName, backupName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, serverName, backupName, context));
     }
 
-    /**
-     * Deletes a specific backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String backupName) {
@@ -435,8 +308,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String serverName, String backupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, backupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
     /**
@@ -458,17 +330,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             this.client.getSubscriptionId(), resourceGroupName, serverName, backupName, context);
     }
 
-    /**
-     * Deletes a specific backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String backupName) {
@@ -477,36 +339,14 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             this.client.getContext());
     }
 
-    /**
-     * Deletes a specific backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String backupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, serverName, backupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
-    /**
-     * Deletes a specific backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String backupName, Context context) {
@@ -514,52 +354,23 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a specific backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String backupName) {
         return beginDeleteAsync(resourceGroupName, serverName, backupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a specific backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String backupName) {
-        beginDelete(resourceGroupName, serverName, backupName).getFinalResult();
+        delete(resourceGroupName, serverName, backupName, Context.NONE);
     }
 
-    /**
-     * Deletes a specific backup, given its name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName Name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String backupName, Context context) {
-        beginDelete(resourceGroupName, serverName, backupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, serverName, backupName, context));
     }
 
     /**
@@ -584,16 +395,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists all available backups of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of backups as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BackupAutomaticAndOnDemandInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -613,12 +415,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupAutomaticAndOnDemandInner> listByServerSinglePage(String resourceGroupName,
         String serverName) {
-        final String accept = "application/json";
-        Response<BackupAutomaticAndOnDemandList> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -643,33 +440,13 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all available backups of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupAutomaticAndOnDemandInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
+        return listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * Lists all available backups of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of backups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupAutomaticAndOnDemandInner> listByServer(String resourceGroupName, String serverName,
         Context context) {
@@ -707,11 +484,7 @@ public final class BackupsAutomaticAndOnDemandsClientImpl implements BackupsAuto
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupAutomaticAndOnDemandInner> listByServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupAutomaticAndOnDemandList> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

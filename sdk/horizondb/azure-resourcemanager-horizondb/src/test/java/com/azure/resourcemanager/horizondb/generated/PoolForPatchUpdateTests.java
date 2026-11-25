@@ -16,24 +16,21 @@ import com.azure.resourcemanager.horizondb.models.PoolParameterGroupReferenceFor
 import com.azure.resourcemanager.horizondb.models.PoolPropertiesForPatchUpdate;
 import com.azure.resourcemanager.horizondb.models.ScheduledMaintenanceManagementType;
 import com.azure.resourcemanager.horizondb.models.ScheduledMaintenancePropertiesForPatchUpdate;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class PoolForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolForPatchUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"kajionpim\":\"dxkqpx\",\"txgcpodgmaajr\":\"xg\",\"lwhijcoejctbzaq\":\"vdjwzrlovm\"},\"properties\":{\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":1508721218,\"vCores\":544085929},\"nodeCount\":1619207085,\"highAvailability\":{\"mode\":\"AnyZone\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"ppofmxaxcfjpgdd\",\"applyMethod\":\"Immediate\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"System\"}}}")
+            "{\"properties\":{\"computeModel\":{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":812550328,\"vCores\":2010275395},\"nodeCount\":78216934,\"highAvailability\":{\"mode\":\"AnyZone\"},\"parameterGroup\":{\"parameterGroupResourceId\":\"mmajtjaodx\",\"applyMethod\":\"Immediate\"},\"scheduledMaintenance\":{\"maintenanceManagementType\":\"System\"}}}")
             .toObject(PoolForPatchUpdate.class);
-        Assertions.assertEquals("dxkqpx", model.tags().get("kajionpim"));
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.properties().computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, model.properties().computeModel().computeProcessor());
-        Assertions.assertEquals(1508721218, model.properties().computeModel().computeGeneration());
-        Assertions.assertEquals(544085929, model.properties().computeModel().vCores());
-        Assertions.assertEquals(1619207085, model.properties().nodeCount());
+        Assertions.assertEquals(812550328, model.properties().computeModel().computeGeneration());
+        Assertions.assertEquals(2010275395, model.properties().computeModel().vCores());
+        Assertions.assertEquals(78216934, model.properties().nodeCount());
         Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, model.properties().highAvailability().mode());
-        Assertions.assertEquals("ppofmxaxcfjpgdd", model.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals("mmajtjaodx", model.properties().parameterGroup().parameterGroupResourceId());
         Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.properties().parameterGroup().applyMethod());
         Assertions.assertEquals(ScheduledMaintenanceManagementType.SYSTEM,
             model.properties().scheduledMaintenance().maintenanceManagementType());
@@ -41,43 +38,28 @@ public final class PoolForPatchUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolForPatchUpdate model = new PoolForPatchUpdate()
-            .withTags(mapOf("kajionpim", "dxkqpx", "txgcpodgmaajr", "xg", "lwhijcoejctbzaq", "vdjwzrlovm"))
-            .withProperties(new PoolPropertiesForPatchUpdate()
-                .withComputeModel(new PoolComputeModelForPatchUpdate().withType(PoolComputeModelType.PROVISIONED)
-                    .withComputeProcessor(ComputeProcessorType.INTEL)
-                    .withComputeGeneration(1508721218)
-                    .withVCores(544085929))
-                .withNodeCount(1619207085)
-                .withHighAvailability(new PoolHighAvailabilityPatch().withMode(PoolHighAvailabilityMode.ANY_ZONE))
-                .withParameterGroup(
-                    new PoolParameterGroupReferenceForPatchUpdate().withParameterGroupResourceId("ppofmxaxcfjpgdd")
-                        .withApplyMethod(ParameterApplyMethod.IMMEDIATE))
-                .withScheduledMaintenance(new ScheduledMaintenancePropertiesForPatchUpdate()
-                    .withMaintenanceManagementType(ScheduledMaintenanceManagementType.SYSTEM)));
+        PoolForPatchUpdate model = new PoolForPatchUpdate().withProperties(new PoolPropertiesForPatchUpdate()
+            .withComputeModel(new PoolComputeModelForPatchUpdate().withType(PoolComputeModelType.PROVISIONED)
+                .withComputeProcessor(ComputeProcessorType.INTEL)
+                .withComputeGeneration(812550328)
+                .withVCores(2010275395))
+            .withNodeCount(78216934)
+            .withHighAvailability(new PoolHighAvailabilityPatch().withMode(PoolHighAvailabilityMode.ANY_ZONE))
+            .withParameterGroup(
+                new PoolParameterGroupReferenceForPatchUpdate().withParameterGroupResourceId("mmajtjaodx")
+                    .withApplyMethod(ParameterApplyMethod.IMMEDIATE))
+            .withScheduledMaintenance(new ScheduledMaintenancePropertiesForPatchUpdate()
+                .withMaintenanceManagementType(ScheduledMaintenanceManagementType.SYSTEM)));
         model = BinaryData.fromObject(model).toObject(PoolForPatchUpdate.class);
-        Assertions.assertEquals("dxkqpx", model.tags().get("kajionpim"));
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.properties().computeModel().type());
         Assertions.assertEquals(ComputeProcessorType.INTEL, model.properties().computeModel().computeProcessor());
-        Assertions.assertEquals(1508721218, model.properties().computeModel().computeGeneration());
-        Assertions.assertEquals(544085929, model.properties().computeModel().vCores());
-        Assertions.assertEquals(1619207085, model.properties().nodeCount());
+        Assertions.assertEquals(812550328, model.properties().computeModel().computeGeneration());
+        Assertions.assertEquals(2010275395, model.properties().computeModel().vCores());
+        Assertions.assertEquals(78216934, model.properties().nodeCount());
         Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, model.properties().highAvailability().mode());
-        Assertions.assertEquals("ppofmxaxcfjpgdd", model.properties().parameterGroup().parameterGroupResourceId());
+        Assertions.assertEquals("mmajtjaodx", model.properties().parameterGroup().parameterGroupResourceId());
         Assertions.assertEquals(ParameterApplyMethod.IMMEDIATE, model.properties().parameterGroup().applyMethod());
         Assertions.assertEquals(ScheduledMaintenanceManagementType.SYSTEM,
             model.properties().scheduledMaintenance().maintenanceManagementType());
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

@@ -157,18 +157,7 @@ public final class CapabilityTypesClientImpl implements CapabilityTypesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Capability Type resource for given Target Type and location.
-     * 
-     * @param location The name of the Azure region.
-     * @param targetTypeName String that represents a Target Type resource name.
-     * @param capabilityTypeName String that represents a Capability Type resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Capability Type resource for given Target Type and location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapabilityTypeInner> getWithResponse(String location, String targetTypeName,
         String capabilityTypeName, Context context) {
@@ -177,17 +166,7 @@ public final class CapabilityTypesClientImpl implements CapabilityTypesClient {
             location, targetTypeName, capabilityTypeName, accept, context);
     }
 
-    /**
-     * Get a Capability Type resource for given Target Type and location.
-     * 
-     * @param location The name of the Azure region.
-     * @param targetTypeName String that represents a Target Type resource name.
-     * @param capabilityTypeName String that represents a Capability Type resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Capability Type resource for given Target Type and location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityTypeInner get(String location, String targetTypeName, String capabilityTypeName) {
         return getWithResponse(location, targetTypeName, capabilityTypeName, Context.NONE).getValue();
@@ -267,12 +246,7 @@ public final class CapabilityTypesClientImpl implements CapabilityTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityTypeInner> listSinglePage(String location, String targetTypeName,
         String continuationToken) {
-        final String accept = "application/json";
-        Response<CapabilityTypeListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                location, targetTypeName, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, targetTypeName, continuationToken, Context.NONE);
     }
 
     /**
@@ -298,37 +272,14 @@ public final class CapabilityTypesClientImpl implements CapabilityTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of Capability Type resources for given Target Type and location.
-     * 
-     * @param location The name of the Azure region.
-     * @param targetTypeName String that represents a Target Type resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Capability Type resources for given Target Type and location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityTypeInner> list(String location, String targetTypeName) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(location, targetTypeName, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(location, targetTypeName, continuationToken, Context.NONE);
     }
 
-    /**
-     * Get a list of Capability Type resources for given Target Type and location.
-     * 
-     * @param location The name of the Azure region.
-     * @param targetTypeName String that represents a Target Type resource name.
-     * @param continuationToken String that sets the continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Capability Type resources for given Target Type and location as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityTypeInner> list(String location, String targetTypeName, String continuationToken,
         Context context) {
@@ -366,11 +317,7 @@ public final class CapabilityTypesClientImpl implements CapabilityTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityTypeInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CapabilityTypeListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

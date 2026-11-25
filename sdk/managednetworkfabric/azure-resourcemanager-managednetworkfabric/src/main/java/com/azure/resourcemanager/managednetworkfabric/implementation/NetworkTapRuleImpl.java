@@ -188,10 +188,7 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
     }
 
     public NetworkTapRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkTapRules()
-            .create(resourceGroupName, networkTapRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkTapRule create(Context context) {
@@ -214,10 +211,7 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
     }
 
     public NetworkTapRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkTapRules()
-            .update(resourceGroupName, networkTapRuleName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkTapRule apply(Context context) {
@@ -240,11 +234,7 @@ public final class NetworkTapRuleImpl implements NetworkTapRule, NetworkTapRule.
     }
 
     public NetworkTapRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkTapRules()
-            .getByResourceGroupWithResponse(resourceGroupName, networkTapRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkTapRule refresh(Context context) {

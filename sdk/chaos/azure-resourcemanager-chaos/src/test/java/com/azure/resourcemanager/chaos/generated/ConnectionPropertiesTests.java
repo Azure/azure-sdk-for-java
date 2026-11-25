@@ -13,33 +13,30 @@ public final class ConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionProperties model = BinaryData.fromString(
-            "{\"kind\":\"ChaosAgent\",\"targetResourceId\":\"cope\",\"principalId\":\"m\",\"tenantId\":\"rbuhhlky\",\"certificateSubjectName\":\"tqsrogtuwkff\",\"certificateIssuer\":\"ktsysidfvclglxn\",\"dstsPrincipal\":\"ijtk\",\"dataPlaneEndpoint\":\"sqo\",\"status\":\"Revoked\",\"provisioningState\":\"Updating\"}")
+            "{\"kind\":\"AksExtension\",\"targetResourceId\":\"z\",\"principalId\":\"xcoxpelnjet\",\"tenantId\":\"ltsxoatf\",\"certificateSubjectName\":\"zpnpbswv\",\"certificateIssuer\":\"loccsrmozihm\",\"dataPlaneEndpoint\":\"g\",\"status\":\"Pending\",\"provisioningState\":\"Running\"}")
             .toObject(ConnectionProperties.class);
-        Assertions.assertEquals(ConnectionKind.CHAOS_AGENT, model.kind());
-        Assertions.assertEquals("cope", model.targetResourceId());
-        Assertions.assertEquals("m", model.principalId());
-        Assertions.assertEquals("rbuhhlky", model.tenantId());
-        Assertions.assertEquals("tqsrogtuwkff", model.certificateSubjectName());
-        Assertions.assertEquals("ktsysidfvclglxn", model.certificateIssuer());
-        Assertions.assertEquals("ijtk", model.dstsPrincipal());
+        Assertions.assertEquals(ConnectionKind.AKS_EXTENSION, model.kind());
+        Assertions.assertEquals("z", model.targetResourceId());
+        Assertions.assertEquals("xcoxpelnjet", model.principalId());
+        Assertions.assertEquals("ltsxoatf", model.tenantId());
+        Assertions.assertEquals("zpnpbswv", model.certificateSubjectName());
+        Assertions.assertEquals("loccsrmozihm", model.certificateIssuer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionProperties model = new ConnectionProperties().withKind(ConnectionKind.CHAOS_AGENT)
-            .withTargetResourceId("cope")
-            .withPrincipalId("m")
-            .withTenantId("rbuhhlky")
-            .withCertificateSubjectName("tqsrogtuwkff")
-            .withCertificateIssuer("ktsysidfvclglxn")
-            .withDstsPrincipal("ijtk");
+        ConnectionProperties model = new ConnectionProperties().withKind(ConnectionKind.AKS_EXTENSION)
+            .withTargetResourceId("z")
+            .withPrincipalId("xcoxpelnjet")
+            .withTenantId("ltsxoatf")
+            .withCertificateSubjectName("zpnpbswv")
+            .withCertificateIssuer("loccsrmozihm");
         model = BinaryData.fromObject(model).toObject(ConnectionProperties.class);
-        Assertions.assertEquals(ConnectionKind.CHAOS_AGENT, model.kind());
-        Assertions.assertEquals("cope", model.targetResourceId());
-        Assertions.assertEquals("m", model.principalId());
-        Assertions.assertEquals("rbuhhlky", model.tenantId());
-        Assertions.assertEquals("tqsrogtuwkff", model.certificateSubjectName());
-        Assertions.assertEquals("ktsysidfvclglxn", model.certificateIssuer());
-        Assertions.assertEquals("ijtk", model.dstsPrincipal());
+        Assertions.assertEquals(ConnectionKind.AKS_EXTENSION, model.kind());
+        Assertions.assertEquals("z", model.targetResourceId());
+        Assertions.assertEquals("xcoxpelnjet", model.principalId());
+        Assertions.assertEquals("ltsxoatf", model.tenantId());
+        Assertions.assertEquals("zpnpbswv", model.certificateSubjectName());
+        Assertions.assertEquals("loccsrmozihm", model.certificateIssuer());
     }
 }

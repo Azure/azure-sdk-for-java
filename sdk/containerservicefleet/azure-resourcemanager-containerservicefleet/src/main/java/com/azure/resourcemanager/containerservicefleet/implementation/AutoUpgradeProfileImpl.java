@@ -104,11 +104,7 @@ public final class AutoUpgradeProfileImpl
     }
 
     public AutoUpgradeProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoUpgradeProfiles()
-            .createOrUpdate(resourceGroupName, fleetName, autoUpgradeProfileName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutoUpgradeProfile create(Context context) {
@@ -135,11 +131,7 @@ public final class AutoUpgradeProfileImpl
     }
 
     public AutoUpgradeProfile apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoUpgradeProfiles()
-            .createOrUpdate(resourceGroupName, fleetName, autoUpgradeProfileName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AutoUpgradeProfile apply(Context context) {
@@ -166,11 +158,7 @@ public final class AutoUpgradeProfileImpl
     }
 
     public AutoUpgradeProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoUpgradeProfiles()
-            .getWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutoUpgradeProfile refresh(Context context) {

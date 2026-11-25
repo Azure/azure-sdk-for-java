@@ -18,7 +18,10 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
@@ -600,6 +603,30 @@ public class ConnectionManagerTest {
         
         long waitTime = manager.getMillisUntilNextClientAvailable();
         assertEquals(0, waitTime);
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "1, 1", "999999, 1", "1000000, 1", "1000001, 2" })
+    public void getMillisUntilNextClientAvailableRoundsUpTest(long backoffNanos, long expectedMillis) {
+        Instant now = Instant.ofEpochSecond(0, 500_000);
+        Instant backoffEnd = now.plusNanos(backoffNanos);
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+        when(clientBuilderMock.buildClients(configStore)).thenReturn(List.of(replicaClient1));
+        when(replicaClient1.getBackoffEndTime()).thenReturn(backoffEnd);
+
+        try (MockedStatic<Instant> instantMock = Mockito.mockStatic(Instant.class, Mockito.CALLS_REAL_METHODS)) {
+            instantMock.when(Instant::now).thenReturn(now);
+            manager.getAvailableClients();
+
+            assertEquals(expectedMillis, manager.getMillisUntilNextClientAvailable());
+        }
+    }
+
+    @Test
+    public void getMillisUntilNextClientAvailableReturnsZeroWhenNoClientsTrackedTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);
+
+        assertEquals(0, manager.getMillisUntilNextClientAvailable());
     }
     
     /**

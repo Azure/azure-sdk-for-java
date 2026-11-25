@@ -9,10 +9,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.recommender.fluent.SpotPlacementScoresClient;
-import com.azure.resourcemanager.compute.recommender.fluent.models.ComputeDiagnosticBaseInner;
+import com.azure.resourcemanager.compute.recommender.fluent.models.SpotPlacementScoresBaseInner;
 import com.azure.resourcemanager.compute.recommender.fluent.models.SpotPlacementScoresResponseInner;
-import com.azure.resourcemanager.compute.recommender.models.ComputeDiagnosticBase;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScores;
+import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScoresBase;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScoresInput;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScoresResponse;
 
@@ -29,16 +29,16 @@ public final class SpotPlacementScoresImpl implements SpotPlacementScores {
         this.serviceManager = serviceManager;
     }
 
-    public Response<ComputeDiagnosticBase> getWithResponse(String location, Context context) {
-        Response<ComputeDiagnosticBaseInner> inner = this.serviceClient().getWithResponse(location, context);
+    public Response<SpotPlacementScoresBase> getWithResponse(String location, Context context) {
+        Response<SpotPlacementScoresBaseInner> inner = this.serviceClient().getWithResponse(location, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ComputeDiagnosticBaseImpl(inner.getValue(), this.manager()));
+            new SpotPlacementScoresBaseImpl(inner.getValue(), this.manager()));
     }
 
-    public ComputeDiagnosticBase get(String location) {
-        ComputeDiagnosticBaseInner inner = this.serviceClient().get(location);
+    public SpotPlacementScoresBase get(String location) {
+        SpotPlacementScoresBaseInner inner = this.serviceClient().get(location);
         if (inner != null) {
-            return new ComputeDiagnosticBaseImpl(inner, this.manager());
+            return new SpotPlacementScoresBaseImpl(inner, this.manager());
         } else {
             return null;
         }

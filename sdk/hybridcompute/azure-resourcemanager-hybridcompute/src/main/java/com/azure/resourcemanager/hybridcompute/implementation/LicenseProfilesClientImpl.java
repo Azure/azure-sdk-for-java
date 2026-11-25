@@ -221,17 +221,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         return getWithResponseAsync(resourceGroupName, machineName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about the view of a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license profile in a hybrid machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LicenseProfileInner> getWithResponse(String resourceGroupName, String machineName,
         Context context) {
@@ -241,16 +231,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             resourceGroupName, machineName, licenseProfileName, accept, context);
     }
 
-    /**
-     * Retrieves information about the view of a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseProfileInner get(String resourceGroupName, String machineName) {
         return getWithResponse(resourceGroupName, machineName, Context.NONE).getValue();
@@ -295,12 +276,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String machineName,
         LicenseProfileInner parameters) {
-        final String licenseProfileName = "default";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, machineName, parameters, Context.NONE);
     }
 
     /**
@@ -346,37 +322,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             LicenseProfileInner.class, LicenseProfileInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create or Update license profile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner>
         beginCreateOrUpdate(String resourceGroupName, String machineName, LicenseProfileInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, machineName, parameters);
-        return this.client.<LicenseProfileInner, LicenseProfileInner>getLroResult(response, LicenseProfileInner.class,
-            LicenseProfileInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, machineName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create or Update license profile operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String machineName, LicenseProfileInner parameters, Context context) {
@@ -403,39 +356,19 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create or Update license profile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseProfileInner createOrUpdate(String resourceGroupName, String machineName,
         LicenseProfileInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, machineName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create or Update license profile operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseProfileInner createOrUpdate(String resourceGroupName, String machineName,
         LicenseProfileInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, machineName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, machineName, parameters, context));
     }
 
     /**
@@ -477,12 +410,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String machineName,
         LicenseProfileUpdate parameters) {
-        final String licenseProfileName = "default";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, machineName, parameters, Context.NONE);
     }
 
     /**
@@ -527,37 +455,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             LicenseProfileInner.class, LicenseProfileInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update license profile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(String resourceGroupName,
         String machineName, LicenseProfileUpdate parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, machineName, parameters);
-        return this.client.<LicenseProfileInner, LicenseProfileInner>getLroResult(response, LicenseProfileInner.class,
-            LicenseProfileInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, machineName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update license profile operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(String resourceGroupName,
         String machineName, LicenseProfileUpdate parameters, Context context) {
@@ -584,38 +489,17 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update license profile operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseProfileInner update(String resourceGroupName, String machineName, LicenseProfileUpdate parameters) {
-        return beginUpdate(resourceGroupName, machineName, parameters).getFinalResult();
+        return update(resourceGroupName, machineName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to update a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Update license profile operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license profile in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseProfileInner update(String resourceGroupName, String machineName, LicenseProfileUpdate parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, machineName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, machineName, parameters, context));
     }
 
     /**
@@ -649,9 +533,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String machineName) {
-        final String licenseProfileName = "default";
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, machineName, Context.NONE);
     }
 
     /**
@@ -689,33 +571,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, machineName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, machineName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
         Context context) {
@@ -738,33 +600,16 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         return beginDeleteAsync(resourceGroupName, machineName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName) {
-        beginDelete(resourceGroupName, machineName).getFinalResult();
+        delete(resourceGroupName, machineName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a license profile.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String machineName, Context context) {
-        beginDelete(resourceGroupName, machineName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, machineName, context));
     }
 
     /**
@@ -817,12 +662,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseProfileInner> listSinglePage(String resourceGroupName, String machineName) {
-        final String accept = "application/json";
-        Response<LicenseProfilesListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, machineName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, machineName, Context.NONE);
     }
 
     /**
@@ -847,33 +687,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The operation to get all license profiles of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of LicenseProfile items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseProfileInner> list(String resourceGroupName, String machineName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, machineName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, machineName, Context.NONE);
     }
 
-    /**
-     * The operation to get all license profiles of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of LicenseProfile items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseProfileInner> list(String resourceGroupName, String machineName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, machineName, context),
@@ -910,11 +730,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseProfileInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LicenseProfilesListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -15,12 +15,12 @@ public final class AdapterDeploymentLastOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdapterDeploymentLastOperation model = BinaryData.fromString(
-            "{\"type\":\"Update\",\"status\":\"Failed\",\"requestedTargetDeploymentName\":\"cnawth\",\"startedAt\":\"2021-04-06T22:43:53Z\",\"completedAt\":\"2021-07-10T21:24:04Z\"}")
+            "{\"type\":\"Update\",\"status\":\"Failed\",\"requestedTargetDeploymentName\":\"rfijhggabq\",\"startedAt\":\"2021-11-23T09:11:13Z\",\"completedAt\":\"2021-07-29T07:35:42Z\"}")
             .toObject(AdapterDeploymentLastOperation.class);
         Assertions.assertEquals(AdapterDeploymentOperationType.UPDATE, model.type());
         Assertions.assertEquals(AdapterDeploymentOperationState.FAILED, model.status());
-        Assertions.assertEquals("cnawth", model.requestedTargetDeploymentName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T22:43:53Z"), model.startedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T21:24:04Z"), model.completedAt());
+        Assertions.assertEquals("rfijhggabq", model.requestedTargetDeploymentName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-23T09:11:13Z"), model.startedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T07:35:42Z"), model.completedAt());
     }
 }

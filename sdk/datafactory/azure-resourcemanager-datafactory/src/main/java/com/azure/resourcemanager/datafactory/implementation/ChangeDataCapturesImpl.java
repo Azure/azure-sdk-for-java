@@ -51,13 +51,11 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     }
 
     public void delete(String resourceGroupName, String factoryName, String changeDataCaptureName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, changeDataCaptureName);
+        this.deleteWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
     }
 
     public PagedIterable<ChangeDataCaptureResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<ChangeDataCaptureResourceInner> inner
-            = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChangeDataCaptureResourceImpl(inner1, this.manager()));
+        return this.listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
     public PagedIterable<ChangeDataCaptureResource> listByFactory(String resourceGroupName, String factoryName,
@@ -73,7 +71,7 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     }
 
     public void start(String resourceGroupName, String factoryName, String changeDataCaptureName) {
-        this.serviceClient().start(resourceGroupName, factoryName, changeDataCaptureName);
+        this.startWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
     }
 
     public Response<Void> stopWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
@@ -82,7 +80,7 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     }
 
     public void stop(String resourceGroupName, String factoryName, String changeDataCaptureName) {
-        this.serviceClient().stop(resourceGroupName, factoryName, changeDataCaptureName);
+        this.stopWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
     }
 
     public Response<String> statusWithResponse(String resourceGroupName, String factoryName,
@@ -91,109 +89,41 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     }
 
     public String status(String resourceGroupName, String factoryName, String changeDataCaptureName) {
-        return this.serviceClient().status(resourceGroupName, factoryName, changeDataCaptureName);
+        return this.statusWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE).getValue();
     }
 
     public ChangeDataCaptureResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "factoryName");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String changeDataCaptureName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "changeDataCaptureName");
-        if (changeDataCaptureName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
-        }
         String localIfNoneMatch = null;
-        return this
-            .getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, localIfNoneMatch, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, localIfNoneMatch, Context.NONE).getValue();
     }
 
     public Response<ChangeDataCaptureResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "factoryName");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String changeDataCaptureName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "factoryName", "factories", LOGGER);
+        String changeDataCaptureName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "changeDataCaptureName");
-        if (changeDataCaptureName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
-        }
+            "changeDataCaptureName", "adfcdcs", LOGGER);
         return this.getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "factoryName");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String changeDataCaptureName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "changeDataCaptureName");
-        if (changeDataCaptureName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
-        }
-        this.deleteWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String factoryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String factoryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "factoryName");
-        if (factoryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
-        }
-        String changeDataCaptureName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "factoryName", "factories", LOGGER);
+        String changeDataCaptureName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}",
-            "changeDataCaptureName");
-        if (changeDataCaptureName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
-        }
+            "changeDataCaptureName", "adfcdcs", LOGGER);
         return this.deleteWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 

@@ -146,10 +146,7 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
     }
 
     public NetworkTap create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkTaps()
-            .create(resourceGroupName, networkTapName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkTap create(Context context) {
@@ -172,10 +169,7 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
     }
 
     public NetworkTap apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkTaps()
-            .update(resourceGroupName, networkTapName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkTap apply(Context context) {
@@ -198,11 +192,7 @@ public final class NetworkTapImpl implements NetworkTap, NetworkTap.Definition, 
     }
 
     public NetworkTap refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkTaps()
-            .getByResourceGroupWithResponse(resourceGroupName, networkTapName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkTap refresh(Context context) {

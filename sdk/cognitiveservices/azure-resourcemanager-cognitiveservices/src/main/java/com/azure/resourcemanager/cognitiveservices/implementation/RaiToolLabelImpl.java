@@ -75,12 +75,7 @@ public final class RaiToolLabelImpl implements RaiToolLabel, RaiToolLabel.Defini
     }
 
     public RaiToolLabel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiToolLabels()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiToolConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiToolLabel create(Context context) {
@@ -103,12 +98,7 @@ public final class RaiToolLabelImpl implements RaiToolLabel, RaiToolLabel.Defini
     }
 
     public RaiToolLabel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiToolLabels()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiToolConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiToolLabel apply(Context context) {
@@ -136,11 +126,7 @@ public final class RaiToolLabelImpl implements RaiToolLabel, RaiToolLabel.Defini
     }
 
     public RaiToolLabel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiToolLabels()
-            .getWithResponse(resourceGroupName, accountName, raiToolConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiToolLabel refresh(Context context) {

@@ -109,10 +109,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     }
 
     public ProvisioningServiceDescription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotDpsResources()
-            .createOrUpdate(resourceGroupName, provisioningServiceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProvisioningServiceDescription create(Context context) {
@@ -135,10 +132,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     }
 
     public ProvisioningServiceDescription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotDpsResources()
-            .update(resourceGroupName, provisioningServiceName, updateProvisioningServiceTags, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProvisioningServiceDescription apply(Context context) {
@@ -161,11 +155,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     }
 
     public ProvisioningServiceDescription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIotDpsResources()
-            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProvisioningServiceDescription refresh(Context context) {

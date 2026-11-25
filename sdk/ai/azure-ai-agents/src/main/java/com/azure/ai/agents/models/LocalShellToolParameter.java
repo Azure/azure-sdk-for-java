@@ -25,70 +25,6 @@ public final class LocalShellToolParameter extends Tool {
     @Generated
     private ToolType type = ToolType.LOCAL_SHELL;
 
-    /**
-     * Creates an instance of LocalShellToolParameter class.
-     */
-    @Generated
-    public LocalShellToolParameter() {
-    }
-
-    /**
-     * Get the type property: The type property.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public ToolType getType() {
-        return this.type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of LocalShellToolParameter from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of LocalShellToolParameter if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the LocalShellToolParameter.
-     */
-    @Generated
-    public static LocalShellToolParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            LocalShellToolParameter deserializedLocalShellToolParameter = new LocalShellToolParameter();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedLocalShellToolParameter.type = ToolType.fromString(reader.getString());
-                } else if ("name".equals(fieldName)) {
-                    deserializedLocalShellToolParameter.name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedLocalShellToolParameter.description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                    deserializedLocalShellToolParameter.toolConfigs = toolConfigs;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedLocalShellToolParameter;
-        });
-    }
-
     /*
      * Deprecated. This property is deprecated and will be removed in a future version.
      */
@@ -106,6 +42,24 @@ public final class LocalShellToolParameter extends Tool {
      */
     @Generated
     private Map<String, ToolConfig> toolConfigs;
+
+    /**
+     * Creates an instance of LocalShellToolParameter class.
+     */
+    @Generated
+    public LocalShellToolParameter() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public ToolType getType() {
+        return this.type;
+    }
 
     /**
      * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
@@ -171,5 +125,51 @@ public final class LocalShellToolParameter extends Tool {
     public LocalShellToolParameter setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocalShellToolParameter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalShellToolParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocalShellToolParameter.
+     */
+    @Generated
+    public static LocalShellToolParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalShellToolParameter deserializedLocalShellToolParameter = new LocalShellToolParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedLocalShellToolParameter.type = ToolType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedLocalShellToolParameter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedLocalShellToolParameter.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedLocalShellToolParameter.toolConfigs = toolConfigs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedLocalShellToolParameter;
+        });
     }
 }

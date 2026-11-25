@@ -160,17 +160,7 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get access review instance contacted reviewers.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instance contacted reviewers as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewContactedReviewerInner> listAsync(String scope, String scheduleDefinitionId,
         String id) {
@@ -197,35 +187,14 @@ public final class ScopeAccessReviewInstanceContactedReviewersClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get access review instance contacted reviewers.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instance contacted reviewers as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewContactedReviewerInner> list(String scope, String scheduleDefinitionId,
         String id) {
         return new PagedIterable<>(listAsync(scope, scheduleDefinitionId, id));
     }
 
-    /**
-     * Get access review instance contacted reviewers.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instance contacted reviewers as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewContactedReviewerInner> list(String scope, String scheduleDefinitionId, String id,
         Context context) {

@@ -202,18 +202,7 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeploymentSetting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentSettingInner> getWithResponse(String resourceGroupName, String clusterName,
         String deploymentSettingsName, Context context) {
@@ -222,17 +211,7 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
             resourceGroupName, clusterName, deploymentSettingsName, accept, context);
     }
 
-    /**
-     * Get a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DeploymentSetting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentSettingInner get(String resourceGroupName, String clusterName, String deploymentSettingsName) {
         return getWithResponse(resourceGroupName, clusterName, deploymentSettingsName, Context.NONE).getValue();
@@ -277,11 +256,8 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String deploymentSettingsName, DeploymentSettingInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, deploymentSettingsName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, deploymentSettingsName, resource,
+            Context.NONE);
     }
 
     /**
@@ -329,40 +305,14 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
             this.client.getContext());
     }
 
-    /**
-     * Create a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edge device resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentSettingInner>, DeploymentSettingInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String deploymentSettingsName, DeploymentSettingInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, clusterName, deploymentSettingsName, resource);
-        return this.client.<DeploymentSettingInner, DeploymentSettingInner>getLroResult(response,
-            DeploymentSettingInner.class, DeploymentSettingInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edge device resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentSettingInner>, DeploymentSettingInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, String deploymentSettingsName, DeploymentSettingInner resource,
@@ -392,42 +342,19 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edge device resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentSettingInner createOrUpdate(String resourceGroupName, String clusterName,
         String deploymentSettingsName, DeploymentSettingInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edge device resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentSettingInner createOrUpdate(String resourceGroupName, String clusterName,
         String deploymentSettingsName, DeploymentSettingInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, resource, context));
     }
 
     /**
@@ -464,8 +391,7 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String deploymentSettingsName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, deploymentSettingsName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, deploymentSettingsName, Context.NONE);
     }
 
     /**
@@ -507,36 +433,14 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String deploymentSettingsName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, deploymentSettingsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, deploymentSettingsName, Context.NONE);
     }
 
-    /**
-     * Delete a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String deploymentSettingsName, Context context) {
@@ -562,35 +466,17 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String deploymentSettingsName) {
-        beginDelete(resourceGroupName, clusterName, deploymentSettingsName).getFinalResult();
+        delete(resourceGroupName, clusterName, deploymentSettingsName, Context.NONE);
     }
 
-    /**
-     * Delete a DeploymentSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param deploymentSettingsName Name of Deployment Setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String deploymentSettingsName, Context context) {
-        beginDelete(resourceGroupName, clusterName, deploymentSettingsName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, deploymentSettingsName, context));
     }
 
     /**
@@ -645,12 +531,7 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentSettingInner> listByClustersSinglePage(String resourceGroupName,
         String clusterName) {
-        final String accept = "application/json";
-        Response<DeploymentSettingListResult> res
-            = service.listByClustersSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClustersSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -675,33 +556,13 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DeploymentSetting resources by Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentSetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentSettingInner> listByClusters(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByClustersSinglePage(resourceGroupName, clusterName),
-            nextLink -> listByClustersNextSinglePage(nextLink));
+        return listByClusters(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * List DeploymentSetting resources by Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DeploymentSetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentSettingInner> listByClusters(String resourceGroupName, String clusterName,
         Context context) {
@@ -740,11 +601,7 @@ public final class DeploymentSettingsClientImpl implements DeploymentSettingsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentSettingInner> listByClustersNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentSettingListResult> res
-            = service.listByClustersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClustersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

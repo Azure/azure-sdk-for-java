@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryptionPatch;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.EntraIdConfigPatch;
 import com.azure.resourcemanager.netapp.models.LdapConfigurationPatch;
 import java.io.IOException;
 import java.util.List;
@@ -36,11 +35,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * region and only affect non ldap NFSv4 volumes.
      */
     private String nfsV4IdDomain;
-
-    /*
-     * Entra ID configuration for the account.
-     */
-    private EntraIdConfigPatch entraIdConfig;
 
     /*
      * LDAP Configuration for the account.
@@ -116,26 +110,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
     }
 
     /**
-     * Get the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    public EntraIdConfigPatch entraIdConfig() {
-        return this.entraIdConfig;
-    }
-
-    /**
-     * Set the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @param entraIdConfig the entraIdConfig value to set.
-     * @return the AccountPropertiesPatch object itself.
-     */
-    public AccountPropertiesPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        this.entraIdConfig = entraIdConfig;
-        return this;
-    }
-
-    /**
      * Get the ldapConfiguration property: LDAP Configuration for the account.
      * 
      * @return the ldapConfiguration value.
@@ -167,9 +141,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
         if (encryption() != null) {
             encryption().validate();
         }
-        if (entraIdConfig() != null) {
-            entraIdConfig().validate();
-        }
         if (ldapConfiguration() != null) {
             ldapConfiguration().validate();
         }
@@ -185,7 +156,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
-        jsonWriter.writeJsonField("entraIdConfig", this.entraIdConfig);
         jsonWriter.writeJsonField("ldapConfiguration", this.ldapConfiguration);
         return jsonWriter.writeEndObject();
     }
@@ -213,8 +183,6 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
                     deserializedAccountPropertiesPatch.encryption = AccountEncryptionPatch.fromJson(reader);
                 } else if ("nfsV4IDDomain".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.nfsV4IdDomain = reader.getString();
-                } else if ("entraIdConfig".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.entraIdConfig = EntraIdConfigPatch.fromJson(reader);
                 } else if ("ldapConfiguration".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.ldapConfiguration = LdapConfigurationPatch.fromJson(reader);
                 } else {

@@ -120,19 +120,7 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an entity relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param relationName Relation Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity relation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelationInner> getRelationWithResponse(String resourceGroupName, String workspaceName,
         String entityId, String relationName, Context context) {
@@ -141,18 +129,7 @@ public final class EntityRelationsClientImpl implements EntityRelationsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, entityId, relationName, accept, context);
     }
 
-    /**
-     * Gets an entity relation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param entityId entity ID.
-     * @param relationName Relation Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entity relation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelationInner getRelation(String resourceGroupName, String workspaceName, String entityId,
         String relationName) {

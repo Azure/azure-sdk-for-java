@@ -21,7 +21,7 @@ public final class DiscoveredResourcesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"namespace\":\"biipsnawwlqkznx\",\"resourceName\":\"hllxricctkw\",\"resourceType\":\"uqqoaj\",\"fullyQualifiedIdentifier\":\"eiyglesrwvaexhdc\",\"discoveredAt\":\"2021-09-11T21:48:17Z\",\"scope\":\"ceqnkbrupobehd\"},\"id\":\"jzacvumepjpbibn\",\"name\":\"pphepifexl\",\"type\":\"qirccj\"}]}";
+            = "{\"value\":[{\"properties\":{\"namespace\":\"ps\",\"resourceName\":\"hbrnnhjx\",\"resourceType\":\"qwjhqkbiwetpozyc\",\"fullyQualifiedIdentifier\":\"qiqyhgfsetzlexbs\",\"discoveredAt\":\"2021-03-29T02:20:49Z\",\"scope\":\"e\",\"location\":\"no\",\"zones\":[\"iuwfbzkkdtnhqsy\"]},\"id\":\"jselpkpbafvafh\",\"name\":\"by\",\"type\":\"ccbevxrhyzdf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class DiscoveredResourcesListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DiscoveredResource> response = manager.discoveredResources()
-            .listByWorkspace("qxjhqxcsqhtkbtnq", "rngl", com.azure.core.util.Context.NONE);
+            .listByWorkspace("xrzxmdewsrsxkrp", "bjazejwwviy", com.azure.core.util.Context.NONE);
 
     }
 }

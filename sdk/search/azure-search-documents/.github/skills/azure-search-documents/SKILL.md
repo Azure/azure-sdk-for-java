@@ -32,10 +32,11 @@ Categorize each compilation error:
 `SearchServiceVersion.java` is generated but customized by `SearchCustomizations.java`.
 
 1. Check `getLatest()` returns the new version
-2. In `includeOldApiVersions()`:
-   - **Remove** any version the generator now produces (prevents duplicates)
-   - **Add** the previous latest version if not already produced by the generator
-3. Verify all expected old versions are present
+2. Retain supported GA versions and only the latest preview:
+   - In `includeOldApiVersions()`, add supported GA versions missing from generated output; do not re-add older previews.
+   - Remove any version the generator now produces from that list (prevents duplicates).
+   - Remove obsolete preview constants through `removeOldPreviewApiVersions()`.
+3. Regenerate and verify supported GA constants remain, only the latest preview is present, and the latest-preview-only regression test passes.
 
 ## Detect Breaking Changes
 

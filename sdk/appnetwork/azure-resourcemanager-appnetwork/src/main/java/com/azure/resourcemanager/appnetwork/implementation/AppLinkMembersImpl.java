@@ -45,7 +45,7 @@ public final class AppLinkMembersImpl implements AppLinkMembers {
     }
 
     public void delete(String resourceGroupName, String appLinkName, String appLinkMemberName) {
-        this.serviceClient().delete(resourceGroupName, appLinkName, appLinkMemberName);
+        this.delete(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String appLinkName, String appLinkMemberName, Context context) {
@@ -53,8 +53,7 @@ public final class AppLinkMembersImpl implements AppLinkMembers {
     }
 
     public PagedIterable<AppLinkMember> listByAppLink(String resourceGroupName, String appLinkName) {
-        PagedIterable<AppLinkMemberInner> inner = this.serviceClient().listByAppLink(resourceGroupName, appLinkName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AppLinkMemberImpl(inner1, this.manager()));
+        return this.listByAppLink(resourceGroupName, appLinkName, Context.NONE);
     }
 
     public PagedIterable<AppLinkMember> listByAppLink(String resourceGroupName, String appLinkName, Context context) {
@@ -64,102 +63,36 @@ public final class AppLinkMembersImpl implements AppLinkMembers {
     }
 
     public AppLinkMember getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkName");
-        if (appLinkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinks'.", id)));
-        }
-        String appLinkMemberName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkMemberName");
-        if (appLinkMemberName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinkMembers'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AppLinkMember> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String appLinkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkName");
-        if (appLinkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinks'.", id)));
-        }
-        String appLinkMemberName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "appLinkName", "appLinks", LOGGER);
+        String appLinkMemberName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkMemberName");
-        if (appLinkMemberName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinkMembers'.", id)));
-        }
+            "appLinkMemberName", "appLinkMembers", LOGGER);
         return this.getWithResponse(resourceGroupName, appLinkName, appLinkMemberName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkName");
-        if (appLinkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinks'.", id)));
-        }
-        String appLinkMemberName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkMemberName");
-        if (appLinkMemberName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinkMembers'.", id)));
-        }
-        this.delete(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String appLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String appLinkName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkName");
-        if (appLinkName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinks'.", id)));
-        }
-        String appLinkMemberName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "appLinkName", "appLinks", LOGGER);
+        String appLinkMemberName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers/{appLinkMemberName}",
-            "appLinkMemberName");
-        if (appLinkMemberName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'appLinkMembers'.", id)));
-        }
+            "appLinkMemberName", "appLinkMembers", LOGGER);
         this.delete(resourceGroupName, appLinkName, appLinkMemberName, context);
     }
 

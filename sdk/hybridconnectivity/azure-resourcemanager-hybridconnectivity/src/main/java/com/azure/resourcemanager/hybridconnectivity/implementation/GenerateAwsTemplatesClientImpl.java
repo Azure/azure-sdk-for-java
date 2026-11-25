@@ -112,17 +112,7 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
         return postWithResponseAsync(generateAwsTemplateRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve AWS Cloud Formation template.
-     * 
-     * @param generateAwsTemplateRequest ConnectorId and SolutionTypes and their properties to Generate AWS CFT
-     * Template.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the HybridConnectivity post operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenerateAwsTemplateResponseInner>
         postWithResponse(GenerateAwsTemplateRequest generateAwsTemplateRequest, Context context) {
@@ -132,16 +122,7 @@ public final class GenerateAwsTemplatesClientImpl implements GenerateAwsTemplate
             contentType, accept, generateAwsTemplateRequest, context);
     }
 
-    /**
-     * Retrieve AWS Cloud Formation template.
-     * 
-     * @param generateAwsTemplateRequest ConnectorId and SolutionTypes and their properties to Generate AWS CFT
-     * Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the HybridConnectivity post operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateAwsTemplateResponseInner post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {
         return postWithResponse(generateAwsTemplateRequest, Context.NONE).getValue();

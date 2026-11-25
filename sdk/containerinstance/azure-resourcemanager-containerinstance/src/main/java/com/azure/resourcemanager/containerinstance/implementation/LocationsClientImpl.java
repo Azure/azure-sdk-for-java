@@ -177,15 +177,7 @@ public final class LocationsClientImpl implements LocationsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get the usage for a subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listUsageAsync(String location) {
         return new PagedFlux<>(() -> listUsageSinglePageAsync(location),
@@ -208,30 +200,13 @@ public final class LocationsClientImpl implements LocationsClient {
             nextLink -> listUsageNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get the usage for a subscription.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listUsage(String location) {
         return new PagedIterable<>(listUsageAsync(location));
     }
 
-    /**
-     * Get the usage for a subscription.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the usage for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listUsage(String location, Context context) {
         return new PagedIterable<>(listUsageAsync(location, context));
@@ -310,20 +285,7 @@ public final class LocationsClientImpl implements LocationsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get the list of cached images.
-     * 
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images.
-     * 
-     * Get the list of cached images on specific OS type for a subscription in a region as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CachedImages> listCachedImagesAsync(String location) {
         return new PagedFlux<>(() -> listCachedImagesSinglePageAsync(location),
@@ -351,40 +313,13 @@ public final class LocationsClientImpl implements LocationsClient {
             nextLink -> listCachedImagesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get the list of cached images.
-     * 
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images.
-     * 
-     * Get the list of cached images on specific OS type for a subscription in a region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CachedImages> listCachedImages(String location) {
         return new PagedIterable<>(listCachedImagesAsync(location));
     }
 
-    /**
-     * Get the list of cached images.
-     * 
-     * Get the list of cached images on specific OS type for a subscription in a region.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cached images.
-     * 
-     * Get the list of cached images on specific OS type for a subscription in a region as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CachedImages> listCachedImages(String location, Context context) {
         return new PagedIterable<>(listCachedImagesAsync(location, context));
@@ -463,19 +398,7 @@ public final class LocationsClientImpl implements LocationsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get the list of capabilities of the location.
-     * 
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of capabilities of the location.
-     * 
-     * Get the list of CPU/memory/GPU capabilities of a region as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Capabilities> listCapabilitiesAsync(String location) {
         return new PagedFlux<>(() -> listCapabilitiesSinglePageAsync(location),
@@ -502,38 +425,13 @@ public final class LocationsClientImpl implements LocationsClient {
             nextLink -> listCapabilitiesNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get the list of capabilities of the location.
-     * 
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of capabilities of the location.
-     * 
-     * Get the list of CPU/memory/GPU capabilities of a region as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Capabilities> listCapabilities(String location) {
         return new PagedIterable<>(listCapabilitiesAsync(location));
     }
 
-    /**
-     * Get the list of capabilities of the location.
-     * 
-     * Get the list of CPU/memory/GPU capabilities of a region.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of capabilities of the location.
-     * 
-     * Get the list of CPU/memory/GPU capabilities of a region as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Capabilities> listCapabilities(String location, Context context) {
         return new PagedIterable<>(listCapabilitiesAsync(location, context));

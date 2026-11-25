@@ -205,17 +205,7 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the trace container for an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace container for an Azure Monitor Workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TraceContainerResourceInner> getWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, Context context) {
@@ -224,16 +214,7 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
             resourceGroupName, azureMonitorWorkspaceName, accept, context);
     }
 
-    /**
-     * Gets the trace container for an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace container for an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceContainerResourceInner get(String resourceGroupName, String azureMonitorWorkspaceName) {
         return getWithResponse(resourceGroupName, azureMonitorWorkspaceName, Context.NONE).getValue();
@@ -281,11 +262,7 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
         TraceContainerResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, azureMonitorWorkspaceName, resource, Context.NONE);
     }
 
     /**
@@ -335,42 +312,14 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
             this.client.getContext());
     }
 
-    /**
-     * Creates or replaces the trace container for an Azure Monitor Workspace. Modeled as a long-running operation (200
-     * + 201); the service may complete synchronously by returning a terminal provisioningState, or track progress via
-     * Azure-AsyncOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the trace container for an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TraceContainerResourceInner>, TraceContainerResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String azureMonitorWorkspaceName, TraceContainerResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, azureMonitorWorkspaceName, resource);
-        return this.client.<TraceContainerResourceInner, TraceContainerResourceInner>getLroResult(response,
-            TraceContainerResourceInner.class, TraceContainerResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, azureMonitorWorkspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces the trace container for an Azure Monitor Workspace. Modeled as a long-running operation (200
-     * + 201); the service may complete synchronously by returning a terminal provisioningState, or track progress via
-     * Azure-AsyncOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the trace container for an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TraceContainerResourceInner>, TraceContainerResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String azureMonitorWorkspaceName, TraceContainerResourceInner resource,
@@ -401,43 +350,19 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces the trace container for an Azure Monitor Workspace. Modeled as a long-running operation (200
-     * + 201); the service may complete synchronously by returning a terminal provisioningState, or track progress via
-     * Azure-AsyncOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace container for an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceContainerResourceInner createOrUpdate(String resourceGroupName, String azureMonitorWorkspaceName,
         TraceContainerResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, azureMonitorWorkspaceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, azureMonitorWorkspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces the trace container for an Azure Monitor Workspace. Modeled as a long-running operation (200
-     * + 201); the service may complete synchronously by returning a terminal provisioningState, or track progress via
-     * Azure-AsyncOperation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trace container for an Azure Monitor Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TraceContainerResourceInner createOrUpdate(String resourceGroupName, String azureMonitorWorkspaceName,
         TraceContainerResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, azureMonitorWorkspaceName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, azureMonitorWorkspaceName, resource, context));
     }
 
     /**
@@ -473,17 +398,7 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
         return deleteWithResponseAsync(resourceGroupName, azureMonitorWorkspaceName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the trace container for an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
         Context context) {
@@ -491,15 +406,7 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
             this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, context);
     }
 
-    /**
-     * Deletes the trace container for an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureMonitorWorkspaceName) {
         deleteWithResponse(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
@@ -560,12 +467,7 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceContainerResourceInner> listByAzureMonitorWorkspaceSinglePage(String resourceGroupName,
         String azureMonitorWorkspaceName) {
-        final String accept = "application/json";
-        Response<TraceContainerResourceListResult> res
-            = service.listByAzureMonitorWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAzureMonitorWorkspaceSinglePage(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     /**
@@ -590,35 +492,14 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists trace containers for an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceContainerResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceContainerResourceInner> listByAzureMonitorWorkspace(String resourceGroupName,
         String azureMonitorWorkspaceName) {
-        return new PagedIterable<>(
-            () -> listByAzureMonitorWorkspaceSinglePage(resourceGroupName, azureMonitorWorkspaceName),
-            nextLink -> listByAzureMonitorWorkspaceNextSinglePage(nextLink));
+        return listByAzureMonitorWorkspace(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
-    /**
-     * Lists trace containers for an Azure Monitor Workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TraceContainerResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TraceContainerResourceInner> listByAzureMonitorWorkspace(String resourceGroupName,
         String azureMonitorWorkspaceName, Context context) {
@@ -659,11 +540,7 @@ public final class TraceContainersClientImpl implements TraceContainersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TraceContainerResourceInner> listByAzureMonitorWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TraceContainerResourceListResult> res
-            = service.listByAzureMonitorWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAzureMonitorWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

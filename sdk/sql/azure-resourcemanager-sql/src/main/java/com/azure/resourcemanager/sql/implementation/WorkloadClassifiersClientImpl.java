@@ -121,19 +121,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload classifier along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName) {
@@ -220,19 +208,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, accept, context);
     }
 
-    /**
-     * Gets a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload classifier on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkloadClassifierInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName, String workloadClassifierName) {
@@ -240,20 +216,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             workloadClassifierName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload classifier along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadClassifierInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName, Context context) {
@@ -261,19 +224,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             workloadClassifierName, context).block();
     }
 
-    /**
-     * Gets a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload classifier.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadClassifierInner get(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName, String workloadClassifierName) {
@@ -281,21 +232,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param parameters The properties of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName,
@@ -399,20 +336,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             workloadClassifierName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param parameters The properties of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of workload classifier operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
@@ -450,20 +374,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class, context);
     }
 
-    /**
-     * Creates or updates a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param parameters The properties of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload classifier operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
@@ -474,21 +385,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param parameters The properties of the workload classifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload classifier operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
@@ -499,20 +396,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param parameters The properties of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkloadClassifierInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName,
@@ -544,20 +428,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             workloadClassifierName, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param parameters The properties of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadClassifierInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters) {
@@ -565,21 +436,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             workloadClassifierName, parameters).block();
     }
 
-    /**
-     * Creates or updates a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param parameters The properties of the workload classifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload classifier operations for a data warehouse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadClassifierInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters, Context context) {
@@ -587,19 +444,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             workloadClassifierName, parameters, context).block();
     }
 
-    /**
-     * Deletes a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName) {
@@ -684,19 +529,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context);
     }
 
-    /**
-     * Deletes a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName) {
@@ -730,19 +563,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             context);
     }
 
-    /**
-     * Deletes a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName) {
@@ -751,20 +572,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, String workloadClassifierName, Context context) {
@@ -774,19 +582,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName,
         String workloadGroupName, String workloadClassifierName) {
@@ -816,37 +612,14 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
         String workloadClassifierName) {
         deleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName).block();
     }
 
-    /**
-     * Deletes a workload classifier.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
         String workloadClassifierName, Context context) {
@@ -951,18 +724,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the list of workload classifiers for a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName) {
@@ -991,18 +753,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             workloadGroupName, context), nextLink -> listByWorkloadGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the list of workload classifiers for a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName) {
@@ -1010,19 +761,7 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             listByWorkloadGroupAsync(resourceGroupName, serverName, databaseName, workloadGroupName));
     }
 
-    /**
-     * Gets the list of workload classifiers for a workload group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(String resourceGroupName, String serverName,
         String databaseName, String workloadGroupName, Context context) {

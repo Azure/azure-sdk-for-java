@@ -105,17 +105,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
             Context context);
     }
 
-    /**
-     * An action to stop an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWithResponseAsync(String scope, String scheduleDefinitionId, String id) {
         if (this.client.getEndpoint() == null) {
@@ -172,66 +162,25 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         return service.stop(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id, context);
     }
 
-    /**
-     * An action to stop an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String scope, String scheduleDefinitionId, String id) {
         return stopWithResponseAsync(scope, scheduleDefinitionId, id).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * An action to stop an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWithResponse(String scope, String scheduleDefinitionId, String id, Context context) {
         return stopWithResponseAsync(scope, scheduleDefinitionId, id, context).block();
     }
 
-    /**
-     * An action to stop an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String scope, String scheduleDefinitionId, String id) {
         stopWithResponse(scope, scheduleDefinitionId, id, Context.NONE);
     }
 
-    /**
-     * An action to approve/deny all decisions for a review with certain filters.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param properties Record all decisions payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> recordAllDecisionsWithResponseAsync(String scope, String scheduleDefinitionId,
         String id, RecordAllDecisionsProperties properties) {
@@ -304,18 +253,7 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
             contentType, properties, context);
     }
 
-    /**
-     * An action to approve/deny all decisions for a review with certain filters.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param properties Record all decisions payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> recordAllDecisionsAsync(String scope, String scheduleDefinitionId, String id,
         RecordAllDecisionsProperties properties) {
@@ -323,53 +261,21 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * An action to approve/deny all decisions for a review with certain filters.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param properties Record all decisions payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> recordAllDecisionsWithResponse(String scope, String scheduleDefinitionId, String id,
         RecordAllDecisionsProperties properties, Context context) {
         return recordAllDecisionsWithResponseAsync(scope, scheduleDefinitionId, id, properties, context).block();
     }
 
-    /**
-     * An action to approve/deny all decisions for a review with certain filters.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param properties Record all decisions payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void recordAllDecisions(String scope, String scheduleDefinitionId, String id,
         RecordAllDecisionsProperties properties) {
         recordAllDecisionsWithResponse(scope, scheduleDefinitionId, id, properties, Context.NONE);
     }
 
-    /**
-     * An action to reset all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetDecisionsWithResponseAsync(String scope, String scheduleDefinitionId, String id) {
         if (this.client.getEndpoint() == null) {
@@ -427,66 +333,26 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         return service.resetDecisions(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id, context);
     }
 
-    /**
-     * An action to reset all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetDecisionsAsync(String scope, String scheduleDefinitionId, String id) {
         return resetDecisionsWithResponseAsync(scope, scheduleDefinitionId, id).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * An action to reset all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetDecisionsWithResponse(String scope, String scheduleDefinitionId, String id,
         Context context) {
         return resetDecisionsWithResponseAsync(scope, scheduleDefinitionId, id, context).block();
     }
 
-    /**
-     * An action to reset all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetDecisions(String scope, String scheduleDefinitionId, String id) {
         resetDecisionsWithResponse(scope, scheduleDefinitionId, id, Context.NONE);
     }
 
-    /**
-     * An action to apply all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> applyDecisionsWithResponseAsync(String scope, String scheduleDefinitionId, String id) {
         if (this.client.getEndpoint() == null) {
@@ -544,66 +410,26 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         return service.applyDecisions(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id, context);
     }
 
-    /**
-     * An action to apply all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> applyDecisionsAsync(String scope, String scheduleDefinitionId, String id) {
         return applyDecisionsWithResponseAsync(scope, scheduleDefinitionId, id).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * An action to apply all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> applyDecisionsWithResponse(String scope, String scheduleDefinitionId, String id,
         Context context) {
         return applyDecisionsWithResponseAsync(scope, scheduleDefinitionId, id, context).block();
     }
 
-    /**
-     * An action to apply all decisions for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void applyDecisions(String scope, String scheduleDefinitionId, String id) {
         applyDecisionsWithResponse(scope, scheduleDefinitionId, id, Context.NONE);
     }
 
-    /**
-     * An action to send reminders for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendRemindersWithResponseAsync(String scope, String scheduleDefinitionId, String id) {
         if (this.client.getEndpoint() == null) {
@@ -661,50 +487,20 @@ public final class ScopeAccessReviewInstanceOperationsClientImpl implements Scop
         return service.sendReminders(this.client.getEndpoint(), apiVersion, scope, scheduleDefinitionId, id, context);
     }
 
-    /**
-     * An action to send reminders for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendRemindersAsync(String scope, String scheduleDefinitionId, String id) {
         return sendRemindersWithResponseAsync(scope, scheduleDefinitionId, id).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * An action to send reminders for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendRemindersWithResponse(String scope, String scheduleDefinitionId, String id,
         Context context) {
         return sendRemindersWithResponseAsync(scope, scheduleDefinitionId, id, context).block();
     }
 
-    /**
-     * An action to send reminders for an access review instance.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendReminders(String scope, String scheduleDefinitionId, String id) {
         sendRemindersWithResponse(scope, scheduleDefinitionId, id, Context.NONE);

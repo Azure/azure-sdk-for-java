@@ -60,10 +60,7 @@ public final class TaskHubImpl implements TaskHub, TaskHub.Definition, TaskHub.U
     }
 
     public TaskHub create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskHubs()
-            .createOrUpdate(resourceGroupName, schedulerName, taskHubName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TaskHub create(Context context) {
@@ -84,10 +81,7 @@ public final class TaskHubImpl implements TaskHub, TaskHub.Definition, TaskHub.U
     }
 
     public TaskHub apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskHubs()
-            .createOrUpdate(resourceGroupName, schedulerName, taskHubName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TaskHub apply(Context context) {
@@ -112,11 +106,7 @@ public final class TaskHubImpl implements TaskHub, TaskHub.Definition, TaskHub.U
     }
 
     public TaskHub refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskHubs()
-            .getWithResponse(resourceGroupName, schedulerName, taskHubName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TaskHub refresh(Context context) {

@@ -13,11 +13,11 @@ public final class DefaultParameterGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultParameterGroupProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"parameters\":[{\"name\":\"flrwd\",\"description\":\"dlxyjrxs\",\"value\":\"afcnih\",\"defaultValue\":\"qapnedgfbcv\",\"valueSource\":\"SystemDefault\",\"dataType\":\"vpk\",\"allowedValues\":\"dcvd\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"sotbob\",\"unit\":\"opcjwvnhd\"},{\"name\":\"wmgxcxrsl\",\"description\":\"utwu\",\"value\":\"grpkhjwniyqs\",\"defaultValue\":\"i\",\"valueSource\":\"UserOverride\",\"dataType\":\"gk\",\"allowedValues\":\"lvmbmpaxmodfvuef\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"vmwy\",\"unit\":\"fouyf\"},{\"name\":\"akcp\",\"description\":\"yzvqt\",\"value\":\"ubex\",\"defaultValue\":\"zksmondj\",\"valueSource\":\"UserOverride\",\"dataType\":\"vypomgkopkwho\",\"allowedValues\":\"pajqgxysm\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"qvmkcxo\",\"unit\":\"pvhelxprg\"}],\"description\":\"atddc\",\"postgreSqlVersion\":\"18\"}")
+            "{\"provisioningState\":\"Failed\",\"parameters\":[{\"name\":\"nsj\",\"description\":\"vti\",\"value\":\"xsdszuempsb\",\"defaultValue\":\"f\",\"valueSource\":\"UserOverride\",\"dataType\":\"v\",\"allowedValues\":\"qi\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"jjxd\",\"unit\":\"buukzclewyhml\"},{\"name\":\"aztz\",\"description\":\"fn\",\"value\":\"kwyfzqwhxxbuyqax\",\"defaultValue\":\"eqz\",\"valueSource\":\"SystemDefault\",\"dataType\":\"iolxor\",\"allowedValues\":\"lt\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"sobqw\",\"unit\":\"dbnw\"},{\"name\":\"fhucqdpfuv\",\"description\":\"sbjjc\",\"value\":\"vxb\",\"defaultValue\":\"vudutncor\",\"valueSource\":\"UserOverride\",\"dataType\":\"qtvcofudflvkgj\",\"allowedValues\":\"gdknnqv\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"tor\",\"unit\":\"sgsahmkycgr\"}],\"description\":\"wjue\",\"postgreSqlVersion\":\"18\"}")
             .toObject(DefaultParameterGroupProperties.class);
-        Assertions.assertEquals("flrwd", model.parameters().get(0).name());
-        Assertions.assertEquals("afcnih", model.parameters().get(0).value());
-        Assertions.assertEquals("atddc", model.description());
+        Assertions.assertEquals("nsj", model.parameters().get(0).name());
+        Assertions.assertEquals("xsdszuempsb", model.parameters().get(0).value());
+        Assertions.assertEquals("wjue", model.description());
         Assertions.assertEquals(PostgreSqlVersion.V18, model.postgreSqlVersion());
     }
 }

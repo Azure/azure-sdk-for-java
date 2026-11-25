@@ -20,7 +20,7 @@ public final class ExtensionMetadataV2sGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"extensionUris\":[\"ceagbjqvlsumywz\",\"shxgonoy\"],\"extensionSignatureUri\":\"qipubyz\",\"operatingSystem\":\"lkfk\",\"architecture\":[\"gv\",\"pemtuoqu\"],\"version\":\"yegq\",\"extensionType\":\"nigflqqbtnyj\",\"publisher\":\"lxdbfvabmvms\"},\"id\":\"aevwjcnkot\",\"name\":\"lwuhvajmailfe\",\"type\":\"jjzakzwjiqullqx\"}";
+            = "{\"properties\":{\"extensionUris\":[\"f\",\"xrqrkijpeuqlsd\",\"eqztvxwmwwm\"],\"extensionSignatureUri\":\"wenawwam\",\"operatingSystem\":\"leqioulndh\",\"architecture\":[\"eojhtollhsvi\",\"mytzln\"],\"version\":\"xpno\",\"extensionType\":\"oanfbcswqagyw\",\"publisher\":\"xigvjrktpgaeuk\"},\"id\":\"wohpmwhqnucs\",\"name\":\"lhsidsjtdl\",\"type\":\"bninjgazlsvbzfc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ExtensionMetadataV2sGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExtensionValueV2 response = manager.extensionMetadataV2s()
-            .getWithResponse("mj", "ajcxnyqgxhl", "srv", "i", com.azure.core.util.Context.NONE)
+            .getWithResponse("fbcpaqktkrumzu", "dkyzbfvxov", "kxiuxqggvqr", "hyhlwcjsqg",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

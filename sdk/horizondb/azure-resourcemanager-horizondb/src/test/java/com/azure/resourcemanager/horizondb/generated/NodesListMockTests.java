@@ -21,7 +21,7 @@ public final class NodesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"role\":\"ReadOnly\",\"availabilityZone\":\"zvoamktc\"},\"id\":\"os\",\"name\":\"gbzahgxqdlyr\",\"type\":\"ltlaprltzkatbhj\"}]}";
+            = "{\"value\":[{\"properties\":{\"role\":\"Unassigned\",\"availabilityZone\":\"uahokq\"},\"id\":\"bkau\",\"name\":\"ofshfphwpnulaiyw\",\"type\":\"e\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NodesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Node> response
-            = manager.nodes().list("noxuztrksx", "pndfcpfnznt", "jtwkjaos", com.azure.core.util.Context.NONE);
+            = manager.nodes().list("taboidvmf", "hppubowsepdfgkmt", "herngb", com.azure.core.util.Context.NONE);
 
     }
 }

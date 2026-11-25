@@ -80,12 +80,7 @@ public final class RaiBlocklistItemImpl
     }
 
     public RaiBlocklistItem create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklistItems()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiBlocklistItem create(Context context) {
@@ -109,12 +104,7 @@ public final class RaiBlocklistItemImpl
     }
 
     public RaiBlocklistItem apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklistItems()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiBlocklistItem apply(Context context) {
@@ -145,11 +135,7 @@ public final class RaiBlocklistItemImpl
     }
 
     public RaiBlocklistItem refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiBlocklistItems()
-            .getWithResponse(resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiBlocklistItem refresh(Context context) {

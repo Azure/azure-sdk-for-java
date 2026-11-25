@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.io.IOUtils;
@@ -122,7 +121,11 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public void writeTo(OutputStream outputStream) throws IOException {
-        writeTo(Channels.newChannel(outputStream));
+        if (bufferedContent != null) {
+            writeTo(Channels.newChannel(outputStream));
+        } else {
+            InputStreamUtils.transferTo(content.get(), outputStream, length);
+        }
     }
 
     @Override
@@ -209,10 +212,10 @@ public final class InputStreamContent extends BinaryDataContent {
             // If the length was unknown or didn't match what was actually read use the length calculated during reading
             // of the stream.
             if (length == null || length != readLength) {
-                return new InputStreamContent(() -> new IterableOfByteBuffersInputStream(byteBuffers), readLength,
+                return new InputStreamContent(() -> InputStreamUtils.createInputStream(byteBuffers), readLength,
                     byteBuffers);
             } else {
-                return new InputStreamContent(() -> new IterableOfByteBuffersInputStream(byteBuffers), length,
+                return new InputStreamContent(() -> InputStreamUtils.createInputStream(byteBuffers), length,
                     byteBuffers);
             }
         } catch (IOException e) {
@@ -222,16 +225,7 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         try {
-            AccessibleByteArrayOutputStream dataOutputBuffer = (length == null || length < MAX_ARRAY_LENGTH)
-                ? new AccessibleByteArrayOutputStream()
-                : new AccessibleByteArrayOutputStream(length.intValue());
-            int nRead;
-            byte[] data = new byte[STREAM_READ_SIZE];
-            InputStream inputStream = this.content.get();
-            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-                dataOutputBuffer.write(data, 0, nRead);
-            }
-            return dataOutputBuffer.toByteArray();
+            return InputStreamUtils.readAllBytes(this.content.get(), length);
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }

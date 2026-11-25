@@ -60,10 +60,7 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
     }
 
     public DiscoveryRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoveryRules()
-            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DiscoveryRule create(Context context) {
@@ -84,10 +81,7 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
     }
 
     public DiscoveryRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoveryRules()
-            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DiscoveryRule apply(Context context) {
@@ -113,11 +107,7 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
     }
 
     public DiscoveryRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDiscoveryRules()
-            .getWithResponse(resourceGroupName, healthModelName, discoveryRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DiscoveryRule refresh(Context context) {

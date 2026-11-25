@@ -270,18 +270,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LocalRulesResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocalRulesResourceInner> getWithResponse(String resourceGroupName, String localRulestackName,
         String priority, Context context) {
@@ -290,17 +279,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             resourceGroupName, localRulestackName, priority, accept, context);
     }
 
-    /**
-     * Get a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LocalRulesResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalRulesResourceInner get(String resourceGroupName, String localRulestackName, String priority) {
         return getWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE).getValue();
@@ -345,11 +324,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String localRulestackName,
         String priority, LocalRulesResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, localRulestackName, priority, resource, Context.NONE);
     }
 
     /**
@@ -397,40 +372,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of localRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocalRulesResourceInner>, LocalRulesResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, localRulestackName, priority, resource);
-        return this.client.<LocalRulesResourceInner, LocalRulesResourceInner>getLroResult(response,
-            LocalRulesResourceInner.class, LocalRulesResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, localRulestackName, priority, resource, Context.NONE);
     }
 
-    /**
-     * Create a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of localRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LocalRulesResourceInner>, LocalRulesResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String localRulestackName, String priority, LocalRulesResourceInner resource,
@@ -460,41 +409,19 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return localRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalRulesResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String priority,
         LocalRulesResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, priority, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, localRulestackName, priority, resource, Context.NONE);
     }
 
-    /**
-     * Create a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return localRulestack rule list.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocalRulesResourceInner createOrUpdate(String resourceGroupName, String localRulestackName, String priority,
         LocalRulesResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, localRulestackName, priority, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, localRulestackName, priority, resource, context));
     }
 
     /**
@@ -531,8 +458,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String localRulestackName,
         String priority) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, Context.NONE);
+        return deleteWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE);
     }
 
     /**
@@ -574,36 +500,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
         String priority) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, localRulestackName, priority);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, localRulestackName, priority, Context.NONE);
     }
 
-    /**
-     * Delete a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
         String priority, Context context) {
@@ -628,35 +532,16 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName, String priority) {
-        beginDelete(resourceGroupName, localRulestackName, priority).getFinalResult();
+        delete(resourceGroupName, localRulestackName, priority, Context.NONE);
     }
 
-    /**
-     * Delete a LocalRulesResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String localRulestackName, String priority, Context context) {
-        beginDelete(resourceGroupName, localRulestackName, priority, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, localRulestackName, priority, context));
     }
 
     /**
@@ -713,12 +598,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocalRulesResourceInner> listByLocalRulestacksSinglePage(String resourceGroupName,
         String localRulestackName) {
-        final String accept = "application/json";
-        Response<LocalRulesResourceListResult> res
-            = service.listByLocalRulestacksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocalRulestacksSinglePage(resourceGroupName, localRulestackName, Context.NONE);
     }
 
     /**
@@ -743,34 +623,14 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List LocalRulesResource resources by LocalRulestacks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName) {
-        return new PagedIterable<>(() -> listByLocalRulestacksSinglePage(resourceGroupName, localRulestackName),
-            nextLink -> listByLocalRulestacksNextSinglePage(nextLink));
+        return listByLocalRulestacks(resourceGroupName, localRulestackName, Context.NONE);
     }
 
-    /**
-     * List LocalRulesResource resources by LocalRulestacks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LocalRulesResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalRulesResourceInner> listByLocalRulestacks(String resourceGroupName,
         String localRulestackName, Context context) {
@@ -821,19 +681,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get counters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return counters along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleCounterInner> getCountersWithResponse(String resourceGroupName, String localRulestackName,
         String priority, String firewallName, Context context) {
@@ -843,17 +691,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             context);
     }
 
-    /**
-     * Get counters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return counters.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleCounterInner getCounters(String resourceGroupName, String localRulestackName, String priority) {
         final String firewallName = null;
@@ -901,19 +739,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Refresh counters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> refreshCountersWithResponse(String resourceGroupName, String localRulestackName,
         String priority, String firewallName, Context context) {
@@ -921,16 +747,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             this.client.getSubscriptionId(), resourceGroupName, localRulestackName, priority, firewallName, context);
     }
 
-    /**
-     * Refresh counters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void refreshCounters(String resourceGroupName, String localRulestackName, String priority) {
         final String firewallName = null;
@@ -979,19 +796,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Reset counters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @param firewallName The firewallName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule counter reset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleCounterResetInner> resetCountersWithResponse(String resourceGroupName,
         String localRulestackName, String priority, String firewallName, Context context) {
@@ -1001,17 +806,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
             context);
     }
 
-    /**
-     * Reset counters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param localRulestackName LocalRulestack resource name.
-     * @param priority Local Rule priority.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule counter reset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleCounterResetInner resetCounters(String resourceGroupName, String localRulestackName, String priority) {
         final String firewallName = null;
@@ -1051,11 +846,7 @@ public final class LocalRulesClientImpl implements LocalRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LocalRulesResourceInner> listByLocalRulestacksNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LocalRulesResourceListResult> res
-            = service.listByLocalRulestacksNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByLocalRulestacksNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

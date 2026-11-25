@@ -70,10 +70,7 @@ public final class NginxConfigurationResponseImpl
     }
 
     public NginxConfigurationResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .createOrUpdate(resourceGroupName, deploymentName, configurationName, createBody, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxConfigurationResponse create(Context context) {
@@ -95,10 +92,7 @@ public final class NginxConfigurationResponseImpl
     }
 
     public NginxConfigurationResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .createOrUpdate(resourceGroupName, deploymentName, configurationName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NginxConfigurationResponse apply(Context context) {
@@ -124,11 +118,7 @@ public final class NginxConfigurationResponseImpl
     }
 
     public NginxConfigurationResponse refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConfigurations()
-            .getWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxConfigurationResponse refresh(Context context) {

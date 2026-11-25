@@ -332,10 +332,7 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
     }
 
     public ManagedCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedCluster create(Context context) {
@@ -358,10 +355,7 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
     }
 
     public ManagedCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedClusters()
-            .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedCluster apply(Context context) {
@@ -384,11 +378,7 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
     }
 
     public ManagedCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedCluster refresh(Context context) {

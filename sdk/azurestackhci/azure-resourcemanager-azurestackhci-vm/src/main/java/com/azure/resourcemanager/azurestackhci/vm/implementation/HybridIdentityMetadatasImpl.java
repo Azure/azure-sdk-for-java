@@ -43,9 +43,7 @@ public final class HybridIdentityMetadatasImpl implements HybridIdentityMetadata
     }
 
     public PagedIterable<HybridIdentityMetadata> listByVirtualMachineInstance(String resourceUri) {
-        PagedIterable<HybridIdentityMetadataInner> inner
-            = this.serviceClient().listByVirtualMachineInstance(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new HybridIdentityMetadataImpl(inner1, this.manager()));
+        return this.listByVirtualMachineInstance(resourceUri, Context.NONE);
     }
 
     public PagedIterable<HybridIdentityMetadata> listByVirtualMachineInstance(String resourceUri, Context context) {

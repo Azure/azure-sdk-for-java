@@ -15,27 +15,27 @@ public final class GateConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateConfiguration model = BinaryData.fromString(
-            "{\"displayName\":\"wcw\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Thursday\",\"startTime\":\"knssxmojm\",\"utcOffset\":\"vpkjpr\"}}")
+            "{\"displayName\":\"mczuo\",\"type\":\"ScheduledStart\",\"scheduledStartConfiguration\":{\"startDay\":\"Thursday\",\"startTime\":\"cwwqiokn\",\"utcOffset\":\"sx\"}}")
             .toObject(GateConfiguration.class);
-        Assertions.assertEquals("wcw", model.displayName());
+        Assertions.assertEquals("mczuo", model.displayName());
         Assertions.assertEquals(GateType.SCHEDULED_START, model.type());
         Assertions.assertEquals(DayOfWeek.THURSDAY, model.scheduledStartConfiguration().startDay());
-        Assertions.assertEquals("knssxmojm", model.scheduledStartConfiguration().startTime());
-        Assertions.assertEquals("vpkjpr", model.scheduledStartConfiguration().utcOffset());
+        Assertions.assertEquals("cwwqiokn", model.scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("sx", model.scheduledStartConfiguration().utcOffset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GateConfiguration model = new GateConfiguration().withDisplayName("wcw")
+        GateConfiguration model = new GateConfiguration().withDisplayName("mczuo")
             .withType(GateType.SCHEDULED_START)
             .withScheduledStartConfiguration(new ScheduledStartConfiguration().withStartDay(DayOfWeek.THURSDAY)
-                .withStartTime("knssxmojm")
-                .withUtcOffset("vpkjpr"));
+                .withStartTime("cwwqiokn")
+                .withUtcOffset("sx"));
         model = BinaryData.fromObject(model).toObject(GateConfiguration.class);
-        Assertions.assertEquals("wcw", model.displayName());
+        Assertions.assertEquals("mczuo", model.displayName());
         Assertions.assertEquals(GateType.SCHEDULED_START, model.type());
         Assertions.assertEquals(DayOfWeek.THURSDAY, model.scheduledStartConfiguration().startDay());
-        Assertions.assertEquals("knssxmojm", model.scheduledStartConfiguration().startTime());
-        Assertions.assertEquals("vpkjpr", model.scheduledStartConfiguration().utcOffset());
+        Assertions.assertEquals("cwwqiokn", model.scheduledStartConfiguration().startTime());
+        Assertions.assertEquals("sx", model.scheduledStartConfiguration().utcOffset());
     }
 }

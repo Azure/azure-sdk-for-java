@@ -300,18 +300,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DrillRun.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DrillRun along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DrillRunInner> getWithResponse(String serviceGroupName, String drillName, String drillRunName,
         Context context) {
@@ -320,17 +309,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             drillRunName, accept, context);
     }
 
-    /**
-     * Get a DrillRun.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DrillRun.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DrillRunInner get(String serviceGroupName, String drillName, String drillRunName) {
         return getWithResponse(serviceGroupName, drillName, drillRunName, Context.NONE).getValue();
@@ -386,11 +365,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DrillRunInner> listSinglePage(String serviceGroupName, String drillName) {
-        final String accept = "application/json";
-        Response<DrillRunListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), drillName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, drillName, Context.NONE);
     }
 
     /**
@@ -413,33 +388,13 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DrillRun resources by Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DrillRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DrillRunInner> list(String serviceGroupName, String drillName) {
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, drillName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, drillName, Context.NONE);
     }
 
-    /**
-     * List DrillRun resources by Drill.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param drillName The name of the Drill.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DrillRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DrillRunInner> list(String serviceGroupName, String drillName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(serviceGroupName, drillName, context),
@@ -486,9 +441,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failOverWithResponse(String serviceGroupName, String operationId, String drillName,
         String drillRunName, DrillRunFailoverRequest body) {
-        final String accept = "application/json";
-        return service.failOverSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, drillName, drillRunName, accept, body, Context.NONE);
+        return failOverWithResponse(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
     /**
@@ -571,48 +524,20 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginFailOver(String serviceGroupName, String operationId,
+    private SyncPoller<PollResult<Void>, Void> beginFailOver(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunFailoverRequest body) {
-        Response<BinaryData> response
-            = failOverWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginFailOver(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This initiates a new Failover operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailOver(String serviceGroupName, String operationId,
         String drillName, String drillRunName) {
         final DrillRunFailoverRequest body = null;
-        Response<BinaryData> response
-            = failOverWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginFailOver(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This initiates a new Failover operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailOver(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunFailoverRequest body, Context context) {
@@ -661,40 +586,19 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This initiates a new Failover operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void failOver(String serviceGroupName, String operationId, String drillName, String drillRunName) {
         final DrillRunFailoverRequest body = null;
-        beginFailOver(serviceGroupName, operationId, drillName, drillRunName, body).getFinalResult();
+        failOver(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This initiates a new Failover operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void failOver(String serviceGroupName, String operationId, String drillName, String drillRunName,
         DrillRunFailoverRequest body, Context context) {
-        beginFailOver(serviceGroupName, operationId, drillName, drillRunName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginFailOver(serviceGroupName, operationId, drillName, drillRunName, body, context));
     }
 
     /**
@@ -737,9 +641,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reprotectWithResponse(String serviceGroupName, String operationId, String drillName,
         String drillRunName, DrillRunReprotectRequest body) {
-        final String accept = "application/json";
-        return service.reprotectSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, drillName, drillRunName, accept, body, Context.NONE);
+        return reprotectWithResponse(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
     /**
@@ -822,48 +724,20 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginReprotect(String serviceGroupName, String operationId,
+    private SyncPoller<PollResult<Void>, Void> beginReprotect(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunReprotectRequest body) {
-        Response<BinaryData> response
-            = reprotectWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginReprotect(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This initiates a new Reprotect operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReprotect(String serviceGroupName, String operationId,
         String drillName, String drillRunName) {
         final DrillRunReprotectRequest body = null;
-        Response<BinaryData> response
-            = reprotectWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginReprotect(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This initiates a new Reprotect operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReprotect(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunReprotectRequest body, Context context) {
@@ -912,40 +786,19 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This initiates a new Reprotect operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reprotect(String serviceGroupName, String operationId, String drillName, String drillRunName) {
         final DrillRunReprotectRequest body = null;
-        beginReprotect(serviceGroupName, operationId, drillName, drillRunName, body).getFinalResult();
+        reprotect(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This initiates a new Reprotect operation on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reprotect(String serviceGroupName, String operationId, String drillName, String drillRunName,
         DrillRunReprotectRequest body, Context context) {
-        beginReprotect(serviceGroupName, operationId, drillName, drillRunName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginReprotect(serviceGroupName, operationId, drillName, drillRunName, body, context));
     }
 
     /**
@@ -989,10 +842,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addNotesWithResponse(String serviceGroupName, String operationId, String drillName,
         String drillRunName, DrillRunAddNotesRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.addNotesSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, drillName, drillRunName, contentType, accept, body, Context.NONE);
+        return addNotesWithResponse(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
     /**
@@ -1040,41 +890,14 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             this.client.getContext());
     }
 
-    /**
-     * This enables the user to add notes on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddNotes(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunAddNotesRequest body) {
-        Response<BinaryData> response
-            = addNotesWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginAddNotes(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This enables the user to add notes on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddNotes(String serviceGroupName, String operationId,
         String drillName, String drillRunName, DrillRunAddNotesRequest body, Context context) {
@@ -1103,41 +926,19 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This enables the user to add notes on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addNotes(String serviceGroupName, String operationId, String drillName, String drillRunName,
         DrillRunAddNotesRequest body) {
-        beginAddNotes(serviceGroupName, operationId, drillName, drillRunName, body).getFinalResult();
+        addNotes(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This enables the user to add notes on this Drill Run.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addNotes(String serviceGroupName, String operationId, String drillName, String drillRunName,
         DrillRunAddNotesRequest body, Context context) {
-        beginAddNotes(serviceGroupName, operationId, drillName, drillRunName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginAddNotes(serviceGroupName, operationId, drillName, drillRunName, body, context));
     }
 
     /**
@@ -1178,9 +979,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String serviceGroupName, String operationId, String drillName,
         String drillRunName) {
-        final String accept = "application/json";
-        return service.resumeSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), operationId,
-            drillName, drillRunName, accept, Context.NONE);
+        return resumeWithResponse(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
     /**
@@ -1225,38 +1024,14 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             this.client.getContext());
     }
 
-    /**
-     * This unblocks a Failover workflow that is paused after the Fault stage, to proceed to the Failover stage.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String serviceGroupName, String operationId, String drillName,
         String drillRunName) {
-        Response<BinaryData> response = resumeWithResponse(serviceGroupName, operationId, drillName, drillRunName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResume(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
-    /**
-     * This unblocks a Failover workflow that is paused after the Fault stage, to proceed to the Failover stage.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request body for TestFailoverCleanup API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String serviceGroupName, String operationId, String drillName,
         String drillRunName, Context context) {
@@ -1283,38 +1058,18 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This unblocks a Failover workflow that is paused after the Fault stage, to proceed to the Failover stage.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String serviceGroupName, String operationId, String drillName, String drillRunName) {
-        beginResume(serviceGroupName, operationId, drillName, drillRunName).getFinalResult();
+        resume(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
-    /**
-     * This unblocks a Failover workflow that is paused after the Fault stage, to proceed to the Failover stage.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String serviceGroupName, String operationId, String drillName, String drillRunName,
         Context context) {
-        beginResume(serviceGroupName, operationId, drillName, drillRunName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginResume(serviceGroupName, operationId, drillName, drillRunName, context));
     }
 
     /**
@@ -1358,10 +1113,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> markAsCompleteWithResponse(String serviceGroupName, String operationId,
         String drillName, String drillRunName, MarkAsCompleteRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.markAsCompleteSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, drillName, drillRunName, contentType, accept, body, Context.NONE);
+        return markAsCompleteWithResponse(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
     /**
@@ -1409,41 +1161,14 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             this.client.getContext());
     }
 
-    /**
-     * This enables the user to mark this stage as complete, disabling further retries on it.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for MarkAsComplete API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMarkAsComplete(String serviceGroupName, String operationId,
         String drillName, String drillRunName, MarkAsCompleteRequest body) {
-        Response<BinaryData> response
-            = markAsCompleteWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginMarkAsComplete(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This enables the user to mark this stage as complete, disabling further retries on it.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body for MarkAsComplete API.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMarkAsComplete(String serviceGroupName, String operationId,
         String drillName, String drillRunName, MarkAsCompleteRequest body, Context context) {
@@ -1472,41 +1197,19 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This enables the user to mark this stage as complete, disabling further retries on it.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
         MarkAsCompleteRequest body) {
-        beginMarkAsComplete(serviceGroupName, operationId, drillName, drillRunName, body).getFinalResult();
+        markAsComplete(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This enables the user to mark this stage as complete, disabling further retries on it.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
         MarkAsCompleteRequest body, Context context) {
-        beginMarkAsComplete(serviceGroupName, operationId, drillName, drillRunName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginMarkAsComplete(serviceGroupName, operationId, drillName, drillRunName, body, context));
     }
 
     /**
@@ -1551,9 +1254,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateReportWithResponse(String serviceGroupName, String operationId,
         String drillName, String drillRunName) {
-        final String accept = "application/json";
-        return service.generateReportSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, drillName, drillRunName, accept, Context.NONE);
+        return generateReportWithResponse(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
     /**
@@ -1603,44 +1304,14 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             this.client.getContext());
     }
 
-    /**
-     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
-     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
-     * attempt retries it. A report that has been finalized is never regenerated.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public, read-only summary of report generation for a Drill Run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DrillReportSummaryInner>, DrillReportSummaryInner>
         beginGenerateReport(String serviceGroupName, String operationId, String drillName, String drillRunName) {
-        Response<BinaryData> response
-            = generateReportWithResponse(serviceGroupName, operationId, drillName, drillRunName);
-        return this.client.<DrillReportSummaryInner, DrillReportSummaryInner>getLroResult(response,
-            DrillReportSummaryInner.class, DrillReportSummaryInner.class, Context.NONE);
+        return beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
-    /**
-     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
-     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
-     * attempt retries it. A report that has been finalized is never regenerated.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of public, read-only summary of report generation for a Drill Run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DrillReportSummaryInner>, DrillReportSummaryInner> beginGenerateReport(
         String serviceGroupName, String operationId, String drillName, String drillRunName, Context context) {
@@ -1671,45 +1342,19 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
-     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
-     * attempt retries it. A report that has been finalized is never regenerated.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public, read-only summary of report generation for a Drill Run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DrillReportSummaryInner generateReport(String serviceGroupName, String operationId, String drillName,
         String drillRunName) {
-        return beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName).getFinalResult();
+        return generateReport(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
-    /**
-     * This generates, or regenerates, the report for this Drill Run. The action is idempotent and is safe to call at
-     * any time: a call that arrives while a generation is already running joins it, and a call made after a failed
-     * attempt retries it. A report that has been finalized is never regenerated.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public, read-only summary of report generation for a Drill Run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DrillReportSummaryInner generateReport(String serviceGroupName, String operationId, String drillName,
         String drillRunName, Context context) {
-        return beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginGenerateReport(serviceGroupName, operationId, drillName, drillRunName, context));
     }
 
     /**
@@ -1756,10 +1401,8 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listReportDownloadUrlWithResponse(String serviceGroupName, String operationId,
         String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.listReportDownloadUrlSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, drillName, drillRunName, contentType, accept, body, Context.NONE);
+        return listReportDownloadUrlWithResponse(serviceGroupName, operationId, drillName, drillRunName, body,
+            Context.NONE);
     }
 
     /**
@@ -1813,47 +1456,15 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             ListReportDownloadUrlResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
-     * returned expiryTimestamp and grants access to that single report only.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response containing a short-lived, read-only download URL for a
-     * Drill Run report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ListReportDownloadUrlResponseInner>, ListReportDownloadUrlResponseInner>
         beginListReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
             ListReportDownloadUrlRequest body) {
-        Response<BinaryData> response
-            = listReportDownloadUrlWithResponse(serviceGroupName, operationId, drillName, drillRunName, body);
-        return this.client.<ListReportDownloadUrlResponseInner, ListReportDownloadUrlResponseInner>getLroResult(
-            response, ListReportDownloadUrlResponseInner.class, ListReportDownloadUrlResponseInner.class, Context.NONE);
+        return beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
-     * returned expiryTimestamp and grants access to that single report only.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response containing a short-lived, read-only download URL for a
-     * Drill Run report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ListReportDownloadUrlResponseInner>, ListReportDownloadUrlResponseInner>
         beginListReportDownloadUrl(String serviceGroupName, String operationId, String drillName, String drillRunName,
@@ -1886,47 +1497,19 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
-     * returned expiryTimestamp and grants access to that single report only.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a short-lived, read-only download URL for a Drill Run report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListReportDownloadUrlResponseInner listReportDownloadUrl(String serviceGroupName, String operationId,
         String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
-        return beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body)
-            .getFinalResult();
+        return listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
-    /**
-     * This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires at the
-     * returned expiryTimestamp and grants access to that single report only.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param drillName The name of the Drill.
-     * @param drillRunName The name of the DrillRun (GUID).
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing a short-lived, read-only download URL for a Drill Run report.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListReportDownloadUrlResponseInner listReportDownloadUrl(String serviceGroupName, String operationId,
         String drillName, String drillRunName, ListReportDownloadUrlRequest body, Context context) {
-        return beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginListReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, context));
     }
 
     /**
@@ -1959,11 +1542,7 @@ public final class DrillRunsClientImpl implements DrillRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DrillRunInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DrillRunListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

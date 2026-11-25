@@ -10,16 +10,17 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.implementation.Constants;
+import com.azure.cosmos.encryption.implementation.EncryptionConfigs;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
@@ -46,6 +47,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
     private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
     private final String keyEncryptionKeyResolverName;
     private final EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
+    private final boolean mixedArrayEncryptionEnabled;
     private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
 
     private final static ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor cosmosAsyncClientAccessor = ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
@@ -62,6 +64,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
         if (StringUtils.isEmpty(keyEncryptionKeyResolverName)) {
             throw new IllegalArgumentException("keyEncryptionKeyResolverName is null");
         }
+        this.mixedArrayEncryptionEnabled = EncryptionConfigs.isMixedArrayEncryptionEnabled();
         this.cosmosAsyncClient = cosmosAsyncClient;
         this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
         this.clientEncryptionKeyPropertiesCacheByKeyId = new AsyncCache<>();
@@ -91,6 +94,10 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
      */
     EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl() {
         return encryptionKeyStoreProviderImpl;
+    }
+
+    boolean isMixedArrayEncryptionEnabled() {
+        return this.mixedArrayEncryptionEnabled;
     }
 
     Mono<CosmosContainerProperties> getContainerPropertiesAsync(
@@ -195,9 +202,11 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
 
     private void appendEncryptionUserAgentSuffix() {
         try {
-            CosmosBridgeInternal
-                .getAsyncDocumentClient(this.cosmosAsyncClient)
-                .appendUserAgentSuffix(Constants.USER_AGENT_SUFFIX);
+            cosmosAsyncClientAccessor.appendUserAgentSuffix(this.cosmosAsyncClient, Constants.USER_AGENT_SUFFIX);
+            if (!this.mixedArrayEncryptionEnabled) {
+                cosmosAsyncClientAccessor.addUserAgentFeatureFlag(this.cosmosAsyncClient,
+                    UserAgentFeatureFlags.EncryptionMixedArrayOptOut);
+            }
         } catch (Exception e) {
             LOGGER.warn("Failed to append encryption SDK user agent suffix", e);
         }
@@ -272,6 +281,11 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
             @Override
             public EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
                 return cosmosEncryptionAsyncClient.getEncryptionKeyStoreProviderImpl();
+            }
+
+            @Override
+            public boolean isMixedArrayEncryptionEnabled(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
+                return cosmosEncryptionAsyncClient.isMixedArrayEncryptionEnabled();
             }
         });
     }

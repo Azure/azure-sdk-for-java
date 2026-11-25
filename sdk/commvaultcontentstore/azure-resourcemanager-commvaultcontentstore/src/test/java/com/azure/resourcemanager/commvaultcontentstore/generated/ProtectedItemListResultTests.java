@@ -12,8 +12,8 @@ public final class ProtectedItemListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectedItemListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceName\":\"morppxebmnzbtbh\",\"lastBackUpTime\":5360947183177855782,\"resourceGroup\":\"lkfg\",\"location\":\"hdneuelfph\",\"vmGuid\":\"dyhtozfikdowwquu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}],\"nextLink\":\"jutiiswacff\"}")
+            "{\"value\":[{\"properties\":{\"resourceName\":\"ashrt\",\"lastBackUpTime\":9149907061758969702,\"resourceGroup\":\"cnqxwbpokulpi\",\"location\":\"jwaa\",\"vmGuid\":\"ipqiiobyuqerpq\"},\"id\":\"qwcciuqg\",\"name\":\"dbutauvfbtkuwhh\",\"type\":\"hykojoxafnndlpic\"},{\"properties\":{\"resourceName\":\"o\",\"lastBackUpTime\":7933466954624194649,\"resourceGroup\":\"cdyhbpkkpwdreqn\",\"location\":\"vvqfovljxyws\",\"vmGuid\":\"w\"},\"id\":\"rsndsytgadgvra\",\"name\":\"aeneqnzarrwl\",\"type\":\"uu\"}],\"nextLink\":\"fqka\"}")
             .toObject(ProtectedItemListResult.class);
-        Assertions.assertEquals("jutiiswacff", model.nextLink());
+        Assertions.assertEquals("fqka", model.nextLink());
     }
 }

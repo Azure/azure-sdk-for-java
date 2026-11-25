@@ -14,24 +14,24 @@ public final class PoolComputeModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolComputeModel model = BinaryData.fromString(
-            "{\"type\":\"Provisioned\",\"computeProcessor\":\"Intel\",\"computeGeneration\":1853852705,\"vCores\":812550328}")
+            "{\"type\":\"Provisioned\",\"computeProcessor\":\"AMD\",\"computeGeneration\":1382743089,\"vCores\":384033547}")
             .toObject(PoolComputeModel.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.type());
-        Assertions.assertEquals(ComputeProcessorType.INTEL, model.computeProcessor());
-        Assertions.assertEquals(1853852705, model.computeGeneration());
-        Assertions.assertEquals(812550328, model.vCores());
+        Assertions.assertEquals(ComputeProcessorType.AMD, model.computeProcessor());
+        Assertions.assertEquals(1382743089, model.computeGeneration());
+        Assertions.assertEquals(384033547, model.vCores());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolComputeModel model = new PoolComputeModel().withType(PoolComputeModelType.PROVISIONED)
-            .withComputeProcessor(ComputeProcessorType.INTEL)
-            .withComputeGeneration(1853852705)
-            .withVCores(812550328);
+            .withComputeProcessor(ComputeProcessorType.AMD)
+            .withComputeGeneration(1382743089)
+            .withVCores(384033547);
         model = BinaryData.fromObject(model).toObject(PoolComputeModel.class);
         Assertions.assertEquals(PoolComputeModelType.PROVISIONED, model.type());
-        Assertions.assertEquals(ComputeProcessorType.INTEL, model.computeProcessor());
-        Assertions.assertEquals(1853852705, model.computeGeneration());
-        Assertions.assertEquals(812550328, model.vCores());
+        Assertions.assertEquals(ComputeProcessorType.AMD, model.computeProcessor());
+        Assertions.assertEquals(1382743089, model.computeGeneration());
+        Assertions.assertEquals(384033547, model.vCores());
     }
 }

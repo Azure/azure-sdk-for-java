@@ -144,11 +144,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultUsageInner> listByVaultsSinglePage(String resourceGroupName, String vaultName) {
-        final String accept = "application/json";
-        Response<VaultUsageList> res = service.listByVaultsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVaultsSinglePage(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -172,33 +168,13 @@ public final class UsagesClientImpl implements UsagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Fetches the usages of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usage for vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultUsageInner> listByVaults(String resourceGroupName, String vaultName) {
-        return new PagedIterable<>(() -> listByVaultsSinglePage(resourceGroupName, vaultName),
-            nextLink -> listByVaultsNextSinglePage(nextLink));
+        return listByVaults(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Fetches the usages of the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the Vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usage for vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultUsageInner> listByVaults(String resourceGroupName, String vaultName, Context context) {
         return new PagedIterable<>(() -> listByVaultsSinglePage(resourceGroupName, vaultName, context),
@@ -235,11 +211,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultUsageInner> listByVaultsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VaultUsageList> res
-            = service.listByVaultsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVaultsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

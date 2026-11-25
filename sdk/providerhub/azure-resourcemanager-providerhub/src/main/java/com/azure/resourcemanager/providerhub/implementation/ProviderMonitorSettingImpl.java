@@ -22,6 +22,12 @@ public final class ProviderMonitorSettingImpl implements ProviderMonitorSetting,
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}",
+            "resourceGroupName");
+        this.providerMonitorSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}",
+            "providerMonitorSettingName");
     }
 
     public String id() {
@@ -83,10 +89,7 @@ public final class ProviderMonitorSettingImpl implements ProviderMonitorSetting,
     }
 
     public ProviderMonitorSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProviderMonitorSettings()
-            .create(resourceGroupName, providerMonitorSettingName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProviderMonitorSetting create(Context context) {
@@ -103,11 +106,7 @@ public final class ProviderMonitorSettingImpl implements ProviderMonitorSetting,
     }
 
     public ProviderMonitorSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getProviderMonitorSettings()
-            .getByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProviderMonitorSetting refresh(Context context) {

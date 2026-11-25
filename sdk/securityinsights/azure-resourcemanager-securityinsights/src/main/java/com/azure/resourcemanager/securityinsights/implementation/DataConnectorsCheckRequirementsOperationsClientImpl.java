@@ -124,18 +124,7 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get requirements state for a data connector type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataConnectorsCheckRequirements The parameters for requirements check message.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return requirements state for a data connector type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataConnectorRequirementsStateInner> postWithResponse(String resourceGroupName,
         String workspaceName, DataConnectorsCheckRequirements dataConnectorsCheckRequirements, Context context) {
@@ -145,17 +134,7 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
             resourceGroupName, workspaceName, contentType, accept, dataConnectorsCheckRequirements, context);
     }
 
-    /**
-     * Get requirements state for a data connector type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataConnectorsCheckRequirements The parameters for requirements check message.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return requirements state for a data connector type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnectorRequirementsStateInner post(String resourceGroupName, String workspaceName,
         DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {

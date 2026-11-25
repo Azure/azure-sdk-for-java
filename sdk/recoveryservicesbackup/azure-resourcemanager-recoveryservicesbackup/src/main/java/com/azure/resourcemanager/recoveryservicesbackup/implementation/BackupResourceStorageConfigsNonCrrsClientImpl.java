@@ -153,17 +153,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
         return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches resource storage config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceConfigResourceInner> getWithResponse(String vaultName, String resourceGroupName,
         Context context) {
@@ -172,16 +162,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
             resourceGroupName, vaultName, accept, context);
     }
 
-    /**
-     * Fetches resource storage config.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceConfigResourceInner get(String vaultName, String resourceGroupName) {
         return getWithResponse(vaultName, resourceGroupName, Context.NONE).getValue();
@@ -226,18 +207,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates vault storage model type.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Vault storage config request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceConfigResourceInner> updateWithResponse(String vaultName, String resourceGroupName,
         BackupResourceConfigResourceInner parameters, Context context) {
@@ -247,17 +217,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
             this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates vault storage model type.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Vault storage config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource storage details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceConfigResourceInner update(String vaultName, String resourceGroupName,
         BackupResourceConfigResourceInner parameters) {
@@ -302,18 +262,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
         return patchWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Updates vault storage model type.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Vault storage config request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> patchWithResponse(String vaultName, String resourceGroupName,
         BackupResourceConfigResourceInner parameters, Context context) {
@@ -322,16 +271,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
             this.client.getSubscriptionId(), resourceGroupName, vaultName, contentType, parameters, context);
     }
 
-    /**
-     * Updates vault storage model type.
-     * 
-     * @param vaultName The name of the VaultResource.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Vault storage config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void patch(String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
         patchWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);

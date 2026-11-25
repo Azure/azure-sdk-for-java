@@ -28,8 +28,7 @@ public final class ContainerAppPrivateLinkResourcesImpl implements ContainerAppP
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String containerAppName) {
-        PagedIterable<PrivateLinkResourceInner> inner = this.serviceClient().list(resourceGroupName, containerAppName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, containerAppName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String containerAppName, Context context) {

@@ -94,18 +94,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
-     * service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SwapResource which identifies the slot type for the specified cloud service along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SwapResourceInner>> getWithResponseAsync(String groupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
@@ -122,7 +111,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String singletonResource = "swap";
         final String accept = "application/json";
         return FluxUtil
@@ -161,7 +150,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String singletonResource = "swap";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -169,69 +158,25 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             resourceName, singletonResource, accept, context);
     }
 
-    /**
-     * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
-     * service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SwapResource which identifies the slot type for the specified cloud service on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SwapResourceInner> getAsync(String groupName, String resourceName) {
         return getWithResponseAsync(groupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
-     * service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SwapResource which identifies the slot type for the specified cloud service along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SwapResourceInner> getWithResponse(String groupName, String resourceName, Context context) {
         return getWithResponseAsync(groupName, resourceName, context).block();
     }
 
-    /**
-     * Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud
-     * service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SwapResource which identifies the slot type for the specified cloud service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SwapResourceInner get(String groupName, String resourceName) {
         return getWithResponse(groupName, resourceName, Context.NONE).getValue();
     }
 
-    /**
-     * Performs vip swap operation on swappable cloud services.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
-     * cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String groupName, String resourceName,
         SwapResourceInner parameters) {
@@ -254,7 +199,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String singletonResource = "swap";
         final String contentType = "application/json";
         return FluxUtil
@@ -299,7 +244,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String singletonResource = "swap";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
@@ -307,18 +252,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             resourceName, singletonResource, contentType, parameters, context);
     }
 
-    /**
-     * Performs vip swap operation on swappable cloud services.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
-     * cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateAsync(String groupName, String resourceName,
         SwapResourceInner parameters) {
@@ -349,55 +283,21 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             context);
     }
 
-    /**
-     * Performs vip swap operation on swappable cloud services.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
-     * cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String groupName, String resourceName,
         SwapResourceInner parameters) {
         return this.beginCreateAsync(groupName, resourceName, parameters).getSyncPoller();
     }
 
-    /**
-     * Performs vip swap operation on swappable cloud services.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
-     * cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String groupName, String resourceName,
         SwapResourceInner parameters, Context context) {
         return this.beginCreateAsync(groupName, resourceName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Performs vip swap operation on swappable cloud services.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
-     * cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String groupName, String resourceName, SwapResourceInner parameters) {
         return beginCreateAsync(groupName, resourceName, parameters).last()
@@ -424,51 +324,19 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Performs vip swap operation on swappable cloud services.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
-     * cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String groupName, String resourceName, SwapResourceInner parameters) {
         createAsync(groupName, resourceName, parameters).block();
     }
 
-    /**
-     * Performs vip swap operation on swappable cloud services.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param parameters SwapResource object where slot type should be the target slot after vip swap for the specified
-     * cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String groupName, String resourceName, SwapResourceInner parameters, Context context) {
         createAsync(groupName, resourceName, parameters, context).block();
     }
 
-    /**
-     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
-     * cloud service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SwapResourceListResultInner>> listWithResponseAsync(String groupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
@@ -485,7 +353,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -523,60 +391,27 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), groupName,
             resourceName, accept, context);
     }
 
-    /**
-     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
-     * cloud service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SwapResourceListResultInner> listAsync(String groupName, String resourceName) {
         return listWithResponseAsync(groupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
-     * cloud service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SwapResourceListResultInner> listWithResponse(String groupName, String resourceName,
         Context context) {
         return listWithResponseAsync(groupName, resourceName, context).block();
     }
 
-    /**
-     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
-     * cloud service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SwapResourceListResultInner list(String groupName, String resourceName) {
         return listWithResponse(groupName, resourceName, Context.NONE).getValue();

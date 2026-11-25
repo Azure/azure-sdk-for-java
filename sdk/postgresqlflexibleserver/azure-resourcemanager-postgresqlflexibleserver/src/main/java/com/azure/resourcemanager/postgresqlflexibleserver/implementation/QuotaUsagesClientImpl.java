@@ -114,15 +114,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Get quota usages at specified location in a given subscription.
-     * 
-     * @param locationName The name of the location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota usages at specified location in a given subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QuotaUsageInner> listAsync(String locationName) {
         return new PagedFlux<>(() -> listSinglePageAsync(locationName), nextLink -> listNextSinglePageAsync(nextLink));
@@ -139,11 +131,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaUsageInner> listSinglePage(String locationName) {
-        final String accept = "application/json";
-        Response<QuotaUsageList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), locationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(locationName, Context.NONE);
     }
 
     /**
@@ -165,32 +153,13 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get quota usages at specified location in a given subscription.
-     * 
-     * @param locationName The name of the location.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota usages at specified location in a given subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaUsageInner> list(String locationName) {
-        return new PagedIterable<>(() -> listSinglePage(locationName), nextLink -> listNextSinglePage(nextLink));
+        return list(locationName, Context.NONE);
     }
 
-    /**
-     * Get quota usages at specified location in a given subscription.
-     * 
-     * @param locationName The name of the location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota usages at specified location in a given subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaUsageInner> list(String locationName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(locationName, context),
@@ -227,10 +196,7 @@ public final class QuotaUsagesClientImpl implements QuotaUsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaUsageInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<QuotaUsageList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

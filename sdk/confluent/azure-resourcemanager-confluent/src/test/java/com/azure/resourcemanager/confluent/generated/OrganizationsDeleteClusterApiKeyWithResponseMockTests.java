@@ -28,7 +28,7 @@ public final class OrganizationsDeleteClusterApiKeyWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.organizations()
-            .deleteClusterApiKeyWithResponse("uktalhsnvkcdmxz", "poaimlnwiaaomyl", "eazulcs",
+            .deleteClusterApiKeyWithResponse("tnrzvuljra", "eranokqgukkjqnv", "roylaxxu",
                 com.azure.core.util.Context.NONE);
 
     }

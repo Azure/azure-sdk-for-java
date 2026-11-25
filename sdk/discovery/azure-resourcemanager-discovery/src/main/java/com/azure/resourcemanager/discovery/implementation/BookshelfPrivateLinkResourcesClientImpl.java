@@ -158,18 +158,7 @@ public final class BookshelfPrivateLinkResourcesClientImpl implements BookshelfP
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private link resource for the bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the bookshelf along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BookshelfPrivateLinkResourceInner> getWithResponse(String resourceGroupName, String bookshelfName,
         String privateLinkResourceName, Context context) {
@@ -178,17 +167,7 @@ public final class BookshelfPrivateLinkResourcesClientImpl implements BookshelfP
             resourceGroupName, bookshelfName, privateLinkResourceName, accept, context);
     }
 
-    /**
-     * Gets the specified private link resource for the bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the bookshelf.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookshelfPrivateLinkResourceInner get(String resourceGroupName, String bookshelfName,
         String privateLinkResourceName) {
@@ -249,12 +228,7 @@ public final class BookshelfPrivateLinkResourcesClientImpl implements BookshelfP
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfPrivateLinkResourceInner> listByBookshelfSinglePage(String resourceGroupName,
         String bookshelfName) {
-        final String accept = "application/json";
-        Response<BookshelfPrivateLinkResourceListResult> res
-            = service.listByBookshelfSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, bookshelfName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBookshelfSinglePage(resourceGroupName, bookshelfName, Context.NONE);
     }
 
     /**
@@ -279,36 +253,14 @@ public final class BookshelfPrivateLinkResourcesClientImpl implements BookshelfP
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all private link resources for the bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BookshelfPrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfPrivateLinkResourceInner> listByBookshelf(String resourceGroupName,
         String bookshelfName) {
-        return new PagedIterable<>(() -> listByBookshelfSinglePage(resourceGroupName, bookshelfName),
-            nextLink -> listByBookshelfNextSinglePage(nextLink));
+        return listByBookshelf(resourceGroupName, bookshelfName, Context.NONE);
     }
 
-    /**
-     * Lists all private link resources for the bookshelf.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bookshelfName The name of the Bookshelf.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a BookshelfPrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BookshelfPrivateLinkResourceInner> listByBookshelf(String resourceGroupName,
         String bookshelfName, Context context) {
@@ -347,11 +299,7 @@ public final class BookshelfPrivateLinkResourcesClientImpl implements BookshelfP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BookshelfPrivateLinkResourceInner> listByBookshelfNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BookshelfPrivateLinkResourceListResult> res
-            = service.listByBookshelfNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByBookshelfNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

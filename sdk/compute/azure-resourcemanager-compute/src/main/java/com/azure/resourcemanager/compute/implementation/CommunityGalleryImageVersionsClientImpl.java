@@ -92,20 +92,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get a community gallery image version.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @param galleryImageVersionName The name of the community gallery image version. Needs to follow semantic version
-     * name pattern: The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
-     * Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunityGalleryImageVersionInner>> getWithResponseAsync(String location,
         String publicGalleryName, String galleryImageName, String galleryImageVersionName) {
@@ -188,20 +175,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             publicGalleryName, galleryImageName, galleryImageVersionName, accept, context);
     }
 
-    /**
-     * Get a community gallery image version.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @param galleryImageVersionName The name of the community gallery image version. Needs to follow semantic version
-     * name pattern: The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
-     * Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunityGalleryImageVersionInner> getAsync(String location, String publicGalleryName,
         String galleryImageName, String galleryImageVersionName) {
@@ -209,21 +183,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a community gallery image version.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @param galleryImageVersionName The name of the community gallery image version. Needs to follow semantic version
-     * name pattern: The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
-     * Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunityGalleryImageVersionInner> getWithResponse(String location, String publicGalleryName,
         String galleryImageName, String galleryImageVersionName, Context context) {
@@ -231,20 +191,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             .block();
     }
 
-    /**
-     * Get a community gallery image version.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @param galleryImageVersionName The name of the community gallery image version. Needs to follow semantic version
-     * name pattern: The allowed characters are digit and period. Digits must be within the range of a 32-bit integer.
-     * Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunityGalleryImageVersionInner get(String location, String publicGalleryName, String galleryImageName,
         String galleryImageVersionName) {
@@ -341,18 +288,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List community gallery image versions inside an image.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Image versions operation response as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CommunityGalleryImageVersionInner> listAsync(String location, String publicGalleryName,
         String galleryImageName) {
@@ -380,37 +316,14 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List community gallery image versions inside an image.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Image versions operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityGalleryImageVersionInner> list(String location, String publicGalleryName,
         String galleryImageName) {
         return new PagedIterable<>(listAsync(location, publicGalleryName, galleryImageName));
     }
 
-    /**
-     * List community gallery image versions inside an image.
-     * 
-     * @param location The name of the Azure region.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Community Gallery Image versions operation response as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommunityGalleryImageVersionInner> list(String location, String publicGalleryName,
         String galleryImageName, Context context) {

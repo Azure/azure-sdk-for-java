@@ -104,18 +104,7 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
-     * 
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @param instanceId The instanceId GUID of a restorable database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestorableDatabaseAccountGetResultInner>> getByLocationWithResponseAsync(String location,
         String instanceId) {
@@ -176,51 +165,20 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
             this.client.getSubscriptionId(), location, instanceId, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
-     * 
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @param instanceId The instanceId GUID of a restorable database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorableDatabaseAccountGetResultInner> getByLocationAsync(String location, String instanceId) {
         return getByLocationWithResponseAsync(location, instanceId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
-     * 
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @param instanceId The instanceId GUID of a restorable database account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorableDatabaseAccountGetResultInner> getByLocationWithResponse(String location,
         String instanceId, Context context) {
         return getByLocationWithResponseAsync(location, instanceId, context).block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
-     * 
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @param instanceId The instanceId GUID of a restorable database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestorableDatabaseAccountGetResultInner getByLocation(String location, String instanceId) {
         return getByLocationWithResponse(location, instanceId, Context.NONE).getValue();
@@ -296,17 +254,7 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the restorable Azure Cosmos DB database accounts available under the subscription and in a region. This
-     * call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
-     * 
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties as
-     * paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDatabaseAccountGetResultInner> listByLocationAsync(String location) {
         return new PagedFlux<>(() -> listByLocationSinglePageAsync(location),
@@ -331,34 +279,13 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
             nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the restorable Azure Cosmos DB database accounts available under the subscription and in a region. This
-     * call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
-     * 
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> listByLocation(String location) {
         return new PagedIterable<>(listByLocationAsync(location));
     }
 
-    /**
-     * Lists all the restorable Azure Cosmos DB database accounts available under the subscription and in a region. This
-     * call requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
-     * 
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> listByLocation(String location, Context context) {
         return new PagedIterable<>(listByLocationAsync(location, context));
@@ -423,15 +350,7 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties as
-     * paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDatabaseAccountGetResultInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -454,31 +373,13 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the restorable Azure Cosmos DB database accounts available under the subscription. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read' permission.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable database accounts and their properties as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDatabaseAccountGetResultInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

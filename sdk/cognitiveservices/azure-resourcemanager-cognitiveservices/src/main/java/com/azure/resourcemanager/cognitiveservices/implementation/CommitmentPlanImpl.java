@@ -97,10 +97,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlan create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .createOrUpdatePlan(resourceGroupName, commitmentPlanName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CommitmentPlan create(Context context) {
@@ -123,10 +120,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlan apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .updatePlan(resourceGroupName, commitmentPlanName, updateCommitmentPlan, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CommitmentPlan apply(Context context) {
@@ -159,11 +153,7 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
     }
 
     public CommitmentPlan refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCommitmentPlans()
-            .getByResourceGroupWithResponse(resourceGroupName, commitmentPlanName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CommitmentPlan refresh(Context context) {
