@@ -71,7 +71,7 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
     }
 
     public void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body) {
-        this.serviceClient().purgeLakeData(resourceGroupName, workspaceName, body);
+        this.purgeLakeData(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
     public void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body,

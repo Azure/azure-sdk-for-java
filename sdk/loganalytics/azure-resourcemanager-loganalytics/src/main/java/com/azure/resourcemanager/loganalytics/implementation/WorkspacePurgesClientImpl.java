@@ -299,9 +299,7 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> purgeLakeDataWithResponse(String resourceGroupName, String workspaceName,
         WorkspacePurgeLakeDataBody body) {
-        final String contentType = "application/json";
-        return service.purgeLakeDataSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, body, Context.NONE);
+        return purgeLakeDataWithResponse(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
     /**
@@ -353,46 +351,14 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
             this.client.getContext());
     }
 
-    /**
-     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
-     * 
-     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
-     * specified table within the given time range. The operation is long-running; poll the URL returned in the
-     * Azure-AsyncOperation response header to track its status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
-     * Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeLakeData(String resourceGroupName, String workspaceName,
         WorkspacePurgeLakeDataBody body) {
-        Response<BinaryData> response = purgeLakeDataWithResponse(resourceGroupName, workspaceName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginPurgeLakeData(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
-     * 
-     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
-     * specified table within the given time range. The operation is long-running; poll the URL returned in the
-     * Azure-AsyncOperation response header to track its status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
-     * Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeLakeData(String resourceGroupName, String workspaceName,
         WorkspacePurgeLakeDataBody body, Context context) {
@@ -423,45 +389,16 @@ public final class WorkspacePurgesClientImpl implements WorkspacePurgesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
-     * 
-     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
-     * specified table within the given time range. The operation is long-running; poll the URL returned in the
-     * Azure-AsyncOperation response header to track its status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
-     * Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body) {
-        beginPurgeLakeData(resourceGroupName, workspaceName, body).getFinalResult();
+        purgeLakeData(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Purges data lake data in a Log Analytics workspace for a table over a specified time range.
-     * 
-     * This operation deletes data lake data (Auxiliary tables, or Analytics tables mirrored to the data lake) for the
-     * specified table within the given time range. The operation is long-running; poll the URL returned in the
-     * Azure-AsyncOperation response header to track its status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param body Describes the body of a request to purge data lake data in a single table of an Log Analytics
-     * Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body,
         Context context) {
-        beginPurgeLakeData(resourceGroupName, workspaceName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginPurgeLakeData(resourceGroupName, workspaceName, body, context));
     }
 }
