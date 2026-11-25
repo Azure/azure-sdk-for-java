@@ -142,19 +142,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a replica for a Container App Revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param replicaName Name of the Container App Revision Replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replica for a Container App Revision along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicaInner> getReplicaWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, String replicaName, Context context) {
@@ -164,18 +152,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
             context);
     }
 
-    /**
-     * Get a replica for a Container App Revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param replicaName Name of the Container App Revision Replica.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replica for a Container App Revision.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaInner getReplica(String resourceGroupName, String containerAppName, String revisionName,
         String replicaName) {
@@ -223,18 +200,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List replicas for a Container App Revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Revision Replicas collection ARM resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicaCollectionInner> listReplicasWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, Context context) {
@@ -243,17 +209,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
             this.client.getSubscriptionId(), resourceGroupName, containerAppName, revisionName, accept, context);
     }
 
-    /**
-     * List replicas for a Container App Revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Revision Replicas collection ARM resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReplicaCollectionInner listReplicas(String resourceGroupName, String containerAppName, String revisionName) {
         return listReplicasWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE).getValue();

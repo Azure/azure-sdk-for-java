@@ -89,10 +89,7 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     }
 
     public NodePool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .createOrUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NodePool create(Context context) {
@@ -114,10 +111,7 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     }
 
     public NodePool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .update(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NodePool apply(Context context) {
@@ -143,11 +137,7 @@ public final class NodePoolImpl implements NodePool, NodePool.Definition, NodePo
     }
 
     public NodePool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNodePools()
-            .getWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NodePool refresh(Context context) {

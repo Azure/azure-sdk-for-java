@@ -36,6 +36,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -377,6 +378,8 @@ public final class BlobContainerAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.create -->
@@ -388,6 +391,9 @@ public final class BlobContainerAsyncClient {
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.create -->
      *
      * @return A reactive response signalling completion.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> create() {
@@ -398,6 +404,8 @@ public final class BlobContainerAsyncClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -414,6 +422,9 @@ public final class BlobContainerAsyncClient {
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
@@ -436,6 +447,8 @@ public final class BlobContainerAsyncClient {
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
@@ -451,7 +464,9 @@ public final class BlobContainerAsyncClient {
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
      *
      * @return A reactive response signaling completion. {@code true} indicates a new container was created,
-     * {@code true} indicates a container already existed at this location.
+     * {@code false} indicates a container already existed at this location. Errors with a
+     * {@link BlobStorageException} if the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
@@ -461,6 +476,8 @@ public final class BlobContainerAsyncClient {
     /**
      * Creates a new container within a storage account if it does not exist.  For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -482,7 +499,9 @@ public final class BlobContainerAsyncClient {
      *
      * @param options {@link BlobContainerCreateOptions}
      * @return A reactive response signaling completion. If {@link Response}'s status code is 201, a new container was
-     * successfully created. If status code is 409, a container already existed at this location.
+     * successfully created. If status code is 409, a container already existed at this location. Errors with a
+     * {@link BlobStorageException} if the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> createIfNotExistsWithResponse(BlobContainerCreateOptions options) {
@@ -498,8 +517,8 @@ public final class BlobContainerAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(
-                    t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409, t -> {
+                .onErrorResume(t -> ModelHelper.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_ALREADY_EXISTS),
+                    t -> {
                         HttpResponse response = ((BlobStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), false));

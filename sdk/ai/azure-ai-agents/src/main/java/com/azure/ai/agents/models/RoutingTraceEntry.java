@@ -30,12 +30,6 @@ public final class RoutingTraceEntry implements JsonSerializable<RoutingTraceEnt
     private String outputId;
 
     /*
-     * Time in milliseconds spent in the routing decision for this turn.
-     */
-    @Generated
-    private final long latencyMs;
-
-    /*
      * Ordered list of routing attempts. First element is the initial selection; subsequent elements are fallback
      * attempts. There is always at least one attempt.
      */
@@ -45,15 +39,15 @@ public final class RoutingTraceEntry implements JsonSerializable<RoutingTraceEnt
     /**
      * Creates an instance of RoutingTraceEntry class.
      *
-     * @param latencyMs the latencyMs value to set.
+     * @param latency the latency value to set.
      * @param attempts the attempts value to set.
      */
     @Generated
-    private RoutingTraceEntry(Duration latencyMs, List<ModelRouterAttempt> attempts) {
-        if (latencyMs == null) {
-            this.latencyMs = 0L;
+    private RoutingTraceEntry(Duration latency, List<ModelRouterAttempt> attempts) {
+        if (latency == null) {
+            this.latency = 0L;
         } else {
-            this.latencyMs = latencyMs.toMillis();
+            this.latency = latency.toMillis();
         }
         this.attempts = attempts;
     }
@@ -67,16 +61,6 @@ public final class RoutingTraceEntry implements JsonSerializable<RoutingTraceEnt
     @Generated
     public String getOutputId() {
         return this.outputId;
-    }
-
-    /**
-     * Get the latencyMs property: Time in milliseconds spent in the routing decision for this turn.
-     *
-     * @return the latencyMs value.
-     */
-    @Generated
-    public Duration getLatencyMs() {
-        return Duration.ofMillis(this.latencyMs);
     }
 
     /**
@@ -97,7 +81,7 @@ public final class RoutingTraceEntry implements JsonSerializable<RoutingTraceEnt
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeLongField("latency_ms", this.latencyMs);
+        jsonWriter.writeLongField("latency_ms", this.latency);
         jsonWriter.writeArrayField("attempts", this.attempts, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("output_id", this.outputId);
         return jsonWriter.writeEndObject();
@@ -115,14 +99,14 @@ public final class RoutingTraceEntry implements JsonSerializable<RoutingTraceEnt
     @Generated
     public static RoutingTraceEntry fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Duration latencyMs = null;
+            Duration latency = null;
             List<ModelRouterAttempt> attempts = null;
             String outputId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("latency_ms".equals(fieldName)) {
-                    latencyMs = Duration.ofMillis(reader.getLong());
+                    latency = Duration.ofMillis(reader.getLong());
                 } else if ("attempts".equals(fieldName)) {
                     attempts = reader.readArray(reader1 -> ModelRouterAttempt.fromJson(reader1));
                 } else if ("output_id".equals(fieldName)) {
@@ -131,9 +115,25 @@ public final class RoutingTraceEntry implements JsonSerializable<RoutingTraceEnt
                     reader.skipChildren();
                 }
             }
-            RoutingTraceEntry deserializedRoutingTraceEntry = new RoutingTraceEntry(latencyMs, attempts);
+            RoutingTraceEntry deserializedRoutingTraceEntry = new RoutingTraceEntry(latency, attempts);
             deserializedRoutingTraceEntry.outputId = outputId;
             return deserializedRoutingTraceEntry;
         });
+    }
+
+    /*
+     * Time in milliseconds spent in the routing decision for this turn.
+     */
+    @Generated
+    private final long latency;
+
+    /**
+     * Get the latency property: Time in milliseconds spent in the routing decision for this turn.
+     *
+     * @return the latency value.
+     */
+    @Generated
+    public Duration getLatency() {
+        return Duration.ofMillis(this.latency);
     }
 }

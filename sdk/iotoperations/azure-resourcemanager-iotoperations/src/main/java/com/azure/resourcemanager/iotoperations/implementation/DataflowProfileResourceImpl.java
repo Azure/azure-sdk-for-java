@@ -66,10 +66,7 @@ public final class DataflowProfileResourceImpl
     }
 
     public DataflowProfileResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowProfiles()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataflowProfileResource create(Context context) {
@@ -91,10 +88,7 @@ public final class DataflowProfileResourceImpl
     }
 
     public DataflowProfileResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowProfiles()
-            .createOrUpdate(resourceGroupName, instanceName, dataflowProfileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataflowProfileResource apply(Context context) {
@@ -120,11 +114,7 @@ public final class DataflowProfileResourceImpl
     }
 
     public DataflowProfileResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataflowProfiles()
-            .getWithResponse(resourceGroupName, instanceName, dataflowProfileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataflowProfileResource refresh(Context context) {

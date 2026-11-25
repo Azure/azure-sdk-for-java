@@ -116,17 +116,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic, troubleshooter or solutions.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param checkNameAvailabilityRequest The required parameters for availability check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkAvailabilityWithResponse(String scope,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
@@ -135,15 +125,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
             checkNameAvailabilityRequest, context);
     }
 
-    /**
-     * This API is used to check the uniqueness of a resource name used for a diagnostic, troubleshooter or solutions.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for whether the requested resource name is available or not.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkAvailability(String scope) {
         final CheckNameAvailabilityRequest checkNameAvailabilityRequest = null;

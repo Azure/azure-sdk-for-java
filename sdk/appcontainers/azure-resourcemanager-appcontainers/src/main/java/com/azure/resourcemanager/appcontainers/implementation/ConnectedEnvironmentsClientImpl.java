@@ -279,17 +279,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an connectedEnvironment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectedEnvironmentInner> getByResourceGroupWithResponse(String resourceGroupName,
         String connectedEnvironmentName, Context context) {
@@ -298,16 +288,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             this.client.getSubscriptionId(), resourceGroupName, connectedEnvironmentName, accept, context);
     }
 
-    /**
-     * Get the properties of an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an connectedEnvironment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedEnvironmentInner getByResourceGroup(String resourceGroupName, String connectedEnvironmentName) {
         return getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, Context.NONE).getValue();
@@ -352,11 +333,8 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
         ConnectedEnvironmentInner environmentEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectedEnvironmentName, contentType, accept,
-            environmentEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, environmentEnvelope,
+            Context.NONE);
     }
 
     /**
@@ -404,40 +382,14 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param environmentEnvelope Configuration details of the connectedEnvironment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment for Kubernetes cluster specialized for web workloads
-     * by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedEnvironmentInner>, ConnectedEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String connectedEnvironmentName, ConnectedEnvironmentInner environmentEnvelope) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, environmentEnvelope);
-        return this.client.<ConnectedEnvironmentInner, ConnectedEnvironmentInner>getLroResult(response,
-            ConnectedEnvironmentInner.class, ConnectedEnvironmentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, environmentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param environmentEnvelope Configuration details of the connectedEnvironment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment for Kubernetes cluster specialized for web workloads
-     * by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedEnvironmentInner>, ConnectedEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String connectedEnvironmentName, ConnectedEnvironmentInner environmentEnvelope,
@@ -467,40 +419,19 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param environmentEnvelope Configuration details of the connectedEnvironment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedEnvironmentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
         ConnectedEnvironmentInner environmentEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, environmentEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, connectedEnvironmentName, environmentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param environmentEnvelope Configuration details of the connectedEnvironment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedEnvironmentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
         ConnectedEnvironmentInner environmentEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, environmentEnvelope, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, environmentEnvelope, context));
     }
 
     /**
@@ -550,21 +481,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update connected Environment's properties.
-     * 
-     * Patches a Managed Environment. Only patching of tags is supported currently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param environmentEnvelope Configuration details of the connectedEnvironment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectedEnvironmentInner> updateWithResponse(String resourceGroupName,
         String connectedEnvironmentName, ConnectedEnvironmentPatchResource environmentEnvelope, Context context) {
@@ -575,19 +492,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             environmentEnvelope, context);
     }
 
-    /**
-     * Update connected Environment's properties.
-     * 
-     * Patches a Managed Environment. Only patching of tags is supported currently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param environmentEnvelope Configuration details of the connectedEnvironment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedEnvironmentInner update(String resourceGroupName, String connectedEnvironmentName,
         ConnectedEnvironmentPatchResource environmentEnvelope) {
@@ -626,8 +531,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, connectedEnvironmentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
     /**
@@ -666,33 +570,13 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             this.client.getContext());
     }
 
-    /**
-     * Delete an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, connectedEnvironmentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
-    /**
-     * Delete an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectedEnvironmentName,
         Context context) {
@@ -716,33 +600,16 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectedEnvironmentName) {
-        beginDelete(resourceGroupName, connectedEnvironmentName).getFinalResult();
+        delete(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
-    /**
-     * Delete an connectedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String connectedEnvironmentName, Context context) {
-        beginDelete(resourceGroupName, connectedEnvironmentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, connectedEnvironmentName, context));
     }
 
     /**
@@ -793,11 +660,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectedEnvironmentInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ConnectedEnvironmentCollection> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -820,31 +683,13 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all connectedEnvironments in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all connectedEnvironments in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedEnvironmentInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get all connectedEnvironments in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all connectedEnvironments in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedEnvironmentInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -892,11 +737,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectedEnvironmentInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ConnectedEnvironmentCollection> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -917,27 +758,13 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all connectedEnvironments for a subscription.
-     * 
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all connectedEnvironments for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedEnvironmentInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get all connectedEnvironments for a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all connectedEnvironments for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedEnvironmentInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -990,20 +817,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             checkNameAvailabilityRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks the resource connectedEnvironmentName availability.
-     * 
-     * Checks if resource connectedEnvironmentName is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String resourceGroupName,
         String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
@@ -1014,19 +828,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
             checkNameAvailabilityRequest, context);
     }
 
-    /**
-     * Checks the resource connectedEnvironmentName availability.
-     * 
-     * Checks if resource connectedEnvironmentName is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResponseInner checkNameAvailability(String resourceGroupName,
         String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
@@ -1066,11 +868,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectedEnvironmentInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectedEnvironmentCollection> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1129,11 +927,7 @@ public final class ConnectedEnvironmentsClientImpl implements ConnectedEnvironme
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectedEnvironmentInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectedEnvironmentCollection> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

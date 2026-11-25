@@ -212,18 +212,7 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an EdgeMachineSecuritySettings along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineSecuritySettingsInner> getWithResponse(String resourceGroupName, String edgeMachineName,
         String securitySettingsName, Context context) {
@@ -232,17 +221,7 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
             resourceGroupName, edgeMachineName, securitySettingsName, accept, context);
     }
 
-    /**
-     * Get an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an EdgeMachineSecuritySettings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineSecuritySettingsInner get(String resourceGroupName, String edgeMachineName,
         String securitySettingsName) {
@@ -289,11 +268,8 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String edgeMachineName,
         String securitySettingsName, EdgeMachineSecuritySettingsInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, securitySettingsName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, edgeMachineName, securitySettingsName, resource,
+            Context.NONE);
     }
 
     /**
@@ -342,41 +318,15 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
             EdgeMachineSecuritySettingsInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edge Machine Security Settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineSecuritySettingsInner>, EdgeMachineSecuritySettingsInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String securitySettingsName,
             EdgeMachineSecuritySettingsInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, edgeMachineName, securitySettingsName, resource);
-        return this.client.<EdgeMachineSecuritySettingsInner, EdgeMachineSecuritySettingsInner>getLroResult(response,
-            EdgeMachineSecuritySettingsInner.class, EdgeMachineSecuritySettingsInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, securitySettingsName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of edge Machine Security Settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineSecuritySettingsInner>, EdgeMachineSecuritySettingsInner>
         beginCreateOrUpdate(String resourceGroupName, String edgeMachineName, String securitySettingsName,
@@ -406,42 +356,19 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edge Machine Security Settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineSecuritySettingsInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String securitySettingsName, EdgeMachineSecuritySettingsInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, securitySettingsName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, edgeMachineName, securitySettingsName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return edge Machine Security Settings proxy resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineSecuritySettingsInner createOrUpdate(String resourceGroupName, String edgeMachineName,
         String securitySettingsName, EdgeMachineSecuritySettingsInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, securitySettingsName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, edgeMachineName, securitySettingsName, resource, context));
     }
 
     /**
@@ -478,8 +405,7 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeMachineName,
         String securitySettingsName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE);
     }
 
     /**
@@ -521,36 +447,14 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Delete an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String securitySettingsName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeMachineName, securitySettingsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE);
     }
 
-    /**
-     * Delete an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String securitySettingsName, Context context) {
@@ -576,35 +480,17 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String securitySettingsName) {
-        beginDelete(resourceGroupName, edgeMachineName, securitySettingsName).getFinalResult();
+        delete(resourceGroupName, edgeMachineName, securitySettingsName, Context.NONE);
     }
 
-    /**
-     * Delete an EdgeMachineSecuritySettings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param securitySettingsName Name of the security settings resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String securitySettingsName, Context context) {
-        beginDelete(resourceGroupName, edgeMachineName, securitySettingsName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, edgeMachineName, securitySettingsName, context));
     }
 
     /**
@@ -661,12 +547,7 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineSecuritySettingsInner> listByEdgeMachineSinglePage(String resourceGroupName,
         String edgeMachineName) {
-        final String accept = "application/json";
-        Response<EdgeMachineSecuritySettingsListResult> res
-            = service.listByEdgeMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeMachineSinglePage(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
     /**
@@ -691,36 +572,14 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EdgeMachineSecuritySettings by EdgeMachine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineSecuritySettings list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineSecuritySettingsInner> listByEdgeMachine(String resourceGroupName,
         String edgeMachineName) {
-        return new PagedIterable<>(() -> listByEdgeMachineSinglePage(resourceGroupName, edgeMachineName),
-            nextLink -> listByEdgeMachineNextSinglePage(nextLink));
+        return listByEdgeMachine(resourceGroupName, edgeMachineName, Context.NONE);
     }
 
-    /**
-     * List EdgeMachineSecuritySettings by EdgeMachine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineSecuritySettings list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineSecuritySettingsInner> listByEdgeMachine(String resourceGroupName,
         String edgeMachineName, Context context) {
@@ -760,11 +619,7 @@ public final class EdgeMachineSecuritySettingsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineSecuritySettingsInner> listByEdgeMachineNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineSecuritySettingsListResult> res
-            = service.listByEdgeMachineNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByEdgeMachineNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

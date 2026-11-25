@@ -90,11 +90,7 @@ public final class ProtectionContainerMappingImpl
     }
 
     public ProtectionContainerMapping create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionContainerMappings()
-            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
-                createCreationInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ProtectionContainerMapping create(Context context) {
@@ -118,11 +114,7 @@ public final class ProtectionContainerMappingImpl
     }
 
     public ProtectionContainerMapping apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionContainerMappings()
-            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
-                updateUpdateInput, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ProtectionContainerMapping apply(Context context) {
@@ -155,12 +147,7 @@ public final class ProtectionContainerMappingImpl
     }
 
     public ProtectionContainerMapping refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionContainerMappings()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, mappingName,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ProtectionContainerMapping refresh(Context context) {

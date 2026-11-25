@@ -27,9 +27,7 @@ public final class UpgradeHistoriesImpl implements UpgradeHistories {
 
     public PagedIterable<UpgradeHistory> listByAppLinkMember(String resourceGroupName, String appLinkName,
         String appLinkMemberName) {
-        PagedIterable<UpgradeHistoryInner> inner
-            = this.serviceClient().listByAppLinkMember(resourceGroupName, appLinkName, appLinkMemberName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpgradeHistoryImpl(inner1, this.manager()));
+        return this.listByAppLinkMember(resourceGroupName, appLinkName, appLinkMemberName, Context.NONE);
     }
 
     public PagedIterable<UpgradeHistory> listByAppLinkMember(String resourceGroupName, String appLinkName,

@@ -32,6 +32,14 @@ public final class MaintenanceConfigurationProperties implements JsonSerializabl
     private List<TimeSpan> notAllowedTime;
 
     /*
+     * The fully qualified resource ID of the maintenance window that this maintenance configuration is linked to. When
+     * set, the schedule is derived read-only from the linked maintenance window — maintenanceWindow becomes a computed
+     * field. When absent (the default), the schedule is defined inline via the maintenanceWindow property. The caller
+     * must have read access to the target maintenance window.
+     */
+    private String maintenanceWindowId;
+
+    /*
      * Maintenance window for the maintenance configuration.
      */
     private MaintenanceWindow maintenanceWindow;
@@ -85,6 +93,32 @@ public final class MaintenanceConfigurationProperties implements JsonSerializabl
     }
 
     /**
+     * Get the maintenanceWindowId property: The fully qualified resource ID of the maintenance window that this
+     * maintenance configuration is linked to. When set, the schedule is derived read-only from the linked maintenance
+     * window — maintenanceWindow becomes a computed field. When absent (the default), the schedule is defined inline
+     * via the maintenanceWindow property. The caller must have read access to the target maintenance window.
+     * 
+     * @return the maintenanceWindowId value.
+     */
+    public String maintenanceWindowId() {
+        return this.maintenanceWindowId;
+    }
+
+    /**
+     * Set the maintenanceWindowId property: The fully qualified resource ID of the maintenance window that this
+     * maintenance configuration is linked to. When set, the schedule is derived read-only from the linked maintenance
+     * window — maintenanceWindow becomes a computed field. When absent (the default), the schedule is defined inline
+     * via the maintenanceWindow property. The caller must have read access to the target maintenance window.
+     * 
+     * @param maintenanceWindowId the maintenanceWindowId value to set.
+     * @return the MaintenanceConfigurationProperties object itself.
+     */
+    public MaintenanceConfigurationProperties withMaintenanceWindowId(String maintenanceWindowId) {
+        this.maintenanceWindowId = maintenanceWindowId;
+        return this;
+    }
+
+    /**
      * Get the maintenanceWindow property: Maintenance window for the maintenance configuration.
      * 
      * @return the maintenanceWindow value.
@@ -130,6 +164,7 @@ public final class MaintenanceConfigurationProperties implements JsonSerializabl
         jsonWriter.writeArrayField("timeInWeek", this.timeInWeek, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("notAllowedTime", this.notAllowedTime,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("maintenanceWindowId", this.maintenanceWindowId);
         jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
         return jsonWriter.writeEndObject();
     }
@@ -156,6 +191,8 @@ public final class MaintenanceConfigurationProperties implements JsonSerializabl
                 } else if ("notAllowedTime".equals(fieldName)) {
                     List<TimeSpan> notAllowedTime = reader.readArray(reader1 -> TimeSpan.fromJson(reader1));
                     deserializedMaintenanceConfigurationProperties.notAllowedTime = notAllowedTime;
+                } else if ("maintenanceWindowId".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationProperties.maintenanceWindowId = reader.getString();
                 } else if ("maintenanceWindow".equals(fieldName)) {
                     deserializedMaintenanceConfigurationProperties.maintenanceWindow
                         = MaintenanceWindow.fromJson(reader);

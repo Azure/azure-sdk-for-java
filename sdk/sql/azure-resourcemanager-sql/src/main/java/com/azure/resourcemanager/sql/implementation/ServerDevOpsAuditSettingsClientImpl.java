@@ -108,17 +108,7 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's DevOps audit settings along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerDevOpsAuditingSettingsInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, DevOpsAuditingSettingsName devOpsAuditingSettingsName) {
@@ -189,17 +179,7 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             resourceGroupName, serverName, devOpsAuditingSettingsName, accept, context);
     }
 
-    /**
-     * Gets a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's DevOps audit settings on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDevOpsAuditingSettingsInner> getAsync(String resourceGroupName, String serverName,
         DevOpsAuditingSettingsName devOpsAuditingSettingsName) {
@@ -207,53 +187,21 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's DevOps audit settings along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerDevOpsAuditingSettingsInner> getWithResponse(String resourceGroupName, String serverName,
         DevOpsAuditingSettingsName devOpsAuditingSettingsName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, context).block();
     }
 
-    /**
-     * Gets a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server's DevOps audit settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDevOpsAuditingSettingsInner get(String resourceGroupName, String serverName,
         DevOpsAuditingSettingsName devOpsAuditingSettingsName) {
         return getWithResponse(resourceGroupName, serverName, devOpsAuditingSettingsName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param parameters Properties of DevOps audit settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DevOps auditing settings along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         DevOpsAuditingSettingsName devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters) {
@@ -339,18 +287,7 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param parameters Properties of DevOps audit settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a server DevOps auditing settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerDevOpsAuditingSettingsInner>, ServerDevOpsAuditingSettingsInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
@@ -388,18 +325,7 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             ServerDevOpsAuditingSettingsInner.class, context);
     }
 
-    /**
-     * Creates or updates a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param parameters Properties of DevOps audit settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server DevOps auditing settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDevOpsAuditingSettingsInner>, ServerDevOpsAuditingSettingsInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName,
@@ -408,19 +334,7 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param parameters Properties of DevOps audit settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a server DevOps auditing settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerDevOpsAuditingSettingsInner>, ServerDevOpsAuditingSettingsInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName,
@@ -431,18 +345,7 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param parameters Properties of DevOps audit settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DevOps auditing settings on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerDevOpsAuditingSettingsInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         DevOpsAuditingSettingsName devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters) {
@@ -472,37 +375,14 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param parameters Properties of DevOps audit settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DevOps auditing settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDevOpsAuditingSettingsInner createOrUpdate(String resourceGroupName, String serverName,
         DevOpsAuditingSettingsName devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, devOpsAuditingSettingsName, parameters).block();
     }
 
-    /**
-     * Creates or updates a server's DevOps audit settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param devOpsAuditingSettingsName The devOpsAuditingSettingsName parameter.
-     * @param parameters Properties of DevOps audit settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server DevOps auditing settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerDevOpsAuditingSettingsInner createOrUpdate(String resourceGroupName, String serverName,
         DevOpsAuditingSettingsName devOpsAuditingSettingsName, ServerDevOpsAuditingSettingsInner parameters,
@@ -588,16 +468,7 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists DevOps audit settings of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DevOps audit settings as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerDevOpsAuditingSettingsInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -622,32 +493,13 @@ public final class ServerDevOpsAuditSettingsClientImpl implements ServerDevOpsAu
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists DevOps audit settings of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DevOps audit settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerDevOpsAuditingSettingsInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Lists DevOps audit settings of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server DevOps audit settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerDevOpsAuditingSettingsInner> listByServer(String resourceGroupName, String serverName,
         Context context) {

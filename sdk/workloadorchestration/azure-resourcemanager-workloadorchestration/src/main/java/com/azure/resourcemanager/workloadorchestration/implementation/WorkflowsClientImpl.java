@@ -221,18 +221,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workflow resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowInner> getWithResponse(String resourceGroupName, String contextName, String workflowName,
         Context context) {
@@ -241,17 +230,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             resourceGroupName, contextName, workflowName, accept, context);
     }
 
-    /**
-     * Get a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workflow resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowInner get(String resourceGroupName, String contextName, String workflowName) {
         return getWithResponse(resourceGroupName, contextName, workflowName, Context.NONE).getValue();
@@ -296,11 +275,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String contextName,
         String workflowName, WorkflowInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, contextName, workflowName, resource, Context.NONE);
     }
 
     /**
@@ -347,40 +322,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             WorkflowInner.class, WorkflowInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkflowInner>, WorkflowInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, String workflowName, WorkflowInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, contextName, workflowName, resource);
-        return this.client.<WorkflowInner, WorkflowInner>getLroResult(response, WorkflowInner.class,
-            WorkflowInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, contextName, workflowName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkflowInner>, WorkflowInner> beginCreateOrUpdate(String resourceGroupName,
         String contextName, String workflowName, WorkflowInner resource, Context context) {
@@ -409,41 +358,19 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowInner createOrUpdate(String resourceGroupName, String contextName, String workflowName,
         WorkflowInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, workflowName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, contextName, workflowName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowInner createOrUpdate(String resourceGroupName, String contextName, String workflowName,
         WorkflowInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, contextName, workflowName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, contextName, workflowName, resource, context));
     }
 
     /**
@@ -485,11 +412,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String contextName, String workflowName,
         WorkflowInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, contextName, workflowName, properties, Context.NONE);
     }
 
     /**
@@ -536,39 +459,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             WorkflowInner.class, WorkflowInner.class, this.client.getContext());
     }
 
-    /**
-     * update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkflowInner>, WorkflowInner> beginUpdate(String resourceGroupName,
         String contextName, String workflowName, WorkflowInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, contextName, workflowName, properties);
-        return this.client.<WorkflowInner, WorkflowInner>getLroResult(response, WorkflowInner.class,
-            WorkflowInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, contextName, workflowName, properties, Context.NONE);
     }
 
-    /**
-     * update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkflowInner>, WorkflowInner> beginUpdate(String resourceGroupName,
         String contextName, String workflowName, WorkflowInner properties, Context context) {
@@ -597,41 +495,19 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowInner update(String resourceGroupName, String contextName, String workflowName,
         WorkflowInner properties) {
-        return beginUpdate(resourceGroupName, contextName, workflowName, properties).getFinalResult();
+        return update(resourceGroupName, contextName, workflowName, properties, Context.NONE);
     }
 
-    /**
-     * update a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workflow Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkflowInner update(String resourceGroupName, String contextName, String workflowName,
         WorkflowInner properties, Context context) {
-        return beginUpdate(resourceGroupName, contextName, workflowName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, contextName, workflowName, properties, context));
     }
 
     /**
@@ -667,8 +543,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String contextName, String workflowName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, contextName, workflowName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, contextName, workflowName, Context.NONE);
     }
 
     /**
@@ -709,36 +584,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName,
         String workflowName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, contextName, workflowName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, contextName, workflowName, Context.NONE);
     }
 
-    /**
-     * Delete a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contextName,
         String workflowName, Context context) {
@@ -763,35 +616,16 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName, String workflowName) {
-        beginDelete(resourceGroupName, contextName, workflowName).getFinalResult();
+        delete(resourceGroupName, contextName, workflowName, Context.NONE);
     }
 
-    /**
-     * Delete a Workflow resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param workflowName Name of the workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String contextName, String workflowName, Context context) {
-        beginDelete(resourceGroupName, contextName, workflowName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, contextName, workflowName, context));
     }
 
     /**
@@ -845,12 +679,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowInner> listByContextSinglePage(String resourceGroupName, String contextName) {
-        final String accept = "application/json";
-        Response<WorkflowListResult> res
-            = service.listByContextSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, contextName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContextSinglePage(resourceGroupName, contextName, Context.NONE);
     }
 
     /**
@@ -875,33 +704,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Workflow resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workflow list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> listByContext(String resourceGroupName, String contextName) {
-        return new PagedIterable<>(() -> listByContextSinglePage(resourceGroupName, contextName),
-            nextLink -> listByContextNextSinglePage(nextLink));
+        return listByContext(resourceGroupName, contextName, Context.NONE);
     }
 
-    /**
-     * List Workflow resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param contextName The name of the Context.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workflow list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> listByContext(String resourceGroupName, String contextName, Context context) {
         return new PagedIterable<>(() -> listByContextSinglePage(resourceGroupName, contextName, context),
@@ -939,11 +748,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkflowInner> listByContextNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkflowListResult> res
-            = service.listByContextNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByContextNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

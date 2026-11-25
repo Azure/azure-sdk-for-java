@@ -444,18 +444,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Authorization rule for a namespace by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthorizationRuleInner> getAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String authorizationRuleName, Context context) {
@@ -464,17 +453,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, authorizationRuleName, accept, context);
     }
 
-    /**
-     * Authorization rule for a namespace by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName,
         String authorizationRuleName) {
@@ -527,19 +506,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates an authorization rule for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The authorization rule parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(String resourceGroupName,
         String namespaceName, String authorizationRuleName, AuthorizationRuleInner parameters, Context context) {
@@ -550,18 +517,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an authorization rule for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters The authorization rule parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationRuleInner createOrUpdateAuthorizationRule(String resourceGroupName, String namespaceName,
         String authorizationRuleName, AuthorizationRuleInner parameters) {
@@ -608,18 +564,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a namespace authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
         String authorizationRuleName, Context context) {
@@ -627,16 +572,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, authorizationRuleName, context);
     }
 
-    /**
-     * Deletes a namespace authorization rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE);
@@ -696,12 +632,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizationRuleInner> listAuthorizationRulesSinglePage(String resourceGroupName,
         String namespaceName) {
-        final String accept = "application/json";
-        Response<AuthorizationRuleListResult> res
-            = service.listAuthorizationRulesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAuthorizationRulesSinglePage(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -726,34 +657,14 @@ public final class NamespacesClientImpl implements NamespacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Authorization rules for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthorizationRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName,
         String namespaceName) {
-        return new PagedIterable<>(() -> listAuthorizationRulesSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listAuthorizationRulesNextSinglePage(nextLink));
+        return listAuthorizationRules(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * Authorization rules for a namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthorizationRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName,
         Context context) {
@@ -799,18 +710,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Primary and secondary connection strings to the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName,
         String authorizationRuleName, Context context) {
@@ -819,17 +719,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, authorizationRuleName, accept, context);
     }
 
-    /**
-     * Primary and secondary connection strings to the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         return listKeysWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE).getValue();
@@ -878,19 +768,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings to the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate authorization rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessKeysInner> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
         String authorizationRuleName, RegenerateAccessKeyParameters parameters, Context context) {
@@ -901,18 +779,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             accept, parameters, context);
     }
 
-    /**
-     * Regenerates the primary or secondary connection strings to the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to regenerate authorization rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/Relay Connection String.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String authorizationRuleName,
         RegenerateAccessKeyParameters parameters) {
@@ -956,17 +823,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the description for the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelayNamespaceInner> getByResourceGroupWithResponse(String resourceGroupName, String namespaceName,
         Context context) {
@@ -975,16 +832,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context);
     }
 
-    /**
-     * Returns the description for the specified namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayNamespaceInner getByResourceGroup(String resourceGroupName, String namespaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
@@ -1027,11 +875,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
         RelayNamespaceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, namespaceName, parameters, Context.NONE);
     }
 
     /**
@@ -1076,37 +920,14 @@ public final class NamespacesClientImpl implements NamespacesClient {
             RelayNamespaceInner.class, RelayNamespaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create Azure Relay namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelayNamespaceInner>, RelayNamespaceInner>
         beginCreateOrUpdate(String resourceGroupName, String namespaceName, RelayNamespaceInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, namespaceName, parameters);
-        return this.client.<RelayNamespaceInner, RelayNamespaceInner>getLroResult(response, RelayNamespaceInner.class,
-            RelayNamespaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, namespaceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create Azure Relay namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelayNamespaceInner>, RelayNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String namespaceName, RelayNamespaceInner parameters, Context context) {
@@ -1134,39 +955,19 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create Azure Relay namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayNamespaceInner createOrUpdate(String resourceGroupName, String namespaceName,
         RelayNamespaceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, namespaceName, parameters, Context.NONE);
     }
 
-    /**
-     * Create Azure Relay namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to create a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayNamespaceInner createOrUpdate(String resourceGroupName, String namespaceName,
         RelayNamespaceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, namespaceName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, namespaceName, parameters, context));
     }
 
     /**
@@ -1212,19 +1013,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelayNamespaceInner> updateWithResponse(String resourceGroupName, String namespaceName,
         RelayUpdateParameters parameters, Context context) {
@@ -1235,18 +1024,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             context);
     }
 
-    /**
-     * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
-     * idempotent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters Parameters for updating a namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelayNamespaceInner update(String resourceGroupName, String namespaceName,
         RelayUpdateParameters parameters) {
@@ -1283,8 +1061,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String namespaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, namespaceName, Context.NONE);
     }
 
     /**
@@ -1321,33 +1098,13 @@ public final class NamespacesClientImpl implements NamespacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, namespaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
         Context context) {
@@ -1370,33 +1127,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
         return beginDeleteAsync(resourceGroupName, namespaceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName) {
-        beginDelete(resourceGroupName, namespaceName).getFinalResult();
+        delete(resourceGroupName, namespaceName, Context.NONE);
     }
 
-    /**
-     * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String namespaceName, Context context) {
-        beginDelete(resourceGroupName, namespaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, namespaceName, context));
     }
 
     /**
@@ -1446,11 +1186,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayNamespaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<RelayNamespaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1473,31 +1209,13 @@ public final class NamespacesClientImpl implements NamespacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the available namespaces within the ResourceGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayNamespaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all the available namespaces within the ResourceGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayNamespaceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1544,11 +1262,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayNamespaceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<RelayNamespaceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1569,27 +1283,13 @@ public final class NamespacesClientImpl implements NamespacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the available namespaces within the subscription regardless of the resourceGroups.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayNamespaceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all the available namespaces within the subscription regardless of the resourceGroups.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RelayNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RelayNamespaceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1631,17 +1331,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkRuleSet for a Namespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkRuleSetInner> getNetworkRuleSetWithResponse(String resourceGroupName, String namespaceName,
         Context context) {
@@ -1650,16 +1340,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context);
     }
 
-    /**
-     * Gets NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkRuleSet for a Namespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRuleSetInner getNetworkRuleSet(String resourceGroupName, String namespaceName) {
         return getNetworkRuleSetWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
@@ -1706,18 +1387,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters The Namespace IpFilterRule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkRuleSetInner> createOrUpdateNetworkRuleSetWithResponse(String resourceGroupName,
         String namespaceName, NetworkRuleSetInner parameters, Context context) {
@@ -1728,17 +1398,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             context);
     }
 
-    /**
-     * Create or update NetworkRuleSet for a Namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The namespace name.
-     * @param parameters The Namespace IpFilterRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of topic resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkRuleSetInner createOrUpdateNetworkRuleSet(String resourceGroupName, String namespaceName,
         NetworkRuleSetInner parameters) {
@@ -1781,16 +1441,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
         return checkNameAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the specified namespace name availability.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the check name availability request properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner>
         checkNameAvailabilityWithResponse(CheckNameAvailability parameters, Context context) {
@@ -1800,15 +1451,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Check the specified namespace name availability.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of the check name availability request properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameAvailabilityResultInner checkNameAvailability(CheckNameAvailability parameters) {
         return checkNameAvailabilityWithResponse(parameters, Context.NONE).getValue();
@@ -1846,11 +1489,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthorizationRuleInner> listAuthorizationRulesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AuthorizationRuleListResult> res
-            = service.listAuthorizationRulesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAuthorizationRulesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1905,11 +1544,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayNamespaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RelayNamespaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1961,11 +1596,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RelayNamespaceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RelayNamespaceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

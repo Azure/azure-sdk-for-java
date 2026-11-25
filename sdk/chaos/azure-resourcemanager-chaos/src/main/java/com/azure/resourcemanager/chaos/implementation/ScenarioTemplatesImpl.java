@@ -43,8 +43,7 @@ public final class ScenarioTemplatesImpl implements ScenarioTemplates {
     }
 
     public PagedIterable<ScenarioTemplate> list() {
-        PagedIterable<ScenarioTemplateInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScenarioTemplateImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ScenarioTemplate> list(Context context) {

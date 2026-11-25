@@ -99,11 +99,7 @@ public final class DnsResolverPolicyImpl
     }
 
     public DnsResolverPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicies()
-            .createOrUpdate(resourceGroupName, dnsResolverPolicyName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DnsResolverPolicy create(Context context) {
@@ -129,10 +125,7 @@ public final class DnsResolverPolicyImpl
     }
 
     public DnsResolverPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicies()
-            .update(resourceGroupName, dnsResolverPolicyName, updateParameters, updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DnsResolverPolicy apply(Context context) {
@@ -155,11 +148,7 @@ public final class DnsResolverPolicyImpl
     }
 
     public DnsResolverPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDnsResolverPolicies()
-            .getByResourceGroupWithResponse(resourceGroupName, dnsResolverPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DnsResolverPolicy refresh(Context context) {

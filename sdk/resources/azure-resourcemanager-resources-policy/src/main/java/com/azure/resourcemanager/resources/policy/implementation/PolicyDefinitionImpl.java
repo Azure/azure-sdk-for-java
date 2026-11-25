@@ -99,11 +99,7 @@ public final class PolicyDefinitionImpl
     private String policyDefinitionName;
 
     public PolicyDefinition create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyDefinitions()
-            .createOrUpdateWithResponse(policyDefinitionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicyDefinition create(Context context) {
@@ -125,11 +121,7 @@ public final class PolicyDefinitionImpl
     }
 
     public PolicyDefinition apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyDefinitions()
-            .createOrUpdateWithResponse(policyDefinitionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PolicyDefinition apply(Context context) {
@@ -159,11 +151,7 @@ public final class PolicyDefinitionImpl
     }
 
     public PolicyDefinition refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicyDefinitions()
-            .getWithResponse(policyDefinitionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicyDefinition refresh(Context context) {

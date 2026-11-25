@@ -94,10 +94,7 @@ public final class DeploymentExtendedImpl
     }
 
     public DeploymentExtended create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .createOrUpdate(resourceGroupName, deploymentName, createParameters, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeploymentExtended create(Context context) {
@@ -120,10 +117,7 @@ public final class DeploymentExtendedImpl
     }
 
     public DeploymentExtended apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .createOrUpdate(resourceGroupName, deploymentName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeploymentExtended apply(Context context) {
@@ -164,11 +158,7 @@ public final class DeploymentExtendedImpl
     }
 
     public DeploymentExtended refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeploymentExtended refresh(Context context) {

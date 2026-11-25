@@ -416,6 +416,9 @@ public class ShareDirectoryClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @return A {@link ShareDirectoryInfo} that contains information about the created directory.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryInfo createIfNotExists() {
@@ -458,6 +461,9 @@ public class ShareDirectoryClient {
      * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
      * {@link ShareDirectoryInfo} containing information about the directory. If {@link Response}'s status code is 201,
      * a new directory was successfully created. If status code is 409, a directory already existed at this location.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      * */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options,
@@ -465,7 +471,7 @@ public class ShareDirectoryClient {
         try {
             return createWithResponse(options, timeout, context);
         } catch (ShareStorageException e) {
-            if (e.getStatusCode() == 409 && e.getErrorCode().equals(ShareErrorCode.RESOURCE_ALREADY_EXISTS)) {
+            if (ModelHelper.isConflictWithErrorCode(e, ShareErrorCode.RESOURCE_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
@@ -1306,13 +1312,18 @@ public class ShareDirectoryClient {
 
         ShareDirectoryClient destinationDirectoryClient = getDirectoryClient(options.getDestinationPath());
 
-        String renameSource = this.sasToken != null
-            ? this.getDirectoryUrl() + "?" + this.sasToken.getSignature()
-            : this.getDirectoryUrl();
+        // getDirectoryUrl() is a raw concatenation and the service percent-decodes x-ms-file-rename-source,
+        // so encode the stored raw share name and directory path exactly once here.
+        String renameSource = azureFileStorageClient.getUrl() + "/" + Utility.urlEncode(shareName) + "/"
+            + Utility.urlEncode(directoryPath);
+        if (snapshot != null) {
+            renameSource = Utility.appendQueryParameter(renameSource, "sharesnapshot", snapshot);
+        }
+        String finalRenameSource = sasToken != null ? renameSource + "?" + sasToken.getSignature() : renameSource;
 
         Callable<Response<Void>> operation = () -> destinationDirectoryClient.azureFileStorageClient.getDirectories()
             .renameNoCustomHeadersWithResponse(destinationDirectoryClient.getShareName(),
-                destinationDirectoryClient.getDirectoryPath(), renameSource, null /* timeout */,
+                destinationDirectoryClient.getDirectoryPath(), finalRenameSource, null /* timeout */,
                 options.getReplaceIfExists(), options.isIgnoreReadOnly(), options.getFilePermission(),
                 options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(), sourceConditions,
                 destinationConditions, smbInfo, finalContext);
@@ -1425,6 +1436,9 @@ public class ShareDirectoryClient {
      *
      * @param subdirectoryName Name of the subdirectory
      * @return A {@link ShareDirectoryClient} used to interact with the subdirectory created.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      * */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createSubdirectoryIfNotExists(String subdirectoryName) {
@@ -1468,6 +1482,9 @@ public class ShareDirectoryClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareDirectoryClient} used
      * to interact with the subdirectory created. If {@link Response}'s status code is 201, a new subdirectory was
      * successfully created. If status code is 409, a subdirectory with the same name already existed at this location.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,

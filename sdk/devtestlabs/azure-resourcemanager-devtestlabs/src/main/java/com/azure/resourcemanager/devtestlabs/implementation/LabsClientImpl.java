@@ -387,18 +387,7 @@ public final class LabsClientImpl implements LabsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LabInner> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
         Context context) {
@@ -407,16 +396,7 @@ public final class LabsClientImpl implements LabsClient {
             this.client.getSubscriptionId(), resourceGroupName, name, expand, accept, context);
     }
 
-    /**
-     * Get lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabInner getByResourceGroup(String resourceGroupName, String name) {
         final String expand = null;
@@ -458,10 +438,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String name, LabInner lab) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, lab, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, name, lab, Context.NONE);
     }
 
     /**
@@ -504,36 +481,14 @@ public final class LabsClientImpl implements LabsClient {
             LabInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or replace an existing lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a lab.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String name,
         LabInner lab) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, name, lab);
-        return this.client.<LabInner, LabInner>getLroResult(response, LabInner.class, LabInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, name, lab, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a lab.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String name,
         LabInner lab, Context context) {
@@ -558,37 +513,16 @@ public final class LabsClientImpl implements LabsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace an existing lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabInner createOrUpdate(String resourceGroupName, String name, LabInner lab) {
-        return beginCreateOrUpdate(resourceGroupName, name, lab).getFinalResult();
+        return createOrUpdate(resourceGroupName, name, lab, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabInner createOrUpdate(String resourceGroupName, String name, LabInner lab, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, name, lab, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, name, lab, context));
     }
 
     /**
@@ -628,18 +562,7 @@ public final class LabsClientImpl implements LabsClient {
         return updateWithResponseAsync(resourceGroupName, name, lab).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of labs. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LabInner> updateWithResponse(String resourceGroupName, String name, LabFragment lab,
         Context context) {
@@ -649,17 +572,7 @@ public final class LabsClientImpl implements LabsClient {
             this.client.getSubscriptionId(), resourceGroupName, name, contentType, accept, lab, context);
     }
 
-    /**
-     * Allows modifying tags of labs. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabInner update(String resourceGroupName, String name, LabFragment lab) {
         return updateWithResponse(resourceGroupName, name, lab, Context.NONE).getValue();
@@ -695,8 +608,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -733,33 +645,13 @@ public final class LabsClientImpl implements LabsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Delete lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, name, context);
@@ -781,33 +673,16 @@ public final class LabsClientImpl implements LabsClient {
         return beginDeleteAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
-        beginDelete(resourceGroupName, name).getFinalResult();
+        delete(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Delete lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, Context context) {
-        beginDelete(resourceGroupName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, name, context));
     }
 
     /**
@@ -893,11 +768,7 @@ public final class LabsClientImpl implements LabsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabInner> listByResourceGroupSinglePage(String resourceGroupName, String expand,
         String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<LabList> res = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -924,39 +795,17 @@ public final class LabsClientImpl implements LabsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List labs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabInner> listByResourceGroup(String resourceGroupName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, expand, filter, top, orderby),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List labs in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabInner> listByResourceGroup(String resourceGroupName, String expand, String filter,
         Integer top, String orderby, Context context) {
@@ -1039,11 +888,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabInner> listSinglePage(String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<LabList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -1069,36 +914,17 @@ public final class LabsClientImpl implements LabsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List labs in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabInner> list() {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listSinglePage(expand, filter, top, orderby),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List labs in a subscription.
-     * 
-     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabInner> list(String expand, String filter, Integer top, String orderby, Context context) {
         return new PagedIterable<>(() -> listSinglePage(expand, filter, top, orderby, context),
@@ -1135,8 +961,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> claimAnyVmWithResponse(String resourceGroupName, String name) {
-        return service.claimAnyVmSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, Context.NONE);
+        return claimAnyVmWithResponse(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -1173,33 +998,13 @@ public final class LabsClientImpl implements LabsClient {
             this.client.getContext());
     }
 
-    /**
-     * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name) {
-        Response<BinaryData> response = claimAnyVmWithResponse(resourceGroupName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginClaimAnyVm(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name, Context context) {
         Response<BinaryData> response = claimAnyVmWithResponse(resourceGroupName, name, context);
@@ -1221,33 +1026,16 @@ public final class LabsClientImpl implements LabsClient {
         return beginClaimAnyVmAsync(resourceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void claimAnyVm(String resourceGroupName, String name) {
-        beginClaimAnyVm(resourceGroupName, name).getFinalResult();
+        claimAnyVm(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void claimAnyVm(String resourceGroupName, String name, Context context) {
-        beginClaimAnyVm(resourceGroupName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginClaimAnyVm(resourceGroupName, name, context));
     }
 
     /**
@@ -1286,10 +1074,7 @@ public final class LabsClientImpl implements LabsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createEnvironmentWithResponse(String resourceGroupName, String name,
         LabVirtualMachineCreationParameter labVirtualMachineCreationParameter) {
-        final String contentType = "application/json";
-        return service.createEnvironmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, contentType, labVirtualMachineCreationParameter,
-            Context.NONE);
+        return createEnvironmentWithResponse(resourceGroupName, name, labVirtualMachineCreationParameter, Context.NONE);
     }
 
     /**
@@ -1333,37 +1118,14 @@ public final class LabsClientImpl implements LabsClient {
             this.client.getContext());
     }
 
-    /**
-     * Create virtual machines in a lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(String resourceGroupName, String name,
         LabVirtualMachineCreationParameter labVirtualMachineCreationParameter) {
-        Response<BinaryData> response
-            = createEnvironmentWithResponse(resourceGroupName, name, labVirtualMachineCreationParameter);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCreateEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter, Context.NONE);
     }
 
-    /**
-     * Create virtual machines in a lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(String resourceGroupName, String name,
         LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context) {
@@ -1390,37 +1152,19 @@ public final class LabsClientImpl implements LabsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create virtual machines in a lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createEnvironment(String resourceGroupName, String name,
         LabVirtualMachineCreationParameter labVirtualMachineCreationParameter) {
-        beginCreateEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter).getFinalResult();
+        createEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter, Context.NONE);
     }
 
-    /**
-     * Create virtual machines in a lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createEnvironment(String resourceGroupName, String name,
         LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context) {
-        beginCreateEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginCreateEnvironment(resourceGroupName, name, labVirtualMachineCreationParameter, context));
     }
 
     /**
@@ -1459,10 +1203,7 @@ public final class LabsClientImpl implements LabsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> exportResourceUsageWithResponse(String resourceGroupName, String name,
         ExportResourceUsageParameters exportResourceUsageParameters) {
-        final String contentType = "application/json";
-        return service.exportResourceUsageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, contentType, exportResourceUsageParameters,
-            Context.NONE);
+        return exportResourceUsageWithResponse(resourceGroupName, name, exportResourceUsageParameters, Context.NONE);
     }
 
     /**
@@ -1506,37 +1247,14 @@ public final class LabsClientImpl implements LabsClient {
             this.client.getContext());
     }
 
-    /**
-     * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param exportResourceUsageParameters The parameters of the export operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(String resourceGroupName, String name,
         ExportResourceUsageParameters exportResourceUsageParameters) {
-        Response<BinaryData> response
-            = exportResourceUsageWithResponse(resourceGroupName, name, exportResourceUsageParameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginExportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, Context.NONE);
     }
 
-    /**
-     * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param exportResourceUsageParameters The parameters of the export operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(String resourceGroupName, String name,
         ExportResourceUsageParameters exportResourceUsageParameters, Context context) {
@@ -1563,37 +1281,19 @@ public final class LabsClientImpl implements LabsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param exportResourceUsageParameters The parameters of the export operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void exportResourceUsage(String resourceGroupName, String name,
         ExportResourceUsageParameters exportResourceUsageParameters) {
-        beginExportResourceUsage(resourceGroupName, name, exportResourceUsageParameters).getFinalResult();
+        exportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, Context.NONE);
     }
 
-    /**
-     * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param exportResourceUsageParameters The parameters of the export operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void exportResourceUsage(String resourceGroupName, String name,
         ExportResourceUsageParameters exportResourceUsageParameters, Context context) {
-        beginExportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginExportResourceUsage(resourceGroupName, name, exportResourceUsageParameters, context));
     }
 
     /**
@@ -1638,18 +1338,7 @@ public final class LabsClientImpl implements LabsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generate a URI for uploading custom disk images to a Lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param generateUploadUriParameter Properties for generating an upload URI.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenerateUploadUriResponseInner> generateUploadUriWithResponse(String resourceGroupName, String name,
         GenerateUploadUriParameter generateUploadUriParameter, Context context) {
@@ -1660,17 +1349,7 @@ public final class LabsClientImpl implements LabsClient {
             context);
     }
 
-    /**
-     * Generate a URI for uploading custom disk images to a Lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param generateUploadUriParameter Properties for generating an upload URI.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateUploadUriResponseInner generateUploadUri(String resourceGroupName, String name,
         GenerateUploadUriParameter generateUploadUriParameter) {
@@ -1716,10 +1395,7 @@ public final class LabsClientImpl implements LabsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> importVirtualMachineWithResponse(String resourceGroupName, String name,
         ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {
-        final String contentType = "application/json";
-        return service.importVirtualMachineSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, contentType, importLabVirtualMachineRequest,
-            Context.NONE);
+        return importVirtualMachineWithResponse(resourceGroupName, name, importLabVirtualMachineRequest, Context.NONE);
     }
 
     /**
@@ -1765,39 +1441,14 @@ public final class LabsClientImpl implements LabsClient {
             this.client.getContext());
     }
 
-    /**
-     * Import a virtual machine into a different lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     * different lab into the current one.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(String resourceGroupName, String name,
         ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {
-        Response<BinaryData> response
-            = importVirtualMachineWithResponse(resourceGroupName, name, importLabVirtualMachineRequest);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginImportVirtualMachine(resourceGroupName, name, importLabVirtualMachineRequest, Context.NONE);
     }
 
-    /**
-     * Import a virtual machine into a different lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     * different lab into the current one.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(String resourceGroupName, String name,
         ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context) {
@@ -1825,39 +1476,19 @@ public final class LabsClientImpl implements LabsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Import a virtual machine into a different lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     * different lab into the current one.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void importVirtualMachine(String resourceGroupName, String name,
         ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {
-        beginImportVirtualMachine(resourceGroupName, name, importLabVirtualMachineRequest).getFinalResult();
+        importVirtualMachine(resourceGroupName, name, importLabVirtualMachineRequest, Context.NONE);
     }
 
-    /**
-     * Import a virtual machine into a different lab. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     * different lab into the current one.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void importVirtualMachine(String resourceGroupName, String name,
         ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context) {
-        beginImportVirtualMachine(resourceGroupName, name, importLabVirtualMachineRequest, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginImportVirtualMachine(resourceGroupName, name, importLabVirtualMachineRequest, context));
     }
 
     /**
@@ -1910,11 +1541,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabVhdInner> listVhdsSinglePage(String resourceGroupName, String name) {
-        final String accept = "application/json";
-        Response<LabVhdList> res = service.listVhdsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, name, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVhdsSinglePage(resourceGroupName, name, Context.NONE);
     }
 
     /**
@@ -1937,33 +1564,13 @@ public final class LabsClientImpl implements LabsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List disk images available for custom image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabVhdInner> listVhds(String resourceGroupName, String name) {
-        return new PagedIterable<>(() -> listVhdsSinglePage(resourceGroupName, name),
-            nextLink -> listVhdsNextSinglePage(nextLink));
+        return listVhds(resourceGroupName, name, Context.NONE);
     }
 
-    /**
-     * List disk images available for custom image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabVhdInner> listVhds(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(() -> listVhdsSinglePage(resourceGroupName, name, context),
@@ -2002,11 +1609,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LabList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2060,11 +1663,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LabList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2117,10 +1716,7 @@ public final class LabsClientImpl implements LabsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabVhdInner> listVhdsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LabVhdList> res = service.listVhdsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listVhdsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

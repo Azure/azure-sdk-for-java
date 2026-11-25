@@ -89,10 +89,7 @@ public final class IntegrationFabricImpl
     }
 
     public IntegrationFabric create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationFabrics()
-            .create(resourceGroupName, workspaceName, integrationFabricName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IntegrationFabric create(Context context) {
@@ -114,10 +111,7 @@ public final class IntegrationFabricImpl
     }
 
     public IntegrationFabric apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationFabrics()
-            .update(resourceGroupName, workspaceName, integrationFabricName, updateRequestBodyParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IntegrationFabric apply(Context context) {
@@ -143,11 +137,7 @@ public final class IntegrationFabricImpl
     }
 
     public IntegrationFabric refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIntegrationFabrics()
-            .getWithResponse(resourceGroupName, workspaceName, integrationFabricName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IntegrationFabric refresh(Context context) {

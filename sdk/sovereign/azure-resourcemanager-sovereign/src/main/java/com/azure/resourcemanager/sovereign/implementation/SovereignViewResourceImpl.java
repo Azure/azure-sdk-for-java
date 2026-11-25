@@ -104,10 +104,7 @@ public final class SovereignViewResourceImpl
     }
 
     public SovereignViewResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSovereignViewOperations()
-            .create(resourceGroupName, sovereignViewName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SovereignViewResource create(Context context) {
@@ -129,10 +126,7 @@ public final class SovereignViewResourceImpl
     }
 
     public SovereignViewResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSovereignViewOperations()
-            .update(resourceGroupName, sovereignViewName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SovereignViewResource apply(Context context) {
@@ -155,11 +149,7 @@ public final class SovereignViewResourceImpl
     }
 
     public SovereignViewResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSovereignViewOperations()
-            .getByResourceGroupWithResponse(resourceGroupName, sovereignViewName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SovereignViewResource refresh(Context context) {

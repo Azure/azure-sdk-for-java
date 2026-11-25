@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
+import com.azure.resourcemanager.containerregistry.models.EndpointProtocol;
+import com.azure.resourcemanager.containerregistry.models.RegionalEndpoints;
 import com.azure.resourcemanager.containerregistry.models.RegistryUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.RoleAssignmentMode;
 import com.azure.resourcemanager.containerregistry.models.Sku;
@@ -16,7 +18,7 @@ import java.util.Map;
  */
 public final class RegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-15-preview/RegistryUpdate.json
+     * x-ms-original-file: 2026-11-01/RegistryUpdate.json
      */
     /**
      * Sample code: RegistryUpdate.
@@ -28,8 +30,11 @@ public final class RegistriesUpdateSamples {
             .getRegistries()
             .update("myResourceGroup", "myRegistry",
                 new RegistryUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withSku(new Sku().withName(SkuName.PREMIUM))
                     .withAdminUserEnabled(true)
+                    .withDataEndpointEnabled(true)
+                    .withRegionalEndpoints(RegionalEndpoints.ENABLED)
+                    .withEndpointProtocol(EndpointProtocol.IPV4AND_IPV6)
                     .withRoleAssignmentMode(RoleAssignmentMode.ABAC_REPOSITORY_PERMISSIONS),
                 com.azure.core.util.Context.NONE);
     }

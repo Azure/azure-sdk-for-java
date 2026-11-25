@@ -278,17 +278,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Implements NetworkMonitor GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkMonitor resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkMonitorInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkMonitorName, Context context) {
@@ -297,16 +287,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             this.client.getSubscriptionId(), resourceGroupName, networkMonitorName, accept, context);
     }
 
-    /**
-     * Implements NetworkMonitor GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMonitorInner getByResourceGroup(String resourceGroupName, String networkMonitorName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkMonitorName, Context.NONE).getValue();
@@ -348,11 +329,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String networkMonitorName,
         NetworkMonitorInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkMonitorName, contentType, accept, body,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
     /**
@@ -395,37 +372,14 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             NetworkMonitorInner.class, NetworkMonitorInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMonitorInner>, NetworkMonitorInner> beginCreate(String resourceGroupName,
         String networkMonitorName, NetworkMonitorInner body) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, networkMonitorName, body);
-        return this.client.<NetworkMonitorInner, NetworkMonitorInner>getLroResult(response, NetworkMonitorInner.class,
-            NetworkMonitorInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
-    /**
-     * Creates NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMonitorInner>, NetworkMonitorInner> beginCreate(String resourceGroupName,
         String networkMonitorName, NetworkMonitorInner body, Context context) {
@@ -452,38 +406,17 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMonitorInner create(String resourceGroupName, String networkMonitorName, NetworkMonitorInner body) {
-        return beginCreate(resourceGroupName, networkMonitorName, body).getFinalResult();
+        return create(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
-    /**
-     * Creates NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMonitorInner create(String resourceGroupName, String networkMonitorName, NetworkMonitorInner body,
         Context context) {
-        return beginCreate(resourceGroupName, networkMonitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, networkMonitorName, body, context));
     }
 
     /**
@@ -522,11 +455,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkMonitorName,
         NetworkMonitorPatch body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkMonitorName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
     /**
@@ -569,37 +498,14 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             NetworkMonitorInner.class, NetworkMonitorInner.class, this.client.getContext());
     }
 
-    /**
-     * API to update certain properties of the NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMonitorInner>, NetworkMonitorInner> beginUpdate(String resourceGroupName,
         String networkMonitorName, NetworkMonitorPatch body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkMonitorName, body);
-        return this.client.<NetworkMonitorInner, NetworkMonitorInner>getLroResult(response, NetworkMonitorInner.class,
-            NetworkMonitorInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkMonitorInner>, NetworkMonitorInner> beginUpdate(String resourceGroupName,
         String networkMonitorName, NetworkMonitorPatch body, Context context) {
@@ -626,38 +532,17 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * API to update certain properties of the NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMonitorInner update(String resourceGroupName, String networkMonitorName, NetworkMonitorPatch body) {
-        return beginUpdate(resourceGroupName, networkMonitorName, body).getFinalResult();
+        return update(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
-    /**
-     * API to update certain properties of the NetworkMonitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkMonitor resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkMonitorInner update(String resourceGroupName, String networkMonitorName, NetworkMonitorPatch body,
         Context context) {
-        return beginUpdate(resourceGroupName, networkMonitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, networkMonitorName, body, context));
     }
 
     /**
@@ -691,8 +576,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkMonitorName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkMonitorName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkMonitorName, Context.NONE);
     }
 
     /**
@@ -730,33 +614,13 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkMonitorName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkMonitorName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkMonitorName, Context.NONE);
     }
 
-    /**
-     * Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkMonitorName,
         Context context) {
@@ -780,33 +644,16 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkMonitorName) {
-        beginDelete(resourceGroupName, networkMonitorName).getFinalResult();
+        delete(resourceGroupName, networkMonitorName, Context.NONE);
     }
 
-    /**
-     * Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkMonitorName, Context context) {
-        beginDelete(resourceGroupName, networkMonitorName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkMonitorName, context));
     }
 
     /**
@@ -856,11 +703,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMonitorInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkMonitorListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -883,31 +726,13 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays NetworkMonitors list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkMonitor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMonitorInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Displays NetworkMonitors list by resource group GET method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkMonitor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMonitorInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -955,11 +780,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMonitorInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkMonitorListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -980,27 +801,13 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Displays NetworkMonitors list by subscription GET method.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkMonitor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMonitorInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Displays NetworkMonitors list by subscription GET method.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkMonitor list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkMonitorInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1044,11 +851,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateAdministrativeStateWithResponse(String resourceGroupName,
         String networkMonitorName, UpdateAdministrativeState body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateAdministrativeStateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkMonitorName, contentType, accept, body,
-            Context.NONE);
+        return updateAdministrativeStateWithResponse(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
     /**
@@ -1096,42 +899,16 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
                 CommonPostActionResponseForDeviceUpdateInner.class, this.client.getContext());
     }
 
-    /**
-     * Enables isolation domain across the fabric or on specified racks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for device updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
         beginUpdateAdministrativeState(String resourceGroupName, String networkMonitorName,
             UpdateAdministrativeState body) {
-        Response<BinaryData> response
-            = updateAdministrativeStateWithResponse(resourceGroupName, networkMonitorName, body);
-        return this.client
-            .<CommonPostActionResponseForDeviceUpdateInner, CommonPostActionResponseForDeviceUpdateInner>getLroResult(
-                response, CommonPostActionResponseForDeviceUpdateInner.class,
-                CommonPostActionResponseForDeviceUpdateInner.class, Context.NONE);
+        return beginUpdateAdministrativeState(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
-    /**
-     * Enables isolation domain across the fabric or on specified racks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of common response for device updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
@@ -1163,39 +940,19 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enables isolation domain across the fabric or on specified racks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for device updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
         String networkMonitorName, UpdateAdministrativeState body) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkMonitorName, body).getFinalResult();
+        return updateAdministrativeState(resourceGroupName, networkMonitorName, body, Context.NONE);
     }
 
-    /**
-     * Enables isolation domain across the fabric or on specified racks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkMonitorName Name of the Network Monitor.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for device updates.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
         String networkMonitorName, UpdateAdministrativeState body, Context context) {
-        return beginUpdateAdministrativeState(resourceGroupName, networkMonitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateAdministrativeState(resourceGroupName, networkMonitorName, body, context));
     }
 
     /**
@@ -1230,11 +987,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMonitorInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkMonitorListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1288,11 +1041,7 @@ public final class NetworkMonitorsClientImpl implements NetworkMonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkMonitorInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkMonitorListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

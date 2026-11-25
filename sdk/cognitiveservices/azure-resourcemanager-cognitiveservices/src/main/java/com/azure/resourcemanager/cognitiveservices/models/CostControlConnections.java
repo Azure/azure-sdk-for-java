@@ -12,23 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Defines account-level connections used to publish cost-control telemetry and events.
- * Application Insights is optional and may be removed while policies remain attached.
- * Event Grid is required for alerts; supplied connection references must still be valid.
+ * Account-level telemetry connections. Application Insights is optional and may be removed while controls exist.
  */
 @Fluent
 public final class CostControlConnections implements JsonSerializable<CostControlConnections> {
     /*
-     * Gets or sets the full resource ID of the optional Application Insights connection.
+     * The full resource ID of the optional Application Insights connection. Set to null in an account update to remove
+     * it.
      */
     private String appInsightsConnectionId;
-
-    /*
-     * The full resource ID of the Event Grid connection used for cost control alerts. This connection must be
-     * configured when an attached cost control contains an alert threshold action and cannot be removed while such an
-     * action remains attached.
-     */
-    private String eventGridConnectionId;
 
     /**
      * Creates an instance of CostControlConnections class.
@@ -37,8 +29,8 @@ public final class CostControlConnections implements JsonSerializable<CostContro
     }
 
     /**
-     * Get the appInsightsConnectionId property: Gets or sets the full resource ID of the optional Application Insights
-     * connection.
+     * Get the appInsightsConnectionId property: The full resource ID of the optional Application Insights connection.
+     * Set to null in an account update to remove it.
      * 
      * @return the appInsightsConnectionId value.
      */
@@ -47,8 +39,8 @@ public final class CostControlConnections implements JsonSerializable<CostContro
     }
 
     /**
-     * Set the appInsightsConnectionId property: Gets or sets the full resource ID of the optional Application Insights
-     * connection.
+     * Set the appInsightsConnectionId property: The full resource ID of the optional Application Insights connection.
+     * Set to null in an account update to remove it.
      * 
      * @param appInsightsConnectionId the appInsightsConnectionId value to set.
      * @return the CostControlConnections object itself.
@@ -59,37 +51,12 @@ public final class CostControlConnections implements JsonSerializable<CostContro
     }
 
     /**
-     * Get the eventGridConnectionId property: The full resource ID of the Event Grid connection used for cost control
-     * alerts. This connection must be configured when an attached cost control contains an alert threshold action and
-     * cannot be removed while such an action remains attached.
-     * 
-     * @return the eventGridConnectionId value.
-     */
-    public String eventGridConnectionId() {
-        return this.eventGridConnectionId;
-    }
-
-    /**
-     * Set the eventGridConnectionId property: The full resource ID of the Event Grid connection used for cost control
-     * alerts. This connection must be configured when an attached cost control contains an alert threshold action and
-     * cannot be removed while such an action remains attached.
-     * 
-     * @param eventGridConnectionId the eventGridConnectionId value to set.
-     * @return the CostControlConnections object itself.
-     */
-    public CostControlConnections withEventGridConnectionId(String eventGridConnectionId) {
-        this.eventGridConnectionId = eventGridConnectionId;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("appInsightsConnectionId", this.appInsightsConnectionId);
-        jsonWriter.writeStringField("eventGridConnectionId", this.eventGridConnectionId);
         return jsonWriter.writeEndObject();
     }
 
@@ -110,8 +77,6 @@ public final class CostControlConnections implements JsonSerializable<CostContro
 
                 if ("appInsightsConnectionId".equals(fieldName)) {
                     deserializedCostControlConnections.appInsightsConnectionId = reader.getString();
-                } else if ("eventGridConnectionId".equals(fieldName)) {
-                    deserializedCostControlConnections.eventGridConnectionId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

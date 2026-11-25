@@ -232,29 +232,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcxEnterpriseSiteInner> listSinglePage(String resourceGroupName, String privateCloudName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<HcxEnterpriseSiteList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     /**
@@ -296,33 +274,13 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List HcxEnterpriseSite resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcxEnterpriseSite list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcxEnterpriseSiteInner> list(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, Context.NONE);
     }
 
-    /**
-     * List HcxEnterpriseSite resources by PrivateCloud.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcxEnterpriseSite list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcxEnterpriseSiteInner> list(String resourceGroupName, String privateCloudName,
         Context context) {
@@ -390,18 +348,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a HcxEnterpriseSite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcxEnterpriseSite along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HcxEnterpriseSiteInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String hcxEnterpriseSiteName, Context context) {
@@ -432,17 +379,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             resourceGroupName, privateCloudName, hcxEnterpriseSiteName, accept, context);
     }
 
-    /**
-     * Get a HcxEnterpriseSite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcxEnterpriseSite.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcxEnterpriseSiteInner get(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
         return getWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE).getValue();
@@ -517,19 +454,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             hcxEnterpriseSite).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a HcxEnterpriseSite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
-     * @param hcxEnterpriseSite Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HcxEnterpriseSiteInner> createOrUpdateWithResponse(String resourceGroupName,
         String privateCloudName, String hcxEnterpriseSiteName, HcxEnterpriseSiteInner hcxEnterpriseSite,
@@ -569,18 +494,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             accept, hcxEnterpriseSite, context);
     }
 
-    /**
-     * Create a HcxEnterpriseSite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
-     * @param hcxEnterpriseSite Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX Enterprise Site resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcxEnterpriseSiteInner createOrUpdate(String resourceGroupName, String privateCloudName,
         String hcxEnterpriseSiteName, HcxEnterpriseSiteInner hcxEnterpriseSite) {
@@ -645,18 +559,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a HcxEnterpriseSite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String hcxEnterpriseSiteName, Context context) {
@@ -686,16 +589,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context);
     }
 
-    /**
-     * Delete a HcxEnterpriseSite.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {
         deleteWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE);
@@ -738,20 +632,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcxEnterpriseSiteInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<HcxEnterpriseSiteList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

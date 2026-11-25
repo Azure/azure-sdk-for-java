@@ -349,23 +349,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the protection container details.
-     * 
-     * Gets the details of a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the protection container details.
-     * 
-     * Gets the details of a protection container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionContainerInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, Context context) {
@@ -400,22 +384,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             resourceGroupName, resourceName, fabricName, protectionContainerName, accept, context);
     }
 
-    /**
-     * Gets the protection container details.
-     * 
-     * Gets the details of a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the protection container details.
-     * 
-     * Gets the details of a protection container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName) {
@@ -495,43 +464,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (creationInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter creationInput is required and cannot be null."));
-        } else {
-            creationInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            contentType, accept, creationInput, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput,
+            Context.NONE);
     }
 
     /**
@@ -618,47 +552,16 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             this.client.getContext());
     }
 
-    /**
-     * Create a protection container.
-     * 
-     * Operation to create a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param creationInput Creation input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         CreateProtectionContainerInput creationInput) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput);
-        return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(response,
-            ProtectionContainerInner.class, ProtectionContainerInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput,
+            Context.NONE);
     }
 
-    /**
-     * Create a protection container.
-     * 
-     * Operation to create a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param creationInput Creation input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginCreate(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -692,49 +595,20 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a protection container.
-     * 
-     * Operation to create a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param creationInput Creation input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput)
-            .getFinalResult();
+        return create(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput,
+            Context.NONE);
     }
 
-    /**
-     * Create a protection container.
-     * 
-     * Operation to create a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param creationInput Creation input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner create(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, CreateProtectionContainerInput creationInput, Context context) {
-        return beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, resourceName, fabricName, protectionContainerName, creationInput, context));
     }
 
     /**
@@ -825,34 +699,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerInner> listByReplicationFabricsSinglePage(String resourceGroupName,
         String resourceName, String fabricName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProtectionContainerCollection> res
-            = service.listByReplicationFabricsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationFabricsSinglePage(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     /**
@@ -904,45 +751,14 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of protection container for a fabric.
-     * 
-     * Lists the protection containers in the specified fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of protection container for a fabric.
-     * 
-     * Lists the protection containers in the specified fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerInner> listByReplicationFabrics(String resourceGroupName,
         String resourceName, String fabricName) {
-        return new PagedIterable<>(
-            () -> listByReplicationFabricsSinglePage(resourceGroupName, resourceName, fabricName),
-            nextLink -> listByReplicationFabricsNextSinglePage(nextLink));
+        return listByReplicationFabrics(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
-    /**
-     * Gets the list of protection container for a fabric.
-     * 
-     * Lists the protection containers in the specified fabric.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of protection container for a fabric.
-     * 
-     * Lists the protection containers in the specified fabric as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerInner> listByReplicationFabrics(String resourceGroupName,
         String resourceName, String fabricName, Context context) {
@@ -1026,44 +842,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     private Response<BinaryData> discoverProtectableItemWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (discoverProtectableItemRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter discoverProtectableItemRequest is required and cannot be null."));
-        } else {
-            discoverProtectableItemRequest.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.discoverProtectableItemSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            contentType, accept, discoverProtectableItemRequest, Context.NONE);
+        return discoverProtectableItemWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            discoverProtectableItemRequest, Context.NONE);
     }
 
     /**
@@ -1152,47 +932,16 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             this.client.getContext());
     }
 
-    /**
-     * Adds a protectable item to the replication protection container.
-     * 
-     * The operation to a add a protectable item to a protection container(Add physical server).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param discoverProtectableItemRequest The request object to add a protectable item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginDiscoverProtectableItem(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        Response<BinaryData> response = discoverProtectableItemWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, discoverProtectableItemRequest);
-        return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(response,
-            ProtectionContainerInner.class, ProtectionContainerInner.class, Context.NONE);
+        return beginDiscoverProtectableItem(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            discoverProtectableItemRequest, Context.NONE);
     }
 
-    /**
-     * Adds a protectable item to the replication protection container.
-     * 
-     * The operation to a add a protectable item to a protection container(Add physical server).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param discoverProtectableItemRequest The request object to add a protectable item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginDiscoverProtectableItem(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -1226,51 +975,22 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             discoverProtectableItemRequest).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Adds a protectable item to the replication protection container.
-     * 
-     * The operation to a add a protectable item to a protection container(Add physical server).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param discoverProtectableItemRequest The request object to add a protectable item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner discoverProtectableItem(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        return beginDiscoverProtectableItem(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            discoverProtectableItemRequest).getFinalResult();
+        return discoverProtectableItem(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            discoverProtectableItemRequest, Context.NONE);
     }
 
-    /**
-     * Adds a protectable item to the replication protection container.
-     * 
-     * The operation to a add a protectable item to a protection container(Add physical server).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param discoverProtectableItemRequest The request object to add a protectable item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner discoverProtectableItem(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest, Context context) {
-        return beginDiscoverProtectableItem(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            discoverProtectableItemRequest, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginDiscoverProtectableItem(resourceGroupName, resourceName,
+            fabricName, protectionContainerName, discoverProtectableItemRequest, context));
     }
 
     /**
@@ -1336,35 +1056,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, Context.NONE);
     }
 
     /**
@@ -1439,43 +1131,14 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             this.client.getContext());
     }
 
-    /**
-     * Removes a protection container.
-     * 
-     * Operation to remove a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, Context.NONE);
     }
 
-    /**
-     * Removes a protection container.
-     * 
-     * Operation to remove a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, Context context) {
@@ -1505,43 +1168,19 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Removes a protection container.
-     * 
-     * Operation to remove a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName) {
-        beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName).getFinalResult();
+        delete(resourceGroupName, resourceName, fabricName, protectionContainerName, Context.NONE);
     }
 
-    /**
-     * Removes a protection container.
-     * 
-     * Operation to remove a protection container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         Context context) {
-        beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, resourceName, fabricName, protectionContainerName, context));
     }
 
     /**
@@ -1617,43 +1256,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> switchClusterProtectionWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, SwitchClusterProtectionInput switchInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (switchInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter switchInput is required and cannot be null."));
-        } else {
-            switchInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.switchClusterProtectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            contentType, accept, switchInput, Context.NONE);
+        return switchClusterProtectionWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput, Context.NONE);
     }
 
     /**
@@ -1740,47 +1344,16 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             this.client.getContext());
     }
 
-    /**
-     * Switches protection from one container to another.
-     * 
-     * Operation to switch protection from one container to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchClusterProtection(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         SwitchClusterProtectionInput switchInput) {
-        Response<BinaryData> response = switchClusterProtectionWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, switchInput);
-        return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(response,
-            ProtectionContainerInner.class, ProtectionContainerInner.class, Context.NONE);
+        return beginSwitchClusterProtection(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput, Context.NONE);
     }
 
-    /**
-     * Switches protection from one container to another.
-     * 
-     * Operation to switch protection from one container to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchClusterProtection(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -1813,49 +1386,20 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             switchInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Switches protection from one container to another.
-     * 
-     * Operation to switch protection from one container to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner switchClusterProtection(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, SwitchClusterProtectionInput switchInput) {
-        return beginSwitchClusterProtection(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            switchInput).getFinalResult();
+        return switchClusterProtection(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput, Context.NONE);
     }
 
-    /**
-     * Switches protection from one container to another.
-     * 
-     * Operation to switch protection from one container to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner switchClusterProtection(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, SwitchClusterProtectionInput switchInput, Context context) {
-        return beginSwitchClusterProtection(resourceGroupName, resourceName, fabricName, protectionContainerName,
-            switchInput, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSwitchClusterProtection(resourceGroupName, resourceName,
+            fabricName, protectionContainerName, switchInput, context));
     }
 
     /**
@@ -1930,43 +1474,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> switchProtectionWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, SwitchProtectionInput switchInput) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (switchInput == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter switchInput is required and cannot be null."));
-        } else {
-            switchInput.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.switchProtectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName, protectionContainerName,
-            contentType, accept, switchInput, Context.NONE);
+        return switchProtectionWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            switchInput, Context.NONE);
     }
 
     /**
@@ -2053,47 +1562,16 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             this.client.getContext());
     }
 
-    /**
-     * Switches protection from one container to another or one replication provider to another.
-     * 
-     * Operation to switch protection from one container to another or one replication provider to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtection(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         SwitchProtectionInput switchInput) {
-        Response<BinaryData> response = switchProtectionWithResponse(resourceGroupName, resourceName, fabricName,
-            protectionContainerName, switchInput);
-        return this.client.<ProtectionContainerInner, ProtectionContainerInner>getLroResult(response,
-            ProtectionContainerInner.class, ProtectionContainerInner.class, Context.NONE);
+        return beginSwitchProtection(resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput,
+            Context.NONE);
     }
 
-    /**
-     * Switches protection from one container to another or one replication provider to another.
-     * 
-     * Operation to switch protection from one container to another or one replication provider to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerInner>, ProtectionContainerInner> beginSwitchProtection(
         String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
@@ -2126,49 +1604,20 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             switchInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Switches protection from one container to another or one replication provider to another.
-     * 
-     * Operation to switch protection from one container to another or one replication provider to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner switchProtection(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, SwitchProtectionInput switchInput) {
-        return beginSwitchProtection(resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput)
-            .getFinalResult();
+        return switchProtection(resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput,
+            Context.NONE);
     }
 
-    /**
-     * Switches protection from one container to another or one replication provider to another.
-     * 
-     * Operation to switch protection from one container to another or one replication provider to another.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param switchInput Switch protection input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return protection container details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionContainerInner switchProtection(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, SwitchProtectionInput switchInput, Context context) {
-        return beginSwitchProtection(resourceGroupName, resourceName, fabricName, protectionContainerName, switchInput,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginSwitchProtection(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, switchInput, context));
     }
 
     /**
@@ -2249,30 +1698,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProtectionContainerCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -2319,41 +1745,13 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of all protection containers in a vault.
-     * 
-     * Lists the protection containers in a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all protection containers in a vault.
-     * 
-     * Lists the protection containers in a vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of all protection containers in a vault.
-     * 
-     * Lists the protection containers in a vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all protection containers in a vault.
-     * 
-     * Lists the protection containers in a vault as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionContainerInner> list(String resourceGroupName, String resourceName,
         Context context) {
@@ -2408,20 +1806,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerInner> listByReplicationFabricsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProtectionContainerCollection> res
-            = service.listByReplicationFabricsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationFabricsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2502,20 +1887,7 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProtectionContainerInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ProtectionContainerCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

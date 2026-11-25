@@ -257,18 +257,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Payment HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Payment HSM Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PaymentHsmClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String paymentHsmClusterName, Context context) {
@@ -277,17 +266,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             this.client.getSubscriptionId(), resourceGroupName, paymentHsmClusterName, accept, context);
     }
 
-    /**
-     * Gets the specified Payment HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Payment HSM Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PaymentHsmClusterInner getByResourceGroup(String resourceGroupName, String paymentHsmClusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, paymentHsmClusterName, Context.NONE).getValue();
@@ -333,11 +312,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String paymentHsmClusterName,
         PaymentHsmClusterInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, paymentHsmClusterName, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, paymentHsmClusterName, body, Context.NONE);
     }
 
     /**
@@ -385,39 +360,14 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             this.client.getContext());
     }
 
-    /**
-     * Create or Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PaymentHsmClusterInner>, PaymentHsmClusterInner>
         beginCreateOrUpdate(String resourceGroupName, String paymentHsmClusterName, PaymentHsmClusterInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, paymentHsmClusterName, body);
-        return this.client.<PaymentHsmClusterInner, PaymentHsmClusterInner>getLroResult(response,
-            PaymentHsmClusterInner.class, PaymentHsmClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, paymentHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Create or Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PaymentHsmClusterInner>, PaymentHsmClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String paymentHsmClusterName, PaymentHsmClusterInner body, Context context) {
@@ -446,41 +396,19 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PaymentHsmClusterInner createOrUpdate(String resourceGroupName, String paymentHsmClusterName,
         PaymentHsmClusterInner body) {
-        return beginCreateOrUpdate(resourceGroupName, paymentHsmClusterName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, paymentHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Create or Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PaymentHsmClusterInner createOrUpdate(String resourceGroupName, String paymentHsmClusterName,
         PaymentHsmClusterInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, paymentHsmClusterName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, paymentHsmClusterName, body, context));
     }
 
     /**
@@ -523,11 +451,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String paymentHsmClusterName,
         PaymentHsmClusterPatchParameters body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, paymentHsmClusterName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, paymentHsmClusterName, body, Context.NONE);
     }
 
     /**
@@ -574,39 +498,14 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             this.client.getContext());
     }
 
-    /**
-     * Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PaymentHsmClusterInner>, PaymentHsmClusterInner> beginUpdate(String resourceGroupName,
         String paymentHsmClusterName, PaymentHsmClusterPatchParameters body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, paymentHsmClusterName, body);
-        return this.client.<PaymentHsmClusterInner, PaymentHsmClusterInner>getLroResult(response,
-            PaymentHsmClusterInner.class, PaymentHsmClusterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, paymentHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PaymentHsmClusterInner>, PaymentHsmClusterInner> beginUpdate(String resourceGroupName,
         String paymentHsmClusterName, PaymentHsmClusterPatchParameters body, Context context) {
@@ -634,41 +533,19 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PaymentHsmClusterInner update(String resourceGroupName, String paymentHsmClusterName,
         PaymentHsmClusterPatchParameters body) {
-        return beginUpdate(resourceGroupName, paymentHsmClusterName, body).getFinalResult();
+        return update(resourceGroupName, paymentHsmClusterName, body, Context.NONE);
     }
 
-    /**
-     * Update a Payment HSM Cluster in the specified subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param body Parameters to create Payment HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PaymentHsmClusterInner update(String resourceGroupName, String paymentHsmClusterName,
         PaymentHsmClusterPatchParameters body, Context context) {
-        return beginUpdate(resourceGroupName, paymentHsmClusterName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, paymentHsmClusterName, body, context));
     }
 
     /**
@@ -704,8 +581,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String paymentHsmClusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, paymentHsmClusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
     /**
@@ -746,35 +622,13 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Payment HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String paymentHsmClusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, paymentHsmClusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Payment HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String paymentHsmClusterName,
         Context context) {
@@ -799,35 +653,16 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Payment HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String paymentHsmClusterName) {
-        beginDelete(resourceGroupName, paymentHsmClusterName).getFinalResult();
+        delete(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Payment HSM Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String paymentHsmClusterName, Context context) {
-        beginDelete(resourceGroupName, paymentHsmClusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, paymentHsmClusterName, context));
     }
 
     /**
@@ -902,12 +737,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PaymentHsmClusterInner> listByResourceGroupSinglePage(String resourceGroupName,
         String skiptoken) {
-        final String accept = "application/json";
-        Response<PaymentHsmClusterListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, skiptoken, Context.NONE);
     }
 
     /**
@@ -933,35 +763,14 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The List operation gets information about the Payment HSM Clusters associated with the subscription and within
-     * the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PaymentHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PaymentHsmClusterInner> listByResourceGroup(String resourceGroupName) {
         final String skiptoken = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, skiptoken),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, skiptoken, Context.NONE);
     }
 
-    /**
-     * The List operation gets information about the Payment HSM Clusters associated with the subscription and within
-     * the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PaymentHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PaymentHsmClusterInner> listByResourceGroup(String resourceGroupName, String skiptoken,
         Context context) {
@@ -1030,11 +839,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PaymentHsmClusterInner> listSinglePage(String skiptoken) {
-        final String accept = "application/json";
-        Response<PaymentHsmClusterListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), skiptoken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(skiptoken, Context.NONE);
     }
 
     /**
@@ -1056,30 +861,14 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The List operation gets information about the Payment HSM Clusters associated with the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PaymentHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PaymentHsmClusterInner> list() {
         final String skiptoken = null;
-        return new PagedIterable<>(() -> listSinglePage(skiptoken),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(skiptoken, Context.NONE);
     }
 
-    /**
-     * The List operation gets information about the Payment HSM Clusters associated with the subscription.
-     * 
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PaymentHsmCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PaymentHsmClusterInner> list(String skiptoken, Context context) {
         return new PagedIterable<>(() -> listSinglePage(skiptoken, context),
@@ -1118,11 +907,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PaymentHsmClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PaymentHsmClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1176,11 +961,7 @@ public final class PaymentHsmClustersClientImpl implements PaymentHsmClustersCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PaymentHsmClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PaymentHsmClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

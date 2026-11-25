@@ -246,18 +246,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Project along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectInner> getWithResponse(String resourceGroupName, String organizationName, String projectName,
         Context context) {
@@ -266,17 +255,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             resourceGroupName, organizationName, projectName, accept, context);
     }
 
-    /**
-     * Get a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Project.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner get(String resourceGroupName, String organizationName, String projectName) {
         return getWithResponse(resourceGroupName, organizationName, projectName, Context.NONE).getValue();
@@ -322,11 +301,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, ProjectInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, resource, Context.NONE);
     }
 
     /**
@@ -373,40 +348,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             ProjectInner.class, ProjectInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the MongoDB Atlas Project resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, ProjectInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, resource);
-        return this.client.<ProjectInner, ProjectInner>getLroResult(response, ProjectInner.class, ProjectInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the MongoDB Atlas Project resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProjectInner>, ProjectInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, ProjectInner resource, Context context) {
@@ -435,42 +384,19 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB Atlas Project resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         ProjectInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, organizationName, projectName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the MongoDB Atlas Project resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         ProjectInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, organizationName, projectName, resource, context));
     }
 
     /**
@@ -507,8 +433,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String projectName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, projectName, Context.NONE);
     }
 
     /**
@@ -550,36 +475,14 @@ public final class ProjectsClientImpl implements ProjectsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String projectName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, organizationName, projectName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, projectName, Context.NONE);
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String projectName, Context context) {
@@ -604,35 +507,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String projectName) {
-        beginDelete(resourceGroupName, organizationName, projectName).getFinalResult();
+        delete(resourceGroupName, organizationName, projectName, Context.NONE);
     }
 
-    /**
-     * Delete a Project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String projectName, Context context) {
-        beginDelete(resourceGroupName, organizationName, projectName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, organizationName, projectName, context));
     }
 
     /**
@@ -685,11 +569,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listSinglePage(String resourceGroupName, String organizationName) {
-        final String accept = "application/json";
-        Response<ProjectListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, Context.NONE);
     }
 
     /**
@@ -713,33 +593,13 @@ public final class ProjectsClientImpl implements ProjectsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Project resources by OrganizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Project list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectInner> list(String resourceGroupName, String organizationName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, Context.NONE);
     }
 
-    /**
-     * List Project resources by OrganizationResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Project list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectInner> list(String resourceGroupName, String organizationName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, context),
@@ -785,18 +645,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check if tier limit is reached for the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for tier limit check along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TierLimitReachedResponseInner> tierLimitReachedWithResponse(String resourceGroupName,
         String organizationName, String projectName, Context context) {
@@ -805,17 +654,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, accept, context);
     }
 
-    /**
-     * Check if tier limit is reached for the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for tier limit check.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TierLimitReachedResponseInner tierLimitReached(String resourceGroupName, String organizationName,
         String projectName) {
@@ -863,18 +702,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List available regions by cluster tier for the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for regions by cluster tier along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegionsByTierResponseInner> listClusterTierRegionsWithResponse(String resourceGroupName,
         String organizationName, String projectName, Context context) {
@@ -883,17 +711,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, accept, context);
     }
 
-    /**
-     * List available regions by cluster tier for the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization resource.
-     * @param projectName Name of the MongoDB Atlas Project resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for regions by cluster tier.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegionsByTierResponseInner listClusterTierRegions(String resourceGroupName, String organizationName,
         String projectName) {
@@ -931,11 +749,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProjectListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

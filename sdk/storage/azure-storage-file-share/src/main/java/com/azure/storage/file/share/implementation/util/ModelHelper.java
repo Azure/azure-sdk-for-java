@@ -10,11 +10,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.FileConstants;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.MessageConstants;
 import com.azure.storage.file.share.implementation.accesshelpers.FilePosixPropertiesHelper;
@@ -25,6 +28,7 @@ import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownlo
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFilePropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileSymbolicLinkInfoHelper;
+import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
@@ -64,6 +68,7 @@ import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -97,6 +102,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,6 +117,8 @@ import static com.azure.core.http.HttpHeaderName.LAST_MODIFIED;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+    private static final DateTimeFormatter SMB_DATE_FORMATTER
+        = DateTimeFormatter.ofPattern(FileConstants.SMB_DATE_STRING);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
@@ -348,6 +356,27 @@ public class ModelHelper {
     }
 
     /**
+     * Builds the {@code x-ms-file-rename-source} value from a client resource URL whose path is the raw (unencoded)
+     * share and resource path, such as the value returned by {@code ShareFileClient#getFileUrl()}.
+     * <p>
+     * The path is percent-encoded exactly once and is never URL-decoded first, so a literal {@code %} in a file name
+     * is preserved. The scheme, host, port, and query are left unchanged. Do not use this for caller-supplied URLs,
+     * which may already be percent-encoded; those use {@code Utility#encodeUrlPath(String)}.
+     *
+     * @param rawResourceUrl The resource URL with a raw, unencoded path.
+     * @return The rename source URL with its path encoded once.
+     */
+    public static String encodeRenameSourceUrl(String rawResourceUrl) {
+        UrlBuilder builder = UrlBuilder.parse(rawResourceUrl);
+        String path = builder.getPath();
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        builder.setPath(Utility.urlEncode(path));
+        return builder.toString();
+    }
+
+    /**
      * Verifies that the file permission and file permission key are not both set and if the file permission is set,
      * the file permission is of valid length.
      * @param filePermission The file permission.
@@ -475,6 +504,55 @@ public class ModelHelper {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
         }
+    }
+
+    /**
+     * Validates the options of a file copy before it's sent.
+     * <p>
+     * With {@link PermissionCopyModeType#SOURCE} or no permission copy mode, neither a file permission nor a file
+     * permission key may be set, as the service only accepts them with {@link PermissionCopyModeType#OVERRIDE}. With
+     * {@code OVERRIDE}, the file permission and file permission key are mutually exclusive. A copy flag and its
+     * corresponding SMB property may not both be set.
+     *
+     * @param options The copy options.
+     * @param smbProperties The SMB properties of the copy.
+     * @throws IllegalArgumentException If the options are invalid.
+     */
+    public static void validateCopyOptions(ShareFileCopyOptions options, FileSmbProperties smbProperties) {
+        if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
+            validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
+        } else if (options.getFilePermission() != null || smbProperties.getFilePermissionKey() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "File permission and file permission key can not be set when PermissionCopyModeType is source or null"));
+        }
+
+        validateCopyFlagAndSmbProperties(options, smbProperties);
+    }
+
+    /**
+     * Creates the SMB information sent with a file copy. Properties selected by
+     * {@link ShareFileCopyOptions#getSmbPropertiesToCopy()} are left unset.
+     *
+     * @param options The copy options.
+     * @param smbProperties The SMB properties of the copy.
+     * @return The SMB information of the copy.
+     */
+    public static CopyFileSmbInfo createCopyFileSmbInfo(ShareFileCopyOptions options, FileSmbProperties smbProperties) {
+        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy() == null
+            ? new CopyableFileSmbPropertiesList()
+            : options.getSmbPropertiesToCopy();
+        return new CopyFileSmbInfo().setFilePermissionCopyMode(options.getPermissionCopyModeType())
+            .setFileAttributes(
+                list.isFileAttributes() ? null : NtfsFileAttributes.toString(smbProperties.getNtfsFileAttributes()))
+            .setFileCreationTime(list.isCreatedOn() ? null : toSmbDate(smbProperties.getFileCreationTime()))
+            .setFileLastWriteTime(list.isLastWrittenOn() ? null : toSmbDate(smbProperties.getFileLastWriteTime()))
+            .setFileChangeTime(list.isChangedOn() ? null : toSmbDate(smbProperties.getFileChangeTime()))
+            .setIgnoreReadOnly(options.isIgnoreReadOnly())
+            .setSetArchiveAttribute(options.isArchiveAttributeSet());
+    }
+
+    private static String toSmbDate(OffsetDateTime time) {
+        return time == null ? null : time.format(SMB_DATE_FORMATTER);
     }
 
     public static Response<ShareFileUploadInfo>
@@ -792,5 +870,24 @@ public class ModelHelper {
                 encodedFileName == null ? null : decodeName(encodedFileName)));
         }
         return new SimpleResponse<>(response, new ShareFileLinks(properties, links));
+    }
+
+    /**
+     * Determines whether a failure is a 409 Conflict that the service answered with the given error code.
+     *
+     * <p>The status code alone does not say why the service refused a request: it also answers 409 for reasons such as
+     * ShareBeingDeleted or ResourceTypeMismatch. Methods that treat a conflict as "already exists" use this so that
+     * other conflicts still fail.</p>
+     *
+     * @param throwable The failure.
+     * @param errorCode The error code of the conflict to match.
+     * @return Whether the failure is a {@link ShareStorageException} with status code 409 and the given error code.
+     */
+    public static boolean isConflictWithErrorCode(Throwable throwable, ShareErrorCode errorCode) {
+        if (!(throwable instanceof ShareStorageException)) {
+            return false;
+        }
+        ShareStorageException e = (ShareStorageException) throwable;
+        return e.getStatusCode() == 409 && errorCode.equals(e.getErrorCode());
     }
 }

@@ -290,20 +290,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param count The count parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName, String skipToken, Boolean count, String filter) {
@@ -311,17 +298,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             skipToken, count, filter), nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listCurrentByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -355,17 +332,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             nextLink -> listCurrentByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
@@ -376,21 +343,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             listCurrentByDatabaseAsync(resourceGroupName, serverName, databaseName, skipToken, count, filter));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param count The count parameter.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listCurrentByDatabase(String resourceGroupName, String serverName,
         String databaseName, String skipToken, Boolean count, String filter, Context context) {
@@ -398,18 +351,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             listCurrentByDatabaseAsync(resourceGroupName, serverName, databaseName, skipToken, count, filter, context));
     }
 
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, SensitivityLabelUpdateList parameters) {
@@ -489,18 +431,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             resourceGroupName, serverName, databaseName, contentType, parameters, context);
     }
 
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAsync(String resourceGroupName, String serverName, String databaseName,
         SensitivityLabelUpdateList parameters) {
@@ -508,36 +439,14 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(String resourceGroupName, String serverName, String databaseName,
         SensitivityLabelUpdateList parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
     }
 
-    /**
-     * Update sensitivity labels of a given database using an operations batch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The parameters parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String serverName, String databaseName,
         SensitivityLabelUpdateList parameters) {
@@ -639,20 +548,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName, String skipToken, Boolean includeDisabledRecommendations, String filter) {
@@ -662,17 +558,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listRecommendedByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -709,17 +595,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             nextLink -> listRecommendedByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
@@ -730,21 +606,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             skipToken, includeDisabledRecommendations, filter));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param skipToken The skipToken parameter.
-     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listRecommendedByDatabase(String resourceGroupName, String serverName,
         String databaseName, String skipToken, Boolean includeDisabledRecommendations, String filter, Context context) {
@@ -839,18 +701,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName, String filter) {
@@ -858,17 +709,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SensitivityLabelInner> listByDatabaseAsync(String resourceGroupName, String serverName,
         String databaseName) {
@@ -898,17 +739,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName) {
@@ -916,41 +747,14 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, filter));
     }
 
-    /**
-     * Gets the sensitivity labels of a given database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity labels of a given database as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SensitivityLabelInner> listByDatabase(String resourceGroupName, String serverName,
         String databaseName, String filter, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, filter, context));
     }
 
-    /**
-     * Gets the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SensitivityLabelInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1053,21 +857,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             accept, context);
     }
 
-    /**
-     * Gets the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SensitivityLabelInner> getAsync(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource) {
@@ -1075,22 +865,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             sensitivityLabelSource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SensitivityLabelInner> getWithResponse(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1099,21 +874,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             sensitivityLabelSource, context).block();
     }
 
-    /**
-     * Gets the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SensitivityLabelInner get(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource) {
@@ -1121,22 +882,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             sensitivityLabelSource, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param parameters The column sensitivity label resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String serverName, String databaseName, String schemaName, String tableName, String columnName,
@@ -1251,22 +997,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param parameters The column sensitivity label resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SensitivityLabelInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1275,23 +1006,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param parameters The column sensitivity label resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SensitivityLabelInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1300,22 +1015,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, parameters, context).block();
     }
 
-    /**
-     * Creates or updates the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param parameters The column sensitivity label resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SensitivityLabelInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName, CurrentSensitivityLabelSource sensitivityLabelSource,
@@ -1324,21 +1024,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1438,21 +1124,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             context);
     }
 
-    /**
-     * Deletes the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, String schemaName,
         String tableName, String columnName, CurrentSensitivityLabelSource sensitivityLabelSource) {
@@ -1460,22 +1132,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             sensitivityLabelSource).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName, CurrentSensitivityLabelSource sensitivityLabelSource,
@@ -1484,20 +1141,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             sensitivityLabelSource, context).block();
     }
 
-    /**
-     * Deletes the sensitivity label of a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String databaseName, String schemaName,
         String tableName, String columnName, CurrentSensitivityLabelSource sensitivityLabelSource) {
@@ -1505,21 +1149,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             sensitivityLabelSource, Context.NONE);
     }
 
-    /**
-     * Disables sensitivity recommendations on a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1619,21 +1249,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, context);
     }
 
-    /**
-     * Disables sensitivity recommendations on a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableRecommendationAsync(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName,
@@ -1642,22 +1258,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             tableName, columnName, sensitivityLabelSource).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Disables sensitivity recommendations on a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationWithResponse(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1666,20 +1267,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             tableName, columnName, sensitivityLabelSource, context).block();
     }
 
-    /**
-     * Disables sensitivity recommendations on a given column.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disableRecommendation(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName,
@@ -1688,21 +1276,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, Context.NONE);
     }
 
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableRecommendationWithResponseAsync(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1802,21 +1376,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, context);
     }
 
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableRecommendationAsync(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName,
@@ -1825,22 +1385,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableRecommendationWithResponse(String resourceGroupName, String serverName,
         String databaseName, String schemaName, String tableName, String columnName,
@@ -1849,20 +1394,7 @@ public final class SensitivityLabelsClientImpl implements SensitivityLabelsClien
             columnName, sensitivityLabelSource, context).block();
     }
 
-    /**
-     * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param schemaName The name of the schema.
-     * @param tableName The name of the table.
-     * @param columnName The name of the column.
-     * @param sensitivityLabelSource The source of the sensitivity label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableRecommendation(String resourceGroupName, String serverName, String databaseName,
         String schemaName, String tableName, String columnName,

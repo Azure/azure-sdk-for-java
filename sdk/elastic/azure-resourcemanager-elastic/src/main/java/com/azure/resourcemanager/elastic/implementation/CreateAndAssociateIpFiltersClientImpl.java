@@ -116,8 +116,7 @@ public final class CreateAndAssociateIpFiltersClientImpl implements CreateAndAss
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String monitorName, String ips,
         String name) {
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, ips, name, Context.NONE);
+        return createWithResponse(resourceGroupName, monitorName, ips, name, Context.NONE);
     }
 
     /**
@@ -194,41 +193,18 @@ public final class CreateAndAssociateIpFiltersClientImpl implements CreateAndAss
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName, String ips,
         String name) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, ips, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCreate(resourceGroupName, monitorName, ips, name, Context.NONE);
     }
 
-    /**
-     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName) {
         final String ips = null;
         final String name = null;
-        Response<BinaryData> response = createWithResponse(resourceGroupName, monitorName, ips, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCreate(resourceGroupName, monitorName, ips, name, Context.NONE);
     }
 
-    /**
-     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ips List of ips.
-     * @param name Name of the traffic filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName, String ips,
         String name, Context context) {
@@ -272,36 +248,17 @@ public final class CreateAndAssociateIpFiltersClientImpl implements CreateAndAss
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String resourceGroupName, String monitorName) {
         final String ips = null;
         final String name = null;
-        beginCreate(resourceGroupName, monitorName, ips, name).getFinalResult();
+        create(resourceGroupName, monitorName, ips, name, Context.NONE);
     }
 
-    /**
-     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ips List of ips.
-     * @param name Name of the traffic filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String resourceGroupName, String monitorName, String ips, String name, Context context) {
-        beginCreate(resourceGroupName, monitorName, ips, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, monitorName, ips, name, context));
     }
 }

@@ -45,6 +45,7 @@ class ConfigurationAudienceTest {
         "https://example.azconfig.azure.us/, https://azconfig.azure.us",
         "https://example.appconfig-staging.azure.com, https://appconfig-staging.azure.com",
         "https://appconfig.example.appconfig-staging.azure.com, https://appconfig-staging.azure.com",
+        "https://example.s1.westus2.appconfig-stage.azure.com, https://appconfig-staging.azure.com",
         "https://example.appconfig.sovereign.cloud, https://appconfig.sovereign.cloud",
         "https://example.azconfig.sovereign.cloud, https://azconfig.sovereign.cloud",
         "https://example.eastus.appconfig.sovereign.cloud, https://appconfig.sovereign.cloud",

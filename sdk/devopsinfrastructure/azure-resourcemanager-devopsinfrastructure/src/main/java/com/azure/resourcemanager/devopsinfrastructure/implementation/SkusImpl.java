@@ -26,8 +26,7 @@ public final class SkusImpl implements Skus {
     }
 
     public PagedIterable<ResourceSku> listByLocation(String locationName) {
-        PagedIterable<ResourceSkuInner> inner = this.serviceClient().listByLocation(locationName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSkuImpl(inner1, this.manager()));
+        return this.listByLocation(locationName, Context.NONE);
     }
 
     public PagedIterable<ResourceSku> listByLocation(String locationName, Context context) {

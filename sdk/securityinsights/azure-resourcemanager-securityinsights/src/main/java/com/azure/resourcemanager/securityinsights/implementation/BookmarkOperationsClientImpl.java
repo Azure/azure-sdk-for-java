@@ -123,19 +123,7 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Expand an bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity expansion result operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BookmarkExpandResponseInner> expandWithResponse(String resourceGroupName, String workspaceName,
         String bookmarkId, BookmarkExpandParameters parameters, Context context) {
@@ -146,18 +134,7 @@ public final class BookmarkOperationsClientImpl implements BookmarkOperationsCli
             parameters, context);
     }
 
-    /**
-     * Expand an bookmark.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param bookmarkId Bookmark ID.
-     * @param parameters The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity expansion result operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BookmarkExpandResponseInner expand(String resourceGroupName, String workspaceName, String bookmarkId,
         BookmarkExpandParameters parameters) {

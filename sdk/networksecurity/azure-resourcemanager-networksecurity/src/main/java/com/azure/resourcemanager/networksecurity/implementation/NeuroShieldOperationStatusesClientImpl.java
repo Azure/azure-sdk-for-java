@@ -89,10 +89,11 @@ public final class NeuroShieldOperationStatusesClientImpl implements NeuroShield
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String location, String operationId) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, operationId, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                location, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -111,34 +112,16 @@ public final class NeuroShieldOperationStatusesClientImpl implements NeuroShield
         return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status of an asynchronous NeuroShield operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing asynchronous NeuroShield operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous NeuroShield operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
+        final String apiVersion = "2026-10-01-preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            location, operationId, accept, context);
+        return service.getSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
+            operationId, accept, context);
     }
 
-    /**
-     * Gets the status of an asynchronous NeuroShield operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing asynchronous NeuroShield operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous NeuroShield operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();

@@ -110,8 +110,7 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerWithResponse(String resourceGroupName, String vaultName) {
-        return service.triggerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, Context.NONE);
+        return triggerWithResponse(resourceGroupName, vaultName, Context.NONE);
     }
 
     /**
@@ -148,33 +147,13 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Triggers export of jobs and returns an OperationID to track.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String resourceGroupName, String vaultName) {
-        Response<BinaryData> response = triggerWithResponse(resourceGroupName, vaultName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTrigger(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Triggers export of jobs and returns an OperationID to track.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String resourceGroupName, String vaultName,
         Context context) {
@@ -197,32 +176,15 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
         return beginTriggerAsync(resourceGroupName, vaultName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers export of jobs and returns an OperationID to track.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String resourceGroupName, String vaultName) {
-        beginTrigger(resourceGroupName, vaultName).getFinalResult();
+        trigger(resourceGroupName, vaultName, Context.NONE);
     }
 
-    /**
-     * Triggers export of jobs and returns an OperationID to track.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the BackupVaultResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String resourceGroupName, String vaultName, Context context) {
-        beginTrigger(resourceGroupName, vaultName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginTrigger(resourceGroupName, vaultName, context));
     }
 }

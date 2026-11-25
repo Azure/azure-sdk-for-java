@@ -1503,6 +1503,8 @@ public class ImplementationBridgeHelpers {
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             String getConnectionMode(CosmosAsyncClient client);
             String getUserAgent(CosmosAsyncClient client);
+            void appendUserAgentSuffix(CosmosAsyncClient client, String suffix);
+            void addUserAgentFeatureFlag(CosmosAsyncClient client, UserAgentFeatureFlags userAgentFeatureFlag);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
             boolean isEffectiveContentResponseOnWriteEnabled(
                 CosmosAsyncClient client,

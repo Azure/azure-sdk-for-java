@@ -483,6 +483,9 @@
 /sdk/voicelive/                                                    @amber-yujueWang @emilyjiji @pankopon @rhurey @xitzhang @Azure/azure-java-sdk
 
 # PRLabel: %WebPubSub
+/sdk/webpubsub/azure-messaging-webpubsub-chat/                     @chenkennt @JialinXin @vicancy @Y-Sindo @Azure/azure-java-sdk
+
+# PRLabel: %WebPubSub
 /sdk/webpubsub/azure-messaging-webpubsub-client/                   @chenkennt @vicancy @zackliu @Azure/azure-java-sdk
 
 # PRLabel: %WebPubSub

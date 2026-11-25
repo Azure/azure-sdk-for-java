@@ -73,10 +73,7 @@ public final class CustomCertificateImpl
     }
 
     public CustomCertificate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubCustomCertificates()
-            .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CustomCertificate create(Context context) {
@@ -97,10 +94,7 @@ public final class CustomCertificateImpl
     }
 
     public CustomCertificate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubCustomCertificates()
-            .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CustomCertificate apply(Context context) {
@@ -126,11 +120,7 @@ public final class CustomCertificateImpl
     }
 
     public CustomCertificate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubCustomCertificates()
-            .getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CustomCertificate refresh(Context context) {

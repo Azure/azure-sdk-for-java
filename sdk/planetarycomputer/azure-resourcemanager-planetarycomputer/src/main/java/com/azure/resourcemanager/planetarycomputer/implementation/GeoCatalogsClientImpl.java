@@ -248,17 +248,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GeoCatalog along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GeoCatalogInner> getByResourceGroupWithResponse(String resourceGroupName, String catalogName,
         Context context) {
@@ -267,16 +257,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             this.client.getSubscriptionId(), resourceGroupName, catalogName, accept, context);
     }
 
-    /**
-     * Get a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GeoCatalog.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoCatalogInner getByResourceGroup(String resourceGroupName, String catalogName) {
         return getByResourceGroupWithResponse(resourceGroupName, catalogName, Context.NONE).getValue();
@@ -318,11 +299,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String catalogName,
         GeoCatalogInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, contentType, accept, resource,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, catalogName, resource, Context.NONE);
     }
 
     /**
@@ -365,37 +342,14 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             GeoCatalogInner.class, GeoCatalogInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GeoCatalogInner>, GeoCatalogInner> beginCreate(String resourceGroupName,
         String catalogName, GeoCatalogInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, catalogName, resource);
-        return this.client.<GeoCatalogInner, GeoCatalogInner>getLroResult(response, GeoCatalogInner.class,
-            GeoCatalogInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, catalogName, resource, Context.NONE);
     }
 
-    /**
-     * Create a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GeoCatalogInner>, GeoCatalogInner> beginCreate(String resourceGroupName,
         String catalogName, GeoCatalogInner resource, Context context) {
@@ -421,38 +375,17 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoCatalogInner create(String resourceGroupName, String catalogName, GeoCatalogInner resource) {
-        return beginCreate(resourceGroupName, catalogName, resource).getFinalResult();
+        return create(resourceGroupName, catalogName, resource, Context.NONE);
     }
 
-    /**
-     * Create a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoCatalogInner create(String resourceGroupName, String catalogName, GeoCatalogInner resource,
         Context context) {
-        return beginCreate(resourceGroupName, catalogName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, catalogName, resource, context));
     }
 
     /**
@@ -491,11 +424,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String catalogName,
         GeoCatalogUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, catalogName, properties, Context.NONE);
     }
 
     /**
@@ -538,37 +467,14 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             GeoCatalogInner.class, GeoCatalogInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GeoCatalogInner>, GeoCatalogInner> beginUpdate(String resourceGroupName,
         String catalogName, GeoCatalogUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, catalogName, properties);
-        return this.client.<GeoCatalogInner, GeoCatalogInner>getLroResult(response, GeoCatalogInner.class,
-            GeoCatalogInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, catalogName, properties, Context.NONE);
     }
 
-    /**
-     * Update a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GeoCatalogInner>, GeoCatalogInner> beginUpdate(String resourceGroupName,
         String catalogName, GeoCatalogUpdate properties, Context context) {
@@ -595,38 +501,17 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoCatalogInner update(String resourceGroupName, String catalogName, GeoCatalogUpdate properties) {
-        return beginUpdate(resourceGroupName, catalogName, properties).getFinalResult();
+        return update(resourceGroupName, catalogName, properties, Context.NONE);
     }
 
-    /**
-     * Update a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Microsoft Planetary Computer Pro GeoCatalog resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GeoCatalogInner update(String resourceGroupName, String catalogName, GeoCatalogUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, catalogName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, catalogName, properties, context));
     }
 
     /**
@@ -659,8 +544,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String catalogName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, catalogName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, catalogName, Context.NONE);
     }
 
     /**
@@ -697,33 +581,13 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, catalogName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, catalogName, Context.NONE);
     }
 
-    /**
-     * Delete a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
         Context context) {
@@ -746,33 +610,16 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
         return beginDeleteAsync(resourceGroupName, catalogName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName) {
-        beginDelete(resourceGroupName, catalogName).getFinalResult();
+        delete(resourceGroupName, catalogName, Context.NONE);
     }
 
-    /**
-     * Delete a GeoCatalog.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName The name of the catalog.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String catalogName, Context context) {
-        beginDelete(resourceGroupName, catalogName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, catalogName, context));
     }
 
     /**
@@ -822,11 +669,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GeoCatalogInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<GeoCatalogListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -848,31 +691,13 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List GeoCatalog resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GeoCatalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GeoCatalogInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List GeoCatalog resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GeoCatalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GeoCatalogInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -920,11 +745,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GeoCatalogInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<GeoCatalogListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -945,27 +766,13 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List GeoCatalog resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GeoCatalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GeoCatalogInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List GeoCatalog resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GeoCatalog list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GeoCatalogInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1004,11 +811,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GeoCatalogInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GeoCatalogListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1062,11 +865,7 @@ public final class GeoCatalogsClientImpl implements GeoCatalogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GeoCatalogInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GeoCatalogListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -160,17 +160,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all supported private link resource types for the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported private link resource types for the given service as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateLinkResourceInner> listSupportedAsync(String resourceGroupName, String searchServiceName) {
         return new PagedFlux<>(() -> listSupportedSinglePageAsync(resourceGroupName, searchServiceName),
@@ -196,34 +186,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             nextLink -> listSupportedNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all supported private link resource types for the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported private link resource types for the given service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listSupported(String resourceGroupName, String searchServiceName) {
         return new PagedIterable<>(listSupportedAsync(resourceGroupName, searchServiceName));
     }
 
-    /**
-     * Gets a list of all supported private link resource types for the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported private link resource types for the given service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listSupported(String resourceGroupName, String searchServiceName,
         Context context) {

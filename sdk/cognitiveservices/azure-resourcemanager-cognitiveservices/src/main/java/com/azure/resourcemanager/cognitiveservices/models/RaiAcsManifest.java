@@ -46,9 +46,9 @@ public final class RaiAcsManifest implements JsonSerializable<RaiAcsManifest> {
     private Map<String, RaiAcsToolDefinition> tools;
 
     /*
-     * Standard Agent Control Specification annotator dispatch is disabled; when present, this object must be empty.
+     * Optional annotator declarations keyed by name. Omitted or empty maps request no annotator declarations.
      */
-    private RaiAcsEmptyObject annotators;
+    private Map<String, RaiAcsAnnotatorDefinition> annotators;
 
     /**
      * Creates an instance of RaiAcsManifest class.
@@ -165,23 +165,23 @@ public final class RaiAcsManifest implements JsonSerializable<RaiAcsManifest> {
     }
 
     /**
-     * Get the annotators property: Standard Agent Control Specification annotator dispatch is disabled; when present,
-     * this object must be empty.
+     * Get the annotators property: Optional annotator declarations keyed by name. Omitted or empty maps request no
+     * annotator declarations.
      * 
      * @return the annotators value.
      */
-    public RaiAcsEmptyObject annotators() {
+    public Map<String, RaiAcsAnnotatorDefinition> annotators() {
         return this.annotators;
     }
 
     /**
-     * Set the annotators property: Standard Agent Control Specification annotator dispatch is disabled; when present,
-     * this object must be empty.
+     * Set the annotators property: Optional annotator declarations keyed by name. Omitted or empty maps request no
+     * annotator declarations.
      * 
      * @param annotators the annotators value to set.
      * @return the RaiAcsManifest object itself.
      */
-    public RaiAcsManifest withAnnotators(RaiAcsEmptyObject annotators) {
+    public RaiAcsManifest withAnnotators(Map<String, RaiAcsAnnotatorDefinition> annotators) {
         this.annotators = annotators;
         return this;
     }
@@ -197,7 +197,7 @@ public final class RaiAcsManifest implements JsonSerializable<RaiAcsManifest> {
         jsonWriter.writeJsonField("intervention_points", this.interventionPoints);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("annotators", this.annotators);
+        jsonWriter.writeMapField("annotators", this.annotators, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -233,7 +233,9 @@ public final class RaiAcsManifest implements JsonSerializable<RaiAcsManifest> {
                         = reader.readMap(reader1 -> RaiAcsToolDefinition.fromJson(reader1));
                     deserializedRaiAcsManifest.tools = tools;
                 } else if ("annotators".equals(fieldName)) {
-                    deserializedRaiAcsManifest.annotators = RaiAcsEmptyObject.fromJson(reader);
+                    Map<String, RaiAcsAnnotatorDefinition> annotators
+                        = reader.readMap(reader1 -> RaiAcsAnnotatorDefinition.fromJson(reader1));
+                    deserializedRaiAcsManifest.annotators = annotators;
                 } else {
                     reader.skipChildren();
                 }

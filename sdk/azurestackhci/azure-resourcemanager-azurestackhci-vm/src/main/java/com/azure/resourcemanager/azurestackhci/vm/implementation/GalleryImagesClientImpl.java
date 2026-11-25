@@ -253,17 +253,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gallery image along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GalleryImageInner> getByResourceGroupWithResponse(String resourceGroupName, String galleryImageName,
         Context context) {
@@ -272,16 +262,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             this.client.getSubscriptionId(), resourceGroupName, galleryImageName, accept, context);
     }
 
-    /**
-     * Gets a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a gallery image.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageInner getByResourceGroup(String resourceGroupName, String galleryImageName) {
         return getByResourceGroupWithResponse(resourceGroupName, galleryImageName, Context.NONE).getValue();
@@ -327,11 +308,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String galleryImageName,
         GalleryImageInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, galleryImageName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, galleryImageName, resource, Context.NONE);
     }
 
     /**
@@ -378,39 +355,14 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             GalleryImageInner.class, GalleryImageInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a gallery image. Please note some properties can be set only during gallery
-     * image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(String resourceGroupName,
         String galleryImageName, GalleryImageInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, galleryImageName, resource);
-        return this.client.<GalleryImageInner, GalleryImageInner>getLroResult(response, GalleryImageInner.class,
-            GalleryImageInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, galleryImageName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a gallery image. Please note some properties can be set only during gallery
-     * image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginCreateOrUpdate(String resourceGroupName,
         String galleryImageName, GalleryImageInner resource, Context context) {
@@ -439,41 +391,19 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a gallery image. Please note some properties can be set only during gallery
-     * image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageInner createOrUpdate(String resourceGroupName, String galleryImageName,
         GalleryImageInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, galleryImageName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, galleryImageName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a gallery image. Please note some properties can be set only during gallery
-     * image creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageInner createOrUpdate(String resourceGroupName, String galleryImageName,
         GalleryImageInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, galleryImageName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, galleryImageName, resource, context));
     }
 
     /**
@@ -514,11 +444,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String galleryImageName,
         GalleryImageTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, galleryImageName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, galleryImageName, properties, Context.NONE);
     }
 
     /**
@@ -563,37 +489,14 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             GalleryImageInner.class, GalleryImageInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(String resourceGroupName,
         String galleryImageName, GalleryImageTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, galleryImageName, properties);
-        return this.client.<GalleryImageInner, GalleryImageInner>getLroResult(response, GalleryImageInner.class,
-            GalleryImageInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, galleryImageName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryImageInner>, GalleryImageInner> beginUpdate(String resourceGroupName,
         String galleryImageName, GalleryImageTagsUpdate properties, Context context) {
@@ -620,39 +523,19 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageInner update(String resourceGroupName, String galleryImageName,
         GalleryImageTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, galleryImageName, properties).getFinalResult();
+        return update(resourceGroupName, galleryImageName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the gallery images resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageInner update(String resourceGroupName, String galleryImageName,
         GalleryImageTagsUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, galleryImageName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, galleryImageName, properties, context));
     }
 
     /**
@@ -686,8 +569,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String galleryImageName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, galleryImageName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, galleryImageName, Context.NONE);
     }
 
     /**
@@ -725,33 +607,13 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryImageName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, galleryImageName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, galleryImageName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryImageName,
         Context context) {
@@ -775,33 +637,16 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryImageName) {
-        beginDelete(resourceGroupName, galleryImageName).getFinalResult();
+        delete(resourceGroupName, galleryImageName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a gallery image.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param galleryImageName Name of the gallery image.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String galleryImageName, Context context) {
-        beginDelete(resourceGroupName, galleryImageName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, galleryImageName, context));
     }
 
     /**
@@ -854,11 +699,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GalleryImageInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<GalleryImageListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -881,33 +722,13 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the gallery images in the specified resource group. Use the nextLink property in the response to get
-     * the next page of gallery images.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GalleryImage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryImageInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the gallery images in the specified resource group. Use the nextLink property in the response to get
-     * the next page of gallery images.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GalleryImage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryImageInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -957,11 +778,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GalleryImageInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<GalleryImageListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -983,29 +800,13 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the gallery images in the specified subscription. Use the nextLink property in the response to get
-     * the next page of gallery images.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GalleryImage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryImageInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the gallery images in the specified subscription. Use the nextLink property in the response to get
-     * the next page of gallery images.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GalleryImage list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryImageInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1043,11 +844,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GalleryImageInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GalleryImageListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1100,11 +897,7 @@ public final class GalleryImagesClientImpl implements GalleryImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GalleryImageInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GalleryImageListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

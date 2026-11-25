@@ -231,17 +231,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
         return getWithResponseAsync(resourceGroupName, schedulerName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Failover Instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FailoverInstanceInner> getWithResponse(String resourceGroupName, String schedulerName,
         Context context) {
@@ -250,16 +240,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             resourceGroupName, schedulerName, accept, context);
     }
 
-    /**
-     * Get a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Failover Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverInstanceInner get(String resourceGroupName, String schedulerName) {
         return getWithResponse(resourceGroupName, schedulerName, Context.NONE).getValue();
@@ -303,11 +284,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String schedulerName,
         FailoverInstanceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, contentType, accept, resource,
-            Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
     /**
@@ -352,37 +329,14 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             this.client.getContext());
     }
 
-    /**
-     * Create or Update a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverInstanceInner>, FailoverInstanceInner>
         beginCreateOrReplace(String resourceGroupName, String schedulerName, FailoverInstanceInner resource) {
-        Response<BinaryData> response = createOrReplaceWithResponse(resourceGroupName, schedulerName, resource);
-        return this.client.<FailoverInstanceInner, FailoverInstanceInner>getLroResult(response,
-            FailoverInstanceInner.class, FailoverInstanceInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or Update a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverInstanceInner>, FailoverInstanceInner> beginCreateOrReplace(
         String resourceGroupName, String schedulerName, FailoverInstanceInner resource, Context context) {
@@ -410,39 +364,19 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or Update a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverInstanceInner createOrReplace(String resourceGroupName, String schedulerName,
         FailoverInstanceInner resource) {
-        return beginCreateOrReplace(resourceGroupName, schedulerName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, schedulerName, resource, Context.NONE);
     }
 
-    /**
-     * Create or Update a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverInstanceInner createOrReplace(String resourceGroupName, String schedulerName,
         FailoverInstanceInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, schedulerName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrReplace(resourceGroupName, schedulerName, resource, context));
     }
 
     /**
@@ -475,8 +409,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schedulerName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -513,33 +446,13 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, schedulerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName,
         Context context) {
@@ -562,33 +475,16 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
         return beginDeleteAsync(resourceGroupName, schedulerName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName) {
-        beginDelete(resourceGroupName, schedulerName).getFinalResult();
+        delete(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Delete a Failover Instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName, Context context) {
-        beginDelete(resourceGroupName, schedulerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, schedulerName, context));
     }
 
     /**
@@ -643,12 +539,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FailoverInstanceInner> listBySchedulerSinglePage(String resourceGroupName,
         String schedulerName) {
-        final String accept = "application/json";
-        Response<FailoverInstanceListResult> res
-            = service.listBySchedulerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerSinglePage(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -673,33 +564,13 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Failover Instances.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FailoverInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FailoverInstanceInner> listByScheduler(String resourceGroupName, String schedulerName) {
-        return new PagedIterable<>(() -> listBySchedulerSinglePage(resourceGroupName, schedulerName),
-            nextLink -> listBySchedulerNextSinglePage(nextLink));
+        return listByScheduler(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * List Failover Instances.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FailoverInstance list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FailoverInstanceInner> listByScheduler(String resourceGroupName, String schedulerName,
         Context context) {
@@ -739,9 +610,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String resourceGroupName, String schedulerName) {
-        final String accept = "application/json";
-        return service.failoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
+        return failoverWithResponse(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -781,35 +650,14 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             this.client.getContext());
     }
 
-    /**
-     * Trigger a graceful failover for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverInstanceInner>, FailoverInstanceInner> beginFailover(String resourceGroupName,
         String schedulerName) {
-        Response<BinaryData> response = failoverWithResponse(resourceGroupName, schedulerName);
-        return this.client.<FailoverInstanceInner, FailoverInstanceInner>getLroResult(response,
-            FailoverInstanceInner.class, FailoverInstanceInner.class, Context.NONE);
+        return beginFailover(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Trigger a graceful failover for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverInstanceInner>, FailoverInstanceInner> beginFailover(String resourceGroupName,
         String schedulerName, Context context) {
@@ -834,35 +682,16 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger a graceful failover for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverInstanceInner failover(String resourceGroupName, String schedulerName) {
-        return beginFailover(resourceGroupName, schedulerName).getFinalResult();
+        return failover(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Trigger a graceful failover for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverInstanceInner failover(String resourceGroupName, String schedulerName, Context context) {
-        return beginFailover(resourceGroupName, schedulerName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginFailover(resourceGroupName, schedulerName, context));
     }
 
     /**
@@ -900,9 +729,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> forceFailoverAllowDataLossWithResponse(String resourceGroupName,
         String schedulerName) {
-        final String accept = "application/json";
-        return service.forceFailoverAllowDataLossSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, accept, Context.NONE);
+        return forceFailoverAllowDataLossWithResponse(resourceGroupName, schedulerName, Context.NONE);
     }
 
     /**
@@ -944,35 +771,14 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             this.client.getContext());
     }
 
-    /**
-     * Trigger a forced failover with potential data loss for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverInstanceInner>, FailoverInstanceInner>
         beginForceFailoverAllowDataLoss(String resourceGroupName, String schedulerName) {
-        Response<BinaryData> response = forceFailoverAllowDataLossWithResponse(resourceGroupName, schedulerName);
-        return this.client.<FailoverInstanceInner, FailoverInstanceInner>getLroResult(response,
-            FailoverInstanceInner.class, FailoverInstanceInner.class, Context.NONE);
+        return beginForceFailoverAllowDataLoss(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Trigger a forced failover with potential data loss for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FailoverInstanceInner>, FailoverInstanceInner>
         beginForceFailoverAllowDataLoss(String resourceGroupName, String schedulerName, Context context) {
@@ -999,36 +805,18 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Trigger a forced failover with potential data loss for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverInstanceInner forceFailoverAllowDataLoss(String resourceGroupName, String schedulerName) {
-        return beginForceFailoverAllowDataLoss(resourceGroupName, schedulerName).getFinalResult();
+        return forceFailoverAllowDataLoss(resourceGroupName, schedulerName, Context.NONE);
     }
 
-    /**
-     * Trigger a forced failover with potential data loss for the parent scheduler.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover instance belonging to the scheduler.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FailoverInstanceInner forceFailoverAllowDataLoss(String resourceGroupName, String schedulerName,
         Context context) {
-        return beginForceFailoverAllowDataLoss(resourceGroupName, schedulerName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginForceFailoverAllowDataLoss(resourceGroupName, schedulerName, context));
     }
 
     /**
@@ -1062,11 +850,7 @@ public final class FailoverInstancesClientImpl implements FailoverInstancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FailoverInstanceInner> listBySchedulerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FailoverInstanceListResult> res
-            = service.listBySchedulerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySchedulerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

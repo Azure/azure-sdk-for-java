@@ -28,7 +28,7 @@ public final class NeuroShieldProtectedResourcesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"targetResourceId\":\"sdyhtozfikdowwq\",\"targetIdentity\":{\"principalId\":\"xzxcl\",\"tenantId\":\"thhqzonosggbh\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dsjnka\":{},\"jutiiswacff\":{},\"dkzzewkfvhqcrail\":{}}},\"agentHealth\":{\"lastSeenTime\":\"2021-08-31T21:35:53Z\"},\"inventoryUploadRequest\":{\"requestId\":\"fuflrwdmhdlx\",\"requestedAt\":\"2021-05-07T14:20:34Z\",\"expiresAt\":\"2021-07-29T23:40:21Z\"}},\"id\":\"sag\",\"name\":\"fcnihgwq\",\"type\":\"pnedgf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"targetResourceId\":\"unzo\",\"targetIdentity\":{\"principalId\":\"hcxgkmoyx\",\"tenantId\":\"yuibhm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ydvfvfcjnae\":{},\"isrvhm\":{}}},\"agentHealth\":{\"lastSeenTime\":\"2021-08-10T14:37:01Z\"},\"inventoryUploadRequest\":{\"requestId\":\"ukiscvwmzhw\",\"requestedAt\":\"2021-01-14T07:34:27Z\",\"expiresAt\":\"2021-06-06T05:59:47Z\"}},\"id\":\"a\",\"name\":\"vxilcbt\",\"type\":\"nhnzeyqxt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,24 +39,24 @@ public final class NeuroShieldProtectedResourcesCreateOrUpdateMockTests {
 
         NeuroShieldProtectedResource response
             = manager.neuroShieldProtectedResources()
-                .define("tibqdxbxwakb")
-                .withExistingNeuroShield("mhhv", "gureodkwobdag")
+                .define("dgkynscliqhzvhxn")
+                .withExistingNeuroShield("poekrsgsgb", "huzqgn")
                 .withProperties(
-                    new NeuroShieldProtectedResourceProperties().withTargetResourceId("xndlkzgxhu")
-                        .withTargetIdentity(new NeuroShieldProtectedResourceIdentity().withPrincipalId("lbpodxunk")
-                            .withTenantId("bxmubyynt")
-                            .withType(ManagedServiceIdentityType.NONE)
+                    new NeuroShieldProtectedResourceProperties().withTargetResourceId("tkubotppn")
+                        .withTargetIdentity(new NeuroShieldProtectedResourceIdentity().withPrincipalId("zxhi")
+                            .withTenantId("rbbcevq")
+                            .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                             .withUserAssignedIdentities(new NeuroShieldProtectedResourceIdentityUserAssignedIdentities()
                                 .withAdditionalProperties(
-                                    mapOf("tkoievseotgq", new NeuroShieldProtectedResourceUserAssignedIdentity(), "l",
-                                        new NeuroShieldProtectedResourceUserAssignedIdentity())))))
-                .withIfMatch("ohdneuel")
+                                    mapOf("dhlfkqojpykvgt", new NeuroShieldProtectedResourceUserAssignedIdentity(),
+                                        "dcnifmz", new NeuroShieldProtectedResourceUserAssignedIdentity())))))
+                .withIfMatch("pavehhr")
                 .create();
 
-        Assertions.assertEquals("sdyhtozfikdowwq", response.properties().targetResourceId());
-        Assertions.assertEquals("xzxcl", response.properties().targetIdentity().principalId());
-        Assertions.assertEquals("thhqzonosggbh", response.properties().targetIdentity().tenantId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals("unzo", response.properties().targetResourceId());
+        Assertions.assertEquals("hcxgkmoyx", response.properties().targetIdentity().principalId());
+        Assertions.assertEquals("yuibhm", response.properties().targetIdentity().tenantId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.properties().targetIdentity().type());
     }
 

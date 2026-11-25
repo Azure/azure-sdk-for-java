@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Reusable quality-measurement configuration.
+ * Reusable quality-measurement configuration for agent optimization.
  */
 @Fluent
 public final class AgentOptimizationEvaluationConfiguration

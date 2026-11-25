@@ -22,7 +22,7 @@ public final class RaiRegosGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"encoding\":\"None\",\"rego\":\"fsvpzxg\"},\"etag\":\"wxuymlfjymg\",\"tags\":{\"urd\":\"szcfyzqpeqreg\",\"hlnzffew\":\"agknxmaovrg\"},\"id\":\"kycjcg\",\"name\":\"ipqxxsdyafwtydsm\",\"type\":\"abhgclejqzhpvh\"}";
+            = "{\"properties\":{\"encoding\":\"None\",\"rego\":\"omanefwlenit\"},\"etag\":\"yahfoyfz\",\"tags\":{\"kfalw\":\"yaeprevcj\",\"cnusnylfhi\":\"eechcayvqbeqp\"},\"id\":\"jriybfbydrlql\",\"name\":\"b\",\"type\":\"fsnqocybrh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class RaiRegosGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiRego response = manager.raiRegos()
-            .getWithResponse("uufkbzbfbxjbla", "ybdnbycsb", "oisaz", com.azure.core.util.Context.NONE)
+            .getWithResponse("uicsggsxznbppmkq", "ylb", "njl", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(RaiRegoEncoding.NONE, response.properties().encoding());
-        Assertions.assertEquals("fsvpzxg", response.properties().rego());
-        Assertions.assertEquals("szcfyzqpeqreg", response.tags().get("urd"));
+        Assertions.assertEquals("omanefwlenit", response.properties().rego());
+        Assertions.assertEquals("yaeprevcj", response.tags().get("kfalw"));
     }
 }

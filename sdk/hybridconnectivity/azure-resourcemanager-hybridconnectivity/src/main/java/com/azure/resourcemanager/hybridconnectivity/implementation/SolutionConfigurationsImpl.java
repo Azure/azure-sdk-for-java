@@ -52,12 +52,11 @@ public final class SolutionConfigurationsImpl implements SolutionConfigurations 
     }
 
     public void deleteByResourceGroup(String resourceUri, String solutionConfiguration) {
-        this.serviceClient().delete(resourceUri, solutionConfiguration);
+        this.deleteByResourceGroupWithResponse(resourceUri, solutionConfiguration, Context.NONE);
     }
 
     public PagedIterable<SolutionConfiguration> list(String resourceUri) {
-        PagedIterable<SolutionConfigurationInner> inner = this.serviceClient().list(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SolutionConfigurationImpl(inner1, this.manager()));
+        return this.list(resourceUri, Context.NONE);
     }
 
     public PagedIterable<SolutionConfiguration> list(String resourceUri, Context context) {
@@ -66,12 +65,7 @@ public final class SolutionConfigurationsImpl implements SolutionConfigurations 
     }
 
     public OperationStatusResult syncNow(String resourceUri, String solutionConfiguration) {
-        OperationStatusResultInner inner = this.serviceClient().syncNow(resourceUri, solutionConfiguration);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.syncNow(resourceUri, solutionConfiguration, Context.NONE);
     }
 
     public OperationStatusResult syncNow(String resourceUri, String solutionConfiguration, Context context) {
@@ -84,74 +78,30 @@ public final class SolutionConfigurationsImpl implements SolutionConfigurations 
     }
 
     public SolutionConfiguration getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String solutionConfiguration = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "solutionConfiguration");
-        if (solutionConfiguration == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'solutionConfigurations'.", id)));
-        }
-        return this.getWithResponse(resourceUri, solutionConfiguration, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SolutionConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String solutionConfiguration = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceUri", "resourceUri", LOGGER);
+        String solutionConfiguration = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "solutionConfiguration");
-        if (solutionConfiguration == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'solutionConfigurations'.", id)));
-        }
+            "solutionConfiguration", "solutionConfigurations", LOGGER);
         return this.getWithResponse(resourceUri, solutionConfiguration, context);
     }
 
     public void deleteById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String solutionConfiguration = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "solutionConfiguration");
-        if (solutionConfiguration == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'solutionConfigurations'.", id)));
-        }
-        this.deleteByResourceGroupWithResponse(resourceUri, solutionConfiguration, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceUri = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String solutionConfiguration = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceUri", "resourceUri", LOGGER);
+        String solutionConfiguration = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/{resourceUri}/providers/Microsoft.HybridConnectivity/solutionConfigurations/{solutionConfiguration}",
-            "solutionConfiguration");
-        if (solutionConfiguration == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'solutionConfigurations'.", id)));
-        }
+            "solutionConfiguration", "solutionConfigurations", LOGGER);
         return this.deleteByResourceGroupWithResponse(resourceUri, solutionConfiguration, context);
     }
 

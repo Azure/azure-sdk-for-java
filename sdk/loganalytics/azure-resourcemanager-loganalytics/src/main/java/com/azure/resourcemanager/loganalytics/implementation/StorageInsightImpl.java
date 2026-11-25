@@ -99,12 +99,7 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageInsightConfigs()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageInsight create(Context context) {
@@ -127,12 +122,7 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageInsightConfigs()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, storageInsightName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageInsight apply(Context context) {
@@ -160,11 +150,7 @@ public final class StorageInsightImpl implements StorageInsight, StorageInsight.
     }
 
     public StorageInsight refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageInsightConfigs()
-            .getWithResponse(resourceGroupName, workspaceName, storageInsightName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageInsight refresh(Context context) {

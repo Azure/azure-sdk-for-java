@@ -22,7 +22,7 @@ public final class AdapterDeploymentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceModelId\":\"akgixhqjq\",\"targetDeploymentName\":\"gqwbbxiwtwfgo\",\"activeTargetDeploymentName\":\"alvemn\",\"provisioningState\":\"Succeeded\",\"lastOperation\":{\"type\":\"Delete\",\"status\":\"Accepted\",\"requestedTargetDeploymentName\":\"yydsyweoh\",\"startedAt\":\"2021-03-20T17:25:03Z\",\"completedAt\":\"2021-10-15T16:50:59Z\"}},\"etag\":\"vonvbftswcdop\",\"id\":\"eptvdticcaflgzwk\",\"name\":\"pxdkbtwoqhgppwxn\",\"type\":\"kfzrxxf\"}";
+            = "{\"properties\":{\"sourceModelId\":\"vfsukpkieal\",\"targetDeploymentName\":\"ckpnnenrcez\",\"activeTargetDeploymentName\":\"razwkcohjxoc\",\"provisioningState\":\"Succeeded\",\"lastOperation\":{\"type\":\"Create\",\"status\":\"Failed\",\"requestedTargetDeploymentName\":\"rhk\",\"startedAt\":\"2021-05-09T15:54:09Z\",\"completedAt\":\"2021-08-08T18:40Z\"}},\"etag\":\"drwi\",\"id\":\"nkrarjii\",\"name\":\"pbychcwhlhdzdcrl\",\"type\":\"cmeyxypxlzcr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class AdapterDeploymentsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AdapterDeployment response = manager.adapterDeployments()
-            .define("tgngwnxjftecg")
-            .withExistingAccount("fildcgbfouzfbp", "cryvidbzdylbvj")
-            .withProperties(new AdapterDeploymentProperties().withSourceModelId("zsqmpdqcakzbyqh")
-                .withTargetDeploymentName("athxoyxuu"))
-            .withIfMatch("tlyspjymwicc")
-            .withIfNoneMatch("rncfu")
+            .define("tlbmfkc")
+            .withExistingAccount("rwphbuzm", "ji")
+            .withProperties(
+                new AdapterDeploymentProperties().withSourceModelId("ai").withTargetDeploymentName("hrjwyxduwimwnuvj"))
+            .withIfMatch("wugonysemunvzmvn")
+            .withIfNoneMatch("cklssxuu")
             .create();
 
-        Assertions.assertEquals("akgixhqjq", response.properties().sourceModelId());
-        Assertions.assertEquals("gqwbbxiwtwfgo", response.properties().targetDeploymentName());
+        Assertions.assertEquals("vfsukpkieal", response.properties().sourceModelId());
+        Assertions.assertEquals("ckpnnenrcez", response.properties().targetDeploymentName());
     }
 }

@@ -202,10 +202,7 @@ public final class WebPubSubResourceImpl
     }
 
     public WebPubSubResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubs()
-            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WebPubSubResource create(Context context) {
@@ -226,10 +223,7 @@ public final class WebPubSubResourceImpl
     }
 
     public WebPubSubResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubs()
-            .update(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WebPubSubResource apply(Context context) {
@@ -252,11 +246,7 @@ public final class WebPubSubResourceImpl
     }
 
     public WebPubSubResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebPubSubs()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WebPubSubResource refresh(Context context) {

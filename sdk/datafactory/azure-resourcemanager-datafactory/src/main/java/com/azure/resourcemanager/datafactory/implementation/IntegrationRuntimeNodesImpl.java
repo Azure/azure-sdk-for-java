@@ -55,7 +55,7 @@ public final class IntegrationRuntimeNodesImpl implements IntegrationRuntimeNode
     }
 
     public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName, String nodeName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, integrationRuntimeName, nodeName);
+        this.deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, nodeName, Context.NONE);
     }
 
     public Response<SelfHostedIntegrationRuntimeNode> updateWithResponse(String resourceGroupName, String factoryName,

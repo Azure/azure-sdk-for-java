@@ -29,9 +29,7 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
     }
 
     public PagedIterable<CloudExadataInfrastructure> list() {
-        PagedIterable<CloudExadataInfrastructureInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new CloudExadataInfrastructureImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<CloudExadataInfrastructure> list(Context context) {
@@ -60,7 +58,7 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String cloudexadatainfrastructurename) {
-        this.serviceClient().delete(resourceGroupName, cloudexadatainfrastructurename);
+        this.delete(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String cloudexadatainfrastructurename, Context context) {
@@ -68,10 +66,7 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
     }
 
     public PagedIterable<CloudExadataInfrastructure> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CloudExadataInfrastructureInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new CloudExadataInfrastructureImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<CloudExadataInfrastructure> listByResourceGroup(String resourceGroupName, Context context) {
@@ -83,13 +78,7 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
 
     public CloudExadataInfrastructure addStorageCapacity(String resourceGroupName,
         String cloudexadatainfrastructurename) {
-        CloudExadataInfrastructureInner inner
-            = this.serviceClient().addStorageCapacity(resourceGroupName, cloudexadatainfrastructurename);
-        if (inner != null) {
-            return new CloudExadataInfrastructureImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.addStorageCapacity(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
     }
 
     public CloudExadataInfrastructure addStorageCapacity(String resourceGroupName,
@@ -105,13 +94,7 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
 
     public CloudExadataInfrastructure configureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
         ConfigureExascaleCloudExadataInfrastructureDetails body) {
-        CloudExadataInfrastructureInner inner
-            = this.serviceClient().configureExascale(resourceGroupName, cloudexadatainfrastructurename, body);
-        if (inner != null) {
-            return new CloudExadataInfrastructureImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.configureExascale(resourceGroupName, cloudexadatainfrastructurename, body, Context.NONE);
     }
 
     public CloudExadataInfrastructure configureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
@@ -126,75 +109,30 @@ public final class CloudExadataInfrastructuresImpl implements CloudExadataInfras
     }
 
     public CloudExadataInfrastructure getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudexadatainfrastructurename = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "cloudexadatainfrastructurename");
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'cloudExadataInfrastructures'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, cloudexadatainfrastructurename, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<CloudExadataInfrastructure> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudexadatainfrastructurename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudexadatainfrastructurename = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "cloudexadatainfrastructurename");
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'cloudExadataInfrastructures'.", id)));
-        }
+            "cloudexadatainfrastructurename", "cloudExadataInfrastructures", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, cloudexadatainfrastructurename, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudexadatainfrastructurename = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "cloudexadatainfrastructurename");
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'cloudExadataInfrastructures'.", id)));
-        }
-        this.delete(resourceGroupName, cloudexadatainfrastructurename, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String cloudexadatainfrastructurename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String cloudexadatainfrastructurename = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}",
-            "cloudexadatainfrastructurename");
-        if (cloudexadatainfrastructurename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'cloudExadataInfrastructures'.", id)));
-        }
+            "cloudexadatainfrastructurename", "cloudExadataInfrastructures", LOGGER);
         this.delete(resourceGroupName, cloudexadatainfrastructurename, context);
     }
 

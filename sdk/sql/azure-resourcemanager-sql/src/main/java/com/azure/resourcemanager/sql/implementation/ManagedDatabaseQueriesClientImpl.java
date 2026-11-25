@@ -96,18 +96,7 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get query by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query by query id along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceQueryInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String databaseName, String queryId) {
@@ -185,18 +174,7 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             resourceGroupName, managedInstanceName, databaseName, queryId, accept, context);
     }
 
-    /**
-     * Get query by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query by query id on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceQueryInner> getAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, String queryId) {
@@ -204,37 +182,14 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get query by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query by query id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceQueryInner> getWithResponse(String resourceGroupName, String managedInstanceName,
         String databaseName, String queryId, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, queryId, context).block();
     }
 
-    /**
-     * Get query by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query by query id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceQueryInner get(String resourceGroupName, String managedInstanceName, String databaseName,
         String queryId) {
@@ -346,21 +301,7 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get query execution statistics by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @param startTime Start time for observed period.
-     * @param endTime End time for observed period.
-     * @param interval The time step to be used to summarize the metric values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query execution statistics by query id as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueryStatisticsInner> listByQueryAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, String queryId, String startTime, String endTime, QueryTimeGrainType interval) {
@@ -368,18 +309,7 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             queryId, startTime, endTime, interval), nextLink -> listByQueryNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get query execution statistics by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query execution statistics by query id as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueryStatisticsInner> listByQueryAsync(String resourceGroupName, String managedInstanceName,
         String databaseName, String queryId) {
@@ -415,18 +345,7 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             nextLink -> listByQueryNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get query execution statistics by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query execution statistics by query id as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueryStatisticsInner> listByQuery(String resourceGroupName, String managedInstanceName,
         String databaseName, String queryId) {
@@ -437,22 +356,7 @@ public final class ManagedDatabaseQueriesClientImpl implements ManagedDatabaseQu
             startTime, endTime, interval));
     }
 
-    /**
-     * Get query execution statistics by query id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param queryId The queryId parameter.
-     * @param startTime Start time for observed period.
-     * @param endTime End time for observed period.
-     * @param interval The time step to be used to summarize the metric values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query execution statistics by query id as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueryStatisticsInner> listByQuery(String resourceGroupName, String managedInstanceName,
         String databaseName, String queryId, String startTime, String endTime, QueryTimeGrainType interval,

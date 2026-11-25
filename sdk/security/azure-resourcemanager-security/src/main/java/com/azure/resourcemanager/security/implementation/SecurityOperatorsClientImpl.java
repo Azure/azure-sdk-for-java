@@ -191,33 +191,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         return getWithResponseAsync(pricingName, securityOperatorName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific security operator for the requested scope.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @param securityOperatorName Name of the security operator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific security operator for the requested scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityOperatorInner> getWithResponse(String pricingName, String securityOperatorName,
         Context context) {
         return getWithResponseAsync(pricingName, securityOperatorName, context).block();
     }
 
-    /**
-     * Get a specific security operator for the requested scope.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @param securityOperatorName Name of the security operator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific security operator for the requested scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityOperatorInner get(String pricingName, String securityOperatorName) {
         return getWithResponse(pricingName, securityOperatorName, Context.NONE).getValue();
@@ -313,33 +294,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates Microsoft Defender for Cloud security operator on the given scope.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @param securityOperatorName Name of the security operator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security operator under a given subscription and pricing along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityOperatorInner> createOrUpdateWithResponse(String pricingName, String securityOperatorName,
         Context context) {
         return createOrUpdateWithResponseAsync(pricingName, securityOperatorName, context).block();
     }
 
-    /**
-     * Creates Microsoft Defender for Cloud security operator on the given scope.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @param securityOperatorName Name of the security operator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security operator under a given subscription and pricing.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityOperatorInner createOrUpdate(String pricingName, String securityOperatorName) {
         return createOrUpdateWithResponse(pricingName, securityOperatorName, Context.NONE).getValue();
@@ -429,31 +391,13 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         return deleteWithResponseAsync(pricingName, securityOperatorName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @param securityOperatorName Name of the security operator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String pricingName, String securityOperatorName, Context context) {
         return deleteWithResponseAsync(pricingName, securityOperatorName, context).block();
     }
 
-    /**
-     * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @param securityOperatorName Name of the security operator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String pricingName, String securityOperatorName) {
         deleteWithResponse(pricingName, securityOperatorName, Context.NONE);
@@ -554,30 +498,13 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         return new PagedFlux<>(() -> listSinglePageAsync(pricingName, context));
     }
 
-    /**
-     * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SecurityOperator response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityOperatorInner> list(String pricingName) {
         return new PagedIterable<>(listAsync(pricingName));
     }
 
-    /**
-     * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     * 
-     * @param pricingName Name of the pricing configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SecurityOperator response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityOperatorInner> list(String pricingName, Context context) {
         return new PagedIterable<>(listAsync(pricingName, context));

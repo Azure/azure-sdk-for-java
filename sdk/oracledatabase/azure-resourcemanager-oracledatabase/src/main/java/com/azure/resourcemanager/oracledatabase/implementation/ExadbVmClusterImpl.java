@@ -96,10 +96,7 @@ public final class ExadbVmClusterImpl implements ExadbVmCluster, ExadbVmCluster.
     }
 
     public ExadbVmCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExadbVmClusters()
-            .createOrUpdate(resourceGroupName, exadbVmClusterName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ExadbVmCluster create(Context context) {
@@ -121,10 +118,7 @@ public final class ExadbVmClusterImpl implements ExadbVmCluster, ExadbVmCluster.
     }
 
     public ExadbVmCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExadbVmClusters()
-            .update(resourceGroupName, exadbVmClusterName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ExadbVmCluster apply(Context context) {
@@ -147,11 +141,7 @@ public final class ExadbVmClusterImpl implements ExadbVmCluster, ExadbVmCluster.
     }
 
     public ExadbVmCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getExadbVmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, exadbVmClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ExadbVmCluster refresh(Context context) {

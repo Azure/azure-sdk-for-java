@@ -117,18 +117,7 @@ public final class ReevaluatesClientImpl implements ReevaluatesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Reevaluate a recommendation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param recommendationId Recommendation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return reevaluate response object along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReevaluateResponseInner> recommendationWithResponse(String resourceGroupName, String workspaceName,
         String recommendationId, Context context) {
@@ -137,17 +126,7 @@ public final class ReevaluatesClientImpl implements ReevaluatesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, recommendationId, accept, context);
     }
 
-    /**
-     * Reevaluate a recommendation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param recommendationId Recommendation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return reevaluate response object.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReevaluateResponseInner recommendation(String resourceGroupName, String workspaceName,
         String recommendationId) {

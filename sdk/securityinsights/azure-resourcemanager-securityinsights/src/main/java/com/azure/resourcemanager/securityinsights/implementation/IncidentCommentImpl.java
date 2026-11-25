@@ -80,12 +80,7 @@ public final class IncidentCommentImpl implements IncidentComment, IncidentComme
     }
 
     public IncidentComment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentComments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentCommentId,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IncidentComment create(Context context) {
@@ -109,12 +104,7 @@ public final class IncidentCommentImpl implements IncidentComment, IncidentComme
     }
 
     public IncidentComment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentComments()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, incidentId, incidentCommentId,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IncidentComment apply(Context context) {
@@ -145,11 +135,7 @@ public final class IncidentCommentImpl implements IncidentComment, IncidentComme
     }
 
     public IncidentComment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIncidentComments()
-            .getWithResponse(resourceGroupName, workspaceName, incidentId, incidentCommentId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IncidentComment refresh(Context context) {

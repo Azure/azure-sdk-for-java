@@ -17,33 +17,33 @@ public final class ServiceTagOutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceTagOutboundRule model = BinaryData.fromString(
-            "{\"type\":\"ServiceTag\",\"destination\":{\"serviceTag\":\"xottdiia\",\"protocol\":\"qibzji\",\"portRanges\":\"ee\",\"action\":\"Allow\",\"addressPrefixes\":[\"yv\"]},\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"qsratjhd\",\"parentRuleNames\":[\"b\",\"pijhfrzgdkk\",\"gv\"]}")
+            "{\"type\":\"ServiceTag\",\"destination\":{\"serviceTag\":\"crtnuguefxxi\",\"protocol\":\"ebdvey\",\"portRanges\":\"tkrhlolmc\",\"action\":\"Deny\",\"addressPrefixes\":[\"gsvbbv\",\"qdljnpe\",\"l\",\"n\"]},\"category\":\"Recommended\",\"status\":\"Inactive\",\"errorInformation\":\"evxehuekdxljz\",\"parentRuleNames\":[\"vbrblerlprdaqc\",\"dd\",\"bnygdjc\",\"xwbpwyykdig\"]}")
             .toObject(ServiceTagOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
-        Assertions.assertEquals("xottdiia", model.destination().serviceTag());
-        Assertions.assertEquals("qibzji", model.destination().protocol());
-        Assertions.assertEquals("ee", model.destination().portRanges());
-        Assertions.assertEquals(RuleAction.ALLOW, model.destination().action());
-        Assertions.assertEquals("yv", model.destination().addressPrefixes().get(0));
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.status());
+        Assertions.assertEquals("crtnuguefxxi", model.destination().serviceTag());
+        Assertions.assertEquals("ebdvey", model.destination().protocol());
+        Assertions.assertEquals("tkrhlolmc", model.destination().portRanges());
+        Assertions.assertEquals(RuleAction.DENY, model.destination().action());
+        Assertions.assertEquals("gsvbbv", model.destination().addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTagOutboundRule model = new ServiceTagOutboundRule().withCategory(RuleCategory.DEPENDENCY)
-            .withStatus(RuleStatus.DELETING)
-            .withDestination(new ServiceTagOutboundRuleDestination().withServiceTag("xottdiia")
-                .withProtocol("qibzji")
-                .withPortRanges("ee")
-                .withAction(RuleAction.ALLOW)
-                .withAddressPrefixes(Arrays.asList("yv")));
+        ServiceTagOutboundRule model = new ServiceTagOutboundRule().withCategory(RuleCategory.RECOMMENDED)
+            .withStatus(RuleStatus.INACTIVE)
+            .withDestination(new ServiceTagOutboundRuleDestination().withServiceTag("crtnuguefxxi")
+                .withProtocol("ebdvey")
+                .withPortRanges("tkrhlolmc")
+                .withAction(RuleAction.DENY)
+                .withAddressPrefixes(Arrays.asList("gsvbbv", "qdljnpe", "l", "n")));
         model = BinaryData.fromObject(model).toObject(ServiceTagOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.DEPENDENCY, model.category());
-        Assertions.assertEquals(RuleStatus.DELETING, model.status());
-        Assertions.assertEquals("xottdiia", model.destination().serviceTag());
-        Assertions.assertEquals("qibzji", model.destination().protocol());
-        Assertions.assertEquals("ee", model.destination().portRanges());
-        Assertions.assertEquals(RuleAction.ALLOW, model.destination().action());
-        Assertions.assertEquals("yv", model.destination().addressPrefixes().get(0));
+        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
+        Assertions.assertEquals(RuleStatus.INACTIVE, model.status());
+        Assertions.assertEquals("crtnuguefxxi", model.destination().serviceTag());
+        Assertions.assertEquals("ebdvey", model.destination().protocol());
+        Assertions.assertEquals("tkrhlolmc", model.destination().portRanges());
+        Assertions.assertEquals(RuleAction.DENY, model.destination().action());
+        Assertions.assertEquals("gsvbbv", model.destination().addressPrefixes().get(0));
     }
 }

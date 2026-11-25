@@ -243,33 +243,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatastoreInner> listSinglePage(String resourceGroupName, String privateCloudName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<DatastoreList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, privateCloudName, clusterName, Context.NONE);
     }
 
     /**
@@ -316,35 +290,13 @@ public final class DatastoresClientImpl implements DatastoresClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Datastore resources by Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Datastore list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatastoreInner> list(String resourceGroupName, String privateCloudName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, privateCloudName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, privateCloudName, clusterName, Context.NONE);
     }
 
-    /**
-     * List Datastore resources by Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Datastore list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatastoreInner> list(String resourceGroupName, String privateCloudName, String clusterName,
         Context context) {
@@ -416,19 +368,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Datastore along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatastoreInner> getWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String datastoreName, Context context) {
@@ -463,18 +403,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
             resourceGroupName, privateCloudName, clusterName, datastoreName, accept, context);
     }
 
-    /**
-     * Get a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Datastore.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatastoreInner get(String resourceGroupName, String privateCloudName, String clusterName,
         String datastoreName) {
@@ -550,43 +479,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String datastoreName, DatastoreInner datastore) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (datastoreName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter datastoreName is required and cannot be null."));
-        }
-        if (datastore == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter datastore is required and cannot be null."));
-        } else {
-            datastore.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName,
-            contentType, accept, datastore, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore,
+            Context.NONE);
     }
 
     /**
@@ -667,42 +561,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
             DatastoreInner.class, DatastoreInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @param datastore Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a datastore resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, String clusterName, String datastoreName, DatastoreInner datastore) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore);
-        return this.client.<DatastoreInner, DatastoreInner>getLroResult(response, DatastoreInner.class,
-            DatastoreInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore,
+            Context.NONE);
     }
 
-    /**
-     * Create a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @param datastore Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a datastore resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(String resourceGroupName,
         String privateCloudName, String clusterName, String datastoreName, DatastoreInner datastore, Context context) {
@@ -733,45 +600,19 @@ public final class DatastoresClientImpl implements DatastoresClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @param datastore Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datastore resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatastoreInner createOrUpdate(String resourceGroupName, String privateCloudName, String clusterName,
         String datastoreName, DatastoreInner datastore) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, Context.NONE);
     }
 
-    /**
-     * Create a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @param datastore Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datastore resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatastoreInner createOrUpdate(String resourceGroupName, String privateCloudName, String clusterName,
         String datastoreName, DatastoreInner datastore, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, datastore, context));
     }
 
     /**
@@ -831,35 +672,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String privateCloudName,
         String clusterName, String datastoreName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateCloudName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (datastoreName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter datastoreName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, clusterName, datastoreName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE);
     }
 
     /**
@@ -929,39 +742,14 @@ public final class DatastoresClientImpl implements DatastoresClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String clusterName, String datastoreName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE);
     }
 
-    /**
-     * Delete a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
         String clusterName, String datastoreName, Context context) {
@@ -989,38 +777,18 @@ public final class DatastoresClientImpl implements DatastoresClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName) {
-        beginDelete(resourceGroupName, privateCloudName, clusterName, datastoreName).getFinalResult();
+        delete(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE);
     }
 
-    /**
-     * Delete a Datastore.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster.
-     * @param datastoreName Name of the datastore.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName,
         Context context) {
-        beginDelete(resourceGroupName, privateCloudName, clusterName, datastoreName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, privateCloudName, clusterName, datastoreName, context));
     }
 
     /**
@@ -1060,19 +828,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatastoreInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<DatastoreList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

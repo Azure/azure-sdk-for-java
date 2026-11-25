@@ -220,19 +220,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection for the Payment Hsm Cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PaymentHsmClusterPrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
         String paymentHsmClusterName, String peConnectionName, Context context) {
@@ -241,18 +229,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
             resourceGroupName, paymentHsmClusterName, peConnectionName, accept, context);
     }
 
-    /**
-     * Gets the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection for the Payment Hsm Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PaymentHsmClusterPrivateEndpointConnectionInner get(String resourceGroupName, String paymentHsmClusterName,
         String peConnectionName) {
@@ -307,20 +284,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @param properties Parameters of the PrivateEndpointConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PaymentHsmClusterPrivateEndpointConnectionInner> createWithResponse(String resourceGroupName,
         String paymentHsmClusterName, String peConnectionName,
@@ -332,19 +296,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
             accept, properties, context);
     }
 
-    /**
-     * Creates or updates the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @param properties Parameters of the PrivateEndpointConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PaymentHsmClusterPrivateEndpointConnectionInner create(String resourceGroupName,
         String paymentHsmClusterName, String peConnectionName,
@@ -389,8 +341,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String paymentHsmClusterName,
         String peConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE);
     }
 
     /**
@@ -434,38 +385,14 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Deletes the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String paymentHsmClusterName,
         String peConnectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String paymentHsmClusterName,
         String peConnectionName, Context context) {
@@ -492,38 +419,18 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String paymentHsmClusterName, String peConnectionName) {
-        beginDelete(resourceGroupName, paymentHsmClusterName, peConnectionName).getFinalResult();
+        delete(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes the private endpoint connection for the Payment Hsm Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param peConnectionName Name of the private endpoint connection associated with the Payment HSM Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String paymentHsmClusterName, String peConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, paymentHsmClusterName, peConnectionName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, paymentHsmClusterName, peConnectionName, context));
     }
 
     /**
@@ -589,12 +496,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PaymentHsmClusterPrivateEndpointConnectionInner>
         listByPaymentHsmClusterSinglePage(String resourceGroupName, String paymentHsmClusterName) {
-        final String accept = "application/json";
-        Response<PaymentHsmClusterPrivateEndpointConnectionListResult> res
-            = service.listByPaymentHsmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, paymentHsmClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPaymentHsmClusterSinglePage(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
     /**
@@ -622,40 +524,14 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The List operation gets information about the private endpoint connections associated with the Payment HSM
-     * Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PaymentHsmClusterPrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PaymentHsmClusterPrivateEndpointConnectionInner>
         listByPaymentHsmCluster(String resourceGroupName, String paymentHsmClusterName) {
-        return new PagedIterable<>(() -> listByPaymentHsmClusterSinglePage(resourceGroupName, paymentHsmClusterName),
-            nextLink -> listByPaymentHsmClusterNextSinglePage(nextLink));
+        return listByPaymentHsmCluster(resourceGroupName, paymentHsmClusterName, Context.NONE);
     }
 
-    /**
-     * The List operation gets information about the private endpoint connections associated with the Payment HSM
-     * Cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param paymentHsmClusterName The name of the Payment HSM Cluster within the specified resource group. Payment HSM
-     * Cluster names must be between 3 and 23 characters in length.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PaymentHsmClusterPrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PaymentHsmClusterPrivateEndpointConnectionInner>
         listByPaymentHsmCluster(String resourceGroupName, String paymentHsmClusterName, Context context) {
@@ -700,11 +576,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PaymentHsmClusterPrivateEndpointConnectionInner>
         listByPaymentHsmClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PaymentHsmClusterPrivateEndpointConnectionListResult> res
-            = service.listByPaymentHsmClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPaymentHsmClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

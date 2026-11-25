@@ -125,11 +125,7 @@ public final class NotificationChannelImpl
     }
 
     public NotificationChannel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationChannels()
-            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NotificationChannel create(Context context) {
@@ -152,11 +148,7 @@ public final class NotificationChannelImpl
     }
 
     public NotificationChannel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationChannels()
-            .updateWithResponse(resourceGroupName, labName, name, updateNotificationChannel, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NotificationChannel apply(Context context) {
@@ -183,12 +175,7 @@ public final class NotificationChannelImpl
     }
 
     public NotificationChannel refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getNotificationChannels()
-            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NotificationChannel refresh(Context context) {

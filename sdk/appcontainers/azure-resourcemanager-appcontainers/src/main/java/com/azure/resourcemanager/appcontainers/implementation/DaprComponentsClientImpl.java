@@ -221,18 +221,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dapr component along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DaprComponentInner> getWithResponse(String resourceGroupName, String environmentName,
         String componentName, Context context) {
@@ -241,17 +230,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             resourceGroupName, environmentName, componentName, accept, context);
     }
 
-    /**
-     * Get a dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dapr component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DaprComponentInner get(String resourceGroupName, String environmentName, String componentName) {
         return getWithResponse(resourceGroupName, environmentName, componentName, Context.NONE).getValue();
@@ -304,21 +283,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a Dapr Component.
-     * 
-     * Creates or updates a Dapr Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param daprComponentEnvelope Configuration details of the Dapr Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DaprComponentInner> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String componentName, DaprComponentInner daprComponentEnvelope, Context context) {
@@ -329,20 +294,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             daprComponentEnvelope, context);
     }
 
-    /**
-     * Creates or updates a Dapr Component.
-     * 
-     * Creates or updates a Dapr Component in a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param daprComponentEnvelope Configuration details of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DaprComponentInner createOrUpdate(String resourceGroupName, String environmentName, String componentName,
         DaprComponentInner daprComponentEnvelope) {
@@ -391,20 +343,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Dapr Component.
-     * 
-     * Delete a Dapr Component from a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String componentName,
         Context context) {
@@ -412,18 +351,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             this.client.getSubscriptionId(), resourceGroupName, environmentName, componentName, context);
     }
 
-    /**
-     * Delete a Dapr Component.
-     * 
-     * Delete a Dapr Component from a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String componentName) {
         deleteWithResponse(resourceGroupName, environmentName, componentName, Context.NONE);
@@ -480,12 +408,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DaprComponentInner> listSinglePage(String resourceGroupName, String environmentName) {
-        final String accept = "application/json";
-        Response<DaprComponentsCollection> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -510,33 +433,13 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the Dapr Components for a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Dapr Components for a managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DaprComponentInner> list(String resourceGroupName, String environmentName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Get the Dapr Components for a managed environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Dapr Components for a managed environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DaprComponentInner> list(String resourceGroupName, String environmentName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, environmentName, context),
@@ -583,18 +486,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List secrets for a dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection for ListSecrets Action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DaprSecretsCollectionInner> listSecretsWithResponse(String resourceGroupName,
         String environmentName, String componentName, Context context) {
@@ -603,17 +495,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
             this.client.getSubscriptionId(), resourceGroupName, environmentName, componentName, accept, context);
     }
 
-    /**
-     * List secrets for a dapr component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Managed Environment.
-     * @param componentName Name of the Dapr Component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dapr component Secrets Collection for ListSecrets Action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DaprSecretsCollectionInner listSecrets(String resourceGroupName, String environmentName,
         String componentName) {
@@ -654,11 +536,7 @@ public final class DaprComponentsClientImpl implements DaprComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DaprComponentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DaprComponentsCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

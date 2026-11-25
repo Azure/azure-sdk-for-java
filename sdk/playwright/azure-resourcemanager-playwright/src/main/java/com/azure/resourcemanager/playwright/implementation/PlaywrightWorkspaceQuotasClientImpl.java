@@ -161,18 +161,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Playwright workspace quota resource by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param quotaName The name of the PlaywrightWorkspaceQuota.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Playwright workspace quota resource by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlaywrightWorkspaceQuotaInner> getWithResponse(String resourceGroupName,
         String playwrightWorkspaceName, QuotaName quotaName, Context context) {
@@ -181,17 +170,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
             resourceGroupName, playwrightWorkspaceName, quotaName, accept, context);
     }
 
-    /**
-     * Gets a Playwright workspace quota resource by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param quotaName The name of the PlaywrightWorkspaceQuota.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Playwright workspace quota resource by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightWorkspaceQuotaInner get(String resourceGroupName, String playwrightWorkspaceName,
         QuotaName quotaName) {
@@ -253,12 +232,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspaceSinglePage(String resourceGroupName,
         String playwrightWorkspaceName) {
-        final String accept = "application/json";
-        Response<PlaywrightWorkspaceQuotaListResult> res
-            = service.listByPlaywrightWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPlaywrightWorkspaceSinglePage(resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
     /**
@@ -283,37 +257,14 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists quota resources for a given Playwright workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightWorkspaceQuota list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspace(String resourceGroupName,
         String playwrightWorkspaceName) {
-        return new PagedIterable<>(
-            () -> listByPlaywrightWorkspaceSinglePage(resourceGroupName, playwrightWorkspaceName),
-            nextLink -> listByPlaywrightWorkspaceNextSinglePage(nextLink));
+        return listByPlaywrightWorkspace(resourceGroupName, playwrightWorkspaceName, Context.NONE);
     }
 
-    /**
-     * Lists quota resources for a given Playwright workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PlaywrightWorkspaceQuota list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspace(String resourceGroupName,
         String playwrightWorkspaceName, Context context) {
@@ -355,11 +306,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PlaywrightWorkspaceQuotaListResult> res
-            = service.listByPlaywrightWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPlaywrightWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

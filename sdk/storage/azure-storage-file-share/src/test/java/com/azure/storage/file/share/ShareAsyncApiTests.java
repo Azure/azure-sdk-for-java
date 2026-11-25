@@ -226,6 +226,55 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnShareBeingDeleted() {
+        ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier.create(client.create().then(client.delete()).then(client.createIfNotExists()))
+            .verifyErrorSatisfies(r -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(r, 409,
+                ShareErrorCode.SHARE_BEING_DELETED));
+    }
+
+    // Live only: it waits for the service to finish deleting the share, about 30 seconds (see
+    // createAfterShareDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createSucceedsAfterShareDeleteCompletes() {
+        ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier
+            .create(client.create()
+                .then(client.delete())
+                .then(createAfterShareDeleteCompletes(client.createWithResponse(new ShareCreateOptions()))))
+            .assertNext(response -> FileShareTestHelper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+    }
+
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterShareDeleteCompletes() {
+        ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier
+            .create(client.create()
+                .then(client.delete())
+                .then(createAfterShareDeleteCompletes(client.createIfNotExistsWithResponse(new ShareCreateOptions()))))
+            .assertNext(response -> FileShareTestHelper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+    }
+
+    @Test
+    public void createDirectoryIfNotExistsOnAFile() {
+        String name = generatePathName();
+
+        StepVerifier
+            .create(primaryShareAsyncClient.create()
+                .then(primaryShareAsyncClient.getFileClient(name).create(1024))
+                .then(primaryShareAsyncClient.createDirectoryIfNotExists(name)))
+            .verifyErrorSatisfies(r -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(r, 409,
+                ShareErrorCode.RESOURCE_TYPE_MISMATCH));
+    }
+
+    @Test
     public void createIfNotExistsShareThatAlreadyExists() {
         ShareAsyncClient client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         Mono<Response<ShareInfo>> initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions());

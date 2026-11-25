@@ -147,8 +147,8 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the size property: Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or
-     * in 1TiB chunks (value must be multiple of 1099511627776).
+     * Get the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
+     * multiple of 1099511627776).
      * 
      * @return the size value.
      */
@@ -157,8 +157,8 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Set the size property: Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or
-     * in 1TiB chunks (value must be multiple of 1099511627776).
+     * Set the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
+     * multiple of 1099511627776).
      * 
      * @param size the size value to set.
      * @return the CapacityPoolInner object itself.

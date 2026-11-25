@@ -148,16 +148,7 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<InstancePoolInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String instancePoolName) {
@@ -220,65 +211,27 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             this.client.getSubscriptionId(), resourceGroupName, instancePoolName, accept, context);
     }
 
-    /**
-     * Gets an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InstancePoolInner> getByResourceGroupAsync(String resourceGroupName, String instancePoolName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, instancePoolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InstancePoolInner> getByResourceGroupWithResponse(String resourceGroupName, String instancePoolName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, instancePoolName, context).block();
     }
 
-    /**
-     * Gets an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstancePoolInner getByResourceGroup(String resourceGroupName, String instancePoolName) {
         return getByResourceGroupWithResponse(resourceGroupName, instancePoolName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String instancePoolName, InstancePoolInner parameters) {
@@ -356,17 +309,7 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             context);
     }
 
-    /**
-     * Creates or updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InstancePoolInner>, InstancePoolInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String instancePoolName, InstancePoolInner parameters) {
@@ -398,52 +341,21 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             InstancePoolInner.class, InstancePoolInner.class, context);
     }
 
-    /**
-     * Creates or updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(String resourceGroupName,
         String instancePoolName, InstancePoolInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, instancePoolName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(String resourceGroupName,
         String instancePoolName, InstancePoolInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, instancePoolName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InstancePoolInner> createOrUpdateAsync(String resourceGroupName, String instancePoolName,
         InstancePoolInner parameters) {
@@ -470,52 +382,21 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstancePoolInner createOrUpdate(String resourceGroupName, String instancePoolName,
         InstancePoolInner parameters) {
         return createOrUpdateAsync(resourceGroupName, instancePoolName, parameters).block();
     }
 
-    /**
-     * Creates or updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstancePoolInner createOrUpdate(String resourceGroupName, String instancePoolName,
         InstancePoolInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, instancePoolName, parameters, context).block();
     }
 
-    /**
-     * Updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String instancePoolName,
         InstancePoolUpdate parameters) {
@@ -592,17 +473,7 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             resourceGroupName, instancePoolName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdateAsync(String resourceGroupName,
         String instancePoolName, InstancePoolUpdate parameters) {
@@ -634,52 +505,21 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             InstancePoolInner.class, InstancePoolInner.class, context);
     }
 
-    /**
-     * Updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(String resourceGroupName,
         String instancePoolName, InstancePoolUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, instancePoolName, parameters).getSyncPoller();
     }
 
-    /**
-     * Updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(String resourceGroupName,
         String instancePoolName, InstancePoolUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, instancePoolName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<InstancePoolInner> updateAsync(String resourceGroupName, String instancePoolName,
         InstancePoolUpdate parameters) {
@@ -706,50 +546,20 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstancePoolInner update(String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters) {
         return updateAsync(resourceGroupName, instancePoolName, parameters).block();
     }
 
-    /**
-     * Updates an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param parameters The requested instance pool resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL instance pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstancePoolInner update(String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters,
         Context context) {
         return updateAsync(resourceGroupName, instancePoolName, parameters, context).block();
     }
 
-    /**
-     * Deletes an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String instancePoolName) {
         if (this.client.getEndpoint() == null) {
@@ -809,16 +619,7 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             resourceGroupName, instancePoolName, context);
     }
 
-    /**
-     * Deletes an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String instancePoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, instancePoolName);
@@ -846,48 +647,20 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             context);
     }
 
-    /**
-     * Deletes an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instancePoolName) {
         return this.beginDeleteAsync(resourceGroupName, instancePoolName).getSyncPoller();
     }
 
-    /**
-     * Deletes an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instancePoolName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, instancePoolName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String instancePoolName) {
         return beginDeleteAsync(resourceGroupName, instancePoolName).last()
@@ -911,30 +684,13 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instancePoolName) {
         deleteAsync(resourceGroupName, instancePoolName).block();
     }
 
-    /**
-     * Deletes an instance pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instancePoolName, Context context) {
         deleteAsync(resourceGroupName, instancePoolName, context).block();
@@ -1008,15 +764,7 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of instance pools in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance pools in the resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InstancePoolInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1039,30 +787,13 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of instance pools in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance pools in the resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstancePoolInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets a list of instance pools in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance pools in the resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstancePoolInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1124,13 +855,7 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all instance pools in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all instance pools in the subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InstancePoolInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1151,27 +876,13 @@ public final class InstancePoolsClientImpl implements InnerSupportsGet<InstanceP
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all instance pools in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all instance pools in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstancePoolInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets a list of all instance pools in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all instance pools in the subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstancePoolInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

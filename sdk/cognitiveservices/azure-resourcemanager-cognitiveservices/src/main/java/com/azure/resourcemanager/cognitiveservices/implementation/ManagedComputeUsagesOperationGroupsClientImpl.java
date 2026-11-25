@@ -141,11 +141,7 @@ public final class ManagedComputeUsagesOperationGroupsClientImpl implements Mana
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeUsageInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<ManagedComputeUsageListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -167,30 +163,13 @@ public final class ManagedComputeUsagesOperationGroupsClientImpl implements Mana
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List managed compute quota usages for a subscription and location.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed compute quota entries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedComputeUsageInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * List managed compute quota usages for a subscription and location.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed compute quota entries as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedComputeUsageInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -227,11 +206,7 @@ public final class ManagedComputeUsagesOperationGroupsClientImpl implements Mana
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedComputeUsageInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedComputeUsageListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

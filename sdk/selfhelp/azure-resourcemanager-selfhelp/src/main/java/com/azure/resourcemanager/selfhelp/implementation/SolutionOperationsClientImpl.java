@@ -178,18 +178,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
         return getWithResponseAsync(scope, solutionResourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the solution using the applicable solutionResourceName while creating the solution.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionResourceInner> getWithResponse(String scope, String solutionResourceName, Context context) {
         final String accept = "application/json";
@@ -197,16 +186,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
             accept, context);
     }
 
-    /**
-     * Get the solution using the applicable solutionResourceName while creating the solution.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionResourceInner get(String scope, String solutionResourceName) {
         return getWithResponse(scope, solutionResourceName, Context.NONE).getValue();
@@ -261,9 +241,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String scope, String solutionResourceName,
         SolutionResourceInner solutionRequestBody) {
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, solutionResourceName,
-            accept, solutionRequestBody, Context.NONE);
+        return createWithResponse(scope, solutionResourceName, solutionRequestBody, Context.NONE);
     }
 
     /**
@@ -370,56 +348,18 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(String scope,
         String solutionResourceName, SolutionResourceInner solutionRequestBody) {
-        Response<BinaryData> response = createWithResponse(scope, solutionResourceName, solutionRequestBody);
-        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(response,
-            SolutionResourceInner.class, SolutionResourceInner.class, Context.NONE);
+        return beginCreate(scope, solutionResourceName, solutionRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
-     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
-     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
-     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
-     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
-     * support problem area.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(String scope,
         String solutionResourceName) {
         final SolutionResourceInner solutionRequestBody = null;
-        Response<BinaryData> response = createWithResponse(scope, solutionResourceName, solutionRequestBody);
-        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(response,
-            SolutionResourceInner.class, SolutionResourceInner.class, Context.NONE);
+        return beginCreate(scope, solutionResourceName, solutionRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
-     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
-     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
-     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
-     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
-     * support problem area.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @param solutionRequestBody The required request body for this solution resource creation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(String scope,
         String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
@@ -477,52 +417,19 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
-     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
-     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
-     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
-     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
-     * support problem area.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionResourceInner create(String scope, String solutionResourceName) {
         final SolutionResourceInner solutionRequestBody = null;
-        return beginCreate(scope, solutionResourceName, solutionRequestBody).getFinalResult();
+        return create(scope, solutionResourceName, solutionRequestBody, Context.NONE);
     }
 
-    /**
-     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
-     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
-     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
-     * troubleshooting issues. These solutions encompass: &lt;br/&gt; (1.) Dynamic and context-aware diagnostics, guided
-     * troubleshooting wizards, and data visualizations. &lt;br/&gt; (2.) Rich instructional video tutorials and
-     * illustrative diagrams and images. &lt;br/&gt; (3.) Thoughtfully assembled textual troubleshooting instructions.
-     * &lt;br/&gt; All these components are seamlessly converged into unified solutions tailored to address a specific
-     * support problem area.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @param solutionRequestBody The required request body for this solution resource creation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionResourceInner create(String scope, String solutionResourceName,
         SolutionResourceInner solutionRequestBody, Context context) {
-        return beginCreate(scope, solutionResourceName, solutionRequestBody, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(scope, solutionResourceName, solutionRequestBody, context));
     }
 
     /**
@@ -560,9 +467,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String scope, String solutionResourceName,
         SolutionPatchRequestBody solutionPatchRequestBody) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, solutionResourceName,
-            accept, solutionPatchRequestBody, Context.NONE);
+        return updateWithResponse(scope, solutionResourceName, solutionPatchRequestBody, Context.NONE);
     }
 
     /**
@@ -641,42 +546,18 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(String scope,
         String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody) {
-        Response<BinaryData> response = updateWithResponse(scope, solutionResourceName, solutionPatchRequestBody);
-        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(response,
-            SolutionResourceInner.class, SolutionResourceInner.class, Context.NONE);
+        return beginUpdate(scope, solutionResourceName, solutionPatchRequestBody, Context.NONE);
     }
 
-    /**
-     * Update the requiredInputs or additional information needed to execute the solution.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(String scope,
         String solutionResourceName) {
         final SolutionPatchRequestBody solutionPatchRequestBody = null;
-        Response<BinaryData> response = updateWithResponse(scope, solutionResourceName, solutionPatchRequestBody);
-        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(response,
-            SolutionResourceInner.class, SolutionResourceInner.class, Context.NONE);
+        return beginUpdate(scope, solutionResourceName, solutionPatchRequestBody, Context.NONE);
     }
 
-    /**
-     * Update the requiredInputs or additional information needed to execute the solution.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @param solutionPatchRequestBody The required request body for updating a solution resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(String scope,
         String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
@@ -721,38 +602,19 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the requiredInputs or additional information needed to execute the solution.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionResourceInner update(String scope, String solutionResourceName) {
         final SolutionPatchRequestBody solutionPatchRequestBody = null;
-        return beginUpdate(scope, solutionResourceName, solutionPatchRequestBody).getFinalResult();
+        return update(scope, solutionResourceName, solutionPatchRequestBody, Context.NONE);
     }
 
-    /**
-     * Update the requiredInputs or additional information needed to execute the solution.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @param solutionPatchRequestBody The required request body for updating a solution resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return solution response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SolutionResourceInner update(String scope, String solutionResourceName,
         SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
-        return beginUpdate(scope, solutionResourceName, solutionPatchRequestBody, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(scope, solutionResourceName, solutionPatchRequestBody, context));
     }
 
     /**
@@ -792,18 +654,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @param solutionWarmUpRequestBody The required request body for warming up a solution resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> warmUpWithResponse(String scope, String solutionResourceName,
         SolutionWarmUpRequestBody solutionWarmUpRequestBody, Context context) {
@@ -811,15 +662,7 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
             solutionWarmUpRequestBody, context);
     }
 
-    /**
-     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param solutionResourceName Solution resource Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void warmUp(String scope, String solutionResourceName) {
         final SolutionWarmUpRequestBody solutionWarmUpRequestBody = null;

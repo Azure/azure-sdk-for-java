@@ -260,18 +260,7 @@ public final class QueriesClientImpl implements QueriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Log Analytics Query defined within a Log Analytics QueryPack along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogAnalyticsQueryPackQueryInner> getWithResponse(String resourceGroupName, String queryPackName,
         String id, Context context) {
@@ -280,17 +269,7 @@ public final class QueriesClientImpl implements QueriesClient {
             resourceGroupName, queryPackName, id, accept, context);
     }
 
-    /**
-     * Gets a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Log Analytics Query defined within a Log Analytics QueryPack.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsQueryPackQueryInner get(String resourceGroupName, String queryPackName, String id) {
         return getWithResponse(resourceGroupName, queryPackName, id, Context.NONE).getValue();
@@ -342,20 +321,7 @@ public final class QueriesClientImpl implements QueriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Adds or Updates a specific Query within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param queryPayload Properties that need to be specified to create a new query and add it to a Log Analytics
-     * QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics QueryPack-Query definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogAnalyticsQueryPackQueryInner> putWithResponse(String resourceGroupName, String queryPackName,
         String id, LogAnalyticsQueryPackQueryInner queryPayload, Context context) {
@@ -365,19 +331,7 @@ public final class QueriesClientImpl implements QueriesClient {
             resourceGroupName, queryPackName, id, contentType, accept, queryPayload, context);
     }
 
-    /**
-     * Adds or Updates a specific Query within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param queryPayload Properties that need to be specified to create a new query and add it to a Log Analytics
-     * QueryPack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics QueryPack-Query definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsQueryPackQueryInner put(String resourceGroupName, String queryPackName, String id,
         LogAnalyticsQueryPackQueryInner queryPayload) {
@@ -430,20 +384,7 @@ public final class QueriesClientImpl implements QueriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Adds or Updates a specific Query within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param queryPayload Properties that need to be specified to create a new query and add it to a Log Analytics
-     * QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics QueryPack-Query definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogAnalyticsQueryPackQueryInner> updateWithResponse(String resourceGroupName, String queryPackName,
         String id, LogAnalyticsQueryPackQueryInner queryPayload, Context context) {
@@ -454,19 +395,7 @@ public final class QueriesClientImpl implements QueriesClient {
             context);
     }
 
-    /**
-     * Adds or Updates a specific Query within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param queryPayload Properties that need to be specified to create a new query and add it to a Log Analytics
-     * QueryPack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Log Analytics QueryPack-Query definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsQueryPackQueryInner update(String resourceGroupName, String queryPackName, String id,
         LogAnalyticsQueryPackQueryInner queryPayload) {
@@ -508,18 +437,7 @@ public final class QueriesClientImpl implements QueriesClient {
         return deleteWithResponseAsync(resourceGroupName, queryPackName, id).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a specific Query defined within an Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String queryPackName, String id,
         Context context) {
@@ -527,16 +445,7 @@ public final class QueriesClientImpl implements QueriesClient {
             this.client.getSubscriptionId(), resourceGroupName, queryPackName, id, context);
     }
 
-    /**
-     * Deletes a specific Query defined within an Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param id The id of a specific query defined in the Log Analytics QueryPack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String queryPackName, String id) {
         deleteWithResponse(resourceGroupName, queryPackName, id, Context.NONE);
@@ -627,12 +536,7 @@ public final class QueriesClientImpl implements QueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogAnalyticsQueryPackQueryInner> listSinglePage(String resourceGroupName,
         String queryPackName, Long top, Boolean includeBody, String skipToken) {
-        final String accept = "application/json";
-        Response<LogAnalyticsQueryPackQueryListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, queryPackName, top, includeBody, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, queryPackName, top, includeBody, skipToken, Context.NONE);
     }
 
     /**
@@ -661,42 +565,16 @@ public final class QueriesClientImpl implements QueriesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Queries defined within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogAnalyticsQueryPackQueryInner> list(String resourceGroupName, String queryPackName) {
         final Long top = null;
         final Boolean includeBody = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, queryPackName, top, includeBody, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, queryPackName, top, includeBody, skipToken, Context.NONE);
     }
 
-    /**
-     * Gets a list of Queries defined within a Log Analytics QueryPack.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param top Maximum items returned in page.
-     * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
-     * return the query information.
-     * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Queries defined within a Log Analytics QueryPack as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogAnalyticsQueryPackQueryInner> list(String resourceGroupName, String queryPackName, Long top,
         Boolean includeBody, String skipToken, Context context) {
@@ -798,12 +676,8 @@ public final class QueriesClientImpl implements QueriesClient {
     private PagedResponse<LogAnalyticsQueryPackQueryInner> searchSinglePage(String resourceGroupName,
         String queryPackName, LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top,
         Boolean includeBody, String skipToken) {
-        final String accept = "application/json";
-        Response<LogAnalyticsQueryPackQueryListResult> res = service.searchSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, queryPackName, top,
-            includeBody, skipToken, accept, querySearchProperties, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return searchSinglePage(resourceGroupName, queryPackName, querySearchProperties, top, includeBody, skipToken,
+            Context.NONE);
     }
 
     /**
@@ -834,45 +708,18 @@ public final class QueriesClientImpl implements QueriesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param querySearchProperties Properties by which to search queries in the given Log Analytics QueryPack.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogAnalyticsQueryPackQuery list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogAnalyticsQueryPackQueryInner> search(String resourceGroupName, String queryPackName,
         LogAnalyticsQueryPackQuerySearchProperties querySearchProperties) {
         final Long top = null;
         final Boolean includeBody = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> searchSinglePage(resourceGroupName, queryPackName, querySearchProperties, top,
-            includeBody, skipToken), nextLink -> searchNextSinglePage(nextLink));
+        return search(resourceGroupName, queryPackName, querySearchProperties, top, includeBody, skipToken,
+            Context.NONE);
     }
 
-    /**
-     * Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param queryPackName The name of the Log Analytics QueryPack resource.
-     * @param querySearchProperties Properties by which to search queries in the given Log Analytics QueryPack.
-     * @param top Maximum items returned in page.
-     * @param includeBody Flag indicating whether or not to return the body of each applicable query. If false, only
-     * return the query information.
-     * @param skipToken Base64 encoded token used to fetch the next page of items. Default is null.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LogAnalyticsQueryPackQuery list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogAnalyticsQueryPackQueryInner> search(String resourceGroupName, String queryPackName,
         LogAnalyticsQueryPackQuerySearchProperties querySearchProperties, Long top, Boolean includeBody,
@@ -911,11 +758,7 @@ public final class QueriesClientImpl implements QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogAnalyticsQueryPackQueryInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LogAnalyticsQueryPackQueryListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -967,11 +810,7 @@ public final class QueriesClientImpl implements QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LogAnalyticsQueryPackQueryInner> searchNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LogAnalyticsQueryPackQueryListResult> res
-            = service.searchNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return searchNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -185,18 +185,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the datadog single sign-on resource for the given Monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName Configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatadogSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
         String configurationName, Context context) {
@@ -205,17 +194,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
             resourceGroupName, monitorName, configurationName, accept, context);
     }
 
-    /**
-     * Gets the datadog single sign-on resource for the given Monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName Configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the datadog single sign-on resource for the given Monitor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogSingleSignOnResourceInner get(String resourceGroupName, String monitorName,
         String configurationName) {
@@ -262,10 +241,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
         String configurationName, DatadogSingleSignOnResourceInner body) {
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
     /**
@@ -354,48 +330,18 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     private SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName,
             DatadogSingleSignOnResourceInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, monitorName, configurationName, body);
-        return this.client.<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(response,
-            DatadogSingleSignOnResourceInner.class, DatadogSingleSignOnResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Configures single-sign-on for this resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName Configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName) {
         final DatadogSingleSignOnResourceInner body = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, monitorName, configurationName, body);
-        return this.client.<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(response,
-            DatadogSingleSignOnResourceInner.class, DatadogSingleSignOnResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Configures single-sign-on for this resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName Configuration name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName,
@@ -446,41 +392,20 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Configures single-sign-on for this resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName Configuration name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
         String configurationName) {
         final DatadogSingleSignOnResourceInner body = null;
-        return beginCreateOrUpdate(resourceGroupName, monitorName, configurationName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, monitorName, configurationName, body, Context.NONE);
     }
 
-    /**
-     * Configures single-sign-on for this resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName Configuration name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
         String configurationName, DatadogSingleSignOnResourceInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, monitorName, configurationName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, monitorName, configurationName, body, context));
     }
 
     /**
@@ -534,12 +459,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogSingleSignOnResourceInner> listSinglePage(String resourceGroupName,
         String monitorName) {
-        final String accept = "application/json";
-        Response<DatadogSingleSignOnResourceListResponse> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, monitorName, Context.NONE);
     }
 
     /**
@@ -564,33 +484,13 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List the single sign-on configurations for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogSingleSignOnResourceInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, monitorName, Context.NONE);
     }
 
-    /**
-     * List the single sign-on configurations for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatadogSingleSignOnResourceInner> list(String resourceGroupName, String monitorName,
         Context context) {
@@ -631,11 +531,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatadogSingleSignOnResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatadogSingleSignOnResourceListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

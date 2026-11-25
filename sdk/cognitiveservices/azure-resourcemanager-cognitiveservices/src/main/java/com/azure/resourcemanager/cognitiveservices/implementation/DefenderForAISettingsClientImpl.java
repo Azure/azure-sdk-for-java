@@ -199,18 +199,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Defender for AI setting by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param defenderForAISettingName The name of the defender for AI setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Defender for AI setting by name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DefenderForAISettingInner> getWithResponse(String resourceGroupName, String accountName,
         String defenderForAISettingName, Context context) {
@@ -219,17 +208,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
             resourceGroupName, accountName, defenderForAISettingName, accept, context);
     }
 
-    /**
-     * Gets the specified Defender for AI setting by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param defenderForAISettingName The name of the defender for AI setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Defender for AI setting by name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DefenderForAISettingInner get(String resourceGroupName, String accountName,
         String defenderForAISettingName) {
@@ -279,19 +258,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
             defenderForAISettings).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or Updates the specified Defender for AI setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param defenderForAISettingName The name of the defender for AI setting.
-     * @param defenderForAISettings Properties describing the Defender for AI setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Defender for AI resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DefenderForAISettingInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String defenderForAISettingName, DefenderForAISettingInner defenderForAISettings, Context context) {
@@ -302,18 +269,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
             accept, defenderForAISettings, context);
     }
 
-    /**
-     * Creates or Updates the specified Defender for AI setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param defenderForAISettingName The name of the defender for AI setting.
-     * @param defenderForAISettings Properties describing the Defender for AI setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Defender for AI resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DefenderForAISettingInner createOrUpdate(String resourceGroupName, String accountName,
         String defenderForAISettingName, DefenderForAISettingInner defenderForAISettings) {
@@ -364,19 +320,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the specified Defender for AI setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param defenderForAISettingName The name of the defender for AI setting.
-     * @param defenderForAISettings Properties describing the Defender for AI setting.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Defender for AI resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DefenderForAISettingInner> updateWithResponse(String resourceGroupName, String accountName,
         String defenderForAISettingName, DefenderForAISettingInner defenderForAISettings, Context context) {
@@ -387,18 +331,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
             accept, defenderForAISettings, context);
     }
 
-    /**
-     * Updates the specified Defender for AI setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param defenderForAISettingName The name of the defender for AI setting.
-     * @param defenderForAISettings Properties describing the Defender for AI setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Defender for AI resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DefenderForAISettingInner update(String resourceGroupName, String accountName,
         String defenderForAISettingName, DefenderForAISettingInner defenderForAISettings) {
@@ -457,12 +390,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DefenderForAISettingInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<DefenderForAISettingResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -487,33 +415,13 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the Defender for AI settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Defender for AI Settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DefenderForAISettingInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Lists the Defender for AI settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Defender for AI Settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DefenderForAISettingInner> list(String resourceGroupName, String accountName,
         Context context) {
@@ -551,11 +459,7 @@ public final class DefenderForAISettingsClientImpl implements DefenderForAISetti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DefenderForAISettingInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DefenderForAISettingResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

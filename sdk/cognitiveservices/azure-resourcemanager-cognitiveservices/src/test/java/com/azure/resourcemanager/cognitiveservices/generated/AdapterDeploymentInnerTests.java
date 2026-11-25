@@ -13,18 +13,18 @@ public final class AdapterDeploymentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdapterDeploymentInner model = BinaryData.fromString(
-            "{\"properties\":{\"sourceModelId\":\"kbeba\",\"targetDeploymentName\":\"zlqbtxxwpfhn\",\"activeTargetDeploymentName\":\"udrtpzkgme\",\"provisioningState\":\"Failed\",\"lastOperation\":{\"type\":\"Create\",\"status\":\"Failed\",\"requestedTargetDeploymentName\":\"zq\",\"startedAt\":\"2021-06-09T16:10:21Z\",\"completedAt\":\"2021-01-05T10:10:26Z\"}},\"etag\":\"qbedygisrzwn\",\"id\":\"d\",\"name\":\"djchlr\",\"type\":\"pwctofl\"}")
+            "{\"properties\":{\"sourceModelId\":\"jxhzghgo\",\"targetDeploymentName\":\"kynrceqavf\",\"activeTargetDeploymentName\":\"dfmmxjdnajuopjy\",\"provisioningState\":\"ResolvingDNS\",\"lastOperation\":{\"type\":\"Delete\",\"status\":\"Running\",\"requestedTargetDeploymentName\":\"vcwloqd\",\"startedAt\":\"2021-01-10T04:01:34Z\",\"completedAt\":\"2021-11-06T20:58:32Z\"}},\"etag\":\"xxr\",\"id\":\"obuzmsxga\",\"name\":\"tdtkwppthuz\",\"type\":\"pr\"}")
             .toObject(AdapterDeploymentInner.class);
-        Assertions.assertEquals("kbeba", model.properties().sourceModelId());
-        Assertions.assertEquals("zlqbtxxwpfhn", model.properties().targetDeploymentName());
+        Assertions.assertEquals("jxhzghgo", model.properties().sourceModelId());
+        Assertions.assertEquals("kynrceqavf", model.properties().targetDeploymentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdapterDeploymentInner model = new AdapterDeploymentInner().withProperties(
-            new AdapterDeploymentProperties().withSourceModelId("kbeba").withTargetDeploymentName("zlqbtxxwpfhn"));
+            new AdapterDeploymentProperties().withSourceModelId("jxhzghgo").withTargetDeploymentName("kynrceqavf"));
         model = BinaryData.fromObject(model).toObject(AdapterDeploymentInner.class);
-        Assertions.assertEquals("kbeba", model.properties().sourceModelId());
-        Assertions.assertEquals("zlqbtxxwpfhn", model.properties().targetDeploymentName());
+        Assertions.assertEquals("jxhzghgo", model.properties().sourceModelId());
+        Assertions.assertEquals("kynrceqavf", model.properties().targetDeploymentName());
     }
 }
