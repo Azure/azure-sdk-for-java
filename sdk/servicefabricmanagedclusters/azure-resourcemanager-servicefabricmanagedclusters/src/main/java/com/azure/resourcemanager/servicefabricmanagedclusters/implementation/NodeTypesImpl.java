@@ -111,7 +111,7 @@ public final class NodeTypesImpl implements NodeTypes {
 
     public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
         ReimageAllDisksParameters parameters) {
-        this.serviceClient().reimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters);
+        this.reimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,

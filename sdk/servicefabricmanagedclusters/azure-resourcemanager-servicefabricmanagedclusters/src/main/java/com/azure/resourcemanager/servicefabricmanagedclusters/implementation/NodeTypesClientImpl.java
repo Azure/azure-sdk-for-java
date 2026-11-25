@@ -1566,10 +1566,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reimageAllDisksWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, ReimageAllDisksParameters parameters) {
-        final String contentType = "application/json";
-        return service.reimageAllDisksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return reimageAllDisksWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -1615,39 +1612,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Reimages a single node on the node type, including its OS disk and all data disks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimageAllDisks(String resourceGroupName, String clusterName,
         String nodeTypeName, ReimageAllDisksParameters parameters) {
-        Response<BinaryData> response
-            = reimageAllDisksWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginReimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Reimages a single node on the node type, including its OS disk and all data disks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimageAllDisks(String resourceGroupName, String clusterName,
         String nodeTypeName, ReimageAllDisksParameters parameters, Context context) {
@@ -1675,39 +1647,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reimages a single node on the node type, including its OS disk and all data disks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
         ReimageAllDisksParameters parameters) {
-        beginReimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        reimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Reimages a single node on the node type, including its OS disk and all data disks.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
         ReimageAllDisksParameters parameters, Context context) {
-        beginReimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginReimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
