@@ -90,10 +90,7 @@ public final class InstanceResourceImpl
     }
 
     public InstanceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInstances()
-            .createOrUpdate(resourceGroupName, instancename, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InstanceResource create(Context context) {
@@ -116,11 +113,7 @@ public final class InstanceResourceImpl
     }
 
     public InstanceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInstances()
-            .updateWithResponse(resourceGroupName, instancename, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InstanceResource apply(Context context) {
@@ -144,11 +137,7 @@ public final class InstanceResourceImpl
     }
 
     public InstanceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInstances()
-            .getByResourceGroupWithResponse(resourceGroupName, instancename, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InstanceResource refresh(Context context) {

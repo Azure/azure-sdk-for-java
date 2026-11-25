@@ -224,11 +224,7 @@ public final class ApplicationInsightsComponentImpl implements ApplicationInsigh
     }
 
     public ApplicationInsightsComponent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponents()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationInsightsComponent create(Context context) {
@@ -252,11 +248,7 @@ public final class ApplicationInsightsComponentImpl implements ApplicationInsigh
     }
 
     public ApplicationInsightsComponent apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponents()
-            .updateTagsWithResponse(resourceGroupName, resourceName, updateComponentTags, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ApplicationInsightsComponent apply(Context context) {
@@ -280,11 +272,7 @@ public final class ApplicationInsightsComponentImpl implements ApplicationInsigh
     }
 
     public ApplicationInsightsComponent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponents()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationInsightsComponent refresh(Context context) {

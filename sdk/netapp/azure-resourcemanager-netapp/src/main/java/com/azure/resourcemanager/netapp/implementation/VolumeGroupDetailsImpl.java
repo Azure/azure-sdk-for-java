@@ -100,10 +100,7 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
     }
 
     public VolumeGroupDetails create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .create(resourceGroupName, accountName, volumeGroupName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeGroupDetails create(Context context) {
@@ -120,11 +117,7 @@ public final class VolumeGroupDetailsImpl implements VolumeGroupDetails, VolumeG
     }
 
     public VolumeGroupDetails refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroups()
-            .getWithResponse(resourceGroupName, accountName, volumeGroupName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeGroupDetails refresh(Context context) {

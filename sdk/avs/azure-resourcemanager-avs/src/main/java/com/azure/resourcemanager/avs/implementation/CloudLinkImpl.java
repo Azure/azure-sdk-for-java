@@ -69,10 +69,7 @@ public final class CloudLinkImpl implements CloudLink, CloudLink.Definition, Clo
     }
 
     public CloudLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudLinks()
-            .createOrUpdate(resourceGroupName, privateCloudName, cloudLinkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudLink create(Context context) {
@@ -93,10 +90,7 @@ public final class CloudLinkImpl implements CloudLink, CloudLink.Definition, Clo
     }
 
     public CloudLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudLinks()
-            .createOrUpdate(resourceGroupName, privateCloudName, cloudLinkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudLink apply(Context context) {
@@ -121,11 +115,7 @@ public final class CloudLinkImpl implements CloudLink, CloudLink.Definition, Clo
     }
 
     public CloudLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudLinks()
-            .getWithResponse(resourceGroupName, privateCloudName, cloudLinkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudLink refresh(Context context) {

@@ -107,16 +107,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
         return listWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns supported VM Sizes in a location.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineSizeListResultInner> listWithResponse(String location, Context context) {
         final String accept = "application/json";
@@ -124,15 +115,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
             location, accept, context);
     }
 
-    /**
-     * Returns supported VM Sizes in a location.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualMachineSizeListResultInner list(String location) {
         return listWithResponse(location, Context.NONE).getValue();

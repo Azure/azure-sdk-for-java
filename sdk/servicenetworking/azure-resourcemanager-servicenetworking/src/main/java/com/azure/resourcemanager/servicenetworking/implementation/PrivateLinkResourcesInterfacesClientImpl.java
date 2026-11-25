@@ -161,18 +161,7 @@ public final class PrivateLinkResourcesInterfacesClientImpl implements PrivateLi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateLinkResourceName Private Link Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateLinkResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String trafficControllerName,
         String privateLinkResourceName, Context context) {
@@ -181,17 +170,7 @@ public final class PrivateLinkResourcesInterfacesClientImpl implements PrivateLi
             resourceGroupName, trafficControllerName, privateLinkResourceName, accept, context);
     }
 
-    /**
-     * Get a PrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param privateLinkResourceName Private Link Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PrivateLinkResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String trafficControllerName,
         String privateLinkResourceName) {
@@ -253,12 +232,7 @@ public final class PrivateLinkResourcesInterfacesClientImpl implements PrivateLi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByTrafficControllerSinglePage(String resourceGroupName,
         String trafficControllerName) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByTrafficControllerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     /**
@@ -283,34 +257,14 @@ public final class PrivateLinkResourcesInterfacesClientImpl implements PrivateLi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PrivateLinkResource resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        return new PagedIterable<>(() -> listByTrafficControllerSinglePage(resourceGroupName, trafficControllerName),
-            nextLink -> listByTrafficControllerNextSinglePage(nextLink));
+        return listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
-    /**
-     * List PrivateLinkResource resources by TrafficController.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param trafficControllerName traffic controller name for path.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateLinkResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkResourceInner> listByTrafficController(String resourceGroupName,
         String trafficControllerName, Context context) {
@@ -351,11 +305,7 @@ public final class PrivateLinkResourcesInterfacesClientImpl implements PrivateLi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByTrafficControllerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateLinkResourceListResult> res
-            = service.listByTrafficControllerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTrafficControllerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

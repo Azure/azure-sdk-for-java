@@ -172,17 +172,7 @@ public final class DeletedWorkbooksClientImpl implements DeletedWorkbooksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedWorkbookInner> listSinglePage(CategoryType category, List<String> tags) {
-        final String apiVersion = "2024-02-01-preview";
-        final String accept = "application/json";
-        String tagsConverted = (tags == null)
-            ? null
-            : tags.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<DeletedWorkbooksListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), category, tagsConverted, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(category, tags, Context.NONE);
     }
 
     /**
@@ -212,34 +202,15 @@ public final class DeletedWorkbooksClientImpl implements DeletedWorkbooksClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all recently deleted Workbooks in a specified subscription.
-     * 
-     * @throws DeletedWorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all recently deleted Workbooks in a specified subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedWorkbookInner> list() {
         final CategoryType category = null;
         final List<String> tags = null;
-        return new PagedIterable<>(() -> listSinglePage(category, tags),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(category, tags, Context.NONE);
     }
 
-    /**
-     * Get all recently deleted Workbooks in a specified subscription.
-     * 
-     * @param category Category of workbook to return.
-     * @param tags Tags presents on each workbook returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DeletedWorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all recently deleted Workbooks in a specified subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedWorkbookInner> list(CategoryType category, List<String> tags, Context context) {
         return new PagedIterable<>(() -> listSinglePage(category, tags, context),
@@ -278,11 +249,7 @@ public final class DeletedWorkbooksClientImpl implements DeletedWorkbooksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeletedWorkbookInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeletedWorkbooksListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

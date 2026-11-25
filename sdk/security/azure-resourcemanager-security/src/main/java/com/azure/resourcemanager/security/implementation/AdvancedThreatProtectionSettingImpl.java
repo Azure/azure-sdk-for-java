@@ -59,11 +59,7 @@ public final class AdvancedThreatProtectionSettingImpl
     }
 
     public AdvancedThreatProtectionSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdvancedThreatProtections()
-            .createWithResponse(resourceId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AdvancedThreatProtectionSetting create(Context context) {
@@ -80,11 +76,7 @@ public final class AdvancedThreatProtectionSettingImpl
     }
 
     public AdvancedThreatProtectionSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAdvancedThreatProtections()
-            .getWithResponse(resourceId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AdvancedThreatProtectionSetting refresh(Context context) {

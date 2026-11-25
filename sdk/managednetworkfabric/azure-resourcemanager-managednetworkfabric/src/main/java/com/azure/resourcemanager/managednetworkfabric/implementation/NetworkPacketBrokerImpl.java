@@ -142,10 +142,7 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkPacketBrokers()
-            .create(resourceGroupName, networkPacketBrokerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkPacketBroker create(Context context) {
@@ -168,10 +165,7 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkPacketBrokers()
-            .update(resourceGroupName, networkPacketBrokerName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkPacketBroker apply(Context context) {
@@ -194,11 +188,7 @@ public final class NetworkPacketBrokerImpl
     }
 
     public NetworkPacketBroker refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkPacketBrokers()
-            .getByResourceGroupWithResponse(resourceGroupName, networkPacketBrokerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkPacketBroker refresh(Context context) {

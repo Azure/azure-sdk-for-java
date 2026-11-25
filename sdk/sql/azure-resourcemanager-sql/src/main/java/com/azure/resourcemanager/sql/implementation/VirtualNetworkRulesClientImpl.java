@@ -117,17 +117,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkRuleInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String virtualNetworkRuleName) {
@@ -196,17 +186,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             resourceGroupName, serverName, virtualNetworkRuleName, accept, context);
     }
 
-    /**
-     * Gets a virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkRuleInner> getAsync(String resourceGroupName, String serverName,
         String virtualNetworkRuleName) {
@@ -214,52 +194,20 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkRuleInner> getWithResponse(String resourceGroupName, String serverName,
         String virtualNetworkRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, virtualNetworkRuleName, context).block();
     }
 
-    /**
-     * Gets a virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkRuleInner get(String resourceGroupName, String serverName, String virtualNetworkRuleName) {
         return getWithResponse(resourceGroupName, serverName, virtualNetworkRuleName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an existing virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param parameters The requested virtual Network Rule Resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         String virtualNetworkRuleName, VirtualNetworkRuleInner parameters) {
@@ -344,18 +292,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             parameters, context);
     }
 
-    /**
-     * Creates or updates an existing virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param parameters The requested virtual Network Rule Resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a virtual network rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkRuleInner>, VirtualNetworkRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String virtualNetworkRuleName,
@@ -391,18 +328,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             this.client.getHttpPipeline(), VirtualNetworkRuleInner.class, VirtualNetworkRuleInner.class, context);
     }
 
-    /**
-     * Creates or updates an existing virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param parameters The requested virtual Network Rule Resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a virtual network rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkRuleInner>, VirtualNetworkRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String virtualNetworkRuleName,
@@ -411,19 +337,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an existing virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param parameters The requested virtual Network Rule Resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a virtual network rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkRuleInner>, VirtualNetworkRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String virtualNetworkRuleName, VirtualNetworkRuleInner parameters,
@@ -432,18 +346,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an existing virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param parameters The requested virtual Network Rule Resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         String virtualNetworkRuleName, VirtualNetworkRuleInner parameters) {
@@ -472,54 +375,21 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an existing virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param parameters The requested virtual Network Rule Resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkRuleInner createOrUpdate(String resourceGroupName, String serverName,
         String virtualNetworkRuleName, VirtualNetworkRuleInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, virtualNetworkRuleName, parameters).block();
     }
 
-    /**
-     * Creates or updates an existing virtual network rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param parameters The requested virtual Network Rule Resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkRuleInner createOrUpdate(String resourceGroupName, String serverName,
         String virtualNetworkRuleName, VirtualNetworkRuleInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, virtualNetworkRuleName, parameters, context).block();
     }
 
-    /**
-     * Deletes the virtual network rule with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
         String virtualNetworkRuleName) {
@@ -587,17 +457,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             resourceGroupName, serverName, virtualNetworkRuleName, context);
     }
 
-    /**
-     * Deletes the virtual network rule with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
         String virtualNetworkRuleName) {
@@ -629,52 +489,21 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             context);
     }
 
-    /**
-     * Deletes the virtual network rule with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String virtualNetworkRuleName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, virtualNetworkRuleName).getSyncPoller();
     }
 
-    /**
-     * Deletes the virtual network rule with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
         String virtualNetworkRuleName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, virtualNetworkRuleName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the virtual network rule with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String virtualNetworkRuleName) {
         return beginDeleteAsync(resourceGroupName, serverName, virtualNetworkRuleName).last()
@@ -700,32 +529,13 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the virtual network rule with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String virtualNetworkRuleName) {
         deleteAsync(resourceGroupName, serverName, virtualNetworkRuleName).block();
     }
 
-    /**
-     * Deletes the virtual network rule with the given name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context) {
         deleteAsync(resourceGroupName, serverName, virtualNetworkRuleName, context).block();
@@ -808,16 +618,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of virtual network rules in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual network rules in a server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualNetworkRuleInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
@@ -842,32 +643,13 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of virtual network rules in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual network rules in a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkRuleInner> listByServer(String resourceGroupName, String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Gets a list of virtual network rules in a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual network rules in a server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkRuleInner> listByServer(String resourceGroupName, String serverName,
         Context context) {

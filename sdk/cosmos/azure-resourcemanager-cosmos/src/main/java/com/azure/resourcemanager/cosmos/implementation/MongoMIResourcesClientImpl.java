@@ -171,18 +171,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MongoMIRoleDefinitionResourceInner>> getMongoMIRoleDefinitionWithResponseAsync(
         String resourceGroupName, String accountName, String roleDefinitionId) {
@@ -254,18 +243,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleDefinitionId, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoMIRoleDefinitionResourceInner> getMongoMIRoleDefinitionAsync(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -273,18 +251,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MongoMIRoleDefinitionResourceInner> getMongoMIRoleDefinitionWithResponse(String resourceGroupName,
         String accountName, String roleDefinitionId, Context context) {
@@ -292,17 +259,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Definition with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoMIRoleDefinitionResourceInner getMongoMIRoleDefinition(String resourceGroupName, String accountName,
         String roleDefinitionId) {
@@ -310,19 +267,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getValue();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateMongoMIRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoMIRoleDefinitionWithResponseAsync(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -412,19 +357,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleDefinitionParameters, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateMongoMIRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of parameters to create and update an Azure Cosmos DB MongoMI Role
-     * Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MongoMIRoleDefinitionResourceInner>, MongoMIRoleDefinitionResourceInner>
         beginCreateUpdateMongoMIRoleDefinitionAsync(String resourceGroupName, String accountName,
@@ -463,19 +396,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             MongoMIRoleDefinitionResourceInner.class, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateMongoMIRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB MongoMI Role
-     * Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoMIRoleDefinitionResourceInner>, MongoMIRoleDefinitionResourceInner>
         beginCreateUpdateMongoMIRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
@@ -486,20 +407,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateMongoMIRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB MongoMI Role
-     * Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoMIRoleDefinitionResourceInner>, MongoMIRoleDefinitionResourceInner>
         beginCreateUpdateMongoMIRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
@@ -510,19 +418,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateMongoMIRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoMIRoleDefinitionResourceInner> createUpdateMongoMIRoleDefinitionAsync(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -553,18 +449,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleDefinitionParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateMongoMIRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoMIRoleDefinitionResourceInner createUpdateMongoMIRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -573,19 +458,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleDefinitionParameters).block();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param createUpdateMongoMIRoleDefinitionParameters The properties required to create or update a Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoMIRoleDefinitionResourceInner createUpdateMongoMIRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId,
@@ -594,17 +467,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleDefinitionParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteMongoMIRoleDefinitionWithResponseAsync(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -673,17 +536,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleDefinitionId, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteMongoMIRoleDefinitionAsync(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -715,17 +568,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoMIRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId) {
@@ -733,18 +576,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoMIRoleDefinition(String resourceGroupName,
         String accountName, String roleDefinitionId, Context context) {
@@ -752,17 +584,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoMIRoleDefinitionAsync(String resourceGroupName, String accountName,
         String roleDefinitionId) {
@@ -789,32 +611,13 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoMIRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId) {
         deleteMongoMIRoleDefinitionAsync(resourceGroupName, accountName, roleDefinitionId).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleDefinitionId The GUID for the Role Definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoMIRoleDefinition(String resourceGroupName, String accountName, String roleDefinitionId,
         Context context) {
@@ -899,17 +702,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB MongoMI Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MongoMIRoleDefinitionResource list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MongoMIRoleDefinitionResourceInner> listMongoMIRoleDefinitionsAsync(String resourceGroupName,
         String accountName) {
@@ -936,53 +729,21 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             nextLink -> listMongoMIRoleDefinitionsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB MongoMI Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MongoMIRoleDefinitionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoMIRoleDefinitionResourceInner> listMongoMIRoleDefinitions(String resourceGroupName,
         String accountName) {
         return new PagedIterable<>(listMongoMIRoleDefinitionsAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB MongoMI Role Definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MongoMIRoleDefinitionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoMIRoleDefinitionResourceInner> listMongoMIRoleDefinitions(String resourceGroupName,
         String accountName, Context context) {
         return new PagedIterable<>(listMongoMIRoleDefinitionsAsync(resourceGroupName, accountName, context));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MongoMIRoleAssignmentResourceInner>> getMongoMIRoleAssignmentWithResponseAsync(
         String resourceGroupName, String accountName, String roleAssignmentId) {
@@ -1054,18 +815,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleAssignmentId, accept, context);
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoMIRoleAssignmentResourceInner> getMongoMIRoleAssignmentAsync(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -1073,18 +823,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MongoMIRoleAssignmentResourceInner> getMongoMIRoleAssignmentWithResponse(String resourceGroupName,
         String accountName, String roleAssignmentId, Context context) {
@@ -1092,17 +831,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .block();
     }
 
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Assignment with the given Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoMIRoleAssignmentResourceInner getMongoMIRoleAssignment(String resourceGroupName, String accountName,
         String roleAssignmentId) {
@@ -1110,19 +839,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getValue();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateMongoMIRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoMIRoleAssignmentWithResponseAsync(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -1212,19 +929,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleAssignmentParameters, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateMongoMIRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of parameters to create and update an Azure Cosmos DB MongoMI Role
-     * Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MongoMIRoleAssignmentResourceInner>, MongoMIRoleAssignmentResourceInner>
         beginCreateUpdateMongoMIRoleAssignmentAsync(String resourceGroupName, String accountName,
@@ -1263,19 +968,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             MongoMIRoleAssignmentResourceInner.class, context);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateMongoMIRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB MongoMI Role
-     * Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoMIRoleAssignmentResourceInner>, MongoMIRoleAssignmentResourceInner>
         beginCreateUpdateMongoMIRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
@@ -1286,20 +979,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateMongoMIRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of parameters to create and update an Azure Cosmos DB MongoMI Role
-     * Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MongoMIRoleAssignmentResourceInner>, MongoMIRoleAssignmentResourceInner>
         beginCreateUpdateMongoMIRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
@@ -1310,19 +990,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateMongoMIRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MongoMIRoleAssignmentResourceInner> createUpdateMongoMIRoleAssignmentAsync(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -1353,18 +1021,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleAssignmentParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateMongoMIRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoMIRoleAssignmentResourceInner createUpdateMongoMIRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -1373,19 +1030,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleAssignmentParameters).block();
     }
 
-    /**
-     * Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param createUpdateMongoMIRoleAssignmentParameters The properties required to create or update a Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return parameters to create and update an Azure Cosmos DB MongoMI Role Assignment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MongoMIRoleAssignmentResourceInner createUpdateMongoMIRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId,
@@ -1394,17 +1039,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             createUpdateMongoMIRoleAssignmentParameters, context).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteMongoMIRoleAssignmentWithResponseAsync(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -1473,17 +1108,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             this.client.getSubscriptionId(), resourceGroupName, accountName, roleAssignmentId, context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteMongoMIRoleAssignmentAsync(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -1515,17 +1140,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             context);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoMIRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId) {
@@ -1533,18 +1148,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteMongoMIRoleAssignment(String resourceGroupName,
         String accountName, String roleAssignmentId, Context context) {
@@ -1552,17 +1156,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .getSyncPoller();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoMIRoleAssignmentAsync(String resourceGroupName, String accountName,
         String roleAssignmentId) {
@@ -1589,32 +1183,13 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoMIRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId) {
         deleteMongoMIRoleAssignmentAsync(resourceGroupName, accountName, roleAssignmentId).block();
     }
 
-    /**
-     * Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param roleAssignmentId The GUID for the Role Assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMongoMIRoleAssignment(String resourceGroupName, String accountName, String roleAssignmentId,
         Context context) {
@@ -1699,17 +1274,7 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB MongoMI Role Assignments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MongoMIRoleAssignmentResource list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MongoMIRoleAssignmentResourceInner> listMongoMIRoleAssignmentsAsync(String resourceGroupName,
         String accountName) {
@@ -1736,35 +1301,14 @@ public final class MongoMIResourcesClientImpl implements MongoMIResourcesClient 
             nextLink -> listMongoMIRoleAssignmentsNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB MongoMI Role Assignments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MongoMIRoleAssignmentResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoMIRoleAssignmentResourceInner> listMongoMIRoleAssignments(String resourceGroupName,
         String accountName) {
         return new PagedIterable<>(listMongoMIRoleAssignmentsAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Retrieves the list of all Azure Cosmos DB MongoMI Role Assignments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MongoMIRoleAssignmentResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MongoMIRoleAssignmentResourceInner> listMongoMIRoleAssignments(String resourceGroupName,
         String accountName, Context context) {

@@ -203,18 +203,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of Continuous Export configuration of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentExportConfigurationInner>>
         listWithResponse(String resourceGroupName, String resourceName, Context context) {
@@ -224,16 +213,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Gets a list of Continuous Export configuration of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Continuous Export configuration of an Application Insights component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<ApplicationInsightsComponentExportConfigurationInner> list(String resourceGroupName,
         String resourceName) {
@@ -282,18 +262,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a Continuous Export configuration of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportProperties The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentExportConfigurationInner>> createWithResponse(
         String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties,
@@ -305,17 +274,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             resourceGroupName, resourceName, contentType, accept, exportProperties, context);
     }
 
-    /**
-     * Create a Continuous Export configuration of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportProperties The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<ApplicationInsightsComponentExportConfigurationInner> create(String resourceGroupName,
         String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
@@ -363,18 +322,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Delete a Continuous Export configuration of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentExportConfigurationInner> deleteWithResponse(String resourceGroupName,
         String resourceName, String exportId, Context context) {
@@ -384,17 +332,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             this.client.getSubscriptionId(), resourceName, exportId, accept, context);
     }
 
-    /**
-     * Delete a Continuous Export configuration of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentExportConfigurationInner delete(String resourceGroupName, String resourceName,
         String exportId) {
@@ -442,18 +380,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Continuous Export configuration for this export id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Continuous Export configuration for this export id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentExportConfigurationInner> getWithResponse(String resourceGroupName,
         String resourceName, String exportId, Context context) {
@@ -463,17 +390,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             this.client.getSubscriptionId(), resourceName, exportId, accept, context);
     }
 
-    /**
-     * Get the Continuous Export configuration for this export id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Continuous Export configuration for this export id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentExportConfigurationInner get(String resourceGroupName, String resourceName,
         String exportId) {
@@ -524,19 +441,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the Continuous Export configuration for this export id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
-     * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentExportConfigurationInner> updateWithResponse(String resourceGroupName,
         String resourceName, String exportId, ApplicationInsightsComponentExportRequest exportProperties,
@@ -548,18 +453,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
             this.client.getSubscriptionId(), resourceName, exportId, contentType, accept, exportProperties, context);
     }
 
-    /**
-     * Update the Continuous Export configuration for this export id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param exportId The Continuous Export configuration ID. This is unique within a Application Insights component.
-     * @param exportProperties Properties that need to be specified to update the Continuous Export configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a Continuous Export configuration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentExportConfigurationInner update(String resourceGroupName, String resourceName,
         String exportId, ApplicationInsightsComponentExportRequest exportProperties) {

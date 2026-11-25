@@ -64,13 +64,7 @@ public final class MaintenanceEventsImpl implements MaintenanceEvents {
 
     public MaintenanceEventActionResponse reschedule(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
-        MaintenanceEventActionResponseInner inner
-            = this.serviceClient().reschedule(resourceGroupName, clusterName, poolName, maintenanceEventId, body);
-        if (inner != null) {
-            return new MaintenanceEventActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reschedule(resourceGroupName, clusterName, poolName, maintenanceEventId, body, Context.NONE);
     }
 
     public MaintenanceEventActionResponse reschedule(String resourceGroupName, String clusterName, String poolName,
@@ -86,13 +80,7 @@ public final class MaintenanceEventsImpl implements MaintenanceEvents {
 
     public MaintenanceEventActionResponse applyNow(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId) {
-        MaintenanceEventActionResponseInner inner
-            = this.serviceClient().applyNow(resourceGroupName, clusterName, poolName, maintenanceEventId);
-        if (inner != null) {
-            return new MaintenanceEventActionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.applyNow(resourceGroupName, clusterName, poolName, maintenanceEventId, Context.NONE);
     }
 
     public MaintenanceEventActionResponse applyNow(String resourceGroupName, String clusterName, String poolName,

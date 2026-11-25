@@ -244,23 +244,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get batch inference deployment by id.
-     * 
-     * Gets a batch inference deployment by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch inference deployment by id.
-     * 
-     * Gets a batch inference deployment by id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchDeploymentInner> getWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, Context context) {
@@ -269,22 +253,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             resourceGroupName, workspaceName, endpointName, deploymentName, accept, context);
     }
 
-    /**
-     * Get batch inference deployment by id.
-     * 
-     * Gets a batch inference deployment by id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch inference deployment by id.
-     * 
-     * Gets a batch inference deployment by id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchDeploymentInner get(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName) {
@@ -334,11 +303,8 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, BatchDeploymentInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, deploymentName,
-            contentType, accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body,
+            Context.NONE);
     }
 
     /**
@@ -390,45 +356,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             BatchDeploymentInner.class, BatchDeploymentInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates/updates a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         BatchDeploymentInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this.client.<BatchDeploymentInner, BatchDeploymentInner>getLroResult(response,
-            BatchDeploymentInner.class, BatchDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Creates/updates a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
@@ -460,45 +396,19 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates/updates a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, BatchDeploymentInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Creates/updates a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, BatchDeploymentInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context));
     }
 
     /**
@@ -545,11 +455,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, deploymentName,
-            contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
     /**
@@ -602,45 +508,15 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             BatchDeploymentInner.class, BatchDeploymentInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(String resourceGroupName,
         String workspaceName, String endpointName, String deploymentName,
         PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this.client.<BatchDeploymentInner, BatchDeploymentInner>getLroResult(response,
-            BatchDeploymentInner.class, BatchDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Update a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BatchDeploymentInner>, BatchDeploymentInner> beginUpdate(String resourceGroupName,
         String workspaceName, String endpointName, String deploymentName,
@@ -672,45 +548,20 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body) {
-        return beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body).getFinalResult();
+        return update(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Update a batch inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param body Batch inference deployment definition object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties body,
         Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context));
     }
 
     /**
@@ -748,9 +599,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, deploymentName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE);
     }
 
     /**
@@ -794,39 +643,14 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete Batch Inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete Batch Inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, Context context) {
@@ -854,38 +678,18 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Batch Inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName).getFinalResult();
+        delete(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete Batch Inference deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param deploymentName The identifier for the Batch deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         Context context) {
-        beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName, context));
     }
 
     /**
@@ -977,12 +781,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BatchDeploymentInner> listSinglePage(String resourceGroupName, String workspaceName,
         String endpointName, String orderBy, Integer top, String skip) {
-        final String accept = "application/json";
-        Response<BatchDeploymentTrackedResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, endpointName, orderBy, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, Context.NONE);
     }
 
     /**
@@ -1011,43 +810,17 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Batch inference deployments in the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchDeploymentInner> list(String resourceGroupName, String workspaceName,
         String endpointName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, endpointName, orderBy, top, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, Context.NONE);
     }
 
-    /**
-     * Lists Batch inference deployments in the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Name for the Batch Endpoint.
-     * @param orderBy Ordering of list.
-     * @param top Top of list.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of BatchDeployment entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchDeploymentInner> list(String resourceGroupName, String workspaceName, String endpointName,
         String orderBy, Integer top, String skip, Context context) {
@@ -1090,11 +863,7 @@ public final class BatchDeploymentsClientImpl implements BatchDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BatchDeploymentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BatchDeploymentTrackedResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

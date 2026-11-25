@@ -165,19 +165,7 @@ public final class ThreatIntelligencesClientImpl implements ThreatIntelligencesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the count of all TI objects for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tiType TI type.
-     * @param query The query to run on the TI objects in the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of all TI objects for the workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ThreatIntelligenceCountInner> countWithResponse(String resourceGroupName, String workspaceName,
         TiType tiType, CountQuery query, Context context) {
@@ -186,17 +174,7 @@ public final class ThreatIntelligencesClientImpl implements ThreatIntelligencesC
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, tiType, accept, query, context);
     }
 
-    /**
-     * Gets the count of all TI objects for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tiType TI type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the count of all TI objects for the workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ThreatIntelligenceCountInner count(String resourceGroupName, String workspaceName, TiType tiType) {
         final CountQuery query = null;
@@ -280,11 +258,7 @@ public final class ThreatIntelligencesClientImpl implements ThreatIntelligencesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TIObjectInner> querySinglePage(String resourceGroupName, String workspaceName, TiType tiType,
         Query query) {
-        final String accept = "application/json";
-        Response<ThreatIntelligenceList> res = service.querySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, tiType, accept, query, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return querySinglePage(resourceGroupName, workspaceName, tiType, query, Context.NONE);
     }
 
     /**
@@ -310,37 +284,14 @@ public final class ThreatIntelligencesClientImpl implements ThreatIntelligencesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all TI objects for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tiType TI type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all TI objects for the workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TIObjectInner> query(String resourceGroupName, String workspaceName, TiType tiType) {
         final Query query = null;
-        return new PagedIterable<>(() -> querySinglePage(resourceGroupName, workspaceName, tiType, query),
-            nextLink -> queryNextSinglePage(nextLink));
+        return query(resourceGroupName, workspaceName, tiType, query, Context.NONE);
     }
 
-    /**
-     * Gets all TI objects for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param tiType TI type.
-     * @param query The query to run on the TI objects in the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all TI objects for the workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TIObjectInner> query(String resourceGroupName, String workspaceName, TiType tiType,
         Query query, Context context) {
@@ -378,11 +329,7 @@ public final class ThreatIntelligencesClientImpl implements ThreatIntelligencesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TIObjectInner> queryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ThreatIntelligenceList> res
-            = service.queryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return queryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

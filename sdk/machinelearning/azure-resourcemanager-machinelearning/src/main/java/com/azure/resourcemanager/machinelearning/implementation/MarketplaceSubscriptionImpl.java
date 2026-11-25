@@ -61,10 +61,7 @@ public final class MarketplaceSubscriptionImpl
     }
 
     public MarketplaceSubscription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMarketplaceSubscriptions()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MarketplaceSubscription create(Context context) {
@@ -86,10 +83,7 @@ public final class MarketplaceSubscriptionImpl
     }
 
     public MarketplaceSubscription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMarketplaceSubscriptions()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MarketplaceSubscription apply(Context context) {
@@ -115,11 +109,7 @@ public final class MarketplaceSubscriptionImpl
     }
 
     public MarketplaceSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMarketplaceSubscriptions()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MarketplaceSubscription refresh(Context context) {

@@ -259,17 +259,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets details about the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCrossConnectionInner>>
         getByResourceGroupWithResponseAsync(String resourceGroupName, String crossConnectionName) {
@@ -335,16 +325,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, accept, context);
     }
 
-    /**
-     * Gets details about the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCrossConnectionInner> getByResourceGroupAsync(String resourceGroupName,
         String crossConnectionName) {
@@ -352,50 +333,20 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets details about the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCrossConnectionInner> getByResourceGroupWithResponse(String resourceGroupName,
         String crossConnectionName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, crossConnectionName, context).block();
     }
 
-    /**
-     * Gets details about the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCrossConnectionInner getByResourceGroup(String resourceGroupName, String crossConnectionName) {
         return getByResourceGroupWithResponse(resourceGroupName, crossConnectionName, Context.NONE).getValue();
     }
 
-    /**
-     * Update the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to the update express route crossConnection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String crossConnectionName, ExpressRouteCrossConnectionInner parameters) {
@@ -475,17 +426,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Update the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to the update express route crossConnection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of expressRouteCrossConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String crossConnectionName,
@@ -521,17 +462,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             ExpressRouteCrossConnectionInner.class, context);
     }
 
-    /**
-     * Update the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to the update express route crossConnection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRouteCrossConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String crossConnectionName,
@@ -539,18 +470,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         return this.beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, parameters).getSyncPoller();
     }
 
-    /**
-     * Update the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to the update express route crossConnection operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRouteCrossConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String crossConnectionName,
@@ -559,17 +479,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Update the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to the update express route crossConnection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCrossConnectionInner> createOrUpdateAsync(String resourceGroupName,
         String crossConnectionName, ExpressRouteCrossConnectionInner parameters) {
@@ -596,53 +506,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to the update express route crossConnection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCrossConnectionInner createOrUpdate(String resourceGroupName, String crossConnectionName,
         ExpressRouteCrossConnectionInner parameters) {
         return createOrUpdateAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Update the specified ExpressRouteCrossConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to the update express route crossConnection operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCrossConnectionInner createOrUpdate(String resourceGroupName, String crossConnectionName,
         ExpressRouteCrossConnectionInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Updates an express route cross connection tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCrossConnectionInner>> updateTagsWithResponseAsync(String resourceGroupName,
         String crossConnectionName, TagsObject crossConnectionParameters) {
@@ -724,17 +602,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, crossConnectionParameters, context);
     }
 
-    /**
-     * Updates an express route cross connection tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCrossConnectionInner> updateTagsAsync(String resourceGroupName, String crossConnectionName,
         TagsObject crossConnectionParameters) {
@@ -742,18 +610,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an express route cross connection tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCrossConnectionInner> updateTagsWithResponse(String resourceGroupName,
         String crossConnectionName, TagsObject crossConnectionParameters, Context context) {
@@ -761,17 +618,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .block();
     }
 
-    /**
-     * Updates an express route cross connection tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCrossConnectionInner updateTags(String resourceGroupName, String crossConnectionName,
         TagsObject crossConnectionParameters) {
@@ -850,16 +697,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteCrossConnection list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCrossConnectionInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -884,32 +722,13 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteCrossConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCrossConnectionInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteCrossConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCrossConnectionInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -978,30 +797,13 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=name eq
-     * '{circuitServiceKey}'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteCrossConnection list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCrossConnectionInner> listAsync(String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteCrossConnection list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCrossConnectionInner> listAsync() {
         final String filter = null;
@@ -1026,50 +828,20 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteCrossConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCrossConnectionInner> list() {
         final String filter = null;
         return new PagedIterable<>(listAsync(filter));
     }
 
-    /**
-     * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=name eq
-     * '{circuitServiceKey}'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExpressRouteCrossConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCrossConnectionInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource group
-     * along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listArpTableWithResponseAsync(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath) {
@@ -1150,19 +922,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, peeringName, devicePath, accept, context);
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the currently advertised ARP table associated with the express
-     * route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -1204,19 +964,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 ExpressRouteCircuitsArpTableListResultInner.class, context);
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised ARP table associated with the express
-     * route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -1225,20 +973,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised ARP table associated with the express
-     * route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -1248,19 +983,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource group
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath) {
@@ -1289,58 +1012,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath) {
         return listArpTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath).block();
     }
 
-    /**
-     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath, Context context) {
         return listArpTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context).block();
     }
 
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listRoutesTableSummaryWithResponseAsync(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath) {
@@ -1421,19 +1107,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, peeringName, devicePath, accept, context);
     }
 
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the route table summary associated with the express route cross
-     * connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>, ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -1477,19 +1151,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class, context);
     }
 
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the route table summary associated with the express route cross
-     * connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>, ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -1499,20 +1161,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the route table summary associated with the express route cross
-     * connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>, ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -1523,19 +1172,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(
         String resourceGroupName, String crossConnectionName, String peeringName, String devicePath) {
@@ -1564,37 +1201,14 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner listRoutesTableSummary(
         String resourceGroupName, String crossConnectionName, String peeringName, String devicePath) {
         return listRoutesTableSummaryAsync(resourceGroupName, crossConnectionName, peeringName, devicePath).block();
     }
 
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner listRoutesTableSummary(
         String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context) {
@@ -1602,20 +1216,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .block();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     * group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listRoutesTableWithResponseAsync(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath) {
@@ -1697,20 +1298,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, peeringName, devicePath, accept, context);
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the currently advertised routes table associated with the express
-     * route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
@@ -1753,20 +1341,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 ExpressRouteCircuitsRoutesTableListResultInner.class, context);
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised routes table associated with the express
-     * route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
@@ -1776,21 +1351,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the currently advertised routes table associated with the express
-     * route cross connection in a resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
@@ -1800,20 +1361,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     * group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath) {
@@ -1844,59 +1392,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath) {
         return listRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath).block();
     }
 
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath, Context context) {
         return listRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context).block();
     }
 
-    /**
-     * Validates express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to validate express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration validation operation along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> validateCircuitMigrationWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters) {
@@ -1977,17 +1487,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Validates express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to validate express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for express route circuit migration validation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitValidateResponseInner>, MigrateExpressRouteCircuitValidateResponseInner>
@@ -2027,17 +1527,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitValidateResponseInner.class, context);
     }
 
-    /**
-     * Validates express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to validate express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration validation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitValidateResponseInner>, MigrateExpressRouteCircuitValidateResponseInner>
@@ -2047,18 +1537,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Validates express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to validate express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration validation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitValidateResponseInner>, MigrateExpressRouteCircuitValidateResponseInner>
@@ -2068,18 +1547,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Validates express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to validate express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration validation operation on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitValidateResponseInner> validateCircuitMigrationAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters) {
@@ -2108,35 +1576,14 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to validate express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration validation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitValidateResponseInner validateCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters) {
         return validateCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Validates express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to validate express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration validation operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitValidateResponseInner validateCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters,
@@ -2144,18 +1591,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         return validateCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Gets migration health information for an express route circuit cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to get express route circuit migration information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration health information for an express route circuit cross connection along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getCircuitMigrationInfoWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters) {
@@ -2236,18 +1672,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Gets migration health information for an express route circuit cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to get express route circuit migration information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of migration health information for an express route circuit cross
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2288,18 +1713,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitHealthCheckResponseInner.class, context);
     }
 
-    /**
-     * Gets migration health information for an express route circuit cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to get express route circuit migration information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration health information for an express route circuit cross
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2309,19 +1723,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets migration health information for an express route circuit cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to get express route circuit migration information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of migration health information for an express route circuit cross
-     * connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2331,18 +1733,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Gets migration health information for an express route circuit cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to get express route circuit migration information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration health information for an express route circuit cross connection on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> getCircuitMigrationInfoAsync(
         String resourceGroupName, String crossConnectionName,
@@ -2372,35 +1763,14 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets migration health information for an express route circuit cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to get express route circuit migration information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration health information for an express route circuit cross connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner getCircuitMigrationInfo(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters) {
         return getCircuitMigrationInfoAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Gets migration health information for an express route circuit cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to get express route circuit migration information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return migration health information for an express route circuit cross connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner getCircuitMigrationInfo(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitValidateAndHealthCheckRequest parameters,
@@ -2408,18 +1778,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         return getCircuitMigrationInfoAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Prepares an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to prepare the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> prepareCircuitMigrationWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -2499,18 +1858,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Prepares an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to prepare the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2551,18 +1899,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitHealthCheckResponseInner.class, context);
     }
 
-    /**
-     * Prepares an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to prepare the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2572,19 +1909,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Prepares an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to prepare the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2594,18 +1919,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Prepares an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to prepare the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> prepareCircuitMigrationAsync(
         String resourceGroupName, String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -2634,53 +1948,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Prepares an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to prepare the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner prepareCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
         return prepareCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Prepares an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to prepare the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner prepareCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context) {
         return prepareCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> shutDownBgpForCircuitMigrationWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -2761,18 +2043,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             context);
     }
 
-    /**
-     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2813,18 +2084,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitHealthCheckResponseInner.class, context);
     }
 
-    /**
-     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2834,19 +2094,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -2857,18 +2105,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> shutDownBgpForCircuitMigrationAsync(
         String resourceGroupName, String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -2898,53 +2135,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner shutDownBgpForCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
         return shutDownBgpForCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Shuts down BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to shut down BGP for the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner shutDownBgpForCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context) {
         return shutDownBgpForCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restoreBgpForCircuitMigrationWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3025,18 +2230,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             context);
     }
 
-    /**
-     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3077,18 +2271,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitHealthCheckResponseInner.class, context);
     }
 
-    /**
-     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3098,19 +2281,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3120,18 +2291,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> restoreBgpForCircuitMigrationAsync(
         String resourceGroupName, String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3161,53 +2321,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner restoreBgpForCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
         return restoreBgpForCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Restores BGP sessions as part of an express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to restore BGP for the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner restoreBgpForCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context) {
         return restoreBgpForCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Executes the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to execute the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> migrateCircuitWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3287,18 +2415,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Executes the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to execute the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3339,18 +2456,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitHealthCheckResponseInner.class, context);
     }
 
-    /**
-     * Executes the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to execute the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3359,19 +2465,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         return this.beginMigrateCircuitAsync(resourceGroupName, crossConnectionName, parameters).getSyncPoller();
     }
 
-    /**
-     * Executes the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to execute the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3381,18 +2475,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Executes the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to execute the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> migrateCircuitAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3420,53 +2503,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Executes the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to execute the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner migrateCircuit(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
         return migrateCircuitAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Executes the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to execute the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner migrateCircuit(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context) {
         return migrateCircuitAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Commits the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to commit the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> commitCircuitMigrationWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3546,18 +2597,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Commits the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to commit the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3598,18 +2638,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitHealthCheckResponseInner.class, context);
     }
 
-    /**
-     * Commits the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to commit the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3619,19 +2648,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Commits the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to commit the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3641,18 +2658,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Commits the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to commit the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> commitCircuitMigrationAsync(
         String resourceGroupName, String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3681,53 +2687,21 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Commits the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to commit the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner commitCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
         return commitCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Commits the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to commit the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner commitCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context) {
         return commitCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters, context).block();
     }
 
-    /**
-     * Rolls back the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to roll back the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> rollbackCircuitMigrationWithResponseAsync(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3807,18 +2781,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             resourceGroupName, crossConnectionName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Rolls back the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to roll back the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3859,18 +2822,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
                 MigrateExpressRouteCircuitHealthCheckResponseInner.class, context);
     }
 
-    /**
-     * Rolls back the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to roll back the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3880,19 +2832,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Rolls back the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to roll back the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for express route circuit migration health check and
-     * migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<MigrateExpressRouteCircuitHealthCheckResponseInner>, MigrateExpressRouteCircuitHealthCheckResponseInner>
@@ -3902,18 +2842,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .getSyncPoller();
     }
 
-    /**
-     * Rolls back the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to roll back the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MigrateExpressRouteCircuitHealthCheckResponseInner> rollbackCircuitMigrationAsync(
         String resourceGroupName, String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
@@ -3942,35 +2871,14 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Rolls back the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to roll back the express route circuit migration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner rollbackCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters) {
         return rollbackCircuitMigrationAsync(resourceGroupName, crossConnectionName, parameters).block();
     }
 
-    /**
-     * Rolls back the express route circuit migration for a cross connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param parameters Parameters supplied to roll back the express route circuit migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for express route circuit migration health check and migration operations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MigrateExpressRouteCircuitHealthCheckResponseInner rollbackCircuitMigration(String resourceGroupName,
         String crossConnectionName, MigrateExpressRouteCircuitRequest parameters, Context context) {

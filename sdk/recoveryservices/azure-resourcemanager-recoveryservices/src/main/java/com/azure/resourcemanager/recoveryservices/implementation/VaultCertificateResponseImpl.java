@@ -71,11 +71,7 @@ public final class VaultCertificateResponseImpl
     }
 
     public VaultCertificateResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVaultCertificates()
-            .createWithResponse(resourceGroupName, vaultName, certificateName, createCertificateRequest, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VaultCertificateResponse create(Context context) {

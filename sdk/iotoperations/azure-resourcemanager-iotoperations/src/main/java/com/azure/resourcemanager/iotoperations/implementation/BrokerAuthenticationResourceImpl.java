@@ -70,11 +70,7 @@ public final class BrokerAuthenticationResourceImpl implements BrokerAuthenticat
     }
 
     public BrokerAuthenticationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthentications()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, authenticationName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BrokerAuthenticationResource create(Context context) {
@@ -97,11 +93,7 @@ public final class BrokerAuthenticationResourceImpl implements BrokerAuthenticat
     }
 
     public BrokerAuthenticationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthentications()
-            .createOrUpdate(resourceGroupName, instanceName, brokerName, authenticationName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BrokerAuthenticationResource apply(Context context) {
@@ -131,11 +123,7 @@ public final class BrokerAuthenticationResourceImpl implements BrokerAuthenticat
     }
 
     public BrokerAuthenticationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBrokerAuthentications()
-            .getWithResponse(resourceGroupName, instanceName, brokerName, authenticationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BrokerAuthenticationResource refresh(Context context) {

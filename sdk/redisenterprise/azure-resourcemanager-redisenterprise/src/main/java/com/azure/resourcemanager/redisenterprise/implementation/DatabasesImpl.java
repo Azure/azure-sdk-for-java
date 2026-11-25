@@ -53,7 +53,7 @@ public final class DatabasesImpl implements Databases {
     }
 
     public void delete(String resourceGroupName, String clusterName, String databaseName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, databaseName);
+        this.delete(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String clusterName, String databaseName, Context context) {
@@ -61,8 +61,7 @@ public final class DatabasesImpl implements Databases {
     }
 
     public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<DatabaseInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return this.listByCluster(resourceGroupName, clusterName, Context.NONE);
     }
 
     public PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context) {
@@ -90,13 +89,7 @@ public final class DatabasesImpl implements Databases {
 
     public AccessKeys regenerateKey(String resourceGroupName, String clusterName, String databaseName,
         RegenerateKeyParameters parameters) {
-        AccessKeysInner inner
-            = this.serviceClient().regenerateKey(resourceGroupName, clusterName, databaseName, parameters);
-        if (inner != null) {
-            return new AccessKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.regenerateKey(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     public AccessKeys regenerateKey(String resourceGroupName, String clusterName, String databaseName,
@@ -112,7 +105,7 @@ public final class DatabasesImpl implements Databases {
 
     public void importMethod(String resourceGroupName, String clusterName, String databaseName,
         ImportClusterParameters parameters) {
-        this.serviceClient().importMethod(resourceGroupName, clusterName, databaseName, parameters);
+        this.importMethod(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     public void importMethod(String resourceGroupName, String clusterName, String databaseName,
@@ -122,7 +115,7 @@ public final class DatabasesImpl implements Databases {
 
     public void export(String resourceGroupName, String clusterName, String databaseName,
         ExportClusterParameters parameters) {
-        this.serviceClient().export(resourceGroupName, clusterName, databaseName, parameters);
+        this.export(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     public void export(String resourceGroupName, String clusterName, String databaseName,
@@ -132,7 +125,7 @@ public final class DatabasesImpl implements Databases {
 
     public void forceUnlink(String resourceGroupName, String clusterName, String databaseName,
         ForceUnlinkParameters parameters) {
-        this.serviceClient().forceUnlink(resourceGroupName, clusterName, databaseName, parameters);
+        this.forceUnlink(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     public void forceUnlink(String resourceGroupName, String clusterName, String databaseName,
@@ -142,7 +135,7 @@ public final class DatabasesImpl implements Databases {
 
     public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
         ForceLinkParameters parameters) {
-        this.serviceClient().forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters);
+        this.forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, Context.NONE);
     }
 
     public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
@@ -161,7 +154,7 @@ public final class DatabasesImpl implements Databases {
     }
 
     public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName) {
-        this.serviceClient().upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName);
+        this.upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
     public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName,
@@ -170,102 +163,36 @@ public final class DatabasesImpl implements Databases {
     }
 
     public Database getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'redisEnterprise'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "databaseName");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Database> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'redisEnterprise'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "clusterName", "redisEnterprise", LOGGER);
+        String databaseName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "databaseName");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
+            "databaseName", "databases", LOGGER);
         return this.getWithResponse(resourceGroupName, clusterName, databaseName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'redisEnterprise'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "databaseName");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
-        this.delete(resourceGroupName, clusterName, databaseName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String clusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "clusterName");
-        if (clusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'redisEnterprise'.", id)));
-        }
-        String databaseName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "clusterName", "redisEnterprise", LOGGER);
+        String databaseName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}",
-            "databaseName");
-        if (databaseName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
-        }
+            "databaseName", "databases", LOGGER);
         this.delete(resourceGroupName, clusterName, databaseName, context);
     }
 

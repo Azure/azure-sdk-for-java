@@ -49,12 +49,7 @@ public final class PreRulesImpl implements PreRules {
 
     public PreRulesResource createOrUpdate(String globalRulestackName, String priority,
         PreRulesResourceInner resource) {
-        PreRulesResourceInner inner = this.serviceClient().createOrUpdate(globalRulestackName, priority, resource);
-        if (inner != null) {
-            return new PreRulesResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(globalRulestackName, priority, resource, Context.NONE);
     }
 
     public PreRulesResource createOrUpdate(String globalRulestackName, String priority, PreRulesResourceInner resource,
@@ -69,7 +64,7 @@ public final class PreRulesImpl implements PreRules {
     }
 
     public void deleteByResourceGroup(String globalRulestackName, String priority) {
-        this.serviceClient().delete(globalRulestackName, priority);
+        this.delete(globalRulestackName, priority, Context.NONE);
     }
 
     public void delete(String globalRulestackName, String priority, Context context) {
@@ -77,8 +72,7 @@ public final class PreRulesImpl implements PreRules {
     }
 
     public PagedIterable<PreRulesResource> list(String globalRulestackName) {
-        PagedIterable<PreRulesResourceInner> inner = this.serviceClient().list(globalRulestackName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreRulesResourceImpl(inner1, this.manager()));
+        return this.list(globalRulestackName, Context.NONE);
     }
 
     public PagedIterable<PreRulesResource> list(String globalRulestackName, Context context) {

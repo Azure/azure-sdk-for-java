@@ -117,20 +117,7 @@ public final class BillingInfoesClientImpl implements BillingInfoesClient {
         return getWithResponseAsync(resourceGroupName, monitorName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
-     * 
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace Subscription and Organization details to which resource gets billed into along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingInfoResponseInner> getWithResponse(String resourceGroupName, String monitorName,
         Context context) {
@@ -139,18 +126,7 @@ public final class BillingInfoesClientImpl implements BillingInfoesClient {
             resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * Retrieves marketplace and organization information mapped to the given New Relic monitor resource
-     * 
-     * A synchronous resource action.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace Subscription and Organization details to which resource gets billed into.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BillingInfoResponseInner get(String resourceGroupName, String monitorName) {
         return getWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();

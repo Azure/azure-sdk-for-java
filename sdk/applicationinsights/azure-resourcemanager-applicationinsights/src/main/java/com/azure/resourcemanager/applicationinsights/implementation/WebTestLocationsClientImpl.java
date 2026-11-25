@@ -154,12 +154,7 @@ public final class WebTestLocationsClientImpl implements WebTestLocationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentWebTestLocationInner> listSinglePage(String resourceGroupName,
         String resourceName) {
-        final String apiVersion = "2015-05-01";
-        final String accept = "application/json";
-        Response<ApplicationInsightsWebTestLocationsListResult> res = service.listSync(this.client.getEndpoint(),
-            apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -185,36 +180,14 @@ public final class WebTestLocationsClientImpl implements WebTestLocationsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of web test locations available to this Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of web test locations available to this Application Insights component as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentWebTestLocationInner> list(String resourceGroupName,
         String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets a list of web test locations available to this Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of web test locations available to this Application Insights component as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentWebTestLocationInner> list(String resourceGroupName,
         String resourceName, Context context) {
@@ -255,11 +228,7 @@ public final class WebTestLocationsClientImpl implements WebTestLocationsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentWebTestLocationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplicationInsightsWebTestLocationsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

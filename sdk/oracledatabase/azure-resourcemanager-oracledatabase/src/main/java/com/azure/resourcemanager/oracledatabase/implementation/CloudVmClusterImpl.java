@@ -90,10 +90,7 @@ public final class CloudVmClusterImpl implements CloudVmCluster, CloudVmCluster.
     }
 
     public CloudVmCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudVmClusters()
-            .createOrUpdate(resourceGroupName, cloudvmclustername, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudVmCluster create(Context context) {
@@ -115,10 +112,7 @@ public final class CloudVmClusterImpl implements CloudVmCluster, CloudVmCluster.
     }
 
     public CloudVmCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudVmClusters()
-            .update(resourceGroupName, cloudvmclustername, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudVmCluster apply(Context context) {
@@ -141,11 +135,7 @@ public final class CloudVmClusterImpl implements CloudVmCluster, CloudVmCluster.
     }
 
     public CloudVmCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudVmClusters()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudvmclustername, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudVmCluster refresh(Context context) {

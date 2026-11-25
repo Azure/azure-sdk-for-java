@@ -91,10 +91,7 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionVersions()
-            .create(resourceGroupName, edgeActionName, version, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeActionVersion create(Context context) {
@@ -116,10 +113,7 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionVersions()
-            .update(resourceGroupName, edgeActionName, version, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeActionVersion apply(Context context) {
@@ -145,11 +139,7 @@ public final class EdgeActionVersionImpl
     }
 
     public EdgeActionVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeActionVersions()
-            .getWithResponse(resourceGroupName, edgeActionName, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeActionVersion refresh(Context context) {

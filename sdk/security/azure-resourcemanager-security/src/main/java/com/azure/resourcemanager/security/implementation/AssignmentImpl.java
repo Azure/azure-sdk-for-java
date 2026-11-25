@@ -124,11 +124,7 @@ public final class AssignmentImpl implements Assignment, Assignment.Definition, 
     }
 
     public Assignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, assignmentId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Assignment create(Context context) {
@@ -150,11 +146,7 @@ public final class AssignmentImpl implements Assignment, Assignment.Definition, 
     }
 
     public Assignment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssignments()
-            .createOrUpdateWithResponse(resourceGroupName, assignmentId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Assignment apply(Context context) {
@@ -177,11 +169,7 @@ public final class AssignmentImpl implements Assignment, Assignment.Definition, 
     }
 
     public Assignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAssignments()
-            .getByResourceGroupWithResponse(resourceGroupName, assignmentId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Assignment refresh(Context context) {

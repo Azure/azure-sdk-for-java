@@ -45,8 +45,7 @@ public final class PlaywrightQuotasImpl implements PlaywrightQuotas {
     }
 
     public PagedIterable<PlaywrightQuota> listBySubscription(String location) {
-        PagedIterable<PlaywrightQuotaInner> inner = this.serviceClient().listBySubscription(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PlaywrightQuotaImpl(inner1, this.manager()));
+        return this.listBySubscription(location, Context.NONE);
     }
 
     public PagedIterable<PlaywrightQuota> listBySubscription(String location, Context context) {

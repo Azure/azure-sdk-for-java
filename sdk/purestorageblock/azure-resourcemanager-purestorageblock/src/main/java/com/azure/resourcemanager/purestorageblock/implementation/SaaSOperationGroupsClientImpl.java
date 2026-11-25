@@ -111,10 +111,7 @@ public final class SaaSOperationGroupsClientImpl implements SaaSOperationGroupsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> activateResourceWithResponse(ActivateSaaSRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.activateResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, body, Context.NONE);
+        return activateResourceWithResponse(body, Context.NONE);
     }
 
     /**
@@ -153,33 +150,14 @@ public final class SaaSOperationGroupsClientImpl implements SaaSOperationGroupsC
             SaaSResourceDetailsResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Activate the SaaS resource.
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of marketplace SaaS resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
         beginActivateResource(ActivateSaaSRequest body) {
-        Response<BinaryData> response = activateResourceWithResponse(body);
-        return this.client.<SaaSResourceDetailsResponseInner, SaaSResourceDetailsResponseInner>getLroResult(response,
-            SaaSResourceDetailsResponseInner.class, SaaSResourceDetailsResponseInner.class, Context.NONE);
+        return beginActivateResource(body, Context.NONE);
     }
 
-    /**
-     * Activate the SaaS resource.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of marketplace SaaS resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
         beginActivateResource(ActivateSaaSRequest body, Context context) {
@@ -202,32 +180,15 @@ public final class SaaSOperationGroupsClientImpl implements SaaSOperationGroupsC
         return beginActivateResourceAsync(body).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Activate the SaaS resource.
-     * 
-     * @param body The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace SaaS resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSRequest body) {
-        return beginActivateResource(body).getFinalResult();
+        return activateResource(body, Context.NONE);
     }
 
-    /**
-     * Activate the SaaS resource.
-     * 
-     * @param body The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace SaaS resource details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SaaSResourceDetailsResponseInner activateResource(ActivateSaaSRequest body, Context context) {
-        return beginActivateResource(body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginActivateResource(body, context));
     }
 }

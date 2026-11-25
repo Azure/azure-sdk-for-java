@@ -96,10 +96,7 @@ public final class OnlineExperimentationWorkspaceImpl implements OnlineExperimen
     }
 
     public OnlineExperimentationWorkspace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentationWorkspaces()
-            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OnlineExperimentationWorkspace create(Context context) {
@@ -122,10 +119,7 @@ public final class OnlineExperimentationWorkspaceImpl implements OnlineExperimen
     }
 
     public OnlineExperimentationWorkspace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentationWorkspaces()
-            .update(resourceGroupName, workspaceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OnlineExperimentationWorkspace apply(Context context) {
@@ -148,11 +142,7 @@ public final class OnlineExperimentationWorkspaceImpl implements OnlineExperimen
     }
 
     public OnlineExperimentationWorkspace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineExperimentationWorkspaces()
-            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OnlineExperimentationWorkspace refresh(Context context) {

@@ -119,18 +119,7 @@ public final class OperationOperationsClientImpl implements OperationOperationsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validate operation for specified backed up item. This is a synchronous operation.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource validate operation request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateOperationsResponseInner> validateWithResponse(String vaultName, String resourceGroupName,
         ValidateOperationRequestResource parameters, Context context) {
@@ -140,17 +129,7 @@ public final class OperationOperationsClientImpl implements OperationOperationsC
             resourceGroupName, this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Validate operation for specified backed up item. This is a synchronous operation.
-     * 
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters resource validate operation request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateOperationsResponseInner validate(String vaultName, String resourceGroupName,
         ValidateOperationRequestResource parameters) {

@@ -278,22 +278,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Service Fabric cluster resource.
-     * 
-     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource.
-     * 
-     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -302,20 +287,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets a Service Fabric cluster resource.
-     * 
-     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource.
-     * 
-     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
@@ -362,11 +334,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         ClusterInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     /**
@@ -414,41 +382,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Service Fabric cluster resource.
-     * 
-     * Create or update a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, ClusterInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Service Fabric cluster resource.
-     * 
-     * Create or update a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, ClusterInner parameters, Context context) {
@@ -477,42 +418,18 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Service Fabric cluster resource.
-     * 
-     * Create or update a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Service Fabric cluster resource.
-     * 
-     * Create or update a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, clusterName, parameters, context));
     }
 
     /**
@@ -556,11 +473,7 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         ClusterUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
     /**
@@ -609,43 +522,14 @@ public final class ClustersClientImpl implements ClustersClient {
             ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the configuration of a Service Fabric cluster resource.
-     * 
-     * Update the configuration of a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The parameters which contains the property value and property name which used to update the
-     * cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates the configuration of a Service Fabric cluster resource.
-     * 
-     * Update the configuration of a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The parameters which contains the property value and property name which used to update the
-     * cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterUpdateParameters parameters, Context context) {
@@ -675,44 +559,17 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the configuration of a Service Fabric cluster resource.
-     * 
-     * Update the configuration of a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The parameters which contains the property value and property name which used to update the
-     * cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, clusterName, parameters).getFinalResult();
+        return update(resourceGroupName, clusterName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates the configuration of a Service Fabric cluster resource.
-     * 
-     * Update the configuration of a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The parameters which contains the property value and property name which used to update the
-     * cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, parameters, context));
     }
 
     /**
@@ -752,36 +609,14 @@ public final class ClustersClientImpl implements ClustersClient {
         return deleteWithResponseAsync(resourceGroupName, clusterName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a Service Fabric cluster resource.
-     * 
-     * Delete a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, context);
     }
 
-    /**
-     * Deletes a Service Fabric cluster resource.
-     * 
-     * Delete a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
         deleteWithResponse(resourceGroupName, clusterName, Context.NONE);
@@ -848,11 +683,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -879,41 +710,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of Service Fabric cluster resources created in the specified resource group.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Service Fabric cluster resources created in the specified resource group.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets the list of Service Fabric cluster resources created in the specified resource group.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Service Fabric cluster resources created in the specified resource group.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -974,11 +777,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ClusterListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1004,37 +803,13 @@ public final class ClustersClientImpl implements ClustersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of Service Fabric cluster resources created in the specified subscription.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Service Fabric cluster resources created in the specified subscription.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets the list of Service Fabric cluster resources created in the specified subscription.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Service Fabric cluster resources created in the specified subscription.
-     * 
-     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1092,24 +867,7 @@ public final class ClustersClientImpl implements ClustersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
-     * path to get to the an specific target version.
-     * 
-     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
-     * version. If a target is given, it will provide the required path to get from the current cluster version to the
-     * target version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param versionsDescription The upgrade path description with target version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of intermediate cluster code versions for an upgrade or downgrade, or minimum and maximum
-     * upgradable version if no target was given along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpgradableVersionPathResultInner> listUpgradableVersionsWithResponse(String resourceGroupName,
         String clusterName, UpgradableVersionsDescription versionsDescription, Context context) {
@@ -1118,22 +876,7 @@ public final class ClustersClientImpl implements ClustersClient {
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, versionsDescription, context);
     }
 
-    /**
-     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
-     * path to get to the an specific target version.
-     * 
-     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
-     * version. If a target is given, it will provide the required path to get from the current cluster version to the
-     * target version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of intermediate cluster code versions for an upgrade or downgrade, or minimum and maximum
-     * upgradable version if no target was given.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpgradableVersionPathResultInner listUpgradableVersions(String resourceGroupName, String clusterName) {
         final UpgradableVersionsDescription versionsDescription = null;
@@ -1182,11 +925,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1252,11 +991,7 @@ public final class ClustersClientImpl implements ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -124,12 +124,7 @@ public final class TopicRecordImpl implements TopicRecord, TopicRecord.Definitio
     }
 
     public TopicRecord create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopics()
-            .createWithResponse(resourceGroupName, organizationName, environmentId, clusterId, topicName,
-                this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TopicRecord create(Context context) {
@@ -148,11 +143,7 @@ public final class TopicRecordImpl implements TopicRecord, TopicRecord.Definitio
     }
 
     public TopicRecord refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTopics()
-            .getWithResponse(resourceGroupName, organizationName, environmentId, clusterId, topicName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TopicRecord refresh(Context context) {

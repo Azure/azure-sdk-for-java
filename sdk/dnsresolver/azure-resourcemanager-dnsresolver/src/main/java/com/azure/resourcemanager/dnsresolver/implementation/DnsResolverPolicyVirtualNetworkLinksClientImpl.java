@@ -247,19 +247,7 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets properties of a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS resolver policy virtual network link along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsResolverPolicyVirtualNetworkLinkInner> getWithResponse(String resourceGroupName,
         String dnsResolverPolicyName, String dnsResolverPolicyVirtualNetworkLinkName, Context context) {
@@ -268,18 +256,7 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
             resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, accept, context);
     }
 
-    /**
-     * Gets properties of a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverPolicyVirtualNetworkLinkInner get(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName) {
@@ -338,12 +315,8 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkInner parameters,
         String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, ifMatch, ifNoneMatch, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, dnsResolverPolicyName,
+            dnsResolverPolicyVirtualNetworkLinkName, parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -454,59 +427,22 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
         beginCreateOrUpdate(String resourceGroupName, String dnsResolverPolicyName,
             String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkInner parameters,
             String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
-        return this.client
-            .<DnsResolverPolicyVirtualNetworkLinkInner, DnsResolverPolicyVirtualNetworkLinkInner>getLroResult(response,
-                DnsResolverPolicyVirtualNetworkLinkInner.class, DnsResolverPolicyVirtualNetworkLinkInner.class,
-                Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
+            parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
         beginCreateOrUpdate(String resourceGroupName, String dnsResolverPolicyName,
             String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, parameters, ifMatch, ifNoneMatch);
-        return this.client
-            .<DnsResolverPolicyVirtualNetworkLinkInner, DnsResolverPolicyVirtualNetworkLinkInner>getLroResult(response,
-                DnsResolverPolicyVirtualNetworkLinkInner.class, DnsResolverPolicyVirtualNetworkLinkInner.class,
-                Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
+            parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
         beginCreateOrUpdate(String resourceGroupName, String dnsResolverPolicyName,
@@ -570,53 +506,24 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
                 .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverPolicyVirtualNetworkLinkInner createOrUpdate(String resourceGroupName,
         String dnsResolverPolicyName, String dnsResolverPolicyVirtualNetworkLinkName,
         DnsResolverPolicyVirtualNetworkLinkInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-            parameters, ifMatch, ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
+            parameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Creates or updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverPolicyVirtualNetworkLinkInner createOrUpdate(String resourceGroupName,
         String dnsResolverPolicyName, String dnsResolverPolicyVirtualNetworkLinkName,
         DnsResolverPolicyVirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-            parameters, ifMatch, ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, dnsResolverPolicyName,
+            dnsResolverPolicyVirtualNetworkLinkName, parameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -667,11 +574,8 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkPatch parameters,
         String ifMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, ifMatch, contentType, accept, parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
+            parameters, ifMatch, Context.NONE);
     }
 
     /**
@@ -775,56 +679,21 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
         beginUpdate(String resourceGroupName, String dnsResolverPolicyName,
             String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkPatch parameters,
             String ifMatch) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, parameters, ifMatch);
-        return this.client
-            .<DnsResolverPolicyVirtualNetworkLinkInner, DnsResolverPolicyVirtualNetworkLinkInner>getLroResult(response,
-                DnsResolverPolicyVirtualNetworkLinkInner.class, DnsResolverPolicyVirtualNetworkLinkInner.class,
-                Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
+            parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
         beginUpdate(String resourceGroupName, String dnsResolverPolicyName,
             String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkPatch parameters) {
         final String ifMatch = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, parameters, ifMatch);
-        return this.client
-            .<DnsResolverPolicyVirtualNetworkLinkInner, DnsResolverPolicyVirtualNetworkLinkInner>getLroResult(response,
-                DnsResolverPolicyVirtualNetworkLinkInner.class, DnsResolverPolicyVirtualNetworkLinkInner.class,
-                Context.NONE);
+        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
+            parameters, ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DnsResolverPolicyVirtualNetworkLinkInner>, DnsResolverPolicyVirtualNetworkLinkInner>
         beginUpdate(String resourceGroupName, String dnsResolverPolicyName,
@@ -883,49 +752,22 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
             parameters, ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverPolicyVirtualNetworkLinkInner update(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkPatch parameters) {
         final String ifMatch = null;
-        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-            parameters, ifMatch).getFinalResult();
+        return update(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, parameters,
+            ifMatch, Context.NONE);
     }
 
-    /**
-     * Updates a DNS resolver policy virtual network link.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS resolver policy virtual network link.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResolverPolicyVirtualNetworkLinkInner update(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, DnsResolverPolicyVirtualNetworkLinkPatch parameters,
         String ifMatch, Context context) {
-        return beginUpdate(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
-            parameters, ifMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, dnsResolverPolicyName,
+            dnsResolverPolicyVirtualNetworkLinkName, parameters, ifMatch, context));
     }
 
     /**
@@ -969,9 +811,8 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, ifMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
+            ifMatch, Context.NONE);
     }
 
     /**
@@ -1059,47 +900,20 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a DNS resolver policy virtual network link. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dnsResolverPolicyName,
-            dnsResolverPolicyVirtualNetworkLinkName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a DNS resolver policy virtual network link. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, String ifMatch, Context context) {
@@ -1149,44 +963,21 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
             ifMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a DNS resolver policy virtual network link. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, ifMatch)
-            .getFinalResult();
+        delete(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, ifMatch,
+            Context.NONE);
     }
 
-    /**
-     * Deletes a DNS resolver policy virtual network link. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param dnsResolverPolicyVirtualNetworkLinkName The name of the DNS resolver policy virtual network link for the
-     * DNS resolver policy.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsResolverPolicyName,
         String dnsResolverPolicyVirtualNetworkLinkName, String ifMatch, Context context) {
-        beginDelete(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, ifMatch, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, dnsResolverPolicyName,
+            dnsResolverPolicyVirtualNetworkLinkName, ifMatch, context));
     }
 
     /**
@@ -1266,12 +1057,7 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsResolverPolicyVirtualNetworkLinkInner> listSinglePage(String resourceGroupName,
         String dnsResolverPolicyName, Integer top) {
-        final String accept = "application/json";
-        Response<DnsResolverPolicyVirtualNetworkLinkListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, dnsResolverPolicyName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, dnsResolverPolicyName, top, Context.NONE);
     }
 
     /**
@@ -1297,38 +1083,15 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists DNS resolver policy virtual network links.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsResolverPolicyVirtualNetworkLink list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverPolicyVirtualNetworkLinkInner> list(String resourceGroupName,
         String dnsResolverPolicyName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, dnsResolverPolicyName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, dnsResolverPolicyName, top, Context.NONE);
     }
 
-    /**
-     * Lists DNS resolver policy virtual network links.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverPolicyName The name of the DNS resolver policy.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DnsResolverPolicyVirtualNetworkLink list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DnsResolverPolicyVirtualNetworkLinkInner> list(String resourceGroupName,
         String dnsResolverPolicyName, Integer top, Context context) {
@@ -1367,11 +1130,7 @@ public final class DnsResolverPolicyVirtualNetworkLinksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsResolverPolicyVirtualNetworkLinkInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DnsResolverPolicyVirtualNetworkLinkListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

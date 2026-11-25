@@ -239,18 +239,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics configuration of the provided cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterMetricsConfigurationInner> getWithResponse(String resourceGroupName, String clusterName,
         String metricsConfigurationName, Context context) {
@@ -259,17 +248,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             resourceGroupName, clusterName, metricsConfigurationName, accept, context);
     }
 
-    /**
-     * Get metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metrics configuration of the provided cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMetricsConfigurationInner get(String resourceGroupName, String clusterName,
         String metricsConfigurationName) {
@@ -327,11 +306,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters,
         String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName, ifMatch,
-            ifNoneMatch, contentType, accept, metricsConfigurationParameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -438,55 +414,22 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     private SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName,
             ClusterMetricsConfigurationInner metricsConfigurationParameters, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName,
-            metricsConfigurationName, metricsConfigurationParameters, ifMatch, ifNoneMatch);
-        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(response,
-            ClusterMetricsConfigurationInner.class, ClusterMetricsConfigurationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create new or update the existing metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param metricsConfigurationParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     * an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName,
             ClusterMetricsConfigurationInner metricsConfigurationParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName,
-            metricsConfigurationName, metricsConfigurationParameters, ifMatch, ifNoneMatch);
-        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(response,
-            ClusterMetricsConfigurationInner.class, ClusterMetricsConfigurationInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, metricsConfigurationName,
+            metricsConfigurationParameters, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create new or update the existing metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param metricsConfigurationParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     * an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName,
@@ -545,50 +488,23 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             metricsConfigurationParameters, ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create new or update the existing metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param metricsConfigurationParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMetricsConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
         String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, clusterName, metricsConfigurationName,
-            metricsConfigurationParameters, ifMatch, ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationParameters,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create new or update the existing metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param metricsConfigurationParameters The request body.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMetricsConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
         String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters,
         String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, metricsConfigurationName,
-            metricsConfigurationParameters, ifMatch, ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, clusterName,
+            metricsConfigurationName, metricsConfigurationParameters, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -643,10 +559,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         String metricsConfigurationName, String ifMatch, String ifNoneMatch,
         ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters) {
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName, ifMatch,
-            ifNoneMatch, accept, metricsConfigurationUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
+            metricsConfigurationUpdateParameters, Context.NONE);
     }
 
     /**
@@ -755,56 +669,22 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     private SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
         String resourceGroupName, String clusterName, String metricsConfigurationName, String ifMatch,
         String ifNoneMatch, ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, metricsConfigurationName,
-            ifMatch, ifNoneMatch, metricsConfigurationUpdateParameters);
-        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(response,
-            ClusterMetricsConfigurationInner.class, ClusterMetricsConfigurationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
+            metricsConfigurationUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     * an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
         beginUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters = null;
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, metricsConfigurationName,
-            ifMatch, ifNoneMatch, metricsConfigurationUpdateParameters);
-        return this.client.<ClusterMetricsConfigurationInner, ClusterMetricsConfigurationInner>getLroResult(response,
-            ClusterMetricsConfigurationInner.class, ClusterMetricsConfigurationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
+            metricsConfigurationUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param metricsConfigurationUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of clusterMetricsConfiguration represents the metrics configuration of
-     * an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
         String resourceGroupName, String clusterName, String metricsConfigurationName, String ifMatch,
@@ -865,52 +745,24 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             metricsConfigurationUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMetricsConfigurationInner update(String resourceGroupName, String clusterName,
         String metricsConfigurationName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters = null;
-        return beginUpdate(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
-            metricsConfigurationUpdateParameters).getFinalResult();
+        return update(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
+            metricsConfigurationUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param metricsConfigurationUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterMetricsConfigurationInner update(String resourceGroupName, String clusterName,
         String metricsConfigurationName, String ifMatch, String ifNoneMatch,
         ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
-            metricsConfigurationUpdateParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName,
+            metricsConfigurationName, ifMatch, ifNoneMatch, metricsConfigurationUpdateParameters, context));
     }
 
     /**
@@ -956,9 +808,8 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String metricsConfigurationName, String ifMatch, String ifNoneMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, metricsConfigurationName, ifMatch,
-            ifNoneMatch, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
     /**
@@ -1049,48 +900,21 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String metricsConfigurationName, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Delete the metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String metricsConfigurationName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Delete the metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String metricsConfigurationName, String ifMatch, String ifNoneMatch, Context context) {
@@ -1140,43 +964,20 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String metricsConfigurationName) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        beginDelete(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch).getFinalResult();
+        delete(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Delete the metrics configuration of the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param metricsConfigurationName The name of the metrics configuration for the cluster.
-     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
-     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
-     * resource. Other values will result in error from server as they are not supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String metricsConfigurationName, String ifMatch,
         String ifNoneMatch, Context context) {
-        beginDelete(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -1260,12 +1061,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMetricsConfigurationInner> listByClusterSinglePage(String resourceGroupName,
         String clusterName, Integer top, String skipToken) {
-        final String accept = "application/json";
-        Response<ClusterMetricsConfigurationList> res
-            = service.listByClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterSinglePage(resourceGroupName, clusterName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -1293,40 +1089,15 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a list of metrics configurations for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations for the provided cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listByClusterSinglePage(resourceGroupName, clusterName, top, skipToken),
-            nextLink -> listByClusterNextSinglePage(nextLink));
+        return listByCluster(resourceGroupName, clusterName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * Get a list of metrics configurations for the provided cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
-     * This is used for paging through large result sets.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of metrics configurations for the provided cluster as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName,
         Integer top, String skipToken, Context context) {
@@ -1366,11 +1137,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterMetricsConfigurationInner> listByClusterNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterMetricsConfigurationList> res
-            = service.listByClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByClusterNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

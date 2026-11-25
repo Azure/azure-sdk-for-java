@@ -26,8 +26,7 @@ public final class QuotaUsagesImpl implements QuotaUsages {
     }
 
     public PagedIterable<QuotaUsage> list(String locationName) {
-        PagedIterable<QuotaUsageInner> inner = this.serviceClient().list(locationName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaUsageImpl(inner1, this.manager()));
+        return this.list(locationName, Context.NONE);
     }
 
     public PagedIterable<QuotaUsage> list(String locationName, Context context) {

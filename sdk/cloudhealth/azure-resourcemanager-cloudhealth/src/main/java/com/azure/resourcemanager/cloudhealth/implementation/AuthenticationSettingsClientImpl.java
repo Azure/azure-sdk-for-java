@@ -212,18 +212,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AuthenticationSetting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthenticationSettingInner> getWithResponse(String resourceGroupName, String healthModelName,
         String authenticationSettingName, Context context) {
@@ -232,17 +221,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             resourceGroupName, healthModelName, authenticationSettingName, accept, context);
     }
 
-    /**
-     * Get a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AuthenticationSetting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthenticationSettingInner get(String resourceGroupName, String healthModelName,
         String authenticationSettingName) {
@@ -289,11 +268,8 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String authenticationSettingName, AuthenticationSettingInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName, resource,
+            Context.NONE);
     }
 
     /**
@@ -342,41 +318,16 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             this.client.getContext());
     }
 
-    /**
-     * Create a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an authentication setting in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AuthenticationSettingInner>, AuthenticationSettingInner> beginCreateOrUpdate(
         String resourceGroupName, String healthModelName, String authenticationSettingName,
         AuthenticationSettingInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName, resource);
-        return this.client.<AuthenticationSettingInner, AuthenticationSettingInner>getLroResult(response,
-            AuthenticationSettingInner.class, AuthenticationSettingInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an authentication setting in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AuthenticationSettingInner>, AuthenticationSettingInner> beginCreateOrUpdate(
         String resourceGroupName, String healthModelName, String authenticationSettingName,
@@ -406,43 +357,19 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authentication setting in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthenticationSettingInner createOrUpdate(String resourceGroupName, String healthModelName,
         String authenticationSettingName, AuthenticationSettingInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, resource, Context.NONE);
     }
 
-    /**
-     * Create a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authentication setting in a health model.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthenticationSettingInner createOrUpdate(String resourceGroupName, String healthModelName,
         String authenticationSettingName, AuthenticationSettingInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, resource, context));
     }
 
     /**
@@ -478,9 +405,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
         String authenticationSettingName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, healthModelName, authenticationSettingName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE);
     }
 
     /**
@@ -522,37 +447,14 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             this.client.getContext());
     }
 
-    /**
-     * Delete a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
         String authenticationSettingName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, healthModelName, authenticationSettingName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE);
     }
 
-    /**
-     * Delete a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
         String authenticationSettingName, Context context) {
@@ -578,36 +480,18 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String authenticationSettingName) {
-        beginDelete(resourceGroupName, healthModelName, authenticationSettingName).getFinalResult();
+        delete(resourceGroupName, healthModelName, authenticationSettingName, Context.NONE);
     }
 
-    /**
-     * Delete a AuthenticationSetting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param authenticationSettingName Name of the authentication setting. Must be unique within a health model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String authenticationSettingName,
         Context context) {
-        beginDelete(resourceGroupName, healthModelName, authenticationSettingName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, healthModelName, authenticationSettingName, context));
     }
 
     /**
@@ -663,12 +547,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthenticationSettingInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName) {
-        final String accept = "application/json";
-        Response<AuthenticationSettingListResult> res
-            = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, healthModelName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHealthModelSinglePage(resourceGroupName, healthModelName, Context.NONE);
     }
 
     /**
@@ -693,34 +572,14 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AuthenticationSetting resources by HealthModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthenticationSetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthenticationSettingInner> listByHealthModel(String resourceGroupName,
         String healthModelName) {
-        return new PagedIterable<>(() -> listByHealthModelSinglePage(resourceGroupName, healthModelName),
-            nextLink -> listByHealthModelNextSinglePage(nextLink));
+        return listByHealthModel(resourceGroupName, healthModelName, Context.NONE);
     }
 
-    /**
-     * List AuthenticationSetting resources by HealthModel.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param healthModelName Name of health model resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthenticationSetting list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthenticationSettingInner> listByHealthModel(String resourceGroupName, String healthModelName,
         Context context) {
@@ -759,11 +618,7 @@ public final class AuthenticationSettingsClientImpl implements AuthenticationSet
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AuthenticationSettingInner> listByHealthModelNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AuthenticationSettingListResult> res
-            = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByHealthModelNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

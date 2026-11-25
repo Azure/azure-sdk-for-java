@@ -227,18 +227,7 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a RecoveryJob.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryJob along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryJobInner> getWithResponse(String serviceGroupName, String recoveryPlanName,
         String recoveryJobName, Context context) {
@@ -247,17 +236,7 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             recoveryPlanName, recoveryJobName, accept, context);
     }
 
-    /**
-     * Get a RecoveryJob.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RecoveryJob.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryJobInner get(String serviceGroupName, String recoveryPlanName, String recoveryJobName) {
         return getWithResponse(serviceGroupName, recoveryPlanName, recoveryJobName, Context.NONE).getValue();
@@ -314,11 +293,7 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryJobInner> listSinglePage(String serviceGroupName, String recoveryPlanName) {
-        final String accept = "application/json";
-        Response<RecoveryJobListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), recoveryPlanName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -342,33 +317,13 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List RecoveryJob resources by RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryJob list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryJobInner> list(String serviceGroupName, String recoveryPlanName) {
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, recoveryPlanName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * List RecoveryJob resources by RecoveryPlan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoveryJob list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryJobInner> list(String serviceGroupName, String recoveryPlanName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(serviceGroupName, recoveryPlanName, context),
@@ -417,9 +372,7 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, String recoveryJobName, RecoveryActionRequest body) {
-        final String contentType = "application/json";
-        return service.cancelSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), operationId,
-            recoveryPlanName, recoveryJobName, contentType, body, Context.NONE);
+        return cancelWithResponse(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
     /**
@@ -470,45 +423,15 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * This action attempts to cancel the ongoing recovery orchestration job.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse> beginCancel(
         String serviceGroupName, String operationId, String recoveryPlanName, String recoveryJobName,
         RecoveryActionRequest body) {
-        Response<BinaryData> response
-            = cancelWithResponse(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body);
-        return this.client.<ArmResponseErrorResponse, ArmResponseErrorResponse>getLroResult(response,
-            ArmResponseErrorResponse.class, ArmResponseErrorResponse.class, Context.NONE);
+        return beginCancel(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
-    /**
-     * This action attempts to cancel the ongoing recovery orchestration job.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse> beginCancel(
         String serviceGroupName, String operationId, String recoveryPlanName, String recoveryJobName,
@@ -540,46 +463,19 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action attempts to cancel the ongoing recovery orchestration job.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse cancel(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName, RecoveryActionRequest body) {
-        return beginCancel(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body).getFinalResult();
+        return cancel(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
-    /**
-     * This action attempts to cancel the ongoing recovery orchestration job.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse cancel(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName, RecoveryActionRequest body, Context context) {
-        return beginCancel(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCancel(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, context));
     }
 
     /**
@@ -624,9 +520,7 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, String recoveryJobName, RecoveryActionRequest body) {
-        final String contentType = "application/json";
-        return service.resumeSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), operationId,
-            recoveryPlanName, recoveryJobName, contentType, body, Context.NONE);
+        return resumeWithResponse(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
     /**
@@ -677,45 +571,15 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse> beginResume(
         String serviceGroupName, String operationId, String recoveryPlanName, String recoveryJobName,
         RecoveryActionRequest body) {
-        Response<BinaryData> response
-            = resumeWithResponse(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body);
-        return this.client.<ArmResponseErrorResponse, ArmResponseErrorResponse>getLroResult(response,
-            ArmResponseErrorResponse.class, ArmResponseErrorResponse.class, Context.NONE);
+        return beginResume(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
-    /**
-     * This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse> beginResume(
         String serviceGroupName, String operationId, String recoveryPlanName, String recoveryJobName,
@@ -747,46 +611,19 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse resume(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName, RecoveryActionRequest body) {
-        return beginResume(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body).getFinalResult();
+        return resume(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, Context.NONE);
     }
 
-    /**
-     * This action resumes the ongoing recovery orchestration job that was paused for required user intervention.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse resume(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName, RecoveryActionRequest body, Context context) {
-        return beginResume(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginResume(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, body, context));
     }
 
     /**
@@ -827,8 +664,7 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> retryWithResponse(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName) {
-        return service.retrySync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(), operationId,
-            recoveryPlanName, recoveryJobName, Context.NONE);
+        return retryWithResponse(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, Context.NONE);
     }
 
     /**
@@ -875,42 +711,14 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse>
         beginRetry(String serviceGroupName, String operationId, String recoveryPlanName, String recoveryJobName) {
-        Response<BinaryData> response
-            = retryWithResponse(serviceGroupName, operationId, recoveryPlanName, recoveryJobName);
-        return this.client.<ArmResponseErrorResponse, ArmResponseErrorResponse>getLroResult(response,
-            ArmResponseErrorResponse.class, ArmResponseErrorResponse.class, Context.NONE);
+        return beginRetry(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, Context.NONE);
     }
 
-    /**
-     * This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse> beginRetry(
         String serviceGroupName, String operationId, String recoveryPlanName, String recoveryJobName, Context context) {
@@ -940,43 +748,19 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse retry(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName) {
-        return beginRetry(serviceGroupName, operationId, recoveryPlanName, recoveryJobName).getFinalResult();
+        return retry(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, Context.NONE);
     }
 
-    /**
-     * This action retries the ongoing recovery orchestration job for resources that failed in previous attempts.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param recoveryJobName The unique name (GUID) of the recovery job.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse retry(String serviceGroupName, String operationId, String recoveryPlanName,
         String recoveryJobName, Context context) {
-        return beginRetry(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRetry(serviceGroupName, operationId, recoveryPlanName, recoveryJobName, context));
     }
 
     /**
@@ -1009,11 +793,7 @@ public final class RecoveryJobsClientImpl implements RecoveryJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryJobInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoveryJobListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

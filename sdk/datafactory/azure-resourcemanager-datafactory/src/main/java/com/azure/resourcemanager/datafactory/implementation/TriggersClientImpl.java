@@ -318,18 +318,7 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Query triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the triggers.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerQueryResponseInner> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
         TriggerFilterParameters filterParameters, Context context) {
@@ -340,17 +329,7 @@ public final class TriggersClientImpl implements TriggersClient {
             context);
     }
 
-    /**
-     * Query triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the triggers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerQueryResponseInner queryByFactory(String resourceGroupName, String factoryName,
         TriggerFilterParameters filterParameters) {
@@ -397,20 +376,7 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String triggerName, String ifNoneMatch, Context context) {
@@ -419,17 +385,7 @@ public final class TriggersClientImpl implements TriggersClient {
             resourceGroupName, factoryName, triggerName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerResourceInner get(String resourceGroupName, String factoryName, String triggerName) {
         final String ifNoneMatch = null;
@@ -482,21 +438,7 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
-     * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
         String triggerName, TriggerResourceInner trigger, String ifMatch, Context context) {
@@ -507,18 +449,7 @@ public final class TriggersClientImpl implements TriggersClient {
             trigger, context);
     }
 
-    /**
-     * Creates or updates a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerResourceInner createOrUpdate(String resourceGroupName, String factoryName, String triggerName,
         TriggerResourceInner trigger) {
@@ -563,18 +494,7 @@ public final class TriggersClientImpl implements TriggersClient {
         return deleteWithResponseAsync(resourceGroupName, factoryName, triggerName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String triggerName,
         Context context) {
@@ -582,16 +502,7 @@ public final class TriggersClientImpl implements TriggersClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, triggerName, context);
     }
 
-    /**
-     * Deletes a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String triggerName) {
         deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
@@ -647,12 +558,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TriggerResourceInner> listByFactorySinglePage(String resourceGroupName, String factoryName) {
-        final String accept = "application/json";
-        Response<TriggerListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -677,33 +583,13 @@ public final class TriggersClientImpl implements TriggersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists triggers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -747,9 +633,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> subscribeToEventsWithResponse(String resourceGroupName, String factoryName,
         String triggerName) {
-        final String accept = "application/json";
-        return service.subscribeToEventsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, triggerName, accept, Context.NONE);
+        return subscribeToEventsWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     /**
@@ -794,39 +678,14 @@ public final class TriggersClientImpl implements TriggersClient {
                 TriggerSubscriptionOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Subscribe event trigger to events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName) {
-        Response<BinaryData> response = subscribeToEventsWithResponse(resourceGroupName, factoryName, triggerName);
-        return this.client
-            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(response,
-                TriggerSubscriptionOperationStatusInner.class, TriggerSubscriptionOperationStatusInner.class,
-                Context.NONE);
+        return beginSubscribeToEvents(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Subscribe event trigger to events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
@@ -855,39 +714,19 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Subscribe event trigger to events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner subscribeToEvents(String resourceGroupName, String factoryName,
         String triggerName) {
-        return beginSubscribeToEvents(resourceGroupName, factoryName, triggerName).getFinalResult();
+        return subscribeToEvents(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Subscribe event trigger to events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner subscribeToEvents(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
-        return beginSubscribeToEvents(resourceGroupName, factoryName, triggerName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginSubscribeToEvents(resourceGroupName, factoryName, triggerName, context));
     }
 
     /**
@@ -931,18 +770,7 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a trigger's event subscription status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerSubscriptionOperationStatusInner> getEventSubscriptionStatusWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
@@ -951,17 +779,7 @@ public final class TriggersClientImpl implements TriggersClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, triggerName, accept, context);
     }
 
-    /**
-     * Get a trigger's event subscription status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner getEventSubscriptionStatus(String resourceGroupName,
         String factoryName, String triggerName) {
@@ -1006,9 +824,7 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> unsubscribeFromEventsWithResponse(String resourceGroupName, String factoryName,
         String triggerName) {
-        final String accept = "application/json";
-        return service.unsubscribeFromEventsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, triggerName, accept, Context.NONE);
+        return unsubscribeFromEventsWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     /**
@@ -1053,39 +869,14 @@ public final class TriggersClientImpl implements TriggersClient {
                 TriggerSubscriptionOperationStatusInner.class, this.client.getContext());
     }
 
-    /**
-     * Unsubscribe event trigger from events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName) {
-        Response<BinaryData> response = unsubscribeFromEventsWithResponse(resourceGroupName, factoryName, triggerName);
-        return this.client
-            .<TriggerSubscriptionOperationStatusInner, TriggerSubscriptionOperationStatusInner>getLroResult(response,
-                TriggerSubscriptionOperationStatusInner.class, TriggerSubscriptionOperationStatusInner.class,
-                Context.NONE);
+        return beginUnsubscribeFromEvents(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Unsubscribe event trigger from events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
@@ -1114,39 +905,19 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Unsubscribe event trigger from events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner unsubscribeFromEvents(String resourceGroupName, String factoryName,
         String triggerName) {
-        return beginUnsubscribeFromEvents(resourceGroupName, factoryName, triggerName).getFinalResult();
+        return unsubscribeFromEvents(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Unsubscribe event trigger from events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerSubscriptionOperationStatusInner unsubscribeFromEvents(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
-        return beginUnsubscribeFromEvents(resourceGroupName, factoryName, triggerName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUnsubscribeFromEvents(resourceGroupName, factoryName, triggerName, context));
     }
 
     /**
@@ -1182,8 +953,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String factoryName, String triggerName) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, triggerName, Context.NONE);
+        return startWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     /**
@@ -1224,36 +994,14 @@ public final class TriggersClientImpl implements TriggersClient {
             this.client.getContext());
     }
 
-    /**
-     * Starts a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String factoryName,
         String triggerName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, factoryName, triggerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Starts a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
@@ -1278,35 +1026,16 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String factoryName, String triggerName) {
-        beginStart(resourceGroupName, factoryName, triggerName).getFinalResult();
+        start(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Starts a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        beginStart(resourceGroupName, factoryName, triggerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, factoryName, triggerName, context));
     }
 
     /**
@@ -1342,8 +1071,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String factoryName, String triggerName) {
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, factoryName, triggerName, Context.NONE);
+        return stopWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     /**
@@ -1384,36 +1112,14 @@ public final class TriggersClientImpl implements TriggersClient {
             this.client.getContext());
     }
 
-    /**
-     * Stops a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName,
         String triggerName) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, factoryName, triggerName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Stops a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName,
         String triggerName, Context context) {
@@ -1438,35 +1144,16 @@ public final class TriggersClientImpl implements TriggersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String factoryName, String triggerName) {
-        beginStop(resourceGroupName, factoryName, triggerName).getFinalResult();
+        stop(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
-    /**
-     * Stops a trigger.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String factoryName, String triggerName, Context context) {
-        beginStop(resourceGroupName, factoryName, triggerName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStop(resourceGroupName, factoryName, triggerName, context));
     }
 
     /**
@@ -1499,11 +1186,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TriggerResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TriggerListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

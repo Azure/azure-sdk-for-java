@@ -153,32 +153,13 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of a long running azure asynchronous operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String location, String operationId, Context context) {
         return getWithResponseAsync(location, operationId, context).block();
     }
 
-    /**
-     * Get the status of a long running azure asynchronous operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String location, String operationId) {
         return getWithResponse(location, operationId, Context.NONE).getValue();

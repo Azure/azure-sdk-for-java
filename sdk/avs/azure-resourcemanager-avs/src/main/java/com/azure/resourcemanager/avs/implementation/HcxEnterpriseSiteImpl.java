@@ -70,12 +70,7 @@ public final class HcxEnterpriseSiteImpl
     }
 
     public HcxEnterpriseSite create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcxEnterpriseSites()
-            .createOrUpdateWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public HcxEnterpriseSite create(Context context) {
@@ -98,12 +93,7 @@ public final class HcxEnterpriseSiteImpl
     }
 
     public HcxEnterpriseSite apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcxEnterpriseSites()
-            .createOrUpdateWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public HcxEnterpriseSite apply(Context context) {
@@ -130,11 +120,7 @@ public final class HcxEnterpriseSiteImpl
     }
 
     public HcxEnterpriseSite refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getHcxEnterpriseSites()
-            .getWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public HcxEnterpriseSite refresh(Context context) {

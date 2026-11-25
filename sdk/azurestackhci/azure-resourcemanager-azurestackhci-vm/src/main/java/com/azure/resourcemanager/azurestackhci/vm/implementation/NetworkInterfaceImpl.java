@@ -91,10 +91,7 @@ public final class NetworkInterfaceImpl
     }
 
     public NetworkInterface create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkInterfaces()
-            .createOrUpdate(resourceGroupName, networkInterfaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkInterface create(Context context) {
@@ -117,10 +114,7 @@ public final class NetworkInterfaceImpl
     }
 
     public NetworkInterface apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkInterfaces()
-            .update(resourceGroupName, networkInterfaceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkInterface apply(Context context) {
@@ -143,11 +137,7 @@ public final class NetworkInterfaceImpl
     }
 
     public NetworkInterface refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkInterfaces()
-            .getByResourceGroupWithResponse(resourceGroupName, networkInterfaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkInterface refresh(Context context) {

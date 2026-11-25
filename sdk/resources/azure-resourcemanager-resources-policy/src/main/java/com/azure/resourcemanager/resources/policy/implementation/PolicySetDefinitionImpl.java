@@ -106,11 +106,7 @@ public final class PolicySetDefinitionImpl
     private String policySetDefinitionName;
 
     public PolicySetDefinition create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitions()
-            .createOrUpdateWithResponse(policySetDefinitionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicySetDefinition create(Context context) {
@@ -132,11 +128,7 @@ public final class PolicySetDefinitionImpl
     }
 
     public PolicySetDefinition apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitions()
-            .createOrUpdateWithResponse(policySetDefinitionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PolicySetDefinition apply(Context context) {
@@ -167,12 +159,7 @@ public final class PolicySetDefinitionImpl
     }
 
     public PolicySetDefinition refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicySetDefinitions()
-            .getWithResponse(policySetDefinitionName, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicySetDefinition refresh(Context context) {

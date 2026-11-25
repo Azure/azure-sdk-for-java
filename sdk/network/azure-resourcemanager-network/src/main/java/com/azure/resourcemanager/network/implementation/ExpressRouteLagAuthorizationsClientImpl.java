@@ -134,18 +134,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route LAG along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteLagAuthorizationInner>> getWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, String authorizationName) {
@@ -220,18 +209,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             expressRouteLagName, authorizationName, accept, context);
     }
 
-    /**
-     * Gets the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route LAG on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLagAuthorizationInner> getAsync(String resourceGroupName, String expressRouteLagName,
         String authorizationName) {
@@ -239,54 +217,21 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route LAG along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteLagAuthorizationInner> getWithResponse(String resourceGroupName,
         String expressRouteLagName, String authorizationName, Context context) {
         return getWithResponseAsync(resourceGroupName, expressRouteLagName, authorizationName, context).block();
     }
 
-    /**
-     * Gets the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route LAG.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagAuthorizationInner get(String resourceGroupName, String expressRouteLagName,
         String authorizationName) {
         return getWithResponse(resourceGroupName, expressRouteLagName, authorizationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param authorizationParameters Parameters supplied to the create or update express route LAG authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Lag Authorization along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, String authorizationName,
@@ -380,19 +325,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             context);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param authorizationParameters Parameters supplied to the create or update express route LAG authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of expressRoute Lag Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteLagAuthorizationInner>, ExpressRouteLagAuthorizationInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String expressRouteLagName, String authorizationName,
@@ -430,19 +363,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             ExpressRouteLagAuthorizationInner.class, context);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param authorizationParameters Parameters supplied to the create or update express route LAG authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute Lag Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteLagAuthorizationInner>, ExpressRouteLagAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String expressRouteLagName, String authorizationName,
@@ -453,20 +374,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param authorizationParameters Parameters supplied to the create or update express route LAG authorization
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of expressRoute Lag Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteLagAuthorizationInner>, ExpressRouteLagAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String expressRouteLagName, String authorizationName,
@@ -477,19 +385,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param authorizationParameters Parameters supplied to the create or update express route LAG authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Lag Authorization on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLagAuthorizationInner> createOrUpdateAsync(String resourceGroupName,
         String expressRouteLagName, String authorizationName,
@@ -520,19 +416,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             authorizationParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param authorizationParameters Parameters supplied to the create or update express route LAG authorization
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Lag Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagAuthorizationInner createOrUpdate(String resourceGroupName, String expressRouteLagName,
         String authorizationName, ExpressRouteLagAuthorizationInner authorizationParameters) {
@@ -540,20 +424,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             .block();
     }
 
-    /**
-     * Creates or updates an authorization in the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param authorizationParameters Parameters supplied to the create or update express route LAG authorization
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute Lag Authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLagAuthorizationInner createOrUpdate(String resourceGroupName, String expressRouteLagName,
         String authorizationName, ExpressRouteLagAuthorizationInner authorizationParameters, Context context) {
@@ -561,17 +432,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             context).block();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, String authorizationName) {
@@ -643,17 +504,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             expressRouteLagName, authorizationName, context);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String expressRouteLagName,
         String authorizationName) {
@@ -685,35 +536,14 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             context);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteLagName,
         String authorizationName) {
         return this.beginDeleteAsync(resourceGroupName, expressRouteLagName, authorizationName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteLagName,
         String authorizationName, Context context) {
@@ -721,17 +551,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             .getSyncPoller();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String expressRouteLagName, String authorizationName) {
         return beginDeleteAsync(resourceGroupName, expressRouteLagName, authorizationName).last()
@@ -757,32 +577,13 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String expressRouteLagName, String authorizationName) {
         deleteAsync(resourceGroupName, expressRouteLagName, authorizationName).block();
     }
 
-    /**
-     * Deletes the specified authorization from the specified express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String expressRouteLagName, String authorizationName,
         Context context) {
@@ -870,16 +671,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all authorizations in an express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route LAG as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLagAuthorizationInner> listAsync(String resourceGroupName,
         String expressRouteLagName) {
@@ -905,50 +697,20 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all authorizations in an express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route LAG as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagAuthorizationInner> list(String resourceGroupName, String expressRouteLagName) {
         return new PagedIterable<>(listAsync(resourceGroupName, expressRouteLagName));
     }
 
-    /**
-     * Gets all authorizations in an express route LAG.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route LAG as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLagAuthorizationInner> list(String resourceGroupName, String expressRouteLagName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, expressRouteLagName, context));
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route LAG authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route LAG authorization along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeysWithResponseAsync(String resourceGroupName,
         String expressRouteLagName, String authorizationName) {
@@ -1024,18 +786,7 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             resourceGroupName, expressRouteLagName, authorizationName, accept, context);
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route LAG authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route LAG authorization on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteAuthorizationKeyInner> listKeysAsync(String resourceGroupName, String expressRouteLagName,
         String authorizationName) {
@@ -1043,36 +794,14 @@ public final class ExpressRouteLagAuthorizationsClientImpl implements ExpressRou
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route LAG authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route LAG authorization along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteAuthorizationKeyInner> listKeysWithResponse(String resourceGroupName,
         String expressRouteLagName, String authorizationName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, expressRouteLagName, authorizationName, context).block();
     }
 
-    /**
-     * Gets the authorization key associated with the specified express route LAG authorization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteLagName The name of the express route LAG.
-     * @param authorizationName The authorization name, unique within the parent ExpressRoute LAG.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization key associated with the specified express route LAG authorization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteAuthorizationKeyInner listKeys(String resourceGroupName, String expressRouteLagName,
         String authorizationName) {

@@ -215,20 +215,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about access policy assignment for database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about access policy assignment for database along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessPolicyAssignmentInner> getWithResponse(String resourceGroupName, String clusterName,
         String databaseName, String accessPolicyAssignmentName, Context context) {
@@ -237,19 +224,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, accept, context);
     }
 
-    /**
-     * Gets information about access policy assignment for database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about access policy assignment for database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPolicyAssignmentInner get(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName) {
@@ -301,11 +276,8 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createUpdateWithResponse(String resourceGroupName, String clusterName,
         String databaseName, String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName,
-            contentType, accept, parameters, Context.NONE);
+        return createUpdateWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName,
+            parameters, Context.NONE);
     }
 
     /**
@@ -360,47 +332,16 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             this.client.getContext());
     }
 
-    /**
-     * Creates/Updates a particular access policy assignment for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param parameters Parameters supplied to the create access policy assignment for database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the access policy assignment of Redis Enterprise
-     * database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessPolicyAssignmentInner>, AccessPolicyAssignmentInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, String databaseName, String accessPolicyAssignmentName,
         AccessPolicyAssignmentInner parameters) {
-        Response<BinaryData> response = createUpdateWithResponse(resourceGroupName, clusterName, databaseName,
-            accessPolicyAssignmentName, parameters);
-        return this.client.<AccessPolicyAssignmentInner, AccessPolicyAssignmentInner>getLroResult(response,
-            AccessPolicyAssignmentInner.class, AccessPolicyAssignmentInner.class, Context.NONE);
+        return beginCreateUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates/Updates a particular access policy assignment for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param parameters Parameters supplied to the create access policy assignment for database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes the access policy assignment of Redis Enterprise
-     * database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AccessPolicyAssignmentInner>, AccessPolicyAssignmentInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, String databaseName, String accessPolicyAssignmentName,
@@ -433,47 +374,20 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates/Updates a particular access policy assignment for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param parameters Parameters supplied to the create access policy assignment for database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the access policy assignment of Redis Enterprise database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPolicyAssignmentInner createUpdate(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters) {
-        return beginCreateUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters)
-            .getFinalResult();
+        return createUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters,
+            Context.NONE);
     }
 
-    /**
-     * Creates/Updates a particular access policy assignment for a database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param parameters Parameters supplied to the create access policy assignment for database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the access policy assignment of Redis Enterprise database.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessPolicyAssignmentInner createUpdate(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName, AccessPolicyAssignmentInner parameters, Context context) {
-        return beginCreateUpdate(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, parameters,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateUpdate(resourceGroupName, clusterName, databaseName,
+            accessPolicyAssignmentName, parameters, context));
     }
 
     /**
@@ -515,8 +429,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName,
+        return deleteWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName,
             Context.NONE);
     }
 
@@ -564,41 +477,14 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             this.client.getContext());
     }
 
-    /**
-     * Deletes a single access policy assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String databaseName, String accessPolicyAssignmentName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, Context.NONE);
     }
 
-    /**
-     * Deletes a single access policy assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String databaseName, String accessPolicyAssignmentName, Context context) {
@@ -627,41 +513,19 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a single access policy assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName) {
-        beginDelete(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName).getFinalResult();
+        delete(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, Context.NONE);
     }
 
-    /**
-     * Deletes a single access policy assignment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param accessPolicyAssignmentName The name of the Redis Enterprise database access policy assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String databaseName,
         String accessPolicyAssignmentName, Context context) {
-        beginDelete(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, clusterName, databaseName, accessPolicyAssignmentName, context));
     }
 
     /**
@@ -722,12 +586,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessPolicyAssignmentInner> listSinglePage(String resourceGroupName, String clusterName,
         String databaseName) {
-        final String accept = "application/json";
-        Response<AccessPolicyAssignmentList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, databaseName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
     /**
@@ -754,38 +613,14 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all access policy assignments..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all access policy assignments. as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPolicyAssignmentInner> list(String resourceGroupName, String clusterName,
         String databaseName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, databaseName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, databaseName, Context.NONE);
     }
 
-    /**
-     * Gets all access policy assignments..
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
-     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
-     * @param databaseName The name of the Redis Enterprise database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all access policy assignments. as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessPolicyAssignmentInner> list(String resourceGroupName, String clusterName,
         String databaseName, Context context) {
@@ -822,11 +657,7 @@ public final class AccessPolicyAssignmentsClientImpl implements AccessPolicyAssi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AccessPolicyAssignmentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AccessPolicyAssignmentList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

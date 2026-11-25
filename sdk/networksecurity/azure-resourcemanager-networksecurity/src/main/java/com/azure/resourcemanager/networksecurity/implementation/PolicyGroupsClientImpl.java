@@ -255,17 +255,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PolicyGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String policyGroupName,
         Context context) {
@@ -275,16 +265,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             resourceGroupName, policyGroupName, accept, context);
     }
 
-    /**
-     * Get a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a PolicyGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyGroupInner getByResourceGroup(String resourceGroupName, String policyGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, policyGroupName, Context.NONE).getValue();
@@ -392,11 +373,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String policyGroupName,
         PolicyGroupInner resource) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, policyGroupName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, policyGroupName, resource, Context.NONE);
     }
 
     /**
@@ -505,101 +482,14 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             PolicyGroupInner.class, PolicyGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a PolicyGroup.
-     * 
-     * If the PUT introduces a ContentInspection policy in networkSecurityPolicies and any
-     * associated fabric has no configured inspection connection, reject the
-     * request with HTTP 409 and error code ContentInspectionCapabilityDisabled, targeting
-     * properties.networkSecurityPolicies. Validate before persisting or distributing policy changes,
-     * preserving the previously accepted policies on rejection. Do not partially apply changes to
-     * compatible fabrics or silently skip inspection for fabrics without an inspection connection.
-     * 
-     * Compatibility uses the associated fabrics' stored configuration, independent of whether
-     * policy selectors currently match traffic. This is a configuration check, not a fresh Content
-     * Safety connectivity probe. Changes that do not introduce ContentInspection policies do not
-     * require this check; transient connection failures do not remove a fabric's configuration.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Unattached groups and groups associated only with compatible fabrics may
-     * contain ContentInspection policies. Removing those policies or detaching a group
-     * remains allowed, subject to other validation. Tags-only PATCH does not change policy contents.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The proposed ContentInspection policy is incompatible with an associated fabric that has no
-     * configured inspection connection.",
-     * "target": "properties.networkSecurityPolicies"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyGroupInner>, PolicyGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String policyGroupName, PolicyGroupInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, policyGroupName, resource);
-        return this.client.<PolicyGroupInner, PolicyGroupInner>getLroResult(response, PolicyGroupInner.class,
-            PolicyGroupInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, policyGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a PolicyGroup.
-     * 
-     * If the PUT introduces a ContentInspection policy in networkSecurityPolicies and any
-     * associated fabric has no configured inspection connection, reject the
-     * request with HTTP 409 and error code ContentInspectionCapabilityDisabled, targeting
-     * properties.networkSecurityPolicies. Validate before persisting or distributing policy changes,
-     * preserving the previously accepted policies on rejection. Do not partially apply changes to
-     * compatible fabrics or silently skip inspection for fabrics without an inspection connection.
-     * 
-     * Compatibility uses the associated fabrics' stored configuration, independent of whether
-     * policy selectors currently match traffic. This is a configuration check, not a fresh Content
-     * Safety connectivity probe. Changes that do not introduce ContentInspection policies do not
-     * require this check; transient connection failures do not remove a fabric's configuration.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Unattached groups and groups associated only with compatible fabrics may
-     * contain ContentInspection policies. Removing those policies or detaching a group
-     * remains allowed, subject to other validation. Tags-only PATCH does not change policy contents.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The proposed ContentInspection policy is incompatible with an associated fabric that has no
-     * configured inspection connection.",
-     * "target": "properties.networkSecurityPolicies"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyGroupInner>, PolicyGroupInner> beginCreateOrUpdate(String resourceGroupName,
         String policyGroupName, PolicyGroupInner resource, Context context) {
@@ -659,103 +549,19 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a PolicyGroup.
-     * 
-     * If the PUT introduces a ContentInspection policy in networkSecurityPolicies and any
-     * associated fabric has no configured inspection connection, reject the
-     * request with HTTP 409 and error code ContentInspectionCapabilityDisabled, targeting
-     * properties.networkSecurityPolicies. Validate before persisting or distributing policy changes,
-     * preserving the previously accepted policies on rejection. Do not partially apply changes to
-     * compatible fabrics or silently skip inspection for fabrics without an inspection connection.
-     * 
-     * Compatibility uses the associated fabrics' stored configuration, independent of whether
-     * policy selectors currently match traffic. This is a configuration check, not a fresh Content
-     * Safety connectivity probe. Changes that do not introduce ContentInspection policies do not
-     * require this check; transient connection failures do not remove a fabric's configuration.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Unattached groups and groups associated only with compatible fabrics may
-     * contain ContentInspection policies. Removing those policies or detaching a group
-     * remains allowed, subject to other validation. Tags-only PATCH does not change policy contents.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The proposed ContentInspection policy is incompatible with an associated fabric that has no
-     * configured inspection connection.",
-     * "target": "properties.networkSecurityPolicies"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyGroupInner createOrUpdate(String resourceGroupName, String policyGroupName,
         PolicyGroupInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, policyGroupName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, policyGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a PolicyGroup.
-     * 
-     * If the PUT introduces a ContentInspection policy in networkSecurityPolicies and any
-     * associated fabric has no configured inspection connection, reject the
-     * request with HTTP 409 and error code ContentInspectionCapabilityDisabled, targeting
-     * properties.networkSecurityPolicies. Validate before persisting or distributing policy changes,
-     * preserving the previously accepted policies on rejection. Do not partially apply changes to
-     * compatible fabrics or silently skip inspection for fabrics without an inspection connection.
-     * 
-     * Compatibility uses the associated fabrics' stored configuration, independent of whether
-     * policy selectors currently match traffic. This is a configuration check, not a fresh Content
-     * Safety connectivity probe. Changes that do not introduce ContentInspection policies do not
-     * require this check; transient connection failures do not remove a fabric's configuration.
-     * Existing legacy fabrics without a profile retain their regional Content Safety connection,
-     * which satisfies the inspection prerequisite without new probes, management calls, or key
-     * retrieval. A connection still being validated is not an absent connection.
-     * Unattached groups and groups associated only with compatible fabrics may
-     * contain ContentInspection policies. Removing those policies or detaching a group
-     * remains allowed, subject to other validation. Tags-only PATCH does not change policy contents.
-     * Error messages must not disclose associated fabric IDs the caller is not authorized to read.
-     * 
-     * Example rejection response (HTTP 409 Conflict):
-     * 
-     * ```json
-     * {
-     * "error": {
-     * "code": "ContentInspectionCapabilityDisabled",
-     * "message": "The proposed ContentInspection policy is incompatible with an associated fabric that has no
-     * configured inspection connection.",
-     * "target": "properties.networkSecurityPolicies"
-     * }
-     * }
-     * ```.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyGroupInner createOrUpdate(String resourceGroupName, String policyGroupName, PolicyGroupInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, policyGroupName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, policyGroupName, resource, context));
     }
 
     /**
@@ -796,11 +602,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String policyGroupName,
         PolicyGroupTagsUpdate properties) {
-        final String apiVersion = "2026-11-03-preview";
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, policyGroupName, contentType, accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, policyGroupName, properties, Context.NONE);
     }
 
     /**
@@ -844,37 +646,14 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             PolicyGroupInner.class, PolicyGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyGroupInner>, PolicyGroupInner> beginUpdate(String resourceGroupName,
         String policyGroupName, PolicyGroupTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, policyGroupName, properties);
-        return this.client.<PolicyGroupInner, PolicyGroupInner>getLroResult(response, PolicyGroupInner.class,
-            PolicyGroupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, policyGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Update a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PolicyGroupInner>, PolicyGroupInner> beginUpdate(String resourceGroupName,
         String policyGroupName, PolicyGroupTagsUpdate properties, Context context) {
@@ -901,38 +680,18 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyGroupInner update(String resourceGroupName, String policyGroupName, PolicyGroupTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, policyGroupName, properties).getFinalResult();
+        return update(resourceGroupName, policyGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Update a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policyGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyGroupInner update(String resourceGroupName, String policyGroupName, PolicyGroupTagsUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, policyGroupName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, policyGroupName, properties, context));
     }
 
     /**
@@ -966,9 +725,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String policyGroupName) {
-        final String apiVersion = "2026-11-03-preview";
-        return service.deleteSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, policyGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, policyGroupName, Context.NONE);
     }
 
     /**
@@ -1006,33 +763,13 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, policyGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, policyGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyGroupName,
         Context context) {
@@ -1056,33 +793,16 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String policyGroupName) {
-        beginDelete(resourceGroupName, policyGroupName).getFinalResult();
+        delete(resourceGroupName, policyGroupName, Context.NONE);
     }
 
-    /**
-     * Delete a PolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyGroupName The name of the PolicyGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String policyGroupName, Context context) {
-        beginDelete(resourceGroupName, policyGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, policyGroupName, context));
     }
 
     /**
@@ -1133,12 +853,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyGroupInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String apiVersion = "2026-11-03-preview";
-        final String accept = "application/json";
-        Response<PolicyGroupListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1161,31 +876,13 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PolicyGroup resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyGroupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List PolicyGroup resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1234,12 +931,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyGroupInner> listSinglePage() {
-        final String apiVersion = "2026-11-03-preview";
-        final String accept = "application/json";
-        Response<PolicyGroupListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1261,27 +953,13 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List PolicyGroup resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyGroupInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List PolicyGroup resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PolicyGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyGroupInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1320,11 +998,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyGroupInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyGroupListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1378,11 +1052,7 @@ public final class PolicyGroupsClientImpl implements PolicyGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PolicyGroupInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PolicyGroupListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

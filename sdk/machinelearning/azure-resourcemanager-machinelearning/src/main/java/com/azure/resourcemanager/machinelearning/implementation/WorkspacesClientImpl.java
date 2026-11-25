@@ -410,17 +410,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of the specified machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified machine learning workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
@@ -429,16 +419,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Gets the properties of the specified machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -481,10 +462,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         WorkspaceInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
     /**
@@ -527,37 +505,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             WorkspaceInner.class, WorkspaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for creating or updating a machine learning workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, WorkspaceInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, body);
-        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(response, WorkspaceInner.class,
-            WorkspaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Creates or updates a workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for creating or updating a machine learning workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
         String workspaceName, WorkspaceInner body, Context context) {
@@ -584,38 +539,18 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for creating or updating a machine learning workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Creates or updates a workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for creating or updating a machine learning workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner body,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, body, context));
     }
 
     /**
@@ -655,10 +590,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         WorkspaceUpdateParametersInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
     /**
@@ -701,37 +633,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             WorkspaceInner.class, WorkspaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a machine learning workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for updating a machine learning workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName,
         String workspaceName, WorkspaceUpdateParametersInner body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, body);
-        return this.client.<WorkspaceInner, WorkspaceInner>getLroResult(response, WorkspaceInner.class,
-            WorkspaceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Updates a machine learning workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for updating a machine learning workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName,
         String workspaceName, WorkspaceUpdateParametersInner body, Context context) {
@@ -758,38 +667,17 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a machine learning workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for updating a machine learning workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdateParametersInner body) {
-        return beginUpdate(resourceGroupName, workspaceName, body).getFinalResult();
+        return update(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Updates a machine learning workspace with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameters for updating a machine learning workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdateParametersInner body,
         Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, body, context));
     }
 
     /**
@@ -826,8 +714,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         Boolean forceToPurge) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, forceToPurge, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, forceToPurge, Context.NONE);
     }
 
     /**
@@ -900,39 +787,17 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         Boolean forceToPurge) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, forceToPurge);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, forceToPurge, Context.NONE);
     }
 
-    /**
-     * Deletes a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
         final Boolean forceToPurge = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, forceToPurge);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, forceToPurge, Context.NONE);
     }
 
-    /**
-     * Deletes a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param forceToPurge Flag to indicate delete is a purge request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         Boolean forceToPurge, Context context) {
@@ -974,35 +839,17 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName) {
         final Boolean forceToPurge = null;
-        beginDelete(resourceGroupName, workspaceName, forceToPurge).getFinalResult();
+        delete(resourceGroupName, workspaceName, forceToPurge, Context.NONE);
     }
 
-    /**
-     * Deletes a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param forceToPurge Flag to indicate delete is a purge request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, Boolean forceToPurge, Context context) {
-        beginDelete(resourceGroupName, workspaceName, forceToPurge, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, forceToPurge, context));
     }
 
     /**
@@ -1082,12 +929,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName, String kind,
         String skip, String aiCapabilities) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, kind, skip, aiCapabilities, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, kind, skip, aiCapabilities, Context.NONE);
     }
 
     /**
@@ -1114,37 +956,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the available machine learning workspaces under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName) {
         final String kind = null;
         final String skip = null;
         final String aiCapabilities = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, kind, skip, aiCapabilities),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, kind, skip, aiCapabilities, Context.NONE);
     }
 
-    /**
-     * Lists all the available machine learning workspaces under the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param kind Kind of workspace.
-     * @param skip Continuation token for pagination.
-     * @param aiCapabilities The aiCapabilities parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> listByResourceGroup(String resourceGroupName, String kind, String skip,
         String aiCapabilities, Context context) {
@@ -1222,11 +1043,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listSinglePage(String kind, String skip, String aiCapabilities) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), kind, skip, aiCapabilities, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(kind, skip, aiCapabilities, Context.NONE);
     }
 
     /**
@@ -1251,34 +1068,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the available machine learning workspaces under the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list() {
         final String kind = null;
         final String skip = null;
         final String aiCapabilities = null;
-        return new PagedIterable<>(() -> listSinglePage(kind, skip, aiCapabilities),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(kind, skip, aiCapabilities, Context.NONE);
     }
 
-    /**
-     * Lists all the available machine learning workspaces under the specified subscription.
-     * 
-     * @param kind Kind of workspace.
-     * @param skip Continuation token for pagination.
-     * @param aiCapabilities The aiCapabilities parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Workspace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceInner> list(String kind, String skip, String aiCapabilities, Context context) {
         return new PagedIterable<>(() -> listSinglePage(kind, skip, aiCapabilities, context),
@@ -1320,9 +1119,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> diagnoseWithResponse(String resourceGroupName, String workspaceName,
         DiagnoseWorkspaceParameters body) {
-        final String accept = "application/json";
-        return service.diagnoseSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, body, Context.NONE);
+        return diagnoseWithResponse(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
     /**
@@ -1399,42 +1196,18 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner>
         beginDiagnose(String resourceGroupName, String workspaceName, DiagnoseWorkspaceParameters body) {
-        Response<BinaryData> response = diagnoseWithResponse(resourceGroupName, workspaceName, body);
-        return this.client.<DiagnoseResponseResultInner, DiagnoseResponseResultInner>getLroResult(response,
-            DiagnoseResponseResultInner.class, DiagnoseResponseResultInner.class, Context.NONE);
+        return beginDiagnose(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Diagnose workspace setup issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner>
         beginDiagnose(String resourceGroupName, String workspaceName) {
         final DiagnoseWorkspaceParameters body = null;
-        Response<BinaryData> response = diagnoseWithResponse(resourceGroupName, workspaceName, body);
-        return this.client.<DiagnoseResponseResultInner, DiagnoseResponseResultInner>getLroResult(response,
-            DiagnoseResponseResultInner.class, DiagnoseResponseResultInner.class, Context.NONE);
+        return beginDiagnose(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Diagnose workspace setup issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameter of diagnosing workspace health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiagnoseResponseResultInner>, DiagnoseResponseResultInner> beginDiagnose(
         String resourceGroupName, String workspaceName, DiagnoseWorkspaceParameters body, Context context) {
@@ -1478,38 +1251,18 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Diagnose workspace setup issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnoseResponseResultInner diagnose(String resourceGroupName, String workspaceName) {
         final DiagnoseWorkspaceParameters body = null;
-        return beginDiagnose(resourceGroupName, workspaceName, body).getFinalResult();
+        return diagnose(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Diagnose workspace setup issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body The parameter of diagnosing workspace health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiagnoseResponseResultInner diagnose(String resourceGroupName, String workspaceName,
         DiagnoseWorkspaceParameters body, Context context) {
-        return beginDiagnose(resourceGroupName, workspaceName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginDiagnose(resourceGroupName, workspaceName, body, context));
     }
 
     /**
@@ -1550,18 +1303,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and
-     * password for container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListWorkspaceKeysResultInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
         Context context) {
@@ -1570,17 +1312,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Lists all the keys associated with this workspace. This includes keys for the storage account, app insights and
-     * password for container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListWorkspaceKeysResultInner listKeys(String resourceGroupName, String workspaceName) {
         return listKeysWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -1625,17 +1357,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Azure Machine Learning Workspace notebook access token.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Machine Learning Workspace notebook access token along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotebookAccessTokenResultInner> listNotebookAccessTokenWithResponse(String resourceGroupName,
         String workspaceName, Context context) {
@@ -1644,16 +1366,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Get Azure Machine Learning Workspace notebook access token.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Machine Learning Workspace notebook access token.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookAccessTokenResultInner listNotebookAccessToken(String resourceGroupName, String workspaceName) {
         return listNotebookAccessTokenWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -1695,17 +1408,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists keys of Azure Machine Learning Workspaces notebook.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListNotebookKeysResultInner> listNotebookKeysWithResponse(String resourceGroupName,
         String workspaceName, Context context) {
@@ -1714,16 +1417,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Lists keys of Azure Machine Learning Workspaces notebook.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListNotebookKeysResultInner listNotebookKeys(String resourceGroupName, String workspaceName) {
         return listNotebookKeysWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -1767,17 +1461,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists keys of Azure Machine Learning Workspace's storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListStorageAccountKeysResultInner> listStorageAccountKeysWithResponse(String resourceGroupName,
         String workspaceName, Context context) {
@@ -1786,16 +1470,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Lists keys of Azure Machine Learning Workspace's storage account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListStorageAccountKeysResultInner listStorageAccountKeys(String resourceGroupName, String workspaceName) {
         return listStorageAccountKeysWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -1839,17 +1514,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExternalFqdnResponseInner> listOutboundNetworkDependenciesEndpointsWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
@@ -1859,16 +1524,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             context);
     }
 
-    /**
-     * Called by Client (Portal, CLI, etc) to get a list of all external outbound dependencies (FQDNs) programmatically.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExternalFqdnResponseInner listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
         String workspaceName) {
@@ -1908,9 +1564,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> prepareNotebookWithResponse(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        return service.prepareNotebookSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
+        return prepareNotebookWithResponse(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -1951,35 +1605,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Prepare Azure Machine Learning Workspace's notebook resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
         beginPrepareNotebook(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = prepareNotebookWithResponse(resourceGroupName, workspaceName);
-        return this.client.<NotebookResourceInfoInner, NotebookResourceInfoInner>getLroResult(response,
-            NotebookResourceInfoInner.class, NotebookResourceInfoInner.class, Context.NONE);
+        return beginPrepareNotebook(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Prepare Azure Machine Learning Workspace's notebook resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NotebookResourceInfoInner>, NotebookResourceInfoInner>
         beginPrepareNotebook(String resourceGroupName, String workspaceName, Context context) {
@@ -2004,35 +1637,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Prepare Azure Machine Learning Workspace's notebook resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResourceInfoInner prepareNotebook(String resourceGroupName, String workspaceName) {
-        return beginPrepareNotebook(resourceGroupName, workspaceName).getFinalResult();
+        return prepareNotebook(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Prepare Azure Machine Learning Workspace's notebook resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResourceInfoInner prepareNotebook(String resourceGroupName, String workspaceName, Context context) {
-        return beginPrepareNotebook(resourceGroupName, workspaceName, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginPrepareNotebook(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -2068,8 +1682,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resyncKeysWithResponse(String resourceGroupName, String workspaceName) {
-        return service.resyncKeysSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
+        return resyncKeysWithResponse(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -2109,35 +1722,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and
-     * password for container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncKeys(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = resyncKeysWithResponse(resourceGroupName, workspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResyncKeys(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and
-     * password for container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResyncKeys(String resourceGroupName, String workspaceName,
         Context context) {
@@ -2162,35 +1753,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and
-     * password for container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resyncKeys(String resourceGroupName, String workspaceName) {
-        beginResyncKeys(resourceGroupName, workspaceName).getFinalResult();
+        resyncKeys(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Resync all the keys associated with this workspace.This includes keys for the storage account, app insights and
-     * password for container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resyncKeys(String resourceGroupName, String workspaceName, Context context) {
-        beginResyncKeys(resourceGroupName, workspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginResyncKeys(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -2229,11 +1801,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2293,11 +1861,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

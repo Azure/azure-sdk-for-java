@@ -214,19 +214,7 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeaturestoreEntityVersionInner> getWithResponse(String resourceGroupName, String workspaceName,
         String name, String version, Context context) {
@@ -235,18 +223,7 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
             resourceGroupName, workspaceName, name, version, accept, context);
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeaturestoreEntityVersionInner get(String resourceGroupName, String workspaceName, String name,
         String version) {
@@ -295,11 +272,7 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String name,
         String version, FeaturestoreEntityVersionInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, version, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, body, Context.NONE);
     }
 
     /**
@@ -350,43 +323,15 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
             this.client.getContext());
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FeaturestoreEntityVersionInner>, FeaturestoreEntityVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, String version,
         FeaturestoreEntityVersionInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, body);
-        return this.client.<FeaturestoreEntityVersionInner, FeaturestoreEntityVersionInner>getLroResult(response,
-            FeaturestoreEntityVersionInner.class, FeaturestoreEntityVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, version, body, Context.NONE);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FeaturestoreEntityVersionInner>, FeaturestoreEntityVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, String version,
@@ -417,43 +362,19 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeaturestoreEntityVersionInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         String version, FeaturestoreEntityVersionInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, version, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, name, version, body, Context.NONE);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FeaturestoreEntityVersionInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         String version, FeaturestoreEntityVersionInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, version, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, name, version, body, context));
     }
 
     /**
@@ -492,8 +413,7 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
         String version) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, version, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE);
     }
 
     /**
@@ -537,38 +457,14 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
             this.client.getContext());
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name,
         String version) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, name, version);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, name, version, Context.NONE);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name,
         String version, Context context) {
@@ -594,37 +490,16 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name, String version) {
-        beginDelete(resourceGroupName, workspaceName, name, version).getFinalResult();
+        delete(resourceGroupName, workspaceName, name, version, Context.NONE);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name, String version, Context context) {
-        beginDelete(resourceGroupName, workspaceName, name, version, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, name, version, context));
     }
 
     /**
@@ -746,12 +621,8 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
     private PagedResponse<FeaturestoreEntityVersionInner> listSinglePage(String resourceGroupName, String workspaceName,
         String name, String skip, String tags, ListViewType listViewType, Integer pageSize, String versionName,
         String version, String description, String createdBy, String stage) {
-        final String accept = "application/json";
-        Response<FeaturestoreEntityVersionResourceArmPaginatedResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, skip,
-            tags, listViewType, pageSize, versionName, version, description, createdBy, stage, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, name, skip, tags, listViewType, pageSize, versionName,
+            version, description, createdBy, stage, Context.NONE);
     }
 
     /**
@@ -788,17 +659,7 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of FeaturestoreEntityVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeaturestoreEntityVersionInner> list(String resourceGroupName, String workspaceName,
         String name) {
@@ -811,33 +672,11 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
         final String description = null;
         final String createdBy = null;
         final String stage = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, name, skip, tags,
-            listViewType, pageSize, versionName, version, description, createdBy, stage),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, name, skip, tags, listViewType, pageSize, versionName, version,
+            description, createdBy, stage, Context.NONE);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name. This is case-sensitive.
-     * @param skip Continuation token for pagination.
-     * @param tags Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2.
-     * @param listViewType [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for
-     * including/excluding (for example) archived entities.
-     * @param pageSize page size.
-     * @param versionName name for the featurestore entity version.
-     * @param version featurestore entity version.
-     * @param description description for the feature entity version.
-     * @param createdBy createdBy user name.
-     * @param stage Specifies the featurestore stage.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of FeaturestoreEntityVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeaturestoreEntityVersionInner> list(String resourceGroupName, String workspaceName,
         String name, String skip, String tags, ListViewType listViewType, Integer pageSize, String versionName,
@@ -882,11 +721,7 @@ public final class FeaturestoreEntityVersionsClientImpl implements FeaturestoreE
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FeaturestoreEntityVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FeaturestoreEntityVersionResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

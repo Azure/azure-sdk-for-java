@@ -61,10 +61,7 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSites()
-            .createOrUpdate(resourceGroupName, siteName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Site create(Context context) {
@@ -86,11 +83,7 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSites()
-            .updateWithResponse(resourceGroupName, siteName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Site apply(Context context) {
@@ -122,11 +115,7 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
     }
 
     public Site refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSites()
-            .getByResourceGroupWithResponse(resourceGroupName, siteName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Site refresh(Context context) {

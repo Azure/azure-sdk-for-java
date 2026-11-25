@@ -223,19 +223,7 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
             executionPlanRunName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Validation test execution plan run details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Validation test execution plan run details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExecutionPlanRunInner> getWithResponse(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName, Context context) {
@@ -244,18 +232,7 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
             resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName, accept, context);
     }
 
-    /**
-     * Get a Validation test execution plan run details.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Validation test execution plan run details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionPlanRunInner get(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName) {
@@ -306,11 +283,8 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName, ExecutionPlanRunInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudValidationName, validationExecutionPlanName,
-            executionPlanRunName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, cloudValidationName, validationExecutionPlanName,
+            executionPlanRunName, resource, Context.NONE);
     }
 
     /**
@@ -362,43 +336,16 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
             this.client.getContext());
     }
 
-    /**
-     * Create or update a validation test execution plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the properties of the execution plan run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExecutionPlanRunInner>, ExecutionPlanRunInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudValidationName, String validationExecutionPlanName,
         String executionPlanRunName, ExecutionPlanRunInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, cloudValidationName,
-            validationExecutionPlanName, executionPlanRunName, resource);
-        return this.client.<ExecutionPlanRunInner, ExecutionPlanRunInner>getLroResult(response,
-            ExecutionPlanRunInner.class, ExecutionPlanRunInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName,
+            executionPlanRunName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a validation test execution plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the properties of the execution plan run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExecutionPlanRunInner>, ExecutionPlanRunInner> beginCreateOrUpdate(
         String resourceGroupName, String cloudValidationName, String validationExecutionPlanName,
@@ -429,46 +376,21 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
             executionPlanRunName, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a validation test execution plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the execution plan run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionPlanRunInner createOrUpdate(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName, ExecutionPlanRunInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName,
-            executionPlanRunName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
+            resource, Context.NONE);
     }
 
-    /**
-     * Create or update a validation test execution plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the execution plan run.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExecutionPlanRunInner createOrUpdate(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName, ExecutionPlanRunInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, cloudValidationName, validationExecutionPlanName,
-            executionPlanRunName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, cloudValidationName,
+            validationExecutionPlanName, executionPlanRunName, resource, context));
     }
 
     /**
@@ -508,8 +430,7 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, cloudValidationName, validationExecutionPlanName,
+        return deleteWithResponse(resourceGroupName, cloudValidationName, validationExecutionPlanName,
             executionPlanRunName, Context.NONE);
     }
 
@@ -555,39 +476,15 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a validation test execution plan run resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, cloudValidationName,
-            validationExecutionPlanName, executionPlanRunName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName,
+            Context.NONE);
     }
 
-    /**
-     * Delete a validation test execution plan run resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudValidationName,
         String validationExecutionPlanName, String executionPlanRunName, Context context) {
@@ -615,41 +512,19 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
             executionPlanRunName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a validation test execution plan run resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudValidationName, String validationExecutionPlanName,
         String executionPlanRunName) {
-        beginDelete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName)
-            .getFinalResult();
+        delete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName, Context.NONE);
     }
 
-    /**
-     * Delete a validation test execution plan run resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param executionPlanRunName The name of the ExecutionPlanRun.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String cloudValidationName, String validationExecutionPlanName,
         String executionPlanRunName, Context context) {
-        beginDelete(resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, cloudValidationName,
+            validationExecutionPlanName, executionPlanRunName, context));
     }
 
     /**
@@ -731,12 +606,8 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExecutionPlanRunInner> listByExecutionPlanSinglePage(String resourceGroupName,
         String cloudValidationName, String validationExecutionPlanName, String filter) {
-        final String accept = "application/json";
-        Response<ExecutionPlanRunListResult> res = service.listByExecutionPlanSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, cloudValidationName,
-            validationExecutionPlanName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByExecutionPlanSinglePage(resourceGroupName, cloudValidationName, validationExecutionPlanName,
+            filter, Context.NONE);
     }
 
     /**
@@ -763,38 +634,16 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Validation test execution plan runs for an execution plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExecutionPlanRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExecutionPlanRunInner> listByExecutionPlan(String resourceGroupName,
         String cloudValidationName, String validationExecutionPlanName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByExecutionPlanSinglePage(resourceGroupName, cloudValidationName,
-            validationExecutionPlanName, filter), nextLink -> listByExecutionPlanNextSinglePage(nextLink));
+        return listByExecutionPlan(resourceGroupName, cloudValidationName, validationExecutionPlanName, filter,
+            Context.NONE);
     }
 
-    /**
-     * List Validation test execution plan runs for an execution plan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudValidationName The name of the CloudValidation.
-     * @param validationExecutionPlanName The name of the ValidationExecutionPlan.
-     * @param filter The OData filter expression to apply to the list operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExecutionPlanRun list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExecutionPlanRunInner> listByExecutionPlan(String resourceGroupName,
         String cloudValidationName, String validationExecutionPlanName, String filter, Context context) {
@@ -835,11 +684,7 @@ public final class ExecutionPlanRunsClientImpl implements ExecutionPlanRunsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExecutionPlanRunInner> listByExecutionPlanNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExecutionPlanRunListResult> res
-            = service.listByExecutionPlanNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByExecutionPlanNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

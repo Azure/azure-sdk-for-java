@@ -48,9 +48,7 @@ public final class StorageClassificationsImpl implements StorageClassifications 
 
     public PagedIterable<StorageClassification> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
-        PagedIterable<StorageClassificationInner> inner
-            = this.serviceClient().listByReplicationFabrics(resourceGroupName, resourceName, fabricName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
+        return this.listByReplicationFabrics(resourceGroupName, resourceName, fabricName, Context.NONE);
     }
 
     public PagedIterable<StorageClassification> listByReplicationFabrics(String resourceGroupName, String resourceName,
@@ -61,8 +59,7 @@ public final class StorageClassificationsImpl implements StorageClassifications 
     }
 
     public PagedIterable<StorageClassification> list(String resourceGroupName, String resourceName) {
-        PagedIterable<StorageClassificationInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<StorageClassification> list(String resourceGroupName, String resourceName, Context context) {

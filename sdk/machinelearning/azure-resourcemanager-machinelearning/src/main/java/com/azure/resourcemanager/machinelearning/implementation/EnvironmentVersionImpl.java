@@ -65,12 +65,7 @@ public final class EnvironmentVersionImpl
     }
 
     public EnvironmentVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironmentVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EnvironmentVersion create(Context context) {
@@ -93,12 +88,7 @@ public final class EnvironmentVersionImpl
     }
 
     public EnvironmentVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironmentVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EnvironmentVersion apply(Context context) {
@@ -143,11 +133,7 @@ public final class EnvironmentVersionImpl
     }
 
     public EnvironmentVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEnvironmentVersions()
-            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EnvironmentVersion refresh(Context context) {

@@ -137,17 +137,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WebApplicationFirewallPolicyInner>>
         getByResourceGroupWithResponseAsync(String resourceGroupName, String policyName) {
@@ -211,16 +201,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             resourceGroupName, policyName, accept, context);
     }
 
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebApplicationFirewallPolicyInner> getByResourceGroupAsync(String resourceGroupName,
         String policyName) {
@@ -228,50 +209,20 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
         String policyName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, policyName, context).block();
     }
 
-    /**
-     * Retrieve protection policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebApplicationFirewallPolicyInner getByResourceGroup(String resourceGroupName, String policyName) {
         return getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @param parameters Policy to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WebApplicationFirewallPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String policyName, WebApplicationFirewallPolicyInner parameters) {
@@ -347,17 +298,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             resourceGroupName, policyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @param parameters Policy to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebApplicationFirewallPolicyInner> createOrUpdateAsync(String resourceGroupName, String policyName,
         WebApplicationFirewallPolicyInner parameters) {
@@ -365,51 +306,21 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @param parameters Policy to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WebApplicationFirewallPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
         String policyName, WebApplicationFirewallPolicyInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, policyName, parameters, context).block();
     }
 
-    /**
-     * Creates or update policy with specified rule set name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @param parameters Policy to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebApplicationFirewallPolicyInner createOrUpdate(String resourceGroupName, String policyName,
         WebApplicationFirewallPolicyInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, policyName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String policyName) {
         if (this.client.getEndpoint() == null) {
@@ -469,16 +380,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             policyName, context);
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String policyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, policyName);
@@ -506,48 +408,20 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             context);
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyName) {
         return this.beginDeleteAsync(resourceGroupName, policyName).getSyncPoller();
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, policyName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String policyName) {
         return beginDeleteAsync(resourceGroupName, policyName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -570,30 +444,13 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String policyName) {
         deleteAsync(resourceGroupName, policyName).block();
     }
 
-    /**
-     * Deletes Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param policyName The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String policyName, Context context) {
         deleteAsync(resourceGroupName, policyName, context).block();
@@ -670,15 +527,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the protection policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of WebApplicationFirewallPolicy items as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WebApplicationFirewallPolicyInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -702,30 +551,13 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the protection policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of WebApplicationFirewallPolicy items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all of the protection policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of WebApplicationFirewallPolicy items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -788,13 +620,7 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the WAF policies in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the WAF policies in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WebApplicationFirewallPolicyInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -815,27 +641,13 @@ public final class WebApplicationFirewallPoliciesClientImpl implements
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the WAF policies in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the WAF policies in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the WAF policies in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the WAF policies in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebApplicationFirewallPolicyInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

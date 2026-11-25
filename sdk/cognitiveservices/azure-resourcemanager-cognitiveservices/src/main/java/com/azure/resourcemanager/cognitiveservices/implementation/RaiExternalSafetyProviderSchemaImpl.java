@@ -76,12 +76,7 @@ public final class RaiExternalSafetyProviderSchemaImpl implements RaiExternalSaf
     }
 
     public RaiExternalSafetyProviderSchema create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTestRaiExternalSafetyProviders()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, safetyProviderName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiExternalSafetyProviderSchema create(Context context) {
@@ -104,12 +99,7 @@ public final class RaiExternalSafetyProviderSchemaImpl implements RaiExternalSaf
     }
 
     public RaiExternalSafetyProviderSchema apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTestRaiExternalSafetyProviders()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, safetyProviderName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiExternalSafetyProviderSchema apply(Context context) {

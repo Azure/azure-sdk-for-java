@@ -92,10 +92,7 @@ public final class DeploymentSettingImpl
     }
 
     public DeploymentSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentSettings()
-            .createOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DeploymentSetting create(Context context) {
@@ -116,10 +113,7 @@ public final class DeploymentSettingImpl
     }
 
     public DeploymentSetting apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentSettings()
-            .createOrUpdate(resourceGroupName, clusterName, deploymentSettingsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DeploymentSetting apply(Context context) {
@@ -145,11 +139,7 @@ public final class DeploymentSettingImpl
     }
 
     public DeploymentSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeploymentSettings()
-            .getWithResponse(resourceGroupName, clusterName, deploymentSettingsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DeploymentSetting refresh(Context context) {

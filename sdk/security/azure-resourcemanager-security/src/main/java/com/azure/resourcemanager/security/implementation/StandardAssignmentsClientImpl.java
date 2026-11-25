@@ -197,37 +197,14 @@ public final class StandardAssignmentsClientImpl implements StandardAssignmentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves a standard assignment.
-     * 
-     * This operation retrieves a single standard assignment, given its name and the scope it was created at.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardAssignmentName The standard assignments assignment key - unique key for the standard assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Assignment on a resource group over a given scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandardAssignmentInner> getWithResponse(String resourceId, String standardAssignmentName,
         Context context) {
         return getWithResponseAsync(resourceId, standardAssignmentName, context).block();
     }
 
-    /**
-     * Retrieves a standard assignment.
-     * 
-     * This operation retrieves a single standard assignment, given its name and the scope it was created at.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardAssignmentName The standard assignments assignment key - unique key for the standard assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Assignment on a resource group over a given scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandardAssignmentInner get(String resourceId, String standardAssignmentName) {
         return getWithResponse(resourceId, standardAssignmentName, Context.NONE).getValue();
@@ -345,43 +322,14 @@ public final class StandardAssignmentsClientImpl implements StandardAssignmentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a standard assignment.
-     * 
-     * This operation creates or updates a standard assignment with the given scope and name. standard assignments apply
-     * to all resources contained within their scope. For example, when you assign a policy at resource group scope,
-     * that policy applies to all resources in the group.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardAssignmentName The standard assignments assignment key - unique key for the standard assignment.
-     * @param standardAssignment Custom standard assignment over a pre-defined scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Assignment on a resource group over a given scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandardAssignmentInner> createWithResponse(String resourceId, String standardAssignmentName,
         StandardAssignmentInner standardAssignment, Context context) {
         return createWithResponseAsync(resourceId, standardAssignmentName, standardAssignment, context).block();
     }
 
-    /**
-     * Creates or updates a standard assignment.
-     * 
-     * This operation creates or updates a standard assignment with the given scope and name. standard assignments apply
-     * to all resources contained within their scope. For example, when you assign a policy at resource group scope,
-     * that policy applies to all resources in the group.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardAssignmentName The standard assignments assignment key - unique key for the standard assignment.
-     * @param standardAssignment Custom standard assignment over a pre-defined scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Assignment on a resource group over a given scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandardAssignmentInner create(String resourceId, String standardAssignmentName,
         StandardAssignmentInner standardAssignment) {
@@ -475,39 +423,13 @@ public final class StandardAssignmentsClientImpl implements StandardAssignmentsC
         return deleteWithResponseAsync(resourceId, standardAssignmentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a standard assignment.
-     * 
-     * This operation deletes a standard assignment, given its name and the scope it was created in. The scope of a
-     * standard assignment is the part of its ID preceding
-     * '/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}'.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardAssignmentName The standard assignments assignment key - unique key for the standard assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceId, String standardAssignmentName, Context context) {
         return deleteWithResponseAsync(resourceId, standardAssignmentName, context).block();
     }
 
-    /**
-     * Deletes a standard assignment.
-     * 
-     * This operation deletes a standard assignment, given its name and the scope it was created in. The scope of a
-     * standard assignment is the part of its ID preceding
-     * '/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}'.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param standardAssignmentName The standard assignments assignment key - unique key for the standard assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceId, String standardAssignmentName) {
         deleteWithResponse(resourceId, standardAssignmentName, Context.NONE);
@@ -599,32 +521,13 @@ public final class StandardAssignmentsClientImpl implements StandardAssignmentsC
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all relevant standard assignments over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant standard assignments over a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandardAssignmentInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Get a list of all relevant standard assignments over a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant standard assignments over a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandardAssignmentInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));

@@ -46,13 +46,7 @@ public final class RegistryComponentVersionsImpl implements RegistryComponentVer
 
     public ComponentVersion createOrUpdate(String resourceGroupName, String registryName, String componentName,
         String version, ComponentVersionInner body) {
-        ComponentVersionInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, componentName, version, body);
-        if (inner != null) {
-            return new ComponentVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, componentName, version, body, Context.NONE);
     }
 
     public ComponentVersion createOrUpdate(String resourceGroupName, String registryName, String componentName,
@@ -67,7 +61,7 @@ public final class RegistryComponentVersionsImpl implements RegistryComponentVer
     }
 
     public void delete(String resourceGroupName, String registryName, String componentName, String version) {
-        this.serviceClient().delete(resourceGroupName, registryName, componentName, version);
+        this.delete(resourceGroupName, registryName, componentName, version, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String componentName, String version,

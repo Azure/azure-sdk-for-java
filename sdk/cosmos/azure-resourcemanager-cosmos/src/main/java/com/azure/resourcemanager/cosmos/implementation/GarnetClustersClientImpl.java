@@ -146,17 +146,7 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the properties of a Garnet cache cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Garnet cache cluster along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GarnetClusterResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String clusterName) {
@@ -218,66 +208,27 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Get the properties of a Garnet cache cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Garnet cache cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GarnetClusterResourceInner> getByResourceGroupAsync(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Garnet cache cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Garnet cache cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GarnetClusterResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String clusterName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
-    /**
-     * Get the properties of a Garnet cache cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GarnetClusterResourceInner getByResourceGroup(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(String resourceGroupName, String clusterName,
         GarnetClusterResourceInner body) {
@@ -352,17 +303,7 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, body, context);
     }
 
-    /**
-     * Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GarnetClusterResourceInner>, GarnetClusterResourceInner>
         beginCreateUpdateAsync(String resourceGroupName, String clusterName, GarnetClusterResourceInner body) {
@@ -394,52 +335,21 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             this.client.getHttpPipeline(), GarnetClusterResourceInner.class, GarnetClusterResourceInner.class, context);
     }
 
-    /**
-     * Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GarnetClusterResourceInner>, GarnetClusterResourceInner>
         beginCreateUpdate(String resourceGroupName, String clusterName, GarnetClusterResourceInner body) {
         return this.beginCreateUpdateAsync(resourceGroupName, clusterName, body).getSyncPoller();
     }
 
-    /**
-     * Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GarnetClusterResourceInner>, GarnetClusterResourceInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, GarnetClusterResourceInner body, Context context) {
         return this.beginCreateUpdateAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
     }
 
-    /**
-     * Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GarnetClusterResourceInner> createUpdateAsync(String resourceGroupName, String clusterName,
         GarnetClusterResourceInner body) {
@@ -466,53 +376,21 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GarnetClusterResourceInner createUpdate(String resourceGroupName, String clusterName,
         GarnetClusterResourceInner body) {
         return createUpdateAsync(resourceGroupName, clusterName, body).block();
     }
 
-    /**
-     * Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GarnetClusterResourceInner createUpdate(String resourceGroupName, String clusterName,
         GarnetClusterResourceInner body, Context context) {
         return createUpdateAsync(resourceGroupName, clusterName, body, context).block();
     }
 
-    /**
-     * Updates some of the properties of a garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         GarnetClusterResourcePatch body) {
@@ -587,17 +465,7 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             resourceGroupName, clusterName, contentType, accept, body, context);
     }
 
-    /**
-     * Updates some of the properties of a garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GarnetClusterResourceInner>, GarnetClusterResourceInner>
         beginUpdateAsync(String resourceGroupName, String clusterName, GarnetClusterResourcePatch body) {
@@ -628,52 +496,21 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             this.client.getHttpPipeline(), GarnetClusterResourceInner.class, GarnetClusterResourceInner.class, context);
     }
 
-    /**
-     * Updates some of the properties of a garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GarnetClusterResourceInner>, GarnetClusterResourceInner>
         beginUpdate(String resourceGroupName, String clusterName, GarnetClusterResourcePatch body) {
         return this.beginUpdateAsync(resourceGroupName, clusterName, body).getSyncPoller();
     }
 
-    /**
-     * Updates some of the properties of a garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GarnetClusterResourceInner>, GarnetClusterResourceInner>
         beginUpdate(String resourceGroupName, String clusterName, GarnetClusterResourcePatch body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, clusterName, body, context).getSyncPoller();
     }
 
-    /**
-     * Updates some of the properties of a garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GarnetClusterResourceInner> updateAsync(String resourceGroupName, String clusterName,
         GarnetClusterResourcePatch body) {
@@ -700,51 +537,21 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates some of the properties of a garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GarnetClusterResourceInner update(String resourceGroupName, String clusterName,
         GarnetClusterResourcePatch body) {
         return updateAsync(resourceGroupName, clusterName, body).block();
     }
 
-    /**
-     * Updates some of the properties of a garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param body The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of a Garnet cache cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GarnetClusterResourceInner update(String resourceGroupName, String clusterName,
         GarnetClusterResourcePatch body, Context context) {
         return updateAsync(resourceGroupName, clusterName, body, context).block();
     }
 
-    /**
-     * Deletes a Garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
@@ -802,16 +609,7 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             resourceGroupName, clusterName, context);
     }
 
-    /**
-     * Deletes a Garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
@@ -839,48 +637,20 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             context);
     }
 
-    /**
-     * Deletes a Garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
-    /**
-     * Deletes a Garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a Garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -903,30 +673,13 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName) {
         deleteAsync(resourceGroupName, clusterName).block();
     }
 
-    /**
-     * Deletes a Garnet cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the GarnetClusterResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, Context context) {
         deleteAsync(resourceGroupName, clusterName, context).block();
@@ -999,15 +752,7 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all Garnet clusters in this resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Garnet clusters as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GarnetClusterResourceInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1030,30 +775,13 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all Garnet clusters in this resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Garnet clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GarnetClusterResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * List all Garnet clusters in this resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Garnet clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GarnetClusterResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1113,13 +841,7 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * List all Garnet clusters in this subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Garnet clusters as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GarnetClusterResourceInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -1141,27 +863,13 @@ public final class GarnetClustersClientImpl implements InnerSupportsGet<GarnetCl
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * List all Garnet clusters in this subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Garnet clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GarnetClusterResourceInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * List all Garnet clusters in this subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Garnet clusters as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GarnetClusterResourceInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

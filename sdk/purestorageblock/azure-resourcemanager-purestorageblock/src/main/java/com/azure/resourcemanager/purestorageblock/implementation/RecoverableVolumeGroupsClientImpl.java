@@ -188,18 +188,7 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a recoverable volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param recoverableVolumeGroupName Name of the recoverable volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable volume group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableVolumeGroupInner> getWithResponse(String resourceGroupName, String storagePoolName,
         String recoverableVolumeGroupName, Context context) {
@@ -208,17 +197,7 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
             resourceGroupName, storagePoolName, recoverableVolumeGroupName, accept, context);
     }
 
-    /**
-     * Get a recoverable volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param recoverableVolumeGroupName Name of the recoverable volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable volume group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoverableVolumeGroupInner get(String resourceGroupName, String storagePoolName,
         String recoverableVolumeGroupName) {
@@ -278,12 +257,7 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoverableVolumeGroupInner> listByStoragePoolSinglePage(String resourceGroupName,
         String storagePoolName) {
-        final String accept = "application/json";
-        Response<RecoverableVolumeGroupListResult> res
-            = service.listByStoragePoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storagePoolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStoragePoolSinglePage(resourceGroupName, storagePoolName, Context.NONE);
     }
 
     /**
@@ -308,34 +282,14 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all recoverable volume groups in a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoverableVolumeGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableVolumeGroupInner> listByStoragePool(String resourceGroupName,
         String storagePoolName) {
-        return new PagedIterable<>(() -> listByStoragePoolSinglePage(resourceGroupName, storagePoolName),
-            nextLink -> listByStoragePoolNextSinglePage(nextLink));
+        return listByStoragePool(resourceGroupName, storagePoolName, Context.NONE);
     }
 
-    /**
-     * List all recoverable volume groups in a storage pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RecoverableVolumeGroup list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableVolumeGroupInner> listByStoragePool(String resourceGroupName,
         String storagePoolName, Context context) {
@@ -376,9 +330,7 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storagePoolName,
         String recoverableVolumeGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storagePoolName, recoverableVolumeGroupName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, storagePoolName, recoverableVolumeGroupName, Context.NONE);
     }
 
     /**
@@ -420,37 +372,14 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
             this.client.getContext());
     }
 
-    /**
-     * Eradicate a recoverable volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param recoverableVolumeGroupName Name of the recoverable volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String recoverableVolumeGroupName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, storagePoolName, recoverableVolumeGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storagePoolName, recoverableVolumeGroupName, Context.NONE);
     }
 
-    /**
-     * Eradicate a recoverable volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param recoverableVolumeGroupName Name of the recoverable volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storagePoolName,
         String recoverableVolumeGroupName, Context context) {
@@ -477,36 +406,18 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Eradicate a recoverable volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param recoverableVolumeGroupName Name of the recoverable volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String recoverableVolumeGroupName) {
-        beginDelete(resourceGroupName, storagePoolName, recoverableVolumeGroupName).getFinalResult();
+        delete(resourceGroupName, storagePoolName, recoverableVolumeGroupName, Context.NONE);
     }
 
-    /**
-     * Eradicate a recoverable volume group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storagePoolName Name of the storage pool.
-     * @param recoverableVolumeGroupName Name of the recoverable volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storagePoolName, String recoverableVolumeGroupName,
         Context context) {
-        beginDelete(resourceGroupName, storagePoolName, recoverableVolumeGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, storagePoolName, recoverableVolumeGroupName, context));
     }
 
     /**
@@ -540,11 +451,7 @@ public final class RecoverableVolumeGroupsClientImpl implements RecoverableVolum
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoverableVolumeGroupInner> listByStoragePoolNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RecoverableVolumeGroupListResult> res
-            = service.listByStoragePoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStoragePoolNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

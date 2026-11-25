@@ -141,10 +141,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> refreshWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        final String accept = "application/json";
-        return service.refreshSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, accept,
-            Context.NONE);
+        return refreshWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     /**
@@ -188,38 +185,14 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
             SsisObjectMetadataStatusResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Refresh a SSIS integration runtime object metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        Response<BinaryData> response = refreshWithResponse(resourceGroupName, factoryName, integrationRuntimeName);
-        return this.client.<SsisObjectMetadataStatusResponseInner, SsisObjectMetadataStatusResponseInner>getLroResult(
-            response, SsisObjectMetadataStatusResponseInner.class, SsisObjectMetadataStatusResponseInner.class,
-            Context.NONE);
+        return beginRefresh(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
-    /**
-     * Refresh a SSIS integration runtime object metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the status of the operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
@@ -248,39 +221,19 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refresh a SSIS integration runtime object metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        return beginRefresh(resourceGroupName, factoryName, integrationRuntimeName).getFinalResult();
+        return refresh(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
-    /**
-     * Refresh a SSIS integration runtime object metadata.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String factoryName,
         String integrationRuntimeName, Context context) {
-        return beginRefresh(resourceGroupName, factoryName, integrationRuntimeName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRefresh(resourceGroupName, factoryName, integrationRuntimeName, context));
     }
 
     /**
@@ -326,19 +279,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param getMetadataRequest The parameters for getting a SSIS object metadata.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SsisObjectMetadataListResponseInner> getWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest, Context context) {
@@ -347,17 +288,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
             resourceGroupName, factoryName, integrationRuntimeName, accept, getMetadataRequest, context);
     }
 
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SsisObjectMetadataListResponseInner get(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {

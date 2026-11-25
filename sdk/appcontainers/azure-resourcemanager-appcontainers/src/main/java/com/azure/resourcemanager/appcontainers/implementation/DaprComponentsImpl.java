@@ -72,12 +72,11 @@ public final class DaprComponentsImpl implements DaprComponents {
     }
 
     public void delete(String resourceGroupName, String environmentName, String componentName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, componentName);
+        this.deleteWithResponse(resourceGroupName, environmentName, componentName, Context.NONE);
     }
 
     public PagedIterable<DaprComponent> list(String resourceGroupName, String environmentName) {
-        PagedIterable<DaprComponentInner> inner = this.serviceClient().list(resourceGroupName, environmentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DaprComponentImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, environmentName, Context.NONE);
     }
 
     public PagedIterable<DaprComponent> list(String resourceGroupName, String environmentName, Context context) {

@@ -123,20 +123,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VpnServerConfigurationPolicyGroupInner>> getWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName) {
@@ -213,19 +200,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             vpnServerConfigurationName, configurationPolicyGroupName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnServerConfigurationPolicyGroupInner> getAsync(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName) {
@@ -233,20 +208,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VpnServerConfigurationPolicyGroupInner> getWithResponse(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName, Context context) {
@@ -254,19 +216,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             context).block();
     }
 
-    /**
-     * Retrieves the details of a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnServerConfigurationPolicyGroupInner get(String resourceGroupName, String vpnServerConfigurationName,
         String configurationPolicyGroupName) {
@@ -274,22 +224,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param vpnServerConfigurationPolicyGroupParameters Parameters supplied to create or update a
-     * VpnServerConfiguration PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName,
@@ -385,21 +320,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             vpnServerConfigurationPolicyGroupParameters, context);
     }
 
-    /**
-     * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param vpnServerConfigurationPolicyGroupParameters Parameters supplied to create or update a
-     * VpnServerConfiguration PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpnServerConfigurationPolicyGroup Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnServerConfigurationPolicyGroupInner>, VpnServerConfigurationPolicyGroupInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String vpnServerConfigurationName,
@@ -442,21 +363,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             VpnServerConfigurationPolicyGroupInner.class, context);
     }
 
-    /**
-     * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param vpnServerConfigurationPolicyGroupParameters Parameters supplied to create or update a
-     * VpnServerConfiguration PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnServerConfigurationPolicyGroup Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationPolicyGroupInner>, VpnServerConfigurationPolicyGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
@@ -468,22 +375,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             .getSyncPoller();
     }
 
-    /**
-     * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param vpnServerConfigurationPolicyGroupParameters Parameters supplied to create or update a
-     * VpnServerConfiguration PolicyGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpnServerConfigurationPolicyGroup Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationPolicyGroupInner>, VpnServerConfigurationPolicyGroupInner>
         beginCreateOrUpdate(String resourceGroupName, String vpnServerConfigurationName,
@@ -495,21 +387,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             .getSyncPoller();
     }
 
-    /**
-     * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param vpnServerConfigurationPolicyGroupParameters Parameters supplied to create or update a
-     * VpnServerConfiguration PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnServerConfigurationPolicyGroupInner> createOrUpdateAsync(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName,
@@ -542,21 +420,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             vpnServerConfigurationPolicyGroupParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param vpnServerConfigurationPolicyGroupParameters Parameters supplied to create or update a
-     * VpnServerConfiguration PolicyGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnServerConfigurationPolicyGroupInner createOrUpdate(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName,
@@ -565,22 +429,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             vpnServerConfigurationPolicyGroupParameters).block();
     }
 
-    /**
-     * Creates a ConfigurationPolicyGroup if it doesn't exist else updates the existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param vpnServerConfigurationPolicyGroupParameters Parameters supplied to create or update a
-     * VpnServerConfiguration PolicyGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfigurationPolicyGroup Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnServerConfigurationPolicyGroupInner createOrUpdate(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName,
@@ -589,19 +438,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             vpnServerConfigurationPolicyGroupParameters, context).block();
     }
 
-    /**
-     * Deletes a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName) {
@@ -676,19 +513,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             vpnServerConfigurationName, configurationPolicyGroupName, context);
     }
 
-    /**
-     * Deletes a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
         String vpnServerConfigurationName, String configurationPolicyGroupName) {
@@ -722,19 +547,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             context);
     }
 
-    /**
-     * Deletes a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnServerConfigurationName,
         String configurationPolicyGroupName) {
@@ -742,20 +555,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnServerConfigurationName,
         String configurationPolicyGroupName, Context context) {
@@ -764,19 +564,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String vpnServerConfigurationName,
         String configurationPolicyGroupName) {
@@ -806,37 +594,14 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vpnServerConfigurationName,
         String configurationPolicyGroupName) {
         deleteAsync(resourceGroupName, vpnServerConfigurationName, configurationPolicyGroupName).block();
     }
 
-    /**
-     * Deletes a ConfigurationPolicyGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param configurationPolicyGroupName The name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vpnServerConfigurationName, String configurationPolicyGroupName,
         Context context) {
@@ -926,18 +691,7 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnServerConfigurationPolicyGroups as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnServerConfigurationPolicyGroupInner> listByVpnServerConfigurationAsync(String resourceGroupName,
         String vpnServerConfigurationName) {
@@ -967,37 +721,14 @@ public final class ConfigurationPolicyGroupsClientImpl implements ConfigurationP
             nextLink -> listByVpnServerConfigurationNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnServerConfigurationPolicyGroups as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationPolicyGroupInner> listByVpnServerConfiguration(String resourceGroupName,
         String vpnServerConfigurationName) {
         return new PagedIterable<>(listByVpnServerConfigurationAsync(resourceGroupName, vpnServerConfigurationName));
     }
 
-    /**
-     * Lists all the configurationPolicyGroups in a resource group for a vpnServerConfiguration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vpnServerConfigurationName The name of the resource that is unique within a resource group. This name can
-     * be used to access the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnServerConfigurationPolicyGroups as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnServerConfigurationPolicyGroupInner> listByVpnServerConfiguration(String resourceGroupName,
         String vpnServerConfigurationName, Context context) {

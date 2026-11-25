@@ -61,10 +61,7 @@ public final class FeaturestoreEntityContainerImpl
     }
 
     public FeaturestoreEntityContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturestoreEntityContainers()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FeaturestoreEntityContainer create(Context context) {
@@ -86,10 +83,7 @@ public final class FeaturestoreEntityContainerImpl
     }
 
     public FeaturestoreEntityContainer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturestoreEntityContainers()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FeaturestoreEntityContainer apply(Context context) {
@@ -115,11 +109,7 @@ public final class FeaturestoreEntityContainerImpl
     }
 
     public FeaturestoreEntityContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturestoreEntityContainers()
-            .getEntityWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FeaturestoreEntityContainer refresh(Context context) {

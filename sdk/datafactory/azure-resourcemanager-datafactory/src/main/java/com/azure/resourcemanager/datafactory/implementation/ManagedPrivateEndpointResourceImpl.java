@@ -73,12 +73,7 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
     }
 
     public ManagedPrivateEndpointResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-                managedPrivateEndpointName, this.innerModel(), createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedPrivateEndpointResource create(Context context) {
@@ -104,12 +99,7 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
     }
 
     public ManagedPrivateEndpointResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-                managedPrivateEndpointName, this.innerModel(), updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedPrivateEndpointResource apply(Context context) {
@@ -140,13 +130,7 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
     }
 
     public ManagedPrivateEndpointResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedPrivateEndpoints()
-            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
-                localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedPrivateEndpointResource refresh(Context context) {

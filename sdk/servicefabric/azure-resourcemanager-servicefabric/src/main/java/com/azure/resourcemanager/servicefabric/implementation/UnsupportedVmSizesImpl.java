@@ -43,8 +43,7 @@ public final class UnsupportedVmSizesImpl implements UnsupportedVmSizes {
     }
 
     public PagedIterable<VMSizeResource> list(String location) {
-        PagedIterable<VMSizeResourceInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VMSizeResourceImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<VMSizeResource> list(String location, Context context) {

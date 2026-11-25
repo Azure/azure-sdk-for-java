@@ -46,7 +46,7 @@ public final class ClusterAssociationsImpl implements ClusterAssociations {
     }
 
     public void delete(String resourceGroupName, String agentFabricName, String clusterAssociationName) {
-        this.serviceClient().delete(resourceGroupName, agentFabricName, clusterAssociationName);
+        this.delete(resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String agentFabricName, String clusterAssociationName,
@@ -55,9 +55,7 @@ public final class ClusterAssociationsImpl implements ClusterAssociations {
     }
 
     public PagedIterable<ClusterAssociation> listByParent(String resourceGroupName, String agentFabricName) {
-        PagedIterable<ClusterAssociationInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, agentFabricName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterAssociationImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, agentFabricName, Context.NONE);
     }
 
     public PagedIterable<ClusterAssociation> listByParent(String resourceGroupName, String agentFabricName,
@@ -68,103 +66,36 @@ public final class ClusterAssociationsImpl implements ClusterAssociations {
     }
 
     public ClusterAssociation getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String agentFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "agentFabricName");
-        if (agentFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentFabrics'.", id)));
-        }
-        String clusterAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "clusterAssociationName");
-        if (clusterAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterAssociations'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ClusterAssociation> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String agentFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String agentFabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "agentFabricName");
-        if (agentFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentFabrics'.", id)));
-        }
-        String clusterAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "agentFabricName", "agentFabrics", LOGGER);
+        String clusterAssociationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "clusterAssociationName");
-        if (clusterAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterAssociations'.", id)));
-        }
+            "clusterAssociationName", "clusterAssociations", LOGGER);
         return this.getWithResponse(resourceGroupName, agentFabricName, clusterAssociationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String agentFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "agentFabricName");
-        if (agentFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentFabrics'.", id)));
-        }
-        String clusterAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "clusterAssociationName");
-        if (clusterAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterAssociations'.", id)));
-        }
-        this.delete(resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String agentFabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String agentFabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "agentFabricName");
-        if (agentFabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'agentFabrics'.", id)));
-        }
-        String clusterAssociationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "agentFabricName", "agentFabrics", LOGGER);
+        String clusterAssociationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkSecurity/agentFabrics/{agentFabricName}/clusterAssociations/{clusterAssociationName}",
-            "clusterAssociationName");
-        if (clusterAssociationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterAssociations'.", id)));
-        }
+            "clusterAssociationName", "clusterAssociations", LOGGER);
         this.delete(resourceGroupName, agentFabricName, clusterAssociationName, context);
     }
 

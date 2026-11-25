@@ -221,18 +221,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Job by name/id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job by name/id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobBaseInner> getWithResponse(String resourceGroupName, String workspaceName, String id,
         Context context) {
@@ -241,17 +230,7 @@ public final class JobsClientImpl implements JobsClient {
             resourceGroupName, workspaceName, id, accept, context);
     }
 
-    /**
-     * Gets a Job by name/id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job by name/id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobBaseInner get(String resourceGroupName, String workspaceName, String id) {
         return getWithResponse(resourceGroupName, workspaceName, id, Context.NONE).getValue();
@@ -309,23 +288,7 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates and executes a Job.
-     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
-     * 
-     * Creates and executes a Job.
-     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @param body Job definition object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobBaseInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String id,
         JobBaseInner body, Context context) {
@@ -335,22 +298,7 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, id, contentType, accept, body, context);
     }
 
-    /**
-     * Creates and executes a Job.
-     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
-     * 
-     * Creates and executes a Job.
-     * For update case, the Tags in the definition passed in will replace Tags in the existing job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @param body Job definition object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobBaseInner createOrUpdate(String resourceGroupName, String workspaceName, String id, JobBaseInner body) {
         return createOrUpdateWithResponse(resourceGroupName, workspaceName, id, body, Context.NONE).getValue();
@@ -389,8 +337,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String id) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, id, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, id, Context.NONE);
     }
 
     /**
@@ -431,35 +378,13 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String id) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, id);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, id, Context.NONE);
     }
 
-    /**
-     * Deletes a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String id,
         Context context) {
@@ -484,35 +409,16 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String id) {
-        beginDelete(resourceGroupName, workspaceName, id).getFinalResult();
+        delete(resourceGroupName, workspaceName, id, Context.NONE);
     }
 
-    /**
-     * Deletes a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String id, Context context) {
-        beginDelete(resourceGroupName, workspaceName, id, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, id, context));
     }
 
     /**
@@ -610,12 +516,8 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobBaseInner> listSinglePage(String resourceGroupName, String workspaceName, String skip,
         String jobType, String tag, ListViewType listViewType, String properties) {
-        final String accept = "application/json";
-        Response<JobBaseResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties,
+            Context.NONE);
     }
 
     /**
@@ -646,16 +548,7 @@ public final class JobsClientImpl implements JobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Jobs in the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of JobBase entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobBaseInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
@@ -663,28 +556,10 @@ public final class JobsClientImpl implements JobsClient {
         final String tag = null;
         final ListViewType listViewType = null;
         final String properties = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, properties, Context.NONE);
     }
 
-    /**
-     * Lists Jobs in the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param skip Continuation token for pagination.
-     * @param jobType Type of job to be returned.
-     * @param tag Jobs returned will have this tag key.
-     * @param listViewType View type for including/excluding (for example) archived entities.
-     * @param properties Comma-separated list of user property names (and optionally values). Example:
-     * prop1,prop2=value2.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of JobBase entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobBaseInner> list(String resourceGroupName, String workspaceName, String skip, String jobType,
         String tag, ListViewType listViewType, String properties, Context context) {
@@ -725,8 +600,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> cancelWithResponse(String resourceGroupName, String workspaceName, String id) {
-        return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, id, Context.NONE);
+        return cancelWithResponse(resourceGroupName, workspaceName, id, Context.NONE);
     }
 
     /**
@@ -767,35 +641,13 @@ public final class JobsClientImpl implements JobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Cancels a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String workspaceName, String id) {
-        Response<BinaryData> response = cancelWithResponse(resourceGroupName, workspaceName, id);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCancel(resourceGroupName, workspaceName, id, Context.NONE);
     }
 
-    /**
-     * Cancels a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String workspaceName, String id,
         Context context) {
@@ -820,35 +672,16 @@ public final class JobsClientImpl implements JobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Cancels a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String workspaceName, String id) {
-        beginCancel(resourceGroupName, workspaceName, id).getFinalResult();
+        cancel(resourceGroupName, workspaceName, id, Context.NONE);
     }
 
-    /**
-     * Cancels a Job (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param id The name and identifier for the Job. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String workspaceName, String id, Context context) {
-        beginCancel(resourceGroupName, workspaceName, id, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginCancel(resourceGroupName, workspaceName, id, context));
     }
 
     /**
@@ -885,11 +718,7 @@ public final class JobsClientImpl implements JobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobBaseInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobBaseResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

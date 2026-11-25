@@ -210,22 +210,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the vault setting.
-     * 
-     * Gets the vault setting. This includes the Migration Hub connection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param vaultSettingName Vault setting name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault setting.
-     * 
-     * Gets the vault setting along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultSettingInner> getWithResponse(String resourceGroupName, String resourceName,
         String vaultSettingName, Context context) {
@@ -256,21 +241,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
             resourceGroupName, resourceName, vaultSettingName, accept, context);
     }
 
-    /**
-     * Gets the vault setting.
-     * 
-     * Gets the vault setting. This includes the Migration Hub connection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param vaultSettingName Vault setting name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault setting.
-     * 
-     * Gets the vault setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultSettingInner get(String resourceGroupName, String resourceName, String vaultSettingName) {
         return getWithResponse(resourceGroupName, resourceName, vaultSettingName, Context.NONE).getValue();
@@ -343,38 +314,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String resourceName,
         String vaultSettingName, VaultSettingCreationInput input) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (vaultSettingName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter vaultSettingName is required and cannot be null."));
-        }
-        if (input == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter input is required and cannot be null."));
-        } else {
-            input.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, vaultSettingName, contentType, accept,
-            input, Context.NONE);
+        return createWithResponse(resourceGroupName, resourceName, vaultSettingName, input, Context.NONE);
     }
 
     /**
@@ -452,43 +392,14 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
             VaultSettingInner.class, VaultSettingInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
-     * 
-     * The operation to configure vault setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param vaultSettingName Vault setting name.
-     * @param input Vault setting creation input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vault setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceGroupName,
         String resourceName, String vaultSettingName, VaultSettingCreationInput input) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, resourceName, vaultSettingName, input);
-        return this.client.<VaultSettingInner, VaultSettingInner>getLroResult(response, VaultSettingInner.class,
-            VaultSettingInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, resourceName, vaultSettingName, input, Context.NONE);
     }
 
-    /**
-     * Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
-     * 
-     * The operation to configure vault setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param vaultSettingName Vault setting name.
-     * @param input Vault setting creation input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vault setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VaultSettingInner>, VaultSettingInner> beginCreate(String resourceGroupName,
         String resourceName, String vaultSettingName, VaultSettingCreationInput input, Context context) {
@@ -519,45 +430,19 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
-     * 
-     * The operation to configure vault setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param vaultSettingName Vault setting name.
-     * @param input Vault setting creation input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultSettingInner create(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input) {
-        return beginCreate(resourceGroupName, resourceName, vaultSettingName, input).getFinalResult();
+        return create(resourceGroupName, resourceName, vaultSettingName, input, Context.NONE);
     }
 
-    /**
-     * Updates vault setting. A vault setting object is a singleton per vault and it is always present by default.
-     * 
-     * The operation to configure vault setting.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param vaultSettingName Vault setting name.
-     * @param input Vault setting creation input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault setting.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultSettingInner create(String resourceGroupName, String resourceName, String vaultSettingName,
         VaultSettingCreationInput input, Context context) {
-        return beginCreate(resourceGroupName, resourceName, vaultSettingName, input, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, resourceName, vaultSettingName, input, context));
     }
 
     /**
@@ -636,29 +521,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultSettingInner> listSinglePage(String resourceGroupName, String resourceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VaultSettingCollection> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -704,41 +567,13 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of vault setting.
-     * 
-     * Gets the list of vault setting. This includes the Migration Hub connection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vault setting.
-     * 
-     * Gets the list of vault setting as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultSettingInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets the list of vault setting.
-     * 
-     * Gets the list of vault setting. This includes the Migration Hub connection settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the recovery services vault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vault setting.
-     * 
-     * Gets the list of vault setting as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultSettingInner> list(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName, context),
@@ -789,20 +624,7 @@ public final class ReplicationVaultSettingsClientImpl implements ReplicationVaul
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VaultSettingInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VaultSettingCollection> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

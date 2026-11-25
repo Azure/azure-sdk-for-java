@@ -61,10 +61,7 @@ public final class FeaturesetContainerImpl
     }
 
     public FeaturesetContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturesetContainers()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FeaturesetContainer create(Context context) {
@@ -86,10 +83,7 @@ public final class FeaturesetContainerImpl
     }
 
     public FeaturesetContainer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturesetContainers()
-            .createOrUpdate(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FeaturesetContainer apply(Context context) {
@@ -115,11 +109,7 @@ public final class FeaturesetContainerImpl
     }
 
     public FeaturesetContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturesetContainers()
-            .getEntityWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FeaturesetContainer refresh(Context context) {

@@ -96,10 +96,7 @@ public final class RecoveryServicesProviderImpl
     }
 
     public RecoveryServicesProvider create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationRecoveryServicesProviders()
-            .create(resourceGroupName, resourceName, fabricName, providerName, createAddProviderInput, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RecoveryServicesProvider create(Context context) {
@@ -117,11 +114,7 @@ public final class RecoveryServicesProviderImpl
     }
 
     public RecoveryServicesProvider refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationRecoveryServicesProviders()
-            .getWithResponse(resourceGroupName, resourceName, fabricName, providerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RecoveryServicesProvider refresh(Context context) {

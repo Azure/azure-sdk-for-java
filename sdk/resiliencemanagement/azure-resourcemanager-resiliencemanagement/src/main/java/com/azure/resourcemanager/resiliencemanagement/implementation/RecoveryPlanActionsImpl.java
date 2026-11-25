@@ -35,7 +35,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
     }
 
     public ArmResponseErrorResponse finalize(String serviceGroupName, String operationId, String recoveryPlanName) {
-        return this.serviceClient().finalize(serviceGroupName, operationId, recoveryPlanName);
+        return this.finalize(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     public ArmResponseErrorResponse finalize(String serviceGroupName, String operationId, String recoveryPlanName,
@@ -45,13 +45,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public UpdateRecoveryResourcesResponse updateResources(String serviceGroupName, String operationId,
         String recoveryPlanName, UpdateRecoveryResourcesRequest body) {
-        UpdateRecoveryResourcesResponseInner inner
-            = this.serviceClient().updateResources(serviceGroupName, operationId, recoveryPlanName, body);
-        if (inner != null) {
-            return new UpdateRecoveryResourcesResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.updateResources(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     public UpdateRecoveryResourcesResponse updateResources(String serviceGroupName, String operationId,
@@ -67,7 +61,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public ArmResponseErrorResponse validateForOperation(String serviceGroupName, String operationId,
         String recoveryPlanName, ValidateForOperationRequest body) {
-        return this.serviceClient().validateForOperation(serviceGroupName, operationId, recoveryPlanName, body);
+        return this.validateForOperation(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     public ArmResponseErrorResponse validateForOperation(String serviceGroupName, String operationId,
@@ -78,13 +72,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public ValidateForRecoveryOperationBaseResponse validateForFailover(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        ValidateForRecoveryOperationBaseResponseInner inner
-            = this.serviceClient().validateForFailover(serviceGroupName, operationId, recoveryPlanName, body);
-        if (inner != null) {
-            return new ValidateForRecoveryOperationBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateForFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     public ValidateForRecoveryOperationBaseResponse validateForFailover(String serviceGroupName, String operationId,
@@ -100,13 +88,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public ValidateForRecoveryOperationBaseResponse validateForFailoverCommit(String serviceGroupName,
         String operationId, String recoveryPlanName) {
-        ValidateForRecoveryOperationBaseResponseInner inner
-            = this.serviceClient().validateForFailoverCommit(serviceGroupName, operationId, recoveryPlanName);
-        if (inner != null) {
-            return new ValidateForRecoveryOperationBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateForFailoverCommit(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     public ValidateForRecoveryOperationBaseResponse validateForFailoverCommit(String serviceGroupName,
@@ -122,13 +104,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public ValidateForRecoveryOperationBaseResponse validateForTestFailover(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        ValidateForRecoveryOperationBaseResponseInner inner
-            = this.serviceClient().validateForTestFailover(serviceGroupName, operationId, recoveryPlanName, body);
-        if (inner != null) {
-            return new ValidateForRecoveryOperationBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateForTestFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     public ValidateForRecoveryOperationBaseResponse validateForTestFailover(String serviceGroupName, String operationId,
@@ -144,13 +120,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public ValidateForRecoveryOperationBaseResponse validateForTestFailoverCleanup(String serviceGroupName,
         String operationId, String recoveryPlanName) {
-        ValidateForRecoveryOperationBaseResponseInner inner
-            = this.serviceClient().validateForTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName);
-        if (inner != null) {
-            return new ValidateForRecoveryOperationBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.validateForTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     public ValidateForRecoveryOperationBaseResponse validateForTestFailoverCleanup(String serviceGroupName,
@@ -187,7 +157,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
     }
 
     public void checkReadiness(String serviceGroupName, String operationId, String recoveryPlanName) {
-        this.serviceClient().checkReadiness(serviceGroupName, operationId, recoveryPlanName);
+        this.checkReadiness(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     public void checkReadiness(String serviceGroupName, String operationId, String recoveryPlanName, Context context) {
@@ -196,13 +166,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public RecoveryPlanActionBaseResponse failover(String serviceGroupName, String operationId, String recoveryPlanName,
         FailoverRequest body) {
-        RecoveryPlanActionBaseResponseInner inner
-            = this.serviceClient().failover(serviceGroupName, operationId, recoveryPlanName, body);
-        if (inner != null) {
-            return new RecoveryPlanActionBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     public RecoveryPlanActionBaseResponse failover(String serviceGroupName, String operationId, String recoveryPlanName,
@@ -218,13 +182,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public RecoveryPlanActionBaseResponse failoverCommit(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        RecoveryPlanActionBaseResponseInner inner
-            = this.serviceClient().failoverCommit(serviceGroupName, operationId, recoveryPlanName);
-        if (inner != null) {
-            return new RecoveryPlanActionBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failoverCommit(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     public RecoveryPlanActionBaseResponse failoverCommit(String serviceGroupName, String operationId,
@@ -262,13 +220,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public RecoveryPlanActionBaseResponse testFailover(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        RecoveryPlanActionBaseResponseInner inner
-            = this.serviceClient().testFailover(serviceGroupName, operationId, recoveryPlanName, body);
-        if (inner != null) {
-            return new RecoveryPlanActionBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     public RecoveryPlanActionBaseResponse testFailover(String serviceGroupName, String operationId,
@@ -284,13 +236,7 @@ public final class RecoveryPlanActionsImpl implements RecoveryPlanActions {
 
     public RecoveryPlanActionBaseResponse testFailoverCleanup(String serviceGroupName, String operationId,
         String recoveryPlanName, TestFailoverCleanupRequest body) {
-        RecoveryPlanActionBaseResponseInner inner
-            = this.serviceClient().testFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, body);
-        if (inner != null) {
-            return new RecoveryPlanActionBaseResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     public RecoveryPlanActionBaseResponse testFailoverCleanup(String serviceGroupName, String operationId,

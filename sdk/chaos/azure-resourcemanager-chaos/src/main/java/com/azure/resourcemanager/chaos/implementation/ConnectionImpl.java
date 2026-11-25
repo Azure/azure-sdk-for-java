@@ -60,12 +60,7 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     }
 
     public Connection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnections()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, connectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Connection create(Context context) {
@@ -87,12 +82,7 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     }
 
     public Connection apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnections()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, connectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Connection apply(Context context) {
@@ -118,11 +108,7 @@ public final class ConnectionImpl implements Connection, Connection.Definition, 
     }
 
     public Connection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getConnections()
-            .getWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Connection refresh(Context context) {

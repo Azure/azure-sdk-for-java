@@ -66,16 +66,7 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
             @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a list of service tag information resources.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceTagsListResultInner>> listWithResponseAsync(String location) {
         if (this.client.getEndpoint() == null) {
@@ -128,44 +119,19 @@ public final class ServiceTagsClientImpl implements ServiceTagsClient {
             context);
     }
 
-    /**
-     * Gets a list of service tag information resources.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceTagsListResultInner> listAsync(String location) {
         return listWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of service tag information resources.
-     * 
-     * @param location The location name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceTagsListResultInner> listWithResponse(String location, Context context) {
         return listWithResponseAsync(location, context).block();
     }
 
-    /**
-     * Gets a list of service tag information resources.
-     * 
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service tag information resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceTagsListResultInner list(String location) {
         return listWithResponse(location, Context.NONE).getValue();

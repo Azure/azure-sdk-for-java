@@ -131,10 +131,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetAppAccount create(Context context) {
@@ -156,10 +153,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .update(resourceGroupName, accountName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetAppAccount apply(Context context) {
@@ -181,11 +175,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetAppAccount refresh(Context context) {

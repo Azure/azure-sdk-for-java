@@ -113,11 +113,7 @@ public final class KubernetesVersionImpl
     }
 
     public KubernetesVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesVersions()
-            .createOrUpdate(resourceGroupName, kubernetesVersionName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public KubernetesVersion create(Context context) {
@@ -144,11 +140,7 @@ public final class KubernetesVersionImpl
     }
 
     public KubernetesVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesVersions()
-            .update(resourceGroupName, kubernetesVersionName, updateIfMatch, updateIfNoneMatch,
-                updateKubernetesVersionPatchParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public KubernetesVersion apply(Context context) {
@@ -172,11 +164,7 @@ public final class KubernetesVersionImpl
     }
 
     public KubernetesVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getKubernetesVersions()
-            .getByResourceGroupWithResponse(resourceGroupName, kubernetesVersionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public KubernetesVersion refresh(Context context) {
