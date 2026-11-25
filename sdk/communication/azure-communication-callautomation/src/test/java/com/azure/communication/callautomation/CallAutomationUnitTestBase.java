@@ -31,6 +31,7 @@ import com.azure.communication.callautomation.models.TeamsPhoneCallDetails;
 import com.azure.communication.callautomation.models.TeamsPhoneCallerDetails;
 import com.azure.communication.callautomation.models.TeamsPhoneSourceDetails;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
+import com.azure.communication.callautomation.models.DtmfConfigurationOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
@@ -73,6 +74,9 @@ public class CallAutomationUnitTestBase {
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
         = new TranscriptionOptions("en-US").setTransportUrl("https://websocket.url.com").setStartTranscription(true);
+
+    static final DtmfConfigurationOptions DTMF_CONFIGURATION_OPTIONS
+        = new DtmfConfigurationOptions().setEnableDtmfBroadcastInGroupCalls(true);
 
     public static String generateDownloadResult(String content) {
         return content;

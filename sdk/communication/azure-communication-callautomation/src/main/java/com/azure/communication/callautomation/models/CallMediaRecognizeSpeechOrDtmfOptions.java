@@ -63,6 +63,11 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      */
     private List<DtmfTone> stopDtmfTones;
 
+    /*
+     * List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+     */
+    private List<String> phraseList;
+
     /**
      * Get the interToneTimeout property: Time to wait between DTMF inputs to stop recognizing.
      * If left unspecified, the default value is set to 2 seconds.
@@ -224,6 +229,28 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         this.maxTonesToCollect = maxTonesToCollect;
     }
 
+    /**
+    * Get the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+    *
+    * @return the phraseList value.
+    */
+    public List<String> getPhraseList() {
+        return this.phraseList;
+    }
+
+    /**
+     * Set the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+     *
+     * @param phraseList the phraseList value to set.
+     * @return the CallMediaRecognizeSpeechOrDtmfOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOrDtmfOptions setPhraseList(String... phraseList) {
+        if (phraseList != null) {
+            this.phraseList = Arrays.asList(phraseList);
+        }
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -256,6 +283,8 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         }
         jsonWriter.writeArrayField("stopTones", this.stopDtmfTones,
             (writer, element) -> writer.writeString(element.toString()));
+        jsonWriter.writeArrayField("phraseList", phraseList.toArray(new String[0]),
+            (writer, value) -> writer.writeString(value));
         return jsonWriter.writeEndObject();
     }
 
@@ -288,6 +317,7 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
             String speechModelEndpointId = null;
             String operationCallbackUrl = null;
             CommunicationIdentifier targetParticipant = null;
+            List<String> phraseList = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -315,6 +345,13 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
                     maxTonesToCollect = value != null ? value : 0;
                 } else if ("stopTones".equals(fieldName)) {
                     stopDtmfTones = reader.readArray(r -> DtmfTone.fromString(r.getString()));
+                } else if ("phraseList".equals(fieldName)) {
+                    phraseList = new ArrayList<String>();
+                    reader.nextToken();
+                    while (reader.currentToken() != JsonToken.END_ARRAY) {
+                        phraseList.add(reader.getString());
+                        reader.nextToken();
+                    }
                 } else {
                     reader.skipChildren();
                 }
@@ -339,6 +376,9 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
             options.setInitialSilenceTimeout(initialSilenceTimeout);
             options.setSpeechRecognitionModelEndpointId(speechModelEndpointId);
             options.setOperationCallbackUrl(operationCallbackUrl);
+            if (phraseList != null) {
+                options.setPhraseList(phraseList.toArray(new String[0]));
+            }
 
             return options;
         });

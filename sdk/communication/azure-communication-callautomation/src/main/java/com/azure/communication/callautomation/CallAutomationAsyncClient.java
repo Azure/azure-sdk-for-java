@@ -22,6 +22,7 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.ConnectRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.DtmfConfigurationOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingOptionsInternal;
@@ -43,6 +44,7 @@ import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
+import com.azure.communication.callautomation.models.DtmfConfigurationOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
@@ -257,6 +259,12 @@ public final class CallAutomationAsyncClient {
                 .setTeamsAppSource(MicrosoftTeamsAppIdentifierConverter.convert(createCallOptions.getTeamsAppSource()));
         }
 
+        if (createCallOptions.getDtmfConfigurationOptions() != null) {
+            DtmfConfigurationOptionsInternal dtmfConfigurationOptionsInternal
+                = getDtmfConfigurationOptionsInternal(createCallOptions.getDtmfConfigurationOptions());
+            request.setDtmfOptions(dtmfConfigurationOptionsInternal);
+        }
+
         return request;
     }
 
@@ -300,6 +308,12 @@ public final class CallAutomationAsyncClient {
         if (createCallGroupOptions.getTeamsAppSource() != null) {
             request.setTeamsAppSource(
                 MicrosoftTeamsAppIdentifierConverter.convert(createCallGroupOptions.getTeamsAppSource()));
+        }
+
+        if (createCallGroupOptions.getDtmfConfigurationOptions() != null) {
+            DtmfConfigurationOptionsInternal dtmfConfigurationOptionsInternal
+                = getDtmfConfigurationOptionsInternal(createCallGroupOptions.getDtmfConfigurationOptions());
+            request.setDtmfOptions(dtmfConfigurationOptionsInternal);
         }
 
         return request;
@@ -350,6 +364,17 @@ public final class CallAutomationAsyncClient {
         }
 
         return webSocketTranscriptionOptionsInternal;
+    }
+
+    private DtmfConfigurationOptionsInternal
+        getDtmfConfigurationOptionsInternal(DtmfConfigurationOptions dtmfConfigurationOptions) {
+        if (dtmfConfigurationOptions != null) {
+            DtmfConfigurationOptionsInternal dtmfConfigurationOptionsInternal = new DtmfConfigurationOptionsInternal();
+            dtmfConfigurationOptionsInternal
+                .setEnableDtmfBroadcastInGroupCalls(dtmfConfigurationOptions.isEnableDtmfBroadcastInGroupCalls());
+            return dtmfConfigurationOptionsInternal;
+        }
+        return null;
     }
 
     /**
@@ -411,6 +436,12 @@ public final class CallAutomationAsyncClient {
                 TranscriptionOptionsInternal transcriptionOptionsInternal
                     = getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionOptions());
                 request.setTranscriptionOptions(transcriptionOptionsInternal);
+            }
+
+            if (answerCallOptions.getDtmfConfigurationOptions() != null) {
+                DtmfConfigurationOptionsInternal dtmfConfigurationOptionsInternal
+                    = getDtmfConfigurationOptionsInternal(answerCallOptions.getDtmfConfigurationOptions());
+                request.setDtmfOptions(dtmfConfigurationOptionsInternal);
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)

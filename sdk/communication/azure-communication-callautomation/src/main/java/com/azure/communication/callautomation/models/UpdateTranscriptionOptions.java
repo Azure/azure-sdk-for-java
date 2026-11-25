@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.Arrays;
+import java.util.List;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -46,6 +48,11 @@ public final class UpdateTranscriptionOptions {
      * Summarization configuration options.
      */
     private SummarizationOptions summarizationOptions;
+
+    /*
+    * List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+    */
+    private List<String> phraseList;
 
     /**
      * Get the locale.
@@ -166,6 +173,28 @@ public final class UpdateTranscriptionOptions {
      */
     public UpdateTranscriptionOptions setSummarizationOptions(SummarizationOptions summarizationOptions) {
         this.summarizationOptions = summarizationOptions;
+        return this;
+    }
+
+    /**
+    * Get the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+    *
+    * @return the phraseList value.
+    */
+    public List<String> getPhraseList() {
+        return this.phraseList;
+    }
+
+    /**
+     * Set the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+     *
+     * @param phraseList the phraseList value to set.
+     * @return the UpdateTranscriptionOptions object itself.
+     */
+    public UpdateTranscriptionOptions setPhraseList(String... phraseList) {
+        if (phraseList != null) {
+            this.phraseList = Arrays.asList(phraseList);
+        }
         return this;
     }
 }

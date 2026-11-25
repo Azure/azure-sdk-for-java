@@ -45,6 +45,11 @@ public final class AnswerCallOptions {
      */
     private Boolean enableLoopbackAudio;
 
+    /*
+     * Enabling DTMF broadcast allows DTMF tones to be transmitted calls.
+     */
+    private DtmfConfigurationOptions dtmfConfigurationOptions;
+
     /**
      * Constructor
      *
@@ -175,6 +180,26 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+    * Get the DtmfConfigurationOptions property: DTMF options for the call.
+    *
+    * @return the dtmfConfigurationOptions value.
+    */
+    public DtmfConfigurationOptions getDtmfConfigurationOptions() {
+        return this.dtmfConfigurationOptions;
+    }
+
+    /**
+     * Set the DtmfConfigurationOptions property: DTMF options for the call.
+     *
+     * @param dtmfConfigurationOptions the dtmfConfigurationOptions value to set.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setDtmfConfigurationOptions(DtmfConfigurationOptions dtmfConfigurationOptions) {
+        this.dtmfConfigurationOptions = dtmfConfigurationOptions;
         return this;
     }
 }

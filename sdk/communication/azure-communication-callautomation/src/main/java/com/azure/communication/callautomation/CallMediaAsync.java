@@ -513,6 +513,12 @@ public final class CallMediaAsync {
         SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal()
             .setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeout().toMillis());
 
+        if (speechRecognizeOptions.getPhraseList() != null) {
+            if (!speechRecognizeOptions.getPhraseList().isEmpty()) {
+                speechOptionsInternal.setPhraseList(speechRecognizeOptions.getPhraseList());
+            }
+        }
+
         RecognizeOptionsInternal recognizeOptionsInternal
             = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
                 .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
@@ -570,6 +576,12 @@ public final class CallMediaAsync {
 
         SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal()
             .setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeout().toMillis());
+
+        if (speechOrDtmfRecognizeOptions.getPhraseList() != null) {
+            if (!speechOrDtmfRecognizeOptions.getPhraseList().isEmpty()) {
+                speechOptionsInternal.setPhraseList(speechOrDtmfRecognizeOptions.getPhraseList());
+            }
+        }
 
         RecognizeOptionsInternal recognizeOptionsInternal
             = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
@@ -903,6 +915,10 @@ public final class CallMediaAsync {
                     summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
                     request.setSummarizationOptions(summarizationOptionsInternal);
                 }
+
+                if (options.getPhraseList() != null) {
+                    request.setPhraseList(options.getPhraseList());
+                }
             }
             return contentsInternal.startTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
@@ -989,6 +1005,10 @@ public final class CallMediaAsync {
                     .setEnableEndCallSummary(options.getSummarizationOptions().isEnableEndCallSummary());
                 summarizationOptionsInternal.setLocale(options.getSummarizationOptions().getLocale());
                 request.setSummarizationOptions(summarizationOptionsInternal);
+            }
+
+            if (options.getPhraseList() != null) {
+                request.setPhraseList(options.getPhraseList());
             }
 
             return contentsInternal.updateTranscriptionWithResponseAsync(callConnectionId, request, context);

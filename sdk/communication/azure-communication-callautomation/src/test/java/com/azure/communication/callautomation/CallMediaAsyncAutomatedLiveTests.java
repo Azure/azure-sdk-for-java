@@ -30,10 +30,12 @@ import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
+import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.core.http.HttpClient;
@@ -1189,6 +1191,130 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             PlayCompleted playFileCompleted
                 = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playFileCompleted);
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
+        } finally {
+            if (!callDestructors.isEmpty()) {
+                try {
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
+                } catch (Exception ignored) {
+                    // Some call might have been terminated during the test, and it will cause exceptions here.
+                    // Do nothing and iterate to next call connection.
+                }
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void createVOIPCallAndTranscriptionTestWithPhraseList(HttpClient httpClient) {
+        /* Test case: ACS to ACS call and Media Streaming
+        * 1. create a CallAutomationClient.
+        * 2. Start Transcription, Update Transcription and Stop Transcription
+        * 3. See Transcription started and stopped in call
+         */
+
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTestWithPhraseList", next))
+                .buildAsyncClient();
+
+        List<CallConnectionAsync> callDestructors = new ArrayList<>();
+
+        try {
+            // create caller and receiver
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier target = identityAsyncClient.createUser().block();
+
+            // Create call automation client and use source as the caller.
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTestWithPhraseList", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndTranscriptionTestWithPhraseList", next))
+                .buildAsyncClient();
+
+            String uniqueId = serviceBusWithNewCall(caller, target);
+
+            // create a call
+            List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
+            TranscriptionOptions transcriptionOptions
+                = new TranscriptionOptions("en-US").setTransportUrl(TRANSPORT_URL);
+            CreateGroupCallOptions createCallOptions
+                = new CreateGroupCallOptions(targets, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setTranscriptionOptions(transcriptionOptions);
+            createCallOptions.setCallIntelligenceOptions(
+                new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
+            assertNotNull(answerCallResult);
+            assertNotNull(answerCallResult.getCallConnectionAsync());
+            assertNotNull(answerCallResult.getCallConnectionProperties());
+            callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
+            // Start Transcription
+            StartTranscriptionOptions startTranscriptionOptions = new StartTranscriptionOptions();
+            startTranscriptionOptions.setLocale("en-US");
+            startTranscriptionOptions.setPhraseList("Vicodin", "Zocor", "Lisinopril", "Synthroid");
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .startTranscriptionWithResponse(startTranscriptionOptions)
+                .block();
+            TranscriptionStarted transcriptionStarted
+                = waitForEvent(TranscriptionStarted.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(transcriptionStarted);
+
+            // Update Transcription
+            UpdateTranscriptionOptions updateTranscriptionOptions = new UpdateTranscriptionOptions();
+            updateTranscriptionOptions.setLocale("en-CA");
+            updateTranscriptionOptions.setPhraseList("Vicodin", "Zocor", "Lisinopril", "Synthroid", "Lipitor");
+
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .updateTranscriptionWithResponse(updateTranscriptionOptions)
+                .block();
+
+            TranscriptionUpdated transcriptionUpdated
+                = waitForEvent(TranscriptionUpdated.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(transcriptionUpdated);
+
+            // Stop Transcription
+            StopTranscriptionOptions stopTranscriptionOptions = new StopTranscriptionOptions();
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId)
+                .getCallMediaAsync()
+                .stopTranscriptionWithResponse(stopTranscriptionOptions)
+                .block();
+            TranscriptionStopped transcriptionStopped
+                = waitForEvent(TranscriptionStopped.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(transcriptionStopped);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {

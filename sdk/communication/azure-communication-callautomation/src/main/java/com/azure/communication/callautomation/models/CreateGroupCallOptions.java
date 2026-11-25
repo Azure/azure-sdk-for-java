@@ -65,6 +65,11 @@ public final class CreateGroupCallOptions {
      */
     private Boolean enableLoopbackAudio;
 
+    /*
+    * Enabling DTMF broadcast allows DTMF tones to be transmitted calls.
+    */
+    private DtmfConfigurationOptions dtmfConfigurationOptions;
+
     /**
      * Constructor
      *
@@ -251,6 +256,26 @@ public final class CreateGroupCallOptions {
     */
     public CreateGroupCallOptions setEnableLoopbackAudio(Boolean enableLoopbackAudio) {
         this.enableLoopbackAudio = enableLoopbackAudio;
+        return this;
+    }
+
+    /**
+     * Get the DtmfConfigurationOptions property: DTMF options for the call.
+     *
+     * @return the dtmfConfigurationOptions value.
+     */
+    public DtmfConfigurationOptions getDtmfConfigurationOptions() {
+        return this.dtmfConfigurationOptions;
+    }
+
+    /**
+     * Set the DtmfConfigurationOptions property: DTMF options for the call.
+     *
+     * @param dtmfConfigurationOptions the dtmfConfigurationOptions value to set.
+     * @return the CreateGroupCallOptions object itself.
+     */
+    public CreateGroupCallOptions setDtmfConfigurationOptions(DtmfConfigurationOptions dtmfConfigurationOptions) {
+        this.dtmfConfigurationOptions = dtmfConfigurationOptions;
         return this;
     }
 }

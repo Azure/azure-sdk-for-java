@@ -34,6 +34,7 @@ public final class CallConnectionProperties {
     private final CommunicationUserIdentifier answeredBy;
     private final String correlationId;
     private final PhoneNumberIdentifier answeredFor;
+    private final DtmfConfigurationOptions dtmfConfigurationOptions;
 
     static {
         CallConnectionPropertiesConstructorProxy
@@ -63,6 +64,7 @@ public final class CallConnectionProperties {
         this.answeredBy = null;
         this.correlationId = null;
         this.answeredFor = null;
+        this.dtmfConfigurationOptions = null;
     }
 
     /**
@@ -94,6 +96,10 @@ public final class CallConnectionProperties {
             = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
         this.answeredFor = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredFor());
+        this.dtmfConfigurationOptions = callConnectionPropertiesInternal.getDtmfConfigurationOptions() != null
+            ? new DtmfConfigurationOptions().setEnableDtmfBroadcastInGroupCalls(
+                callConnectionPropertiesInternal.getDtmfConfigurationOptions().isEnableDtmfBroadcastInGroupCalls())
+            : null;
     }
 
     /**
@@ -210,5 +216,14 @@ public final class CallConnectionProperties {
      */
     public PhoneNumberIdentifier getAnsweredFor() {
         return answeredFor;
+    }
+
+    /**
+     * Get the DtmfConfigurationOptions property: DTMF configuration options for the call.
+     *
+     * @return the DtmfConfigurationOptions value.
+     */
+    public DtmfConfigurationOptions getDtmfConfigurationOptions() {
+        return dtmfConfigurationOptions;
     }
 }

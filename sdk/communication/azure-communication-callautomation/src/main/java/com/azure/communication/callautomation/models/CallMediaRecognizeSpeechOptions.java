@@ -48,6 +48,11 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      */
     private String speechRecognitionModelEndpointId;
 
+    /*
+    * List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+    */
+    private List<String> phraseList;
+
     /**
      * Get the endSilenceTimeout property: The length of end silence when user stops speaking and cogservice send
      * response.
@@ -243,6 +248,28 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     /**
+    * Get the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+    *
+    * @return the phraseList value.
+    */
+    public List<String> getPhraseList() {
+        return this.phraseList;
+    }
+
+    /**
+     * Set the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+     *
+     * @param phraseList the phraseList value to set.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
+     */
+    public CallMediaRecognizeSpeechOptions setPhraseList(String... phraseList) {
+        if (phraseList != null) {
+            this.phraseList = Arrays.asList(phraseList);
+        }
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -271,6 +298,8 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
             (writer, value) -> writer.writeString(value));
         jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
+        jsonWriter.writeArrayField("phraseList", phraseList.toArray(new String[0]),
+            (writer, value) -> writer.writeString(value));
         return jsonWriter.writeEndObject();
     }
 
@@ -301,6 +330,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
             String speechModelEndpointId = null;
             String operationCallbackUrl = null;
             CommunicationIdentifier targetParticipant = null;
+            List<String> phraseList = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -341,6 +371,13 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
                 } else if ("targetParticipant".equals(fieldName)) {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     targetParticipant = CommunicationIdentifierConverter.convert(inner);
+                } else if ("phraseList".equals(fieldName)) {
+                    phraseList = new ArrayList<String>();
+                    reader.nextToken();
+                    while (reader.currentToken() != JsonToken.END_ARRAY) {
+                        phraseList.add(reader.getString());
+                        reader.nextToken();
+                    }
                 } else {
                     reader.skipChildren();
                 }
@@ -362,6 +399,9 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
             options.setInitialSilenceTimeout(initialSilenceTimeout);
             options.setSpeechRecognitionModelEndpointId(speechModelEndpointId);
             options.setOperationCallbackUrl(operationCallbackUrl);
+            if (phraseList != null) {
+                options.setPhraseList(phraseList.toArray(new String[0]));
+            }
 
             return options;
         });

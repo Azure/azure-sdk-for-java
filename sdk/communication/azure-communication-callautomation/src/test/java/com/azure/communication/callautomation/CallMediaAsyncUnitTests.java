@@ -20,6 +20,7 @@ import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.UpdateTranscriptionOptions;
 import com.azure.communication.callautomation.models.SummarizationOptions;
 import com.azure.communication.callautomation.models.SummarizeCallOptions;
 import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
@@ -580,6 +581,71 @@ public class CallMediaAsyncUnitTests {
         StopMediaStreamingOptions options = new StopMediaStreamingOptions();
         options.setOperationCallbackUrl("https://localhost");
         StepVerifier.create(callMedia.stopMediaStreamingWithResponse(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponseTextSpeechOptionsWithPhraseList() {
+
+        CallMediaRecognizeSpeechOptions recognizeOptions
+            = new CallMediaRecognizeSpeechOptions(new CommunicationUserIdentifier("id"), Duration.ofMillis(1000));
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
+        recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize speech or dtmf with text source."));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setPhraseList("phrase1", "phrase2");
+
+        StepVerifier.create(callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponseTextSpeechOrDtmfOptionsWithPhraseList() {
+
+        CallMediaRecognizeSpeechOrDtmfOptions recognizeOptions = new CallMediaRecognizeSpeechOrDtmfOptions(
+            new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000));
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH_OR_DTMF);
+        recognizeOptions.setPlayPrompt(new SsmlSource().setSsmlText(
+            "<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setPhraseList("phrase1", "phrase2");
+
+        StepVerifier.create(callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void startTranscriptionWithResponseWithPhraseList() {
+        callMedia = getMockCallMedia(202);
+        StartTranscriptionOptions options = new StartTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        options.setLocale("en-US");
+        options.setPhraseList("phrase1", "phrase2");
+        StepVerifier.create(callMedia.startTranscriptionWithResponse(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void updateTranscriptionWithResponseWithPhraseList() {
+        callMedia = getMockCallMedia(202);
+        UpdateTranscriptionOptions options = new UpdateTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        options.setLocale("en-US");
+        options.setPhraseList("phrase1", "phrase2");
+        StepVerifier.create(callMedia.updateTranscriptionWithResponse(options))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
