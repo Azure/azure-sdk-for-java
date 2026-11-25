@@ -21,7 +21,7 @@ public final class ActionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"canonicalId\":\"yqlkju\",\"displayName\":\"mbmslzoyov\",\"description\":\"dbpqvybefgvm\",\"actionName\":\"okcvtlubses\",\"version\":\"cua\",\"actionType\":\"Continuous\",\"supportedTargetTypes\":[{\"targetType\":\"lpi\",\"requiredPermissions\":[\"ycndzf\",\"ivjreuyk\",\"bmnwa\",\"ltbxoeeonqlnfw\"]},{\"targetType\":\"ymvqdbpbhfckdvez\",\"requiredPermissions\":[\"ssbzhddubbnqfbl\",\"kalehp\",\"vawu\"]},{\"targetType\":\"qjtiogqgdm\",\"requiredPermissions\":[\"ctteajohi\"]},{\"targetType\":\"spnbonhpcz\",\"requiredPermissions\":[\"ktpv\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"sehch\",\"hufmpq\",\"mqyjgy\"]},\"id\":\"ulodsaeuzanhsfnh\",\"name\":\"enwphpzfngq\",\"type\":\"clid\"}]}";
+            = "{\"value\":[{\"properties\":{\"canonicalId\":\"ptysprq\",\"displayName\":\"nzxojpslsvjgpli\",\"description\":\"iqwoyxqvapcoh\",\"actionName\":\"ucqpqojxcxzrz\",\"version\":\"gdzbenr\",\"actionType\":\"Cancelable\",\"supportedTargetTypes\":[{\"targetType\":\"tzqdd\",\"requiredPermissions\":[\"fljhznamtua\"]},{\"targetType\":\"zwcjjncqtj\",\"requiredPermissions\":[\"zvgbgat\"]},{\"targetType\":\"uvbxngr\",\"requiredPermissions\":[\"ggahtt\",\"lswva\",\"qfutlxjo\",\"zasunwqrjzfrgq\"]},{\"targetType\":\"ohcmbu\",\"requiredPermissions\":[\"jrohmbpyryxameb\",\"ydyvkfkmro\",\"xne\"]}],\"parametersSchema\":{},\"recommendedRoles\":[\"tod\",\"fpyapucygvoavyu\"]},\"id\":\"sxlghieegjlg\",\"name\":\"vpaseksgbu\",\"type\":\"antuygdhgaqipirp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ActionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Action> response = manager.actions().list("x", "mmpuj", com.azure.core.util.Context.NONE);
+        PagedIterable<Action> response
+            = manager.actions().list("vanbwzohmnrxxbs", "jklinh", com.azure.core.util.Context.NONE);
 
     }
 }

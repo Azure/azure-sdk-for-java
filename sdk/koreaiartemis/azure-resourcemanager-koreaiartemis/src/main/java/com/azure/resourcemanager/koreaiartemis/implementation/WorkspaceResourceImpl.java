@@ -65,10 +65,7 @@ public final class WorkspaceResourceImpl
     }
 
     public WorkspaceResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .createOrUpdate(resourceGroupName, organizationName, workspaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceResource create(Context context) {
@@ -89,10 +86,7 @@ public final class WorkspaceResourceImpl
     }
 
     public WorkspaceResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .createOrUpdate(resourceGroupName, organizationName, workspaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceResource apply(Context context) {
@@ -118,11 +112,7 @@ public final class WorkspaceResourceImpl
     }
 
     public WorkspaceResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaces()
-            .getWithResponse(resourceGroupName, organizationName, workspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceResource refresh(Context context) {

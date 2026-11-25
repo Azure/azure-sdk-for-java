@@ -48,13 +48,8 @@ public final class PrivateEndpointConnectionsInterfacesImpl implements PrivateEn
 
     public PrivateEndpointConnection update(String resourceGroupName, String trafficControllerName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner resource) {
-        PrivateEndpointConnectionInner inner = this.serviceClient()
-            .update(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, trafficControllerName, privateEndpointConnectionName, resource,
+            Context.NONE);
     }
 
     public PrivateEndpointConnection update(String resourceGroupName, String trafficControllerName,
@@ -69,7 +64,7 @@ public final class PrivateEndpointConnectionsInterfacesImpl implements PrivateEn
     }
 
     public void delete(String resourceGroupName, String trafficControllerName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, trafficControllerName, privateEndpointConnectionName);
+        this.delete(resourceGroupName, trafficControllerName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String trafficControllerName, String privateEndpointConnectionName,
@@ -79,9 +74,7 @@ public final class PrivateEndpointConnectionsInterfacesImpl implements PrivateEn
 
     public PagedIterable<PrivateEndpointConnection> listByTrafficController(String resourceGroupName,
         String trafficControllerName) {
-        PagedIterable<PrivateEndpointConnectionInner> inner
-            = this.serviceClient().listByTrafficController(resourceGroupName, trafficControllerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return this.listByTrafficController(resourceGroupName, trafficControllerName, Context.NONE);
     }
 
     public PagedIterable<PrivateEndpointConnection> listByTrafficController(String resourceGroupName,

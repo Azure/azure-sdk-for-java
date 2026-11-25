@@ -425,17 +425,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the specified Pipeline resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the pipeline resource definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineInner> getByResourceGroupWithResponse(String resourceGroupName, String pipelineName,
         Context context) {
@@ -444,16 +434,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             this.client.getSubscriptionId(), resourceGroupName, pipelineName, accept, context);
     }
 
-    /**
-     * Retrieves the specified Pipeline resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineInner getByResourceGroup(String resourceGroupName, String pipelineName) {
         return getByResourceGroupWithResponse(resourceGroupName, pipelineName, Context.NONE).getValue();
@@ -498,11 +479,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String pipelineName,
         PipelineInner pipeline) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, pipeline,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, pipelineName, pipeline, Context.NONE);
     }
 
     /**
@@ -548,39 +525,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
             PipelineInner.class, PipelineInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new Pipeline resource or updates an existing one. This operation is asynchronous and returns the
-     * resulting Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the Pipeline definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PipelineInner>, PipelineInner> beginCreateOrUpdate(String resourceGroupName,
         String pipelineName, PipelineInner pipeline) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, pipelineName, pipeline);
-        return this.client.<PipelineInner, PipelineInner>getLroResult(response, PipelineInner.class,
-            PipelineInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, pipelineName, pipeline, Context.NONE);
     }
 
-    /**
-     * Creates a new Pipeline resource or updates an existing one. This operation is asynchronous and returns the
-     * resulting Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the Pipeline definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PipelineInner>, PipelineInner> beginCreateOrUpdate(String resourceGroupName,
         String pipelineName, PipelineInner pipeline, Context context) {
@@ -608,40 +560,18 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new Pipeline resource or updates an existing one. This operation is asynchronous and returns the
-     * resulting Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the Pipeline definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineInner createOrUpdate(String resourceGroupName, String pipelineName, PipelineInner pipeline) {
-        return beginCreateOrUpdate(resourceGroupName, pipelineName, pipeline).getFinalResult();
+        return createOrUpdate(resourceGroupName, pipelineName, pipeline, Context.NONE);
     }
 
-    /**
-     * Creates a new Pipeline resource or updates an existing one. This operation is asynchronous and returns the
-     * resulting Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the Pipeline definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineInner createOrUpdate(String resourceGroupName, String pipelineName, PipelineInner pipeline,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, pipelineName, pipeline, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, pipelineName, pipeline, context));
     }
 
     /**
@@ -681,11 +611,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String pipelineName,
         PipelinesPatch pipeline) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, pipeline,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, pipelineName, pipeline, Context.NONE);
     }
 
     /**
@@ -730,38 +656,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Applies partial updates to an existing Pipeline resource. This operation supports patch semantics and returns the
-     * updated Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the updated Pipeline properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String pipelineName,
         PipelinesPatch pipeline) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, pipelineName, pipeline);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUpdate(resourceGroupName, pipelineName, pipeline, Context.NONE);
     }
 
-    /**
-     * Applies partial updates to an existing Pipeline resource. This operation supports patch semantics and returns the
-     * updated Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the updated Pipeline properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String pipelineName,
         PipelinesPatch pipeline, Context context) {
@@ -787,37 +689,16 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Applies partial updates to an existing Pipeline resource. This operation supports patch semantics and returns the
-     * updated Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the updated Pipeline properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String pipelineName, PipelinesPatch pipeline) {
-        beginUpdate(resourceGroupName, pipelineName, pipeline).getFinalResult();
+        update(resourceGroupName, pipelineName, pipeline, Context.NONE);
     }
 
-    /**
-     * Applies partial updates to an existing Pipeline resource. This operation supports patch semantics and returns the
-     * updated Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param pipeline The request body containing the updated Pipeline properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String pipelineName, PipelinesPatch pipeline, Context context) {
-        beginUpdate(resourceGroupName, pipelineName, pipeline, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, pipelineName, pipeline, context));
     }
 
     /**
@@ -850,8 +731,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String pipelineName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, pipelineName, Context.NONE);
     }
 
     /**
@@ -888,33 +768,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Pipeline resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String pipelineName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, pipelineName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, pipelineName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Pipeline resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String pipelineName,
         Context context) {
@@ -937,33 +797,16 @@ public final class PipelinesClientImpl implements PipelinesClient {
         return beginDeleteAsync(resourceGroupName, pipelineName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Pipeline resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String pipelineName) {
-        beginDelete(resourceGroupName, pipelineName).getFinalResult();
+        delete(resourceGroupName, pipelineName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Pipeline resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String pipelineName, Context context) {
-        beginDelete(resourceGroupName, pipelineName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, pipelineName, context));
     }
 
     /**
@@ -1013,11 +856,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PipelineInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<PipelineListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1039,31 +878,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Pipeline resources within the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Pipeline list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all Pipeline resources within the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Pipeline list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1111,11 +932,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PipelineInner> listBySubscriptionSinglePage() {
-        final String accept = "application/json";
-        Response<PipelineListResult> res = service.listBySubscriptionSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionSinglePage(Context.NONE);
     }
 
     /**
@@ -1136,28 +953,13 @@ public final class PipelinesClientImpl implements PipelinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Pipeline resources within the current subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Pipeline list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineInner> listBySubscription() {
-        return new PagedIterable<>(() -> listBySubscriptionSinglePage(),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return listBySubscription(Context.NONE);
     }
 
-    /**
-     * Lists all Pipeline resources within the current subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Pipeline list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineInner> listBySubscription(Context context) {
         return new PagedIterable<>(() -> listBySubscriptionSinglePage(context),
@@ -1201,11 +1003,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> approveConnectionWithResponse(String resourceGroupName, String pipelineName,
         ResourceBody connection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.approveConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, connection,
-            Context.NONE);
+        return approveConnectionWithResponse(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
     /**
@@ -1249,37 +1047,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
             ConnectionInner.class, ConnectionInner.class, this.client.getContext());
     }
 
-    /**
-     * Approves a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to approve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginApproveConnection(String resourceGroupName,
         String pipelineName, ResourceBody connection) {
-        Response<BinaryData> response = approveConnectionWithResponse(resourceGroupName, pipelineName, connection);
-        return this.client.<ConnectionInner, ConnectionInner>getLroResult(response, ConnectionInner.class,
-            ConnectionInner.class, Context.NONE);
+        return beginApproveConnection(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
-    /**
-     * Approves a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to approve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginApproveConnection(String resourceGroupName,
         String pipelineName, ResourceBody connection, Context context) {
@@ -1307,38 +1082,18 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Approves a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to approve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner approveConnection(String resourceGroupName, String pipelineName, ResourceBody connection) {
-        return beginApproveConnection(resourceGroupName, pipelineName, connection).getFinalResult();
+        return approveConnection(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
-    /**
-     * Approves a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to approve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner approveConnection(String resourceGroupName, String pipelineName, ResourceBody connection,
         Context context) {
-        return beginApproveConnection(resourceGroupName, pipelineName, connection, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginApproveConnection(resourceGroupName, pipelineName, connection, context));
     }
 
     /**
@@ -1555,11 +1310,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> executeActionWithResponse(String resourceGroupName, String pipelineName,
         Action action) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.executeActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, action,
-            Context.NONE);
+        return executeActionWithResponse(resourceGroupName, pipelineName, action, Context.NONE);
     }
 
     /**
@@ -1602,37 +1353,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
             PipelineInner.class, PipelineInner.class, this.client.getContext());
     }
 
-    /**
-     * Executes a privileged or administrative action on the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param action The action to be executed on the Pipeline.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PipelineInner>, PipelineInner> beginExecuteAction(String resourceGroupName,
         String pipelineName, Action action) {
-        Response<BinaryData> response = executeActionWithResponse(resourceGroupName, pipelineName, action);
-        return this.client.<PipelineInner, PipelineInner>getLroResult(response, PipelineInner.class,
-            PipelineInner.class, Context.NONE);
+        return beginExecuteAction(resourceGroupName, pipelineName, action, Context.NONE);
     }
 
-    /**
-     * Executes a privileged or administrative action on the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param action The action to be executed on the Pipeline.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PipelineInner>, PipelineInner> beginExecuteAction(String resourceGroupName,
         String pipelineName, Action action, Context context) {
@@ -1658,37 +1386,17 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Executes a privileged or administrative action on the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param action The action to be executed on the Pipeline.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineInner executeAction(String resourceGroupName, String pipelineName, Action action) {
-        return beginExecuteAction(resourceGroupName, pipelineName, action).getFinalResult();
+        return executeAction(resourceGroupName, pipelineName, action, Context.NONE);
     }
 
-    /**
-     * Executes a privileged or administrative action on the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param action The action to be executed on the Pipeline.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the pipeline resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineInner executeAction(String resourceGroupName, String pipelineName, Action action, Context context) {
-        return beginExecuteAction(resourceGroupName, pipelineName, action, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginExecuteAction(resourceGroupName, pipelineName, action, context));
     }
 
     /**
@@ -1729,18 +1437,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists all Flows associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connections A list of connection identifiers used to filter the Flows to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of flow resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListFlowsByPipelineResultInner> listWithResponse(String resourceGroupName, String pipelineName,
         ConnectionIdList connections, Context context) {
@@ -1749,16 +1446,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             resourceGroupName, pipelineName, accept, connections, context);
     }
 
-    /**
-     * Lists all Flows associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of flow resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListFlowsByPipelineResultInner list(String resourceGroupName, String pipelineName) {
         final ConnectionIdList connections = null;
@@ -1972,19 +1660,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the schemas associated with a specific connection in the Pipeline. This operation has reached end of life
-     * support starting version 2025-05-30-preview. For schema support please create and use a FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param schema The schema(s) to retrieve for the specified connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schemas list result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemasListResultInner> listSchemasListWithResponse(String resourceGroupName, String pipelineName,
         Schema schema, Context context) {
@@ -1994,18 +1670,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
             this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, schema, context);
     }
 
-    /**
-     * Lists the schemas associated with a specific connection in the Pipeline. This operation has reached end of life
-     * support starting version 2025-05-30-preview. For schema support please create and use a FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param schema The schema(s) to retrieve for the specified connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schemas list result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemasListResultInner listSchemasList(String resourceGroupName, String pipelineName, Schema schema) {
         return listSchemasListWithResponse(resourceGroupName, pipelineName, schema, Context.NONE).getValue();
@@ -2048,11 +1713,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rejectConnectionWithResponse(String resourceGroupName, String pipelineName,
         ResourceBody connection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.rejectConnectionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, contentType, accept, connection,
-            Context.NONE);
+        return rejectConnectionWithResponse(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
     /**
@@ -2096,37 +1757,14 @@ public final class PipelinesClientImpl implements PipelinesClient {
             ConnectionInner.class, ConnectionInner.class, this.client.getContext());
     }
 
-    /**
-     * Rejects a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to reject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginRejectConnection(String resourceGroupName,
         String pipelineName, ResourceBody connection) {
-        Response<BinaryData> response = rejectConnectionWithResponse(resourceGroupName, pipelineName, connection);
-        return this.client.<ConnectionInner, ConnectionInner>getLroResult(response, ConnectionInner.class,
-            ConnectionInner.class, Context.NONE);
+        return beginRejectConnection(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
-    /**
-     * Rejects a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to reject.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionInner>, ConnectionInner> beginRejectConnection(String resourceGroupName,
         String pipelineName, ResourceBody connection, Context context) {
@@ -2154,38 +1792,18 @@ public final class PipelinesClientImpl implements PipelinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Rejects a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to reject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner rejectConnection(String resourceGroupName, String pipelineName, ResourceBody connection) {
-        return beginRejectConnection(resourceGroupName, pipelineName, connection).getFinalResult();
+        return rejectConnection(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
-    /**
-     * Rejects a pending connection request associated with the specified Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param connection The request body containing the connection to reject.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionInner rejectConnection(String resourceGroupName, String pipelineName, ResourceBody connection,
         Context context) {
-        return beginRejectConnection(resourceGroupName, pipelineName, connection, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRejectConnection(resourceGroupName, pipelineName, connection, context));
     }
 
     /**
@@ -2397,11 +2015,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PipelineInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PipelineListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2455,11 +2069,7 @@ public final class PipelinesClientImpl implements PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PipelineInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PipelineListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

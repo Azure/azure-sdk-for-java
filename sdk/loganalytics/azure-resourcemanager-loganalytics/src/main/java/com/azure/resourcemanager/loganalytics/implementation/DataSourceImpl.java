@@ -79,12 +79,7 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
     }
 
     public DataSource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataSources()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataSource create(Context context) {
@@ -106,12 +101,7 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
     }
 
     public DataSource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataSources()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataSource apply(Context context) {
@@ -138,11 +128,7 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
     }
 
     public DataSource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataSources()
-            .getWithResponse(resourceGroupName, workspaceName, dataSourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataSource refresh(Context context) {

@@ -99,10 +99,7 @@ public final class PipelineImpl implements Pipeline, Pipeline.Definition, Pipeli
     }
 
     public Pipeline create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .createOrUpdate(resourceGroupName, pipelineName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Pipeline create(Context context) {
@@ -123,10 +120,7 @@ public final class PipelineImpl implements Pipeline, Pipeline.Definition, Pipeli
     }
 
     public Pipeline apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .createOrUpdate(resourceGroupName, pipelineName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Pipeline apply(Context context) {
@@ -148,11 +142,7 @@ public final class PipelineImpl implements Pipeline, Pipeline.Definition, Pipeli
     }
 
     public Pipeline refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .getByResourceGroupWithResponse(resourceGroupName, pipelineName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Pipeline refresh(Context context) {

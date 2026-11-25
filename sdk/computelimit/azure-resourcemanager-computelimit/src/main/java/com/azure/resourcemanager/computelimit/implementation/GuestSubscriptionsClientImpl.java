@@ -188,17 +188,7 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
         return getWithResponseAsync(location, guestSubscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of a guest subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param guestSubscriptionId The name of the GuestSubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a guest subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GuestSubscriptionInner> getWithResponse(String location, String guestSubscriptionId,
         Context context) {
@@ -207,16 +197,7 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
             location, guestSubscriptionId, accept, context);
     }
 
-    /**
-     * Gets the properties of a guest subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param guestSubscriptionId The name of the GuestSubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a guest subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GuestSubscriptionInner get(String location, String guestSubscriptionId) {
         return getWithResponse(location, guestSubscriptionId, Context.NONE).getValue();
@@ -263,18 +244,7 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Adds a subscription as a guest to consume the compute limits shared by the host subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param guestSubscriptionId The name of the GuestSubscription.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return guest subscription that consumes shared compute limits along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GuestSubscriptionInner> createWithResponse(String location, String guestSubscriptionId,
         GuestSubscriptionInner resource, Context context) {
@@ -284,17 +254,7 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
             this.client.getSubscriptionId(), location, guestSubscriptionId, contentType, accept, resource, context);
     }
 
-    /**
-     * Adds a subscription as a guest to consume the compute limits shared by the host subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param guestSubscriptionId The name of the GuestSubscription.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return guest subscription that consumes shared compute limits.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GuestSubscriptionInner create(String location, String guestSubscriptionId, GuestSubscriptionInner resource) {
         return createWithResponse(location, guestSubscriptionId, resource, Context.NONE).getValue();
@@ -333,32 +293,14 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
         return deleteWithResponseAsync(location, guestSubscriptionId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a subscription as a guest to stop consuming the compute limits shared by the host subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param guestSubscriptionId The name of the GuestSubscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String location, String guestSubscriptionId, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, guestSubscriptionId, context);
     }
 
-    /**
-     * Deletes a subscription as a guest to stop consuming the compute limits shared by the host subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param guestSubscriptionId The name of the GuestSubscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String location, String guestSubscriptionId) {
         deleteWithResponse(location, guestSubscriptionId, Context.NONE);
@@ -412,12 +354,7 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GuestSubscriptionInner> listBySubscriptionLocationResourceSinglePage(String location) {
-        final String accept = "application/json";
-        Response<GuestSubscriptionListResult> res
-            = service.listBySubscriptionLocationResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceSinglePage(location, Context.NONE);
     }
 
     /**
@@ -441,31 +378,13 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all guest subscriptions in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GuestSubscription list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GuestSubscriptionInner> listBySubscriptionLocationResource(String location) {
-        return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location),
-            nextLink -> listBySubscriptionLocationResourceNextSinglePage(nextLink));
+        return listBySubscriptionLocationResource(location, Context.NONE);
     }
 
-    /**
-     * Lists all guest subscriptions in a location.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GuestSubscription list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GuestSubscriptionInner> listBySubscriptionLocationResource(String location, Context context) {
         return new PagedIterable<>(() -> listBySubscriptionLocationResourceSinglePage(location, context),
@@ -505,11 +424,7 @@ public final class GuestSubscriptionsClientImpl implements GuestSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GuestSubscriptionInner> listBySubscriptionLocationResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<GuestSubscriptionListResult> res = service.listBySubscriptionLocationResourceNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionLocationResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

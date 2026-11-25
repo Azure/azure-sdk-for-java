@@ -69,10 +69,7 @@ public final class ChangeDataCaptureConfigurationImpl implements ChangeDataCaptu
     }
 
     public ChangeDataCaptureConfiguration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptureConfigurations()
-            .createOrReplace(resourceGroupName, clusterName, configurationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ChangeDataCaptureConfiguration create(Context context) {
@@ -95,10 +92,7 @@ public final class ChangeDataCaptureConfigurationImpl implements ChangeDataCaptu
     }
 
     public ChangeDataCaptureConfiguration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptureConfigurations()
-            .update(resourceGroupName, clusterName, configurationName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ChangeDataCaptureConfiguration apply(Context context) {
@@ -124,11 +118,7 @@ public final class ChangeDataCaptureConfigurationImpl implements ChangeDataCaptu
     }
 
     public ChangeDataCaptureConfiguration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChangeDataCaptureConfigurations()
-            .getWithResponse(resourceGroupName, clusterName, configurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ChangeDataCaptureConfiguration refresh(Context context) {

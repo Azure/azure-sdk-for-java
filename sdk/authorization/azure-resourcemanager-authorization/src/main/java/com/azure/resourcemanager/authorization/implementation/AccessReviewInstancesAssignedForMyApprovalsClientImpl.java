@@ -92,17 +92,7 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get single access review instance assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review instance assigned for my approval along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewInstanceInner>> getByIdWithResponseAsync(String scheduleDefinitionId, String id) {
         if (this.client.getEndpoint() == null) {
@@ -156,48 +146,20 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
         return service.getById(this.client.getEndpoint(), apiVersion, scheduleDefinitionId, id, accept, context);
     }
 
-    /**
-     * Get single access review instance assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review instance assigned for my approval on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewInstanceInner> getByIdAsync(String scheduleDefinitionId, String id) {
         return getByIdWithResponseAsync(scheduleDefinitionId, id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get single access review instance assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review instance assigned for my approval along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewInstanceInner> getByIdWithResponse(String scheduleDefinitionId, String id,
         Context context) {
         return getByIdWithResponseAsync(scheduleDefinitionId, id, context).block();
     }
 
-    /**
-     * Get single access review instance assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single access review instance assigned for my approval.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewInstanceInner getById(String scheduleDefinitionId, String id) {
         return getByIdWithResponse(scheduleDefinitionId, id, Context.NONE).getValue();
@@ -270,33 +232,14 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewInstanceInner> listAsync(String scheduleDefinitionId, String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(scheduleDefinitionId, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewInstanceInner> listAsync(String scheduleDefinitionId) {
         final String filter = null;
@@ -324,34 +267,14 @@ public final class AccessReviewInstancesAssignedForMyApprovalsClientImpl
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewInstanceInner> list(String scheduleDefinitionId) {
         final String filter = null;
         return new PagedIterable<>(listAsync(scheduleDefinitionId, filter));
     }
 
-    /**
-     * Get access review instances assigned for my approval.
-     * 
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instances assigned for my approval as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewInstanceInner> list(String scheduleDefinitionId, String filter, Context context) {
         return new PagedIterable<>(listAsync(scheduleDefinitionId, filter, context));

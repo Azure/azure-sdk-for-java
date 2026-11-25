@@ -22,7 +22,7 @@ public final class NeuroShieldProtectedResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"targetResourceId\":\"qqnvwpmq\",\"targetIdentity\":{\"principalId\":\"uoujmkcjhwqy\",\"tenantId\":\"r\",\"type\":\"None\",\"userAssignedIdentities\":{\"ewgdrjervn\":{},\"enq\":{},\"eh\":{}}},\"agentHealth\":{\"lastSeenTime\":\"2021-01-27T18:49:27Z\"},\"inventoryUploadRequest\":{\"requestId\":\"gmifthnzd\",\"requestedAt\":\"2021-02-21T18:42:47Z\",\"expiresAt\":\"2021-09-27T15:40:19Z\"}},\"id\":\"gnayqigynduh\",\"name\":\"vhqlkthumaqo\",\"type\":\"bgycduiertgccym\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"targetResourceId\":\"kdmflvestmjlx\",\"targetIdentity\":{\"principalId\":\"lozapeewchpxlk\",\"tenantId\":\"kuziycsle\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"tcktyhjtqedcgzu\":{},\"wmmrq\":{}}},\"agentHealth\":{\"lastSeenTime\":\"2021-09-18T16:35:05Z\"},\"inventoryUploadRequest\":{\"requestId\":\"pglydz\",\"requestedAt\":\"2021-01-20T06:37:50Z\",\"expiresAt\":\"2021-02-08T17:34:52Z\"}},\"id\":\"qeevt\",\"name\":\"epr\",\"type\":\"utnwytpzdmovzvf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class NeuroShieldProtectedResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeuroShieldProtectedResource response = manager.neuroShieldProtectedResources()
-            .getWithResponse("bsrfbj", "dtws", "otftpvjzbexilz", com.azure.core.util.Context.NONE)
+            .getWithResponse("xjrk", "mbtrnegvmnvu", "eqvldspast", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qqnvwpmq", response.properties().targetResourceId());
-        Assertions.assertEquals("uoujmkcjhwqy", response.properties().targetIdentity().principalId());
-        Assertions.assertEquals("r", response.properties().targetIdentity().tenantId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.properties().targetIdentity().type());
+        Assertions.assertEquals("kdmflvestmjlx", response.properties().targetResourceId());
+        Assertions.assertEquals("lozapeewchpxlk", response.properties().targetIdentity().principalId());
+        Assertions.assertEquals("kuziycsle", response.properties().targetIdentity().tenantId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.properties().targetIdentity().type());
     }
 }

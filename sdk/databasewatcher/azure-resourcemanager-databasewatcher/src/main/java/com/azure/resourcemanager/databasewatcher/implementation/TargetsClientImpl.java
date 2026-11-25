@@ -190,18 +190,7 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param targetName The target resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TargetInner> getWithResponse(String resourceGroupName, String watcherName, String targetName,
         Context context) {
@@ -210,17 +199,7 @@ public final class TargetsClientImpl implements TargetsClient {
             resourceGroupName, watcherName, targetName, accept, context);
     }
 
-    /**
-     * Get a Target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param targetName The target resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Target.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner get(String resourceGroupName, String watcherName, String targetName) {
         return getWithResponse(resourceGroupName, watcherName, targetName, Context.NONE).getValue();
@@ -271,20 +250,7 @@ public final class TargetsClientImpl implements TargetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a Target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param targetName The target resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TargetInner> createOrUpdateWithResponse(String resourceGroupName, String watcherName,
         String targetName, TargetInner resource, Context context) {
@@ -295,18 +261,7 @@ public final class TargetsClientImpl implements TargetsClient {
             context);
     }
 
-    /**
-     * Create a Target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param targetName The target resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TargetInner createOrUpdate(String resourceGroupName, String watcherName, String targetName,
         TargetInner resource) {
@@ -350,18 +305,7 @@ public final class TargetsClientImpl implements TargetsClient {
         return deleteWithResponseAsync(resourceGroupName, watcherName, targetName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param targetName The target resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String watcherName, String targetName,
         Context context) {
@@ -369,16 +313,7 @@ public final class TargetsClientImpl implements TargetsClient {
             this.client.getSubscriptionId(), resourceGroupName, watcherName, targetName, context);
     }
 
-    /**
-     * Delete a Target.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param targetName The target resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName, String targetName) {
         deleteWithResponse(resourceGroupName, watcherName, targetName, Context.NONE);
@@ -435,12 +370,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listByWatcherSinglePage(String resourceGroupName, String watcherName) {
-        final String accept = "application/json";
-        Response<TargetListResult> res
-            = service.listByWatcherSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWatcherSinglePage(resourceGroupName, watcherName, Context.NONE);
     }
 
     /**
@@ -465,33 +395,13 @@ public final class TargetsClientImpl implements TargetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Target resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Target list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> listByWatcher(String resourceGroupName, String watcherName) {
-        return new PagedIterable<>(() -> listByWatcherSinglePage(resourceGroupName, watcherName),
-            nextLink -> listByWatcherNextSinglePage(nextLink));
+        return listByWatcher(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * List Target resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Target list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TargetInner> listByWatcher(String resourceGroupName, String watcherName, Context context) {
         return new PagedIterable<>(() -> listByWatcherSinglePage(resourceGroupName, watcherName, context),
@@ -529,11 +439,7 @@ public final class TargetsClientImpl implements TargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TargetInner> listByWatcherNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TargetListResult> res
-            = service.listByWatcherNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWatcherNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

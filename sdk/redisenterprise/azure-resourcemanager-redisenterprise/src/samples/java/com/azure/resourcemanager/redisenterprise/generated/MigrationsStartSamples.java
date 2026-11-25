@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redisenterprise.models.AzureCacheForRedisMigrat
  */
 public final class MigrationsStartSamples {
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationStartWithDataMigration.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationStartWithDataMigration.json
      */
     /**
      * Sample code: RedisEnterpriseMigrationStartWithDataMigration.
@@ -31,7 +31,7 @@ public final class MigrationsStartSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/RedisEnterpriseMigrationStart.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseMigrationStart.json
      */
     /**
      * Sample code: RedisEnterpriseMigrationStart.

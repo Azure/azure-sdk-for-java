@@ -57,12 +57,7 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
     }
 
     public Job cancel(String resourceGroupName, String resourceName, String jobName) {
-        JobInner inner = this.serviceClient().cancel(resourceGroupName, resourceName, jobName);
-        if (inner != null) {
-            return new JobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.cancel(resourceGroupName, resourceName, jobName, Context.NONE);
     }
 
     public Job cancel(String resourceGroupName, String resourceName, String jobName, Context context) {
@@ -75,12 +70,7 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
     }
 
     public Job restart(String resourceGroupName, String resourceName, String jobName) {
-        JobInner inner = this.serviceClient().restart(resourceGroupName, resourceName, jobName);
-        if (inner != null) {
-            return new JobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.restart(resourceGroupName, resourceName, jobName, Context.NONE);
     }
 
     public Job restart(String resourceGroupName, String resourceName, String jobName, Context context) {
@@ -93,12 +83,7 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
     }
 
     public Job resume(String resourceGroupName, String resourceName, String jobName, ResumeJobParams resumeJobParams) {
-        JobInner inner = this.serviceClient().resume(resourceGroupName, resourceName, jobName, resumeJobParams);
-        if (inner != null) {
-            return new JobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.resume(resourceGroupName, resourceName, jobName, resumeJobParams, Context.NONE);
     }
 
     public Job resume(String resourceGroupName, String resourceName, String jobName, ResumeJobParams resumeJobParams,
@@ -113,12 +98,7 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
     }
 
     public Job export(String resourceGroupName, String resourceName, JobQueryParameter jobQueryParameter) {
-        JobInner inner = this.serviceClient().export(resourceGroupName, resourceName, jobQueryParameter);
-        if (inner != null) {
-            return new JobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.export(resourceGroupName, resourceName, jobQueryParameter, Context.NONE);
     }
 
     public Job export(String resourceGroupName, String resourceName, JobQueryParameter jobQueryParameter,

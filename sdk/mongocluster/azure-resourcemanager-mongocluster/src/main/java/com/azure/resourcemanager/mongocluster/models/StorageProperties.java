@@ -23,7 +23,8 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     private Long sizeGb;
 
     /*
-     * The type of storage to provision the cluster servers with.
+     * The type of storage to provision the cluster servers with. Defaults to 'PremiumSSDv2' when omitted during cluster
+     * creation. Omitting this property during an update leaves the storage type unchanged.
      */
     private StorageType type;
 
@@ -54,7 +55,8 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     }
 
     /**
-     * Get the type property: The type of storage to provision the cluster servers with.
+     * Get the type property: The type of storage to provision the cluster servers with. Defaults to 'PremiumSSDv2' when
+     * omitted during cluster creation. Omitting this property during an update leaves the storage type unchanged.
      * 
      * @return the type value.
      */
@@ -63,7 +65,8 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     }
 
     /**
-     * Set the type property: The type of storage to provision the cluster servers with.
+     * Set the type property: The type of storage to provision the cluster servers with. Defaults to 'PremiumSSDv2' when
+     * omitted during cluster creation. Omitting this property during an update leaves the storage type unchanged.
      * 
      * @param type the type value to set.
      * @return the StorageProperties object itself.

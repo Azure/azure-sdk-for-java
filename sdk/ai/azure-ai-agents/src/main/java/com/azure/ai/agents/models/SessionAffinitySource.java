@@ -33,18 +33,6 @@ public final class SessionAffinitySource extends ExpandableStringEnum<SessionAff
     public static final SessionAffinitySource NOT_AVAILABLE = fromString("not_available");
 
     /**
-     * The Responses conversation identifier.
-     */
-    @Generated
-    public static final SessionAffinitySource CONVERSATION = fromString("conversation");
-
-    /**
-     * The Responses previous response identifier.
-     */
-    @Generated
-    public static final SessionAffinitySource PREVIOUS_RESPONSE_ID = fromString("previous_response_id");
-
-    /**
      * Creates a new instance of SessionAffinitySource value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -74,4 +62,10 @@ public final class SessionAffinitySource extends ExpandableStringEnum<SessionAff
     public static Collection<SessionAffinitySource> values() {
         return values(SessionAffinitySource.class);
     }
+
+    /**
+     * A service-derived fingerprint based on Responses linkage or request content.
+     */
+    @Generated
+    public static final SessionAffinitySource DERIVED_FINGERPRINT = fromString("derived_fingerprint");
 }

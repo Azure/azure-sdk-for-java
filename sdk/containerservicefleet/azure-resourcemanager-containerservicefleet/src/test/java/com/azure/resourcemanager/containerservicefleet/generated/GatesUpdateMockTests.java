@@ -27,7 +27,7 @@ public final class GatesUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ickpz\",\"gateType\":\"Approval\",\"scheduledStartProperties\":{\"startDay\":\"Sunday\",\"startTime\":\"pmxelnwcltyje\",\"utcOffset\":\"ex\",\"absoluteStartTime\":\"2021-11-12T19:58:50Z\"},\"target\":{\"id\":\"f\",\"updateRunProperties\":{\"name\":\"qscazuawxtz\",\"stage\":\"uamwabzxrvxc\",\"group\":\"hsphaivmxyas\",\"timing\":\"After\"}},\"state\":\"Completed\"},\"eTag\":\"sgzwywakoihknsm\",\"id\":\"lmljhlnymzotq\",\"name\":\"ryuzcbmqqv\",\"type\":\"mv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"q\",\"gateType\":\"ScheduledStart\",\"scheduledStartProperties\":{\"startDay\":\"Saturday\",\"startTime\":\"qhykprlpyzn\",\"utcOffset\":\"ciqdsme\",\"absoluteStartTime\":\"2021-05-19T06:16:54Z\"},\"target\":{\"id\":\"tdfuxt\",\"updateRunProperties\":{\"name\":\"siibmiybnnustgn\",\"stage\":\"hnmgixhcm\",\"group\":\"mqfoudorh\",\"timing\":\"After\"}},\"state\":\"Skipped\"},\"eTag\":\"prot\",\"id\":\"pundmbxhug\",\"name\":\"mjkavlgorbmft\",\"type\":\"mdtzfjltfvnzc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,17 +37,17 @@ public final class GatesUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Gate response = manager.gates()
-            .update("u", "i", "dwfmvigorqjb",
-                new GatePatch().withProperties(new GatePatchProperties().withState(GateState.SKIPPED)), "zhraglkafh",
-                "n", com.azure.core.util.Context.NONE);
+            .update("afgaoqlt", "aeylinm", "gv",
+                new GatePatch().withProperties(new GatePatchProperties().withState(GateState.SKIPPED)), "r", "gh",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ickpz", response.displayName());
-        Assertions.assertEquals(GateType.APPROVAL, response.gateType());
-        Assertions.assertEquals(DayOfWeek.SUNDAY, response.scheduledStartProperties().startDay());
-        Assertions.assertEquals("pmxelnwcltyje", response.scheduledStartProperties().startTime());
-        Assertions.assertEquals("ex", response.scheduledStartProperties().utcOffset());
-        Assertions.assertEquals("f", response.target().id());
+        Assertions.assertEquals("q", response.displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, response.gateType());
+        Assertions.assertEquals(DayOfWeek.SATURDAY, response.scheduledStartProperties().startDay());
+        Assertions.assertEquals("qhykprlpyzn", response.scheduledStartProperties().startTime());
+        Assertions.assertEquals("ciqdsme", response.scheduledStartProperties().utcOffset());
+        Assertions.assertEquals("tdfuxt", response.target().id());
         Assertions.assertEquals(Timing.AFTER, response.target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.COMPLETED, response.state());
+        Assertions.assertEquals(GateState.SKIPPED, response.state());
     }
 }

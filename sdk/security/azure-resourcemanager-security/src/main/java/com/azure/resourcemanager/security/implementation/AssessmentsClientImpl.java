@@ -194,34 +194,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a security assessment on your scanned resource.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param expand OData expand. Optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityAssessmentResponseInner> getWithResponse(String resourceId, String assessmentName,
         ExpandEnum expand, Context context) {
         return getWithResponseAsync(resourceId, assessmentName, expand, context).block();
     }
 
-    /**
-     * Get a security assessment on your scanned resource.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security assessment on your scanned resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityAssessmentResponseInner get(String resourceId, String assessmentName) {
         final ExpandEnum expand = null;
@@ -327,37 +307,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
-     * predefined with the same name before inserting the assessment result.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assessment Calculated assessment on a pre-defined assessment metadata.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment on a resource - response format along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityAssessmentResponseInner> createOrUpdateWithResponse(String resourceId,
         String assessmentName, SecurityAssessment assessment, Context context) {
         return createOrUpdateWithResponseAsync(resourceId, assessmentName, assessment, context).block();
     }
 
-    /**
-     * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
-     * predefined with the same name before inserting the assessment result.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assessment Calculated assessment on a pre-defined assessment metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessment on a resource - response format.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityAssessmentResponseInner createOrUpdate(String resourceId, String assessmentName,
         SecurityAssessment assessment) {
@@ -439,33 +396,13 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         return deleteWithResponseAsync(resourceId, assessmentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
-     * predefined with the same name before inserting the assessment result.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceId, String assessmentName, Context context) {
         return deleteWithResponseAsync(resourceId, assessmentName, context).block();
     }
 
-    /**
-     * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
-     * predefined with the same name before inserting the assessment result.
-     * 
-     * @param resourceId The fully qualified Azure Resource manager identifier of the resource.
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceId, String assessmentName) {
         deleteWithResponse(resourceId, assessmentName, Context.NONE);
@@ -559,32 +496,13 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get security assessments on all your scanned resources inside a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentResponseInner> list(String scope) {
         return new PagedIterable<>(listAsync(scope));
     }
 
-    /**
-     * Get security assessments on all your scanned resources inside a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentResponseInner> list(String scope, Context context) {
         return new PagedIterable<>(listAsync(scope, context));

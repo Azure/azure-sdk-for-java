@@ -3,7 +3,7 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
+import com.azure.ai.agents.VoiceAgentsConversationsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.VoiceAudioItem;
 import com.azure.ai.agents.models.VoiceRecording;
@@ -34,17 +34,16 @@ public class VoiceAgentReadConversationAudioSample {
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = configuration.get("FOUNDRY_VOICE_AGENT_NAME");
         String conversationId = configuration.get("FOUNDRY_VOICE_CONVERSATION_ID");
-        BetaVoiceAgentsConversationsClient conversations = new AgentsClientBuilder()
+        VoiceAgentsConversationsClient conversations = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
-            .beta()
-            .buildBetaVoiceAgentsConversationsClient();
+            .buildVoiceAgentsConversationsClient();
 
         VoiceRecording recording = conversations.getAgentConversationAudio(agentName, conversationId);
         System.out.printf("Recording: format=%s, rate=%d, channels=%d, duration=%s%n",
-            recording.getFormat(), recording.getSampleRate(), recording.getChannels(), recording.getDurationMs());
-        if (recording.getBlobUri() != null) {
-            System.out.println("Recording is stored in customer storage: " + recording.getBlobUri());
+            recording.getFormat(), recording.getSampleRate(), recording.getChannels(), recording.getDuration());
+        if (recording.getBlobUrl() != null) {
+            System.out.println("Recording is stored in customer storage: " + recording.getBlobUrl());
         } else {
             Path output = Files.createTempFile(conversationId + "-", ".wav");
             Files.write(output, conversations.downloadAgentConversationAudio(agentName, conversationId).toBytes());
@@ -62,8 +61,8 @@ public class VoiceAgentReadConversationAudioSample {
             try {
                 VoiceAudioItem metadata = conversations.getAgentConversationAudioItem(
                     agentName, conversationId, itemId);
-                if (metadata.getBlobUri() != null) {
-                    System.out.println("Item audio is stored in customer storage: " + metadata.getBlobUri());
+                if (metadata.getBlobUrl() != null) {
+                    System.out.println("Item audio is stored in customer storage: " + metadata.getBlobUrl());
                 } else {
                     Path output = Files.createTempFile(conversationId + "-" + itemId + "-", ".wav");
                     Files.write(output, conversations.downloadAgentConversationAudioItem(

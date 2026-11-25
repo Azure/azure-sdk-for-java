@@ -68,11 +68,7 @@ public final class AzureDevOpsRepositoryImpl
     }
 
     public AzureDevOpsRepository create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsRepos()
-            .createOrUpdate(resourceGroupName, securityConnectorName, orgName, projectName, repoName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AzureDevOpsRepository create(Context context) {
@@ -94,11 +90,7 @@ public final class AzureDevOpsRepositoryImpl
     }
 
     public AzureDevOpsRepository apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsRepos()
-            .update(resourceGroupName, securityConnectorName, orgName, projectName, repoName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AzureDevOpsRepository apply(Context context) {
@@ -131,11 +123,7 @@ public final class AzureDevOpsRepositoryImpl
     }
 
     public AzureDevOpsRepository refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAzureDevOpsRepos()
-            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, repoName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AzureDevOpsRepository refresh(Context context) {

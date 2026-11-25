@@ -231,18 +231,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NodePool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NodePoolInner> getWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String nodePoolName, Context context) {
@@ -251,17 +240,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             resourceGroupName, hcpOpenShiftClusterName, nodePoolName, accept, context);
     }
 
-    /**
-     * Get a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a NodePool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner get(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName) {
         return getWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE).getValue();
@@ -308,11 +287,8 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String nodePoolName, NodePoolInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, nodePoolName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, resource,
+            Context.NONE);
     }
 
     /**
@@ -361,42 +337,14 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             NodePoolInner.class, NodePoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginCreateOrUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String nodePoolName, NodePoolInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, resource);
-        return this.client.<NodePoolInner, NodePoolInner>getLroResult(response, NodePoolInner.class,
-            NodePoolInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginCreateOrUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String nodePoolName, NodePoolInner resource, Context context) {
@@ -426,42 +374,19 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner createOrUpdate(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName,
         NodePoolInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, resource, Context.NONE);
     }
 
-    /**
-     * Create a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner createOrUpdate(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName,
         NodePoolInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, resource, context));
     }
 
     /**
@@ -505,11 +430,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String nodePoolName, NodePoolInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, nodePoolName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, properties, Context.NONE);
     }
 
     /**
@@ -558,42 +479,14 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             NodePoolInner.class, NodePoolInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String nodePoolName, NodePoolInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, properties);
-        return this.client.<NodePoolInner, NodePoolInner>getLroResult(response, NodePoolInner.class,
-            NodePoolInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodePoolInner>, NodePoolInner> beginUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String nodePoolName, NodePoolInner properties, Context context) {
@@ -623,42 +516,19 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner update(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName,
         NodePoolInner properties) {
-        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, properties).getFinalResult();
+        return update(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, properties, Context.NONE);
     }
 
-    /**
-     * Update a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodePoolInner update(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName,
         NodePoolInner properties, Context context) {
-        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, properties, context));
     }
 
     /**
@@ -695,8 +565,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String nodePoolName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE);
     }
 
     /**
@@ -738,36 +607,14 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hcpOpenShiftClusterName,
         String nodePoolName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, hcpOpenShiftClusterName, nodePoolName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hcpOpenShiftClusterName,
         String nodePoolName, Context context) {
@@ -793,35 +640,17 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName) {
-        beginDelete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName).getFinalResult();
+        delete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, Context.NONE);
     }
 
-    /**
-     * Delete a NodePool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param nodePoolName The name of the NodePool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String nodePoolName, Context context) {
-        beginDelete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, hcpOpenShiftClusterName, nodePoolName, context));
     }
 
     /**
@@ -876,12 +705,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodePoolInner> listByParentSinglePage(String resourceGroupName,
         String hcpOpenShiftClusterName) {
-        final String accept = "application/json";
-        Response<NodePoolListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     /**
@@ -906,33 +730,13 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NodePool resources by HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodePoolInner> listByParent(String resourceGroupName, String hcpOpenShiftClusterName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, hcpOpenShiftClusterName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
-    /**
-     * List NodePool resources by HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NodePool list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodePoolInner> listByParent(String resourceGroupName, String hcpOpenShiftClusterName,
         Context context) {
@@ -971,11 +775,7 @@ public final class NodePoolsClientImpl implements NodePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodePoolInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NodePoolListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

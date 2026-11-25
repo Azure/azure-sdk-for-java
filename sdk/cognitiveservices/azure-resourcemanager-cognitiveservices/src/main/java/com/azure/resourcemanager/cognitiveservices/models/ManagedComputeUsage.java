@@ -54,11 +54,19 @@ public interface ManagedComputeUsage {
     Double currentValue();
 
     /**
-     * Gets the offerScope property: Offer scope (e.g., 'Global', 'Datazone-US').
+     * Gets the offerScope property: Offer scope. Supported values are 'Global' and 'DataZone'.
      * 
      * @return the offerScope value.
      */
     String offerScope();
+
+    /**
+     * Gets the scopeId property: Scope identifier for the managed compute usage. Supported values are '' (empty), 'US',
+     * and 'EU'.
+     * 
+     * @return the scopeId value.
+     */
+    String scopeId();
 
     /**
      * Gets the deployments property: Deployments consuming this managed compute quota.

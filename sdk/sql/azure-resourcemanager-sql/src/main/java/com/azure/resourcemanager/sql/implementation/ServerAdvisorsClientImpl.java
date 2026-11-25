@@ -89,17 +89,7 @@ public final class ServerAdvisorsClientImpl implements ServerAdvisorsClient {
             @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server advisor along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdvisorInner>> getWithResponseAsync(String resourceGroupName, String serverName,
         String advisorName) {
@@ -167,70 +157,27 @@ public final class ServerAdvisorsClientImpl implements ServerAdvisorsClient {
             resourceGroupName, serverName, advisorName, accept, context);
     }
 
-    /**
-     * Gets a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server advisor on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdvisorInner> getAsync(String resourceGroupName, String serverName, String advisorName) {
         return getWithResponseAsync(resourceGroupName, serverName, advisorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server advisor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvisorInner> getWithResponse(String resourceGroupName, String serverName, String advisorName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, advisorName, context).block();
     }
 
-    /**
-     * Gets a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server advisor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvisorInner get(String resourceGroupName, String serverName, String advisorName) {
         return getWithResponse(resourceGroupName, serverName, advisorName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @param parameters The requested advisor resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AdvisorInner>> updateWithResponseAsync(String resourceGroupName, String serverName,
         String advisorName, AdvisorInner parameters) {
@@ -313,18 +260,7 @@ public final class ServerAdvisorsClientImpl implements ServerAdvisorsClient {
             resourceGroupName, serverName, advisorName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @param parameters The requested advisor resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdvisorInner> updateAsync(String resourceGroupName, String serverName, String advisorName,
         AdvisorInner parameters) {
@@ -332,54 +268,21 @@ public final class ServerAdvisorsClientImpl implements ServerAdvisorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @param parameters The requested advisor resource state.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AdvisorInner> updateWithResponse(String resourceGroupName, String serverName, String advisorName,
         AdvisorInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serverName, advisorName, parameters, context).block();
     }
 
-    /**
-     * Updates a server advisor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param advisorName The name of the Server Advisor.
-     * @param parameters The requested advisor resource state.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database, Server or Elastic Pool Advisor.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AdvisorInner update(String resourceGroupName, String serverName, String advisorName,
         AdvisorInner parameters) {
         return updateWithResponse(resourceGroupName, serverName, advisorName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Gets a list of server advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param expand The child resources to include in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server advisors along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<AdvisorInner>>> listByServerWithResponseAsync(String resourceGroupName, String serverName,
         String expand) {
@@ -441,16 +344,7 @@ public final class ServerAdvisorsClientImpl implements ServerAdvisorsClient {
             this.client.getSubscriptionId(), resourceGroupName, serverName, expand, accept, context);
     }
 
-    /**
-     * Gets a list of server advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server advisors on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<AdvisorInner>> listByServerAsync(String resourceGroupName, String serverName) {
         final String expand = null;
@@ -458,34 +352,14 @@ public final class ServerAdvisorsClientImpl implements ServerAdvisorsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of server advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server advisors along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<AdvisorInner>> listByServerWithResponse(String resourceGroupName, String serverName,
         String expand, Context context) {
         return listByServerWithResponseAsync(resourceGroupName, serverName, expand, context).block();
     }
 
-    /**
-     * Gets a list of server advisors.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server advisors.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<AdvisorInner> listByServer(String resourceGroupName, String serverName) {
         final String expand = null;

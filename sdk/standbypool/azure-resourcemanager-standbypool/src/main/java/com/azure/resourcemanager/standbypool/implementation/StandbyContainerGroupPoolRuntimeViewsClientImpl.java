@@ -166,19 +166,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a StandbyContainerGroupPoolRuntimeViewResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param runtimeView The unique identifier for the runtime view. The input string should be the word 'latest',
-     * which will get the latest runtime view of the pool, otherwise the request will fail with NotFound exception.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolRuntimeViewResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyContainerGroupPoolRuntimeViewResourceInner> getWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, String runtimeView, Context context) {
@@ -187,18 +175,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
             resourceGroupName, standbyContainerGroupPoolName, runtimeView, accept, context);
     }
 
-    /**
-     * Get a StandbyContainerGroupPoolRuntimeViewResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param runtimeView The unique identifier for the runtime view. The input string should be the word 'latest',
-     * which will get the latest runtime view of the pool, otherwise the request will fail with NotFound exception.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolRuntimeViewResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolRuntimeViewResourceInner get(String resourceGroupName,
         String standbyContainerGroupPoolName, String runtimeView) {
@@ -261,12 +238,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>
         listByStandbyPoolSinglePage(String resourceGroupName, String standbyContainerGroupPoolName) {
-        final String accept = "application/json";
-        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> res = service.listByStandbyPoolSync(
-            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
-            standbyContainerGroupPoolName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStandbyPoolSinglePage(resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
     /**
@@ -292,36 +264,14 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List StandbyContainerGroupPoolRuntimeViewResource resources by StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolRuntimeViewResourceInner> listByStandbyPool(String resourceGroupName,
         String standbyContainerGroupPoolName) {
-        return new PagedIterable<>(() -> listByStandbyPoolSinglePage(resourceGroupName, standbyContainerGroupPoolName),
-            nextLink -> listByStandbyPoolNextSinglePage(nextLink));
+        return listByStandbyPool(resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
-    /**
-     * List StandbyContainerGroupPoolRuntimeViewResource resources by StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolRuntimeViewResourceInner> listByStandbyPool(String resourceGroupName,
         String standbyContainerGroupPoolName, Context context) {
@@ -365,11 +315,7 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>
         listByStandbyPoolNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> res
-            = service.listByStandbyPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStandbyPoolNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

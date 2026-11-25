@@ -24,15 +24,12 @@ public class Sample_Advanced_ExtractDocumentMetadataAsyncTest extends ContentUnd
     }
 
     private Mono<Boolean> assertMetadata(String fileName, String contentType) throws Exception {
-        return contentUnderstandingAsyncClient
-            .beginAnalyzeBinary("prebuilt-layout", PreviewSampleTestSupport.readSample(fileName))
-            .last()
-            .flatMap(response -> {
+        return setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-layout",
+            PreviewSampleTestSupport.readSample(fileName))).last().flatMap(response -> {
                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
                 return response.getFinalResult()
                     .switchIfEmpty(Mono.error(new AssertionError(fileName + " analysis returned no final result.")));
-            })
-            .map(result -> {
+            }).map(result -> {
                 assertNotNull(result);
                 assertNotNull(result.getContents());
                 assertFalse(result.getContents().isEmpty());

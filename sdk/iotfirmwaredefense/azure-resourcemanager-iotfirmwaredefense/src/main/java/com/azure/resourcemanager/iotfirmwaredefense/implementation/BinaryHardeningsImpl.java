@@ -27,9 +27,7 @@ public final class BinaryHardeningsImpl implements BinaryHardenings {
 
     public PagedIterable<BinaryHardeningResource> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        PagedIterable<BinaryHardeningResourceInner> inner
-            = this.serviceClient().listByFirmware(resourceGroupName, workspaceName, firmwareId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BinaryHardeningResourceImpl(inner1, this.manager()));
+        return this.listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public PagedIterable<BinaryHardeningResource> listByFirmware(String resourceGroupName, String workspaceName,

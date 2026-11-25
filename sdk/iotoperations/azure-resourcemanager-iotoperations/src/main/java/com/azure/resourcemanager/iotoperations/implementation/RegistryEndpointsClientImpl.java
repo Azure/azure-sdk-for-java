@@ -203,18 +203,7 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RegistryEndpointResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegistryEndpointResourceInner> getWithResponse(String resourceGroupName, String instanceName,
         String registryEndpointName, Context context) {
@@ -223,17 +212,7 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
             resourceGroupName, instanceName, registryEndpointName, accept, context);
     }
 
-    /**
-     * Get a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a RegistryEndpointResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryEndpointResourceInner get(String resourceGroupName, String instanceName,
         String registryEndpointName) {
@@ -279,11 +258,8 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String instanceName,
         String registryEndpointName, RegistryEndpointResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, registryEndpointName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, instanceName, registryEndpointName, resource,
+            Context.NONE);
     }
 
     /**
@@ -332,41 +308,15 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
             this.client.getContext());
     }
 
-    /**
-     * Create a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of registryEndpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegistryEndpointResourceInner>, RegistryEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String registryEndpointName,
         RegistryEndpointResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, instanceName, registryEndpointName, resource);
-        return this.client.<RegistryEndpointResourceInner, RegistryEndpointResourceInner>getLroResult(response,
-            RegistryEndpointResourceInner.class, RegistryEndpointResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, instanceName, registryEndpointName, resource, Context.NONE);
     }
 
-    /**
-     * Create a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of registryEndpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegistryEndpointResourceInner>, RegistryEndpointResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String instanceName, String registryEndpointName,
@@ -396,42 +346,19 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registryEndpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryEndpointResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String registryEndpointName, RegistryEndpointResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, registryEndpointName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, instanceName, registryEndpointName, resource, Context.NONE);
     }
 
-    /**
-     * Create a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registryEndpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryEndpointResourceInner createOrUpdate(String resourceGroupName, String instanceName,
         String registryEndpointName, RegistryEndpointResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, instanceName, registryEndpointName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, instanceName, registryEndpointName, resource, context));
     }
 
     /**
@@ -468,8 +395,7 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String instanceName,
         String registryEndpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, instanceName, registryEndpointName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, instanceName, registryEndpointName, Context.NONE);
     }
 
     /**
@@ -511,36 +437,14 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
             this.client.getContext());
     }
 
-    /**
-     * Delete a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String registryEndpointName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, instanceName, registryEndpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, instanceName, registryEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String instanceName,
         String registryEndpointName, Context context) {
@@ -566,35 +470,17 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String registryEndpointName) {
-        beginDelete(resourceGroupName, instanceName, registryEndpointName).getFinalResult();
+        delete(resourceGroupName, instanceName, registryEndpointName, Context.NONE);
     }
 
-    /**
-     * Delete a RegistryEndpointResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param registryEndpointName Name of RegistryEndpoint resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String instanceName, String registryEndpointName, Context context) {
-        beginDelete(resourceGroupName, instanceName, registryEndpointName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, instanceName, registryEndpointName, context));
     }
 
     /**
@@ -651,12 +537,7 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegistryEndpointResourceInner> listByInstanceResourceSinglePage(String resourceGroupName,
         String instanceName) {
-        final String accept = "application/json";
-        Response<RegistryEndpointResourceListResult> res
-            = service.listByInstanceResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, instanceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByInstanceResourceSinglePage(resourceGroupName, instanceName, Context.NONE);
     }
 
     /**
@@ -681,36 +562,14 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List RegistryEndpointResource resources by InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RegistryEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryEndpointResourceInner> listByInstanceResource(String resourceGroupName,
         String instanceName) {
-        return new PagedIterable<>(() -> listByInstanceResourceSinglePage(resourceGroupName, instanceName),
-            nextLink -> listByInstanceResourceNextSinglePage(nextLink));
+        return listByInstanceResource(resourceGroupName, instanceName, Context.NONE);
     }
 
-    /**
-     * List RegistryEndpointResource resources by InstanceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param instanceName Name of instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a RegistryEndpointResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryEndpointResourceInner> listByInstanceResource(String resourceGroupName,
         String instanceName, Context context) {
@@ -751,11 +610,7 @@ public final class RegistryEndpointsClientImpl implements RegistryEndpointsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegistryEndpointResourceInner> listByInstanceResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RegistryEndpointResourceListResult> res
-            = service.listByInstanceResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByInstanceResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

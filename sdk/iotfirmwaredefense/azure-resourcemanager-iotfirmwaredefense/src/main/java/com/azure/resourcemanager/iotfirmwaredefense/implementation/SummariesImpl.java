@@ -49,9 +49,7 @@ public final class SummariesImpl implements Summaries {
 
     public PagedIterable<SummaryResource> listByFirmware(String resourceGroupName, String workspaceName,
         String firmwareId) {
-        PagedIterable<SummaryResourceInner> inner
-            = this.serviceClient().listByFirmware(resourceGroupName, workspaceName, firmwareId);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SummaryResourceImpl(inner1, this.manager()));
+        return this.listByFirmware(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public PagedIterable<SummaryResource> listByFirmware(String resourceGroupName, String workspaceName,

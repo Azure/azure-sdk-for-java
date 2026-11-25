@@ -111,17 +111,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
         return getWithResponseAsync(location, asyncOperationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of a long running azure asynchronous operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param asyncOperationId The operation Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String location, String asyncOperationId, Context context) {
         final String accept = "application/json";
@@ -129,16 +119,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Get the status of a long running azure asynchronous operation.
-     * 
-     * @param location The name of the Azure region.
-     * @param asyncOperationId The operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a long running azure asynchronous operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String location, String asyncOperationId) {
         return getWithResponse(location, asyncOperationId, Context.NONE).getValue();

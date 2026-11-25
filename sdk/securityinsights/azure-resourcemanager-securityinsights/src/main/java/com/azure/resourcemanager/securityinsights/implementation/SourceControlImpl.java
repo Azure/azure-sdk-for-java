@@ -33,6 +33,15 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols/{sourceControlId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols/{sourceControlId}",
+            "workspaceName");
+        this.sourceControlId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols/{sourceControlId}",
+            "sourceControlId");
     }
 
     public String id() {
@@ -133,11 +142,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSourceControls()
-            .createWithResponse(resourceGroupName, workspaceName, sourceControlId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SourceControl create(Context context) {
@@ -155,11 +160,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSourceControls()
-            .getWithResponse(resourceGroupName, workspaceName, sourceControlId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SourceControl refresh(Context context) {

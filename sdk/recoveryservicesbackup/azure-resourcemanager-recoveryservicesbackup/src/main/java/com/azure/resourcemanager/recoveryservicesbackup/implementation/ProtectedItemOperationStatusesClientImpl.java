@@ -132,24 +132,7 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
             operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations
-     * create jobs. This method returns the list of jobs associated with the operation.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName backupFabrics.
-     * @param containerName The name of the ProtectionContainerResource.
-     * @param protectedItemName The name of the ProtectedItemResource.
-     * @param operationId The name of the ProtectedItemResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusInner> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String operationId, Context context) {
@@ -158,23 +141,7 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
             resourceGroupName, vaultName, fabricName, containerName, protectedItemName, operationId, accept, context);
     }
 
-    /**
-     * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations
-     * create jobs. This method returns the list of jobs associated with the operation.
-     * 
-     * @param vaultName vaults.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param fabricName backupFabrics.
-     * @param containerName The name of the ProtectionContainerResource.
-     * @param protectedItemName The name of the ProtectedItemResource.
-     * @param operationId The name of the ProtectedItemResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusInner get(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String operationId) {

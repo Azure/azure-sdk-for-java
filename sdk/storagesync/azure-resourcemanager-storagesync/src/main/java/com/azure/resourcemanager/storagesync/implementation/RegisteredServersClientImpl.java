@@ -256,18 +256,7 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a given registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given registered server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegisteredServersGetResponse getWithResponse(String resourceGroupName, String storageSyncServiceName,
         String serverId, Context context) {
@@ -276,17 +265,7 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             resourceGroupName, storageSyncServiceName, serverId, accept, context);
     }
 
-    /**
-     * Get a given registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given registered server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegisteredServerInner get(String resourceGroupName, String storageSyncServiceName, String serverId) {
         return getWithResponse(resourceGroupName, storageSyncServiceName, serverId, Context.NONE).getValue();
@@ -331,11 +310,7 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String storageSyncServiceName,
         String serverId, RegisteredServerCreateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, serverId, contentType, accept,
-            parameters, Context.NONE);
+        return createWithResponse(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
     /**
@@ -384,40 +359,14 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             this.client.getContext());
     }
 
-    /**
-     * Add a new registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegisteredServerInner>, RegisteredServerInner> beginCreate(String resourceGroupName,
         String storageSyncServiceName, String serverId, RegisteredServerCreateParameters parameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, storageSyncServiceName, serverId, parameters);
-        return this.client.<RegisteredServerInner, RegisteredServerInner>getLroResult(response,
-            RegisteredServerInner.class, RegisteredServerInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
-    /**
-     * Add a new registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegisteredServerInner>, RegisteredServerInner> beginCreate(String resourceGroupName,
         String storageSyncServiceName, String serverId, RegisteredServerCreateParameters parameters, Context context) {
@@ -446,41 +395,19 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Add a new registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegisteredServerInner create(String resourceGroupName, String storageSyncServiceName, String serverId,
         RegisteredServerCreateParameters parameters) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, serverId, parameters).getFinalResult();
+        return create(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
-    /**
-     * Add a new registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegisteredServerInner create(String resourceGroupName, String storageSyncServiceName, String serverId,
         RegisteredServerCreateParameters parameters, Context context) {
-        return beginCreate(resourceGroupName, storageSyncServiceName, serverId, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, storageSyncServiceName, serverId, parameters, context));
     }
 
     /**
@@ -522,11 +449,7 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageSyncServiceName,
         String serverId, RegisteredServerUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, serverId, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
     /**
@@ -575,40 +498,14 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             this.client.getContext());
     }
 
-    /**
-     * Update registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegisteredServerInner>, RegisteredServerInner> beginUpdate(String resourceGroupName,
         String storageSyncServiceName, String serverId, RegisteredServerUpdateParameters parameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, storageSyncServiceName, serverId, parameters);
-        return this.client.<RegisteredServerInner, RegisteredServerInner>getLroResult(response,
-            RegisteredServerInner.class, RegisteredServerInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
-    /**
-     * Update registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegisteredServerInner>, RegisteredServerInner> beginUpdate(String resourceGroupName,
         String storageSyncServiceName, String serverId, RegisteredServerUpdateParameters parameters, Context context) {
@@ -637,41 +534,19 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegisteredServerInner update(String resourceGroupName, String storageSyncServiceName, String serverId,
         RegisteredServerUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, storageSyncServiceName, serverId, parameters).getFinalResult();
+        return update(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
-    /**
-     * Update registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Registered Server object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registered Server resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegisteredServerInner update(String resourceGroupName, String storageSyncServiceName, String serverId,
         RegisteredServerUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, storageSyncServiceName, serverId, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, storageSyncServiceName, serverId, parameters, context));
     }
 
     /**
@@ -708,8 +583,7 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageSyncServiceName,
         String serverId) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, serverId, Context.NONE);
+        return deleteWithResponse(resourceGroupName, storageSyncServiceName, serverId, Context.NONE);
     }
 
     /**
@@ -751,36 +625,14 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             this.client.getContext());
     }
 
-    /**
-     * Delete the given registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName,
         String serverId) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, storageSyncServiceName, serverId);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, storageSyncServiceName, serverId, Context.NONE);
     }
 
-    /**
-     * Delete the given registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageSyncServiceName,
         String serverId, Context context) {
@@ -806,35 +658,16 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the given registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, String serverId) {
-        beginDelete(resourceGroupName, storageSyncServiceName, serverId).getFinalResult();
+        delete(resourceGroupName, storageSyncServiceName, serverId, Context.NONE);
     }
 
-    /**
-     * Delete the given registered server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String storageSyncServiceName, String serverId, Context context) {
-        beginDelete(resourceGroupName, storageSyncServiceName, serverId, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, storageSyncServiceName, serverId, context));
     }
 
     /**
@@ -890,12 +723,7 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegisteredServerInner> listByStorageSyncServiceSinglePage(String resourceGroupName,
         String storageSyncServiceName) {
-        final String accept = "application/json";
-        Response<RegisteredServerArray> res
-            = service.listByStorageSyncServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
     /**
@@ -920,34 +748,14 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a given registered server list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given registered server list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegisteredServerInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName) {
-        return new PagedIterable<>(() -> listByStorageSyncServiceSinglePage(resourceGroupName, storageSyncServiceName),
-            nextLink -> listByStorageSyncServiceNextSinglePage(nextLink));
+        return listByStorageSyncService(resourceGroupName, storageSyncServiceName, Context.NONE);
     }
 
-    /**
-     * Get a given registered server list.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a given registered server list as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegisteredServerInner> listByStorageSyncService(String resourceGroupName,
         String storageSyncServiceName, Context context) {
@@ -994,10 +802,8 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> triggerRolloverWithResponse(String resourceGroupName, String storageSyncServiceName,
         String serverId, TriggerRolloverRequest parameters) {
-        final String contentType = "application/json";
-        return service.triggerRolloverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageSyncServiceName, serverId, contentType,
-            parameters, Context.NONE);
+        return triggerRolloverWithResponse(resourceGroupName, storageSyncServiceName, serverId, parameters,
+            Context.NONE);
     }
 
     /**
@@ -1043,39 +849,14 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             this.client.getContext());
     }
 
-    /**
-     * Triggers Server certificate rollover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Trigger Rollover request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerRollover(String resourceGroupName,
         String storageSyncServiceName, String serverId, TriggerRolloverRequest parameters) {
-        Response<BinaryData> response
-            = triggerRolloverWithResponse(resourceGroupName, storageSyncServiceName, serverId, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTriggerRollover(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers Server certificate rollover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Trigger Rollover request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerRollover(String resourceGroupName,
         String storageSyncServiceName, String serverId, TriggerRolloverRequest parameters, Context context) {
@@ -1103,39 +884,19 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Triggers Server certificate rollover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Trigger Rollover request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerRollover(String resourceGroupName, String storageSyncServiceName, String serverId,
         TriggerRolloverRequest parameters) {
-        beginTriggerRollover(resourceGroupName, storageSyncServiceName, serverId, parameters).getFinalResult();
+        triggerRollover(resourceGroupName, storageSyncServiceName, serverId, parameters, Context.NONE);
     }
 
-    /**
-     * Triggers Server certificate rollover.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageSyncServiceName Name of Storage Sync Service resource.
-     * @param serverId GUID identifying the on-premises server.
-     * @param parameters Body of Trigger Rollover request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageSyncApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void triggerRollover(String resourceGroupName, String storageSyncServiceName, String serverId,
         TriggerRolloverRequest parameters, Context context) {
-        beginTriggerRollover(resourceGroupName, storageSyncServiceName, serverId, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginTriggerRollover(resourceGroupName, storageSyncServiceName, serverId, parameters, context));
     }
 
     /**
@@ -1169,11 +930,7 @@ public final class RegisteredServersClientImpl implements RegisteredServersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegisteredServerInner> listByStorageSyncServiceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RegisteredServerArray> res
-            = service.listByStorageSyncServiceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByStorageSyncServiceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

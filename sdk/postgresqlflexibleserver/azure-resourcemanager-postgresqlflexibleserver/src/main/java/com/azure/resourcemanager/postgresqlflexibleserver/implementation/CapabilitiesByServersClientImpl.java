@@ -117,17 +117,7 @@ public final class CapabilitiesByServersClientImpl implements CapabilitiesByServ
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the capabilities available for a given server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capabilities for the Azure Database for PostgreSQL flexible server as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapabilityInner> listAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serverName),
@@ -147,11 +137,7 @@ public final class CapabilitiesByServersClientImpl implements CapabilitiesByServ
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listSinglePage(String resourceGroupName, String serverName) {
-        final String accept = "application/json";
-        Response<CapabilityList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -176,35 +162,13 @@ public final class CapabilitiesByServersClientImpl implements CapabilitiesByServ
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the capabilities available for a given server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capabilities for the Azure Database for PostgreSQL flexible server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, serverName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * Lists the capabilities available for a given server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capabilities for the Azure Database for PostgreSQL flexible server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String resourceGroupName, String serverName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, serverName, context),
@@ -242,10 +206,7 @@ public final class CapabilitiesByServersClientImpl implements CapabilitiesByServ
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CapabilityList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -299,17 +299,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EnclaveConnectionResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnclaveConnectionResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String enclaveConnectionName, Context context) {
@@ -318,16 +308,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             this.client.getSubscriptionId(), resourceGroupName, enclaveConnectionName, accept, context);
     }
 
-    /**
-     * Get a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a EnclaveConnectionResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveConnectionResourceInner getByResourceGroup(String resourceGroupName, String enclaveConnectionName) {
         return getByResourceGroupWithResponse(resourceGroupName, enclaveConnectionName, Context.NONE).getValue();
@@ -370,11 +351,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String enclaveConnectionName,
         EnclaveConnectionResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, enclaveConnectionName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, enclaveConnectionName, resource, Context.NONE);
     }
 
     /**
@@ -421,37 +398,14 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             this.client.getContext());
     }
 
-    /**
-     * Create a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveConnectionResourceInner>, EnclaveConnectionResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String enclaveConnectionName, EnclaveConnectionResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, enclaveConnectionName, resource);
-        return this.client.<EnclaveConnectionResourceInner, EnclaveConnectionResourceInner>getLroResult(response,
-            EnclaveConnectionResourceInner.class, EnclaveConnectionResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, enclaveConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveConnectionResourceInner>, EnclaveConnectionResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String enclaveConnectionName, EnclaveConnectionResourceInner resource,
@@ -480,39 +434,19 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveConnectionResourceInner createOrUpdate(String resourceGroupName, String enclaveConnectionName,
         EnclaveConnectionResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, enclaveConnectionName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, enclaveConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveConnectionResourceInner createOrUpdate(String resourceGroupName, String enclaveConnectionName,
         EnclaveConnectionResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, enclaveConnectionName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, enclaveConnectionName, resource, context));
     }
 
     /**
@@ -552,11 +486,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String enclaveConnectionName,
         EnclaveConnectionPatchModel properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, enclaveConnectionName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, enclaveConnectionName, properties, Context.NONE);
     }
 
     /**
@@ -602,37 +532,14 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             this.client.getContext());
     }
 
-    /**
-     * Update a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveConnectionResourceInner>, EnclaveConnectionResourceInner>
         beginUpdate(String resourceGroupName, String enclaveConnectionName, EnclaveConnectionPatchModel properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, enclaveConnectionName, properties);
-        return this.client.<EnclaveConnectionResourceInner, EnclaveConnectionResourceInner>getLroResult(response,
-            EnclaveConnectionResourceInner.class, EnclaveConnectionResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, enclaveConnectionName, properties, Context.NONE);
     }
 
-    /**
-     * Update a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnclaveConnectionResourceInner>, EnclaveConnectionResourceInner> beginUpdate(
         String resourceGroupName, String enclaveConnectionName, EnclaveConnectionPatchModel properties,
@@ -661,39 +568,19 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveConnectionResourceInner update(String resourceGroupName, String enclaveConnectionName,
         EnclaveConnectionPatchModel properties) {
-        return beginUpdate(resourceGroupName, enclaveConnectionName, properties).getFinalResult();
+        return update(resourceGroupName, enclaveConnectionName, properties, Context.NONE);
     }
 
-    /**
-     * Update a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return enclaveConnection Model Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnclaveConnectionResourceInner update(String resourceGroupName, String enclaveConnectionName,
         EnclaveConnectionPatchModel properties, Context context) {
-        return beginUpdate(resourceGroupName, enclaveConnectionName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, enclaveConnectionName, properties, context));
     }
 
     /**
@@ -727,8 +614,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String enclaveConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, enclaveConnectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, enclaveConnectionName, Context.NONE);
     }
 
     /**
@@ -767,33 +653,13 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             this.client.getContext());
     }
 
-    /**
-     * Delete a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String enclaveConnectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, enclaveConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, enclaveConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String enclaveConnectionName,
         Context context) {
@@ -817,33 +683,16 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String enclaveConnectionName) {
-        beginDelete(resourceGroupName, enclaveConnectionName).getFinalResult();
+        delete(resourceGroupName, enclaveConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a EnclaveConnectionResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String enclaveConnectionName, Context context) {
-        beginDelete(resourceGroupName, enclaveConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, enclaveConnectionName, context));
     }
 
     /**
@@ -894,11 +743,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveConnectionResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<EnclaveConnectionResourceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -921,33 +766,13 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EnclaveConnectionResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveConnectionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveConnectionResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List EnclaveConnectionResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveConnectionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveConnectionResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -996,11 +821,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveConnectionResourceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<EnclaveConnectionResourceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1021,29 +842,13 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List EnclaveConnectionResource resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveConnectionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveConnectionResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List EnclaveConnectionResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EnclaveConnectionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnclaveConnectionResourceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1088,11 +893,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalCreationWithResponse(String resourceGroupName,
         String enclaveConnectionName, ApprovalCallbackRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.handleApprovalCreationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, enclaveConnectionName, contentType, accept, body,
-            Context.NONE);
+        return handleApprovalCreationWithResponse(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
     /**
@@ -1139,38 +940,14 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             this.client.getContext());
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
         String resourceGroupName, String enclaveConnectionName, ApprovalCallbackRequest body) {
-        Response<BinaryData> response
-            = handleApprovalCreationWithResponse(resourceGroupName, enclaveConnectionName, body);
-        return this.client.<ApprovalActionResponseInner, ApprovalActionResponseInner>getLroResult(response,
-            ApprovalActionResponseInner.class, ApprovalActionResponseInner.class, Context.NONE);
+        return beginHandleApprovalCreation(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalCreation(
         String resourceGroupName, String enclaveConnectionName, ApprovalCallbackRequest body, Context context) {
@@ -1198,39 +975,19 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String enclaveConnectionName,
         ApprovalCallbackRequest body) {
-        return beginHandleApprovalCreation(resourceGroupName, enclaveConnectionName, body).getFinalResult();
+        return handleApprovalCreation(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalCreation(String resourceGroupName, String enclaveConnectionName,
         ApprovalCallbackRequest body, Context context) {
-        return beginHandleApprovalCreation(resourceGroupName, enclaveConnectionName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginHandleApprovalCreation(resourceGroupName, enclaveConnectionName, body, context));
     }
 
     /**
@@ -1271,11 +1028,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> handleApprovalDeletionWithResponse(String resourceGroupName,
         String enclaveConnectionName, ApprovalDeletionCallbackRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.handleApprovalDeletionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, enclaveConnectionName, contentType, accept, body,
-            Context.NONE);
+        return handleApprovalDeletionWithResponse(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
     /**
@@ -1322,38 +1075,14 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             this.client.getContext());
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
         String resourceGroupName, String enclaveConnectionName, ApprovalDeletionCallbackRequest body) {
-        Response<BinaryData> response
-            = handleApprovalDeletionWithResponse(resourceGroupName, enclaveConnectionName, body);
-        return this.client.<ApprovalActionResponseInner, ApprovalActionResponseInner>getLroResult(response,
-            ApprovalActionResponseInner.class, ApprovalActionResponseInner.class, Context.NONE);
+        return beginHandleApprovalDeletion(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApprovalActionResponseInner>, ApprovalActionResponseInner> beginHandleApprovalDeletion(
         String resourceGroupName, String enclaveConnectionName, ApprovalDeletionCallbackRequest body, Context context) {
@@ -1381,39 +1110,19 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String enclaveConnectionName,
         ApprovalDeletionCallbackRequest body) {
-        return beginHandleApprovalDeletion(resourceGroupName, enclaveConnectionName, body).getFinalResult();
+        return handleApprovalDeletion(resourceGroupName, enclaveConnectionName, body, Context.NONE);
     }
 
-    /**
-     * Callback that triggers on approval deletion state change.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param enclaveConnectionName The name of the Enclave Connection Resource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body after handling of approvalCallbackRequest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApprovalActionResponseInner handleApprovalDeletion(String resourceGroupName, String enclaveConnectionName,
         ApprovalDeletionCallbackRequest body, Context context) {
-        return beginHandleApprovalDeletion(resourceGroupName, enclaveConnectionName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginHandleApprovalDeletion(resourceGroupName, enclaveConnectionName, body, context));
     }
 
     /**
@@ -1449,11 +1158,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveConnectionResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnclaveConnectionResourceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1508,11 +1213,7 @@ public final class EnclaveConnectionsClientImpl implements EnclaveConnectionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnclaveConnectionResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnclaveConnectionResourceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

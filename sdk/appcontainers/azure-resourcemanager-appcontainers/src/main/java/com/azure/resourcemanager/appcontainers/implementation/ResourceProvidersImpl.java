@@ -31,7 +31,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public String getCustomDomainVerificationId() {
-        return this.serviceClient().getCustomDomainVerificationId();
+        return this.getCustomDomainVerificationIdWithResponse(Context.NONE).getValue();
     }
 
     public Response<JobExecution> jobExecutionWithResponse(String resourceGroupName, String jobName,

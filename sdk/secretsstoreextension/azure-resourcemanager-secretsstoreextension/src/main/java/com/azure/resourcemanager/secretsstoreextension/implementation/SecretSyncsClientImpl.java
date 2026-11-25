@@ -253,17 +253,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the properties of a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a SecretSync instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretSyncInner> getByResourceGroupWithResponse(String resourceGroupName, String secretSyncName,
         Context context) {
@@ -272,16 +262,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             this.client.getSubscriptionId(), resourceGroupName, secretSyncName, accept, context);
     }
 
-    /**
-     * Gets the properties of a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a SecretSync instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretSyncInner getByResourceGroup(String resourceGroupName, String secretSyncName) {
         return getByResourceGroupWithResponse(resourceGroupName, secretSyncName, Context.NONE).getValue();
@@ -324,11 +305,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String secretSyncName,
         SecretSyncInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, secretSyncName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, secretSyncName, resource, Context.NONE);
     }
 
     /**
@@ -372,37 +349,14 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             SecretSyncInner.class, SecretSyncInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates new or updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretSyncInner>, SecretSyncInner> beginCreateOrUpdate(String resourceGroupName,
         String secretSyncName, SecretSyncInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, secretSyncName, resource);
-        return this.client.<SecretSyncInner, SecretSyncInner>getLroResult(response, SecretSyncInner.class,
-            SecretSyncInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, secretSyncName, resource, Context.NONE);
     }
 
-    /**
-     * Creates new or updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretSyncInner>, SecretSyncInner> beginCreateOrUpdate(String resourceGroupName,
         String secretSyncName, SecretSyncInner resource, Context context) {
@@ -430,38 +384,18 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates new or updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretSyncInner createOrUpdate(String resourceGroupName, String secretSyncName, SecretSyncInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, secretSyncName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, secretSyncName, resource, Context.NONE);
     }
 
-    /**
-     * Creates new or updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretSyncInner createOrUpdate(String resourceGroupName, String secretSyncName, SecretSyncInner resource,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, secretSyncName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, secretSyncName, resource, context));
     }
 
     /**
@@ -501,11 +435,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String secretSyncName,
         SecretSyncUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, secretSyncName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, secretSyncName, properties, Context.NONE);
     }
 
     /**
@@ -549,37 +479,14 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             SecretSyncInner.class, SecretSyncInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretSyncInner>, SecretSyncInner> beginUpdate(String resourceGroupName,
         String secretSyncName, SecretSyncUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, secretSyncName, properties);
-        return this.client.<SecretSyncInner, SecretSyncInner>getLroResult(response, SecretSyncInner.class,
-            SecretSyncInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, secretSyncName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretSyncInner>, SecretSyncInner> beginUpdate(String resourceGroupName,
         String secretSyncName, SecretSyncUpdate properties, Context context) {
@@ -606,38 +513,18 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretSyncInner update(String resourceGroupName, String secretSyncName, SecretSyncUpdate properties) {
-        return beginUpdate(resourceGroupName, secretSyncName, properties).getFinalResult();
+        return update(resourceGroupName, secretSyncName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SecretSync resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretSyncInner update(String resourceGroupName, String secretSyncName, SecretSyncUpdate properties,
         Context context) {
-        return beginUpdate(resourceGroupName, secretSyncName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, secretSyncName, properties, context));
     }
 
     /**
@@ -670,8 +557,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String secretSyncName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, secretSyncName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, secretSyncName, Context.NONE);
     }
 
     /**
@@ -708,33 +594,13 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String secretSyncName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, secretSyncName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, secretSyncName, Context.NONE);
     }
 
-    /**
-     * Deletes a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String secretSyncName,
         Context context) {
@@ -758,33 +624,16 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String secretSyncName) {
-        beginDelete(resourceGroupName, secretSyncName).getFinalResult();
+        delete(resourceGroupName, secretSyncName, Context.NONE);
     }
 
-    /**
-     * Deletes a SecretSync instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param secretSyncName The name of the SecretSync.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String secretSyncName, Context context) {
-        beginDelete(resourceGroupName, secretSyncName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, secretSyncName, context));
     }
 
     /**
@@ -834,11 +683,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecretSyncInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<SecretSyncListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -860,31 +705,13 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the SecretSync instances within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecretSync list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretSyncInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists the SecretSync instances within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecretSync list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretSyncInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -932,11 +759,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecretSyncInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<SecretSyncListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -957,27 +780,13 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the SecretSync instances within an Azure subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecretSync list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretSyncInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists the SecretSync instances within an Azure subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecretSync list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretSyncInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1016,11 +825,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecretSyncInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SecretSyncListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1074,11 +879,7 @@ public final class SecretSyncsClientImpl implements SecretSyncsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SecretSyncInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SecretSyncListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

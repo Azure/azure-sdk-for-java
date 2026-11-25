@@ -68,17 +68,7 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the private link resources supported for the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the managed hsm pool along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MhsmPrivateLinkResourceListResultInner>>
         listByMhsmResourceWithResponseAsync(String resourceGroupName, String name) {
@@ -140,49 +130,21 @@ public final class MhsmPrivateLinkResourcesClientImpl implements MhsmPrivateLink
             this.client.getSubscriptionId(), resourceGroupName, name, accept, context);
     }
 
-    /**
-     * Gets the private link resources supported for the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the managed hsm pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MhsmPrivateLinkResourceListResultInner> listByMhsmResourceAsync(String resourceGroupName, String name) {
         return listByMhsmResourceWithResponseAsync(resourceGroupName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources supported for the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the managed hsm pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MhsmPrivateLinkResourceListResultInner> listByMhsmResourceWithResponse(String resourceGroupName,
         String name, Context context) {
         return listByMhsmResourceWithResponseAsync(resourceGroupName, name, context).block();
     }
 
-    /**
-     * Gets the private link resources supported for the managed hsm pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param name The name of the managed HSM Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources supported for the managed hsm pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MhsmPrivateLinkResourceListResultInner listByMhsmResource(String resourceGroupName, String name) {
         return listByMhsmResourceWithResponse(resourceGroupName, name, Context.NONE).getValue();

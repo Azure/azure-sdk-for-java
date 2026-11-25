@@ -31,13 +31,8 @@ public final class GroupQuotaSubscriptionAllocationRequestsImpl implements Group
 
     public SubscriptionQuotaAllocationsList update(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest) {
-        SubscriptionQuotaAllocationsListInner inner = this.serviceClient()
-            .update(managementGroupId, groupQuotaName, resourceProviderName, location, allocateQuotaRequest);
-        if (inner != null) {
-            return new SubscriptionQuotaAllocationsListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(managementGroupId, groupQuotaName, resourceProviderName, location, allocateQuotaRequest,
+            Context.NONE);
     }
 
     public SubscriptionQuotaAllocationsList update(String managementGroupId, String groupQuotaName,
@@ -73,10 +68,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsImpl implements Group
 
     public PagedIterable<QuotaAllocationRequestStatus> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String filter) {
-        PagedIterable<QuotaAllocationRequestStatusInner> inner
-            = this.serviceClient().list(managementGroupId, groupQuotaName, resourceProviderName, filter);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new QuotaAllocationRequestStatusImpl(inner1, this.manager()));
+        return this.list(managementGroupId, groupQuotaName, resourceProviderName, filter, Context.NONE);
     }
 
     public PagedIterable<QuotaAllocationRequestStatus> list(String managementGroupId, String groupQuotaName,

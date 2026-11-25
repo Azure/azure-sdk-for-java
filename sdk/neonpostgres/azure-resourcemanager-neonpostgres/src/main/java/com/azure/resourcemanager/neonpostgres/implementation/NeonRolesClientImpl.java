@@ -210,12 +210,7 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeonRoleInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName, String branchName) {
-        final String accept = "application/json";
-        Response<NeonRoleListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, organizationName, projectName, branchName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
     /**
@@ -242,38 +237,14 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List NeonRole resources by Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeonRole list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeonRoleInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, organizationName, projectName, branchName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, organizationName, projectName, branchName, Context.NONE);
     }
 
-    /**
-     * List NeonRole resources by Branch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeonRole list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeonRoleInner> list(String resourceGroupName, String organizationName, String projectName,
         String branchName, Context context) {
@@ -325,11 +296,8 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String projectName, String branchName, String neonRoleName, NeonRoleInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, neonRoleName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+            resource, Context.NONE);
     }
 
     /**
@@ -380,44 +348,15 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
             NeonRoleInner.class, NeonRoleInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a NeonRole.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonRoleName The name of the NeonRole.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon Role resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeonRoleInner>, NeonRoleInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName,
-            branchName, neonRoleName, resource);
-        return this.client.<NeonRoleInner, NeonRoleInner>getLroResult(response, NeonRoleInner.class,
-            NeonRoleInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a NeonRole.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonRoleName The name of the NeonRole.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the Neon Role resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NeonRoleInner>, NeonRoleInner> beginCreateOrUpdate(String resourceGroupName,
         String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource,
@@ -449,47 +388,20 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
             resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a NeonRole.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonRoleName The name of the NeonRole.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Role resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeonRoleInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String branchName, String neonRoleName, NeonRoleInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a NeonRole.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonRoleName The name of the NeonRole.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Neon Role resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeonRoleInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
         String branchName, String neonRoleName, NeonRoleInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName, resource,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, organizationName,
+            projectName, branchName, neonRoleName, resource, context));
     }
 
     /**
@@ -535,20 +447,7 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a NeonRole.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonRoleName The name of the NeonRole.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
         String branchName, String neonRoleName, Context context) {
@@ -557,18 +456,7 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
             context);
     }
 
-    /**
-     * Delete a NeonRole.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Neon Organizations resource.
-     * @param projectName The name of the Project.
-     * @param branchName The name of the Branch.
-     * @param neonRoleName The name of the NeonRole.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
         String neonRoleName) {
@@ -605,11 +493,7 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeonRoleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeonRoleListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

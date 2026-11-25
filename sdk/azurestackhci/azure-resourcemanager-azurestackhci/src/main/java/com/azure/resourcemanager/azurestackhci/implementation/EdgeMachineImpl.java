@@ -91,10 +91,7 @@ public final class EdgeMachineImpl implements EdgeMachine, EdgeMachine.Definitio
     }
 
     public EdgeMachine create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachines()
-            .createOrUpdate(resourceGroupName, edgeMachineName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachine create(Context context) {
@@ -116,10 +113,7 @@ public final class EdgeMachineImpl implements EdgeMachine, EdgeMachine.Definitio
     }
 
     public EdgeMachine apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachines()
-            .update(resourceGroupName, edgeMachineName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachine apply(Context context) {
@@ -142,11 +136,7 @@ public final class EdgeMachineImpl implements EdgeMachine, EdgeMachine.Definitio
     }
 
     public EdgeMachine refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachines()
-            .getByResourceGroupWithResponse(resourceGroupName, edgeMachineName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachine refresh(Context context) {

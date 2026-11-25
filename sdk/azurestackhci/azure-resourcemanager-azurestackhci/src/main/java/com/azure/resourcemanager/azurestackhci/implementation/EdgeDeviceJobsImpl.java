@@ -46,12 +46,7 @@ public final class EdgeDeviceJobsImpl implements EdgeDeviceJobs {
 
     public EdgeDeviceJob createOrUpdate(String resourceUri, String edgeDeviceName, String jobsName,
         EdgeDeviceJobInner resource) {
-        EdgeDeviceJobInner inner = this.serviceClient().createOrUpdate(resourceUri, edgeDeviceName, jobsName, resource);
-        if (inner != null) {
-            return new EdgeDeviceJobImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceUri, edgeDeviceName, jobsName, resource, Context.NONE);
     }
 
     public EdgeDeviceJob createOrUpdate(String resourceUri, String edgeDeviceName, String jobsName,
@@ -66,7 +61,7 @@ public final class EdgeDeviceJobsImpl implements EdgeDeviceJobs {
     }
 
     public void delete(String resourceUri, String edgeDeviceName, String jobsName) {
-        this.serviceClient().delete(resourceUri, edgeDeviceName, jobsName);
+        this.delete(resourceUri, edgeDeviceName, jobsName, Context.NONE);
     }
 
     public void delete(String resourceUri, String edgeDeviceName, String jobsName, Context context) {
@@ -74,8 +69,7 @@ public final class EdgeDeviceJobsImpl implements EdgeDeviceJobs {
     }
 
     public PagedIterable<EdgeDeviceJob> listByEdgeDevice(String resourceUri, String edgeDeviceName) {
-        PagedIterable<EdgeDeviceJobInner> inner = this.serviceClient().listByEdgeDevice(resourceUri, edgeDeviceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new EdgeDeviceJobImpl(inner1, this.manager()));
+        return this.listByEdgeDevice(resourceUri, edgeDeviceName, Context.NONE);
     }
 
     public PagedIterable<EdgeDeviceJob> listByEdgeDevice(String resourceUri, String edgeDeviceName, Context context) {

@@ -122,19 +122,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Query activity runs based on input filter conditions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param runId The pipeline run identifier.
-     * @param filterParameters Parameters to filter the activity runs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityRunsQueryResponseInner> queryByPipelineRunWithResponse(String resourceGroupName,
         String factoryName, String runId, RunFilterParameters filterParameters, Context context) {
@@ -145,18 +133,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
             filterParameters, context);
     }
 
-    /**
-     * Query activity runs based on input filter conditions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param runId The pipeline run identifier.
-     * @param filterParameters Parameters to filter the activity runs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivityRunsQueryResponseInner queryByPipelineRun(String resourceGroupName, String factoryName, String runId,
         RunFilterParameters filterParameters) {

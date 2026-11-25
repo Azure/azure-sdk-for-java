@@ -186,10 +186,7 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessControlLists()
-            .create(resourceGroupName, accessControlListName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessControlList create(Context context) {
@@ -212,10 +209,7 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessControlLists()
-            .update(resourceGroupName, accessControlListName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccessControlList apply(Context context) {
@@ -238,11 +232,7 @@ public final class AccessControlListImpl
     }
 
     public AccessControlList refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessControlLists()
-            .getByResourceGroupWithResponse(resourceGroupName, accessControlListName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessControlList refresh(Context context) {

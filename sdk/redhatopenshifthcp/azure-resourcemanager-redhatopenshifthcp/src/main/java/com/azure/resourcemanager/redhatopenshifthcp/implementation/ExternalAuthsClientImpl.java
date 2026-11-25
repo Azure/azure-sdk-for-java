@@ -235,18 +235,7 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExternalAuth along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExternalAuthInner> getWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName, Context context) {
@@ -255,17 +244,7 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             resourceGroupName, hcpOpenShiftClusterName, externalAuthName, accept, context);
     }
 
-    /**
-     * Get a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExternalAuth.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExternalAuthInner get(String resourceGroupName, String hcpOpenShiftClusterName, String externalAuthName) {
         return getWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE).getValue();
@@ -310,11 +289,8 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName, ExternalAuthInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, externalAuthName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, resource,
+            Context.NONE);
     }
 
     /**
@@ -361,40 +337,15 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             ExternalAuthInner.class, ExternalAuthInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExternalAuthInner>, ExternalAuthInner> beginCreateOrUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String externalAuthName, ExternalAuthInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, resource);
-        return this.client.<ExternalAuthInner, ExternalAuthInner>getLroResult(response, ExternalAuthInner.class,
-            ExternalAuthInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExternalAuthInner>, ExternalAuthInner> beginCreateOrUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String externalAuthName, ExternalAuthInner resource, Context context) {
@@ -423,43 +374,19 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExternalAuthInner createOrUpdate(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName, ExternalAuthInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExternalAuthInner createOrUpdate(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName, ExternalAuthInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, resource, context));
     }
 
     /**
@@ -501,11 +428,8 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName, ExternalAuthInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, externalAuthName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties,
+            Context.NONE);
     }
 
     /**
@@ -552,40 +476,14 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             ExternalAuthInner.class, ExternalAuthInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExternalAuthInner>, ExternalAuthInner> beginUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String externalAuthName, ExternalAuthInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties);
-        return this.client.<ExternalAuthInner, ExternalAuthInner>getLroResult(response, ExternalAuthInner.class,
-            ExternalAuthInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExternalAuthInner>, ExternalAuthInner> beginUpdate(String resourceGroupName,
         String hcpOpenShiftClusterName, String externalAuthName, ExternalAuthInner properties, Context context) {
@@ -614,42 +512,19 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExternalAuthInner update(String resourceGroupName, String hcpOpenShiftClusterName, String externalAuthName,
         ExternalAuthInner properties) {
-        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties).getFinalResult();
+        return update(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return externalAuth resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExternalAuthInner update(String resourceGroupName, String hcpOpenShiftClusterName, String externalAuthName,
         ExternalAuthInner properties, Context context) {
-        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, properties, context));
     }
 
     /**
@@ -686,9 +561,7 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, externalAuthName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE);
     }
 
     /**
@@ -730,37 +603,14 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE);
     }
 
-    /**
-     * Delete a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hcpOpenShiftClusterName,
         String externalAuthName, Context context) {
@@ -786,36 +636,18 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String externalAuthName) {
-        beginDelete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName).getFinalResult();
+        delete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE);
     }
 
-    /**
-     * Delete a ExternalAuth.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param externalAuthName The name of the ExternalAuth.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String externalAuthName,
         Context context) {
-        beginDelete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, context));
     }
 
     /**
@@ -870,12 +702,7 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExternalAuthInner> listByParentSinglePage(String resourceGroupName,
         String hcpOpenShiftClusterName) {
-        final String accept = "application/json";
-        Response<ExternalAuthListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     /**
@@ -900,33 +727,13 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ExternalAuth resources by HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExternalAuth list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExternalAuthInner> listByParent(String resourceGroupName, String hcpOpenShiftClusterName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, hcpOpenShiftClusterName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
-    /**
-     * List ExternalAuth resources by HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExternalAuth list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExternalAuthInner> listByParent(String resourceGroupName, String hcpOpenShiftClusterName,
         Context context) {
@@ -965,11 +772,7 @@ public final class ExternalAuthsClientImpl implements ExternalAuthsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExternalAuthInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExternalAuthListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

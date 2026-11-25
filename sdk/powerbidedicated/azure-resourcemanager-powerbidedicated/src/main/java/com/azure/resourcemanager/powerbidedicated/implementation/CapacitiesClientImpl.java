@@ -353,18 +353,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets details about the specified dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DedicatedCapacityInner> getByResourceGroupWithResponse(String resourceGroupName,
         String dedicatedCapacityName, Context context) {
@@ -373,17 +362,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getSubscriptionId(), resourceGroupName, dedicatedCapacityName, accept, context);
     }
 
-    /**
-     * Gets details about the specified dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCapacityInner getByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
         return getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE).getValue();
@@ -429,11 +408,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityInner capacityParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dedicatedCapacityName, contentType, accept,
-            capacityParameters, Context.NONE);
+        return createWithResponse(resourceGroupName, dedicatedCapacityName, capacityParameters, Context.NONE);
     }
 
     /**
@@ -481,40 +456,14 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityParameters Contains the information used to provision the Dedicated capacity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(String resourceGroupName,
         String dedicatedCapacityName, DedicatedCapacityInner capacityParameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, dedicatedCapacityName, capacityParameters);
-        return this.client.<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(response,
-            DedicatedCapacityInner.class, DedicatedCapacityInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, dedicatedCapacityName, capacityParameters, Context.NONE);
     }
 
-    /**
-     * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityParameters Contains the information used to provision the Dedicated capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(String resourceGroupName,
         String dedicatedCapacityName, DedicatedCapacityInner capacityParameters, Context context) {
@@ -543,41 +492,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityParameters Contains the information used to provision the Dedicated capacity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCapacityInner create(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityInner capacityParameters) {
-        return beginCreate(resourceGroupName, dedicatedCapacityName, capacityParameters).getFinalResult();
+        return create(resourceGroupName, dedicatedCapacityName, capacityParameters, Context.NONE);
     }
 
-    /**
-     * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityParameters Contains the information used to provision the Dedicated capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCapacityInner create(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityInner capacityParameters, Context context) {
-        return beginCreate(resourceGroupName, dedicatedCapacityName, capacityParameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, dedicatedCapacityName, capacityParameters, context));
     }
 
     /**
@@ -620,11 +547,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dedicatedCapacityName, contentType, accept,
-            capacityUpdateParameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, Context.NONE);
     }
 
     /**
@@ -673,40 +596,14 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Updates the current state of the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(String resourceGroupName,
         String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters);
-        return this.client.<DedicatedCapacityInner, DedicatedCapacityInner>getLroResult(response,
-            DedicatedCapacityInner.class, DedicatedCapacityInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Updates the current state of the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(String resourceGroupName,
         String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context) {
@@ -735,42 +632,19 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the current state of the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCapacityInner update(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters) {
-        return beginUpdate(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters).getFinalResult();
+        return update(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, Context.NONE);
     }
 
-    /**
-     * Updates the current state of the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DedicatedCapacityInner update(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context) {
-        return beginUpdate(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, dedicatedCapacityName, capacityUpdateParameters, context));
     }
 
     /**
@@ -806,8 +680,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String dedicatedCapacityName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dedicatedCapacityName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
     /**
@@ -848,35 +721,13 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dedicatedCapacityName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, dedicatedCapacityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dedicatedCapacityName,
         Context context) {
@@ -901,35 +752,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dedicatedCapacityName) {
-        beginDelete(resourceGroupName, dedicatedCapacityName).getFinalResult();
+        delete(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Dedicated capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        beginDelete(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, dedicatedCapacityName, context));
     }
 
     /**
@@ -979,11 +811,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedCapacityInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<DedicatedCapacities> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1006,33 +834,13 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all the Dedicated capacities for the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets all the Dedicated capacities for the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1079,11 +887,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedCapacityInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<DedicatedCapacities> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1104,27 +908,13 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all the Dedicated capacities for the given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all the Dedicated capacities for the given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedCapacityInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1163,8 +953,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> suspendWithResponse(String resourceGroupName, String dedicatedCapacityName) {
-        return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dedicatedCapacityName, Context.NONE);
+        return suspendWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
     /**
@@ -1205,35 +994,13 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Suspends operation of the specified dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName) {
-        Response<BinaryData> response = suspendWithResponse(resourceGroupName, dedicatedCapacityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginSuspend(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
-    /**
-     * Suspends operation of the specified dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName,
         Context context) {
@@ -1258,35 +1025,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Suspends operation of the specified dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspend(String resourceGroupName, String dedicatedCapacityName) {
-        beginSuspend(resourceGroupName, dedicatedCapacityName).getFinalResult();
+        suspend(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
-    /**
-     * Suspends operation of the specified dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void suspend(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        beginSuspend(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginSuspend(resourceGroupName, dedicatedCapacityName, context));
     }
 
     /**
@@ -1322,8 +1070,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String resourceGroupName, String dedicatedCapacityName) {
-        return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, dedicatedCapacityName, Context.NONE);
+        return resumeWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
     /**
@@ -1364,35 +1111,13 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getContext());
     }
 
-    /**
-     * Resumes operation of the specified Dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName) {
-        Response<BinaryData> response = resumeWithResponse(resourceGroupName, dedicatedCapacityName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResume(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
-    /**
-     * Resumes operation of the specified Dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName,
         Context context) {
@@ -1417,35 +1142,16 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resumes operation of the specified Dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String resourceGroupName, String dedicatedCapacityName) {
-        beginResume(resourceGroupName, dedicatedCapacityName).getFinalResult();
+        resume(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
-    /**
-     * Resumes operation of the specified Dedicated capacity instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resume(String resourceGroupName, String dedicatedCapacityName, Context context) {
-        beginResume(resourceGroupName, dedicatedCapacityName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginResume(resourceGroupName, dedicatedCapacityName, context));
     }
 
     /**
@@ -1489,18 +1195,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists eligible SKUs for a PowerBI Dedicated resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuEnumerationForExistingResourceResultInner>
         listSkusForCapacityWithResponse(String resourceGroupName, String dedicatedCapacityName, Context context) {
@@ -1509,17 +1204,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getSubscriptionId(), resourceGroupName, dedicatedCapacityName, accept, context);
     }
 
-    /**
-     * Lists eligible SKUs for a PowerBI Dedicated resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     * maximum of 63.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuEnumerationForExistingResourceResultInner listSkusForCapacity(String resourceGroupName,
         String dedicatedCapacityName) {
@@ -1555,15 +1240,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
         return listSkusWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SkuEnumerationForNewResourceResultInner> listSkusWithResponse(Context context) {
         final String accept = "application/json";
@@ -1571,13 +1248,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkuEnumerationForNewResourceResultInner listSkus() {
         return listSkusWithResponse(Context.NONE).getValue();
@@ -1623,17 +1294,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Check the name availability in the target location.
-     * 
-     * @param location The location name.
-     * @param capacityParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String location,
         CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
@@ -1643,16 +1304,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
             this.client.getSubscriptionId(), location, contentType, accept, capacityParameters, context);
     }
 
-    /**
-     * Check the name availability in the target location.
-     * 
-     * @param location The location name.
-     * @param capacityParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckCapacityNameAvailabilityResultInner checkNameAvailability(String location,
         CheckCapacityNameAvailabilityParameters capacityParameters) {
@@ -1691,11 +1343,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedCapacityInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DedicatedCapacities> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1747,11 +1395,7 @@ public final class CapacitiesClientImpl implements CapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DedicatedCapacityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DedicatedCapacities> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

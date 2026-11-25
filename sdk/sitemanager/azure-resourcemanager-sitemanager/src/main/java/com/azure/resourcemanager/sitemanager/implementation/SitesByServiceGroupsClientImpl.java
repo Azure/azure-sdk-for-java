@@ -219,11 +219,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByServiceGroupSinglePage(String servicegroupName) {
-        final String accept = "application/json";
-        Response<SiteListResult> res = service.listByServiceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), servicegroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServiceGroupSinglePage(servicegroupName, Context.NONE);
     }
 
     /**
@@ -245,31 +241,13 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * list Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> listByServiceGroup(String servicegroupName) {
-        return new PagedIterable<>(() -> listByServiceGroupSinglePage(servicegroupName),
-            nextLink -> listByServiceGroupNextSinglePage(nextLink));
+        return listByServiceGroup(servicegroupName, Context.NONE);
     }
 
-    /**
-     * list Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Site list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> listByServiceGroup(String servicegroupName, Context context) {
         return new PagedIterable<>(() -> listByServiceGroupSinglePage(servicegroupName, context),
@@ -310,17 +288,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
         return getWithResponseAsync(servicegroupName, siteName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site at SG scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> getWithResponse(String servicegroupName, String siteName, Context context) {
         final String accept = "application/json";
@@ -328,16 +296,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             accept, context);
     }
 
-    /**
-     * Get Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site at SG scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner get(String servicegroupName, String siteName) {
         return getWithResponse(servicegroupName, siteName, Context.NONE).getValue();
@@ -379,10 +338,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String servicegroupName, String siteName,
         SiteInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName,
-            siteName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(servicegroupName, siteName, resource, Context.NONE);
     }
 
     /**
@@ -425,36 +381,14 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             SiteInner.class, this.client.getContext());
     }
 
-    /**
-     * create or update Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param resource The properties of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String servicegroupName, String siteName,
         SiteInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(servicegroupName, siteName, resource);
-        return this.client.<SiteInner, SiteInner>getLroResult(response, SiteInner.class, SiteInner.class, Context.NONE);
+        return beginCreateOrUpdate(servicegroupName, siteName, resource, Context.NONE);
     }
 
-    /**
-     * create or update Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param resource The properties of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String servicegroupName, String siteName,
         SiteInner resource, Context context) {
@@ -479,37 +413,16 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * create or update Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param resource The properties of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner createOrUpdate(String servicegroupName, String siteName, SiteInner resource) {
-        return beginCreateOrUpdate(servicegroupName, siteName, resource).getFinalResult();
+        return createOrUpdate(servicegroupName, siteName, resource, Context.NONE);
     }
 
-    /**
-     * create or update Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param resource The properties of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner createOrUpdate(String servicegroupName, String siteName, SiteInner resource, Context context) {
-        return beginCreateOrUpdate(servicegroupName, siteName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(servicegroupName, siteName, resource, context));
     }
 
     /**
@@ -551,18 +464,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * update Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param properties The properties of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SiteInner> updateWithResponse(String servicegroupName, String siteName, SiteUpdate properties,
         Context context) {
@@ -572,17 +474,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
             contentType, accept, properties, context);
     }
 
-    /**
-     * update Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param properties The properties of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site as ARM Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SiteInner update(String servicegroupName, String siteName, SiteUpdate properties) {
         return updateWithResponse(servicegroupName, siteName, properties, Context.NONE).getValue();
@@ -621,32 +513,14 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
         return deleteWithResponseAsync(servicegroupName, siteName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * delete Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String servicegroupName, String siteName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), servicegroupName, siteName,
             context);
     }
 
-    /**
-     * delete Site at SG scope.
-     * 
-     * @param servicegroupName The name of the service group.
-     * @param siteName The name of the site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String servicegroupName, String siteName) {
         deleteWithResponse(servicegroupName, siteName, Context.NONE);
@@ -684,11 +558,7 @@ public final class SitesByServiceGroupsClientImpl implements SitesByServiceGroup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SiteInner> listByServiceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SiteListResult> res
-            = service.listByServiceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServiceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

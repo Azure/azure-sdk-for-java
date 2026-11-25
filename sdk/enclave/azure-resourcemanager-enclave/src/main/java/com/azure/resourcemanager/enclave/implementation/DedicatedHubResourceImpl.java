@@ -89,10 +89,7 @@ public final class DedicatedHubResourceImpl
     }
 
     public DedicatedHubResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHubs()
-            .createOrUpdate(resourceGroupName, communityName, dedicatedHubName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DedicatedHubResource create(Context context) {
@@ -114,10 +111,7 @@ public final class DedicatedHubResourceImpl
     }
 
     public DedicatedHubResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHubs()
-            .update(resourceGroupName, communityName, dedicatedHubName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DedicatedHubResource apply(Context context) {
@@ -143,11 +137,7 @@ public final class DedicatedHubResourceImpl
     }
 
     public DedicatedHubResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDedicatedHubs()
-            .getWithResponse(resourceGroupName, communityName, dedicatedHubName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DedicatedHubResource refresh(Context context) {

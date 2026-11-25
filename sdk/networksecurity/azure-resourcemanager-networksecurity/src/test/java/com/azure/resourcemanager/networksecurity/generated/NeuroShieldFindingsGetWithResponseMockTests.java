@@ -20,7 +20,7 @@ public final class NeuroShieldFindingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"cveId\":\"mgxcxrslpm\",\"virtualMachineArmId\":\"twuoegrpkhjwni\",\"severity\":\"High\",\"description\":\"sluicpdggkzz\",\"reason\":\"vmbmp\",\"detectedTime\":\"2021-04-28T10:55:20Z\",\"status\":\"AwaitingApproval\"},\"id\":\"vuefywsbpfvmwyh\",\"name\":\"fouyf\",\"type\":\"aakc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"cveId\":\"ocqwogfnzjvus\",\"virtualMachineArmId\":\"zldmozuxy\",\"severity\":\"High\",\"description\":\"sbtkadpysownbtgk\",\"reason\":\"u\",\"detectedTime\":\"2021-09-14T19:02:29Z\",\"status\":\"MitigationInProgress\"},\"id\":\"to\",\"name\":\"cmisofie\",\"type\":\"pe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class NeuroShieldFindingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeuroShieldFinding response = manager.neuroShieldFindings()
-            .getWithResponse("cvkcvqvpkeqdcv", "rhvoods", "tbobz", "opcjwvnhd", com.azure.core.util.Context.NONE)
+            .getWithResponse("jfzqlqhycavodgg", "dbeesmie", "nlrariaawiuagy", "wqfbylyrfgiagt",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

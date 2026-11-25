@@ -26,6 +26,15 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}",
+            "resourceGroupName");
+        this.configStoreName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}",
+            "configStoreName");
+        this.snapshotName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/snapshots/{snapshotName}",
+            "snapshotName");
     }
 
     public String id() {
@@ -119,10 +128,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSnapshots()
-            .create(resourceGroupName, configStoreName, snapshotName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Snapshot create(Context context) {
@@ -139,11 +145,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSnapshots()
-            .getWithResponse(resourceGroupName, configStoreName, snapshotName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Snapshot refresh(Context context) {

@@ -93,10 +93,7 @@ public final class NamespaceAssetImpl implements NamespaceAsset, NamespaceAsset.
     }
 
     public NamespaceAsset create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceAssets()
-            .createOrReplace(resourceGroupName, namespaceName, assetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NamespaceAsset create(Context context) {
@@ -118,10 +115,7 @@ public final class NamespaceAssetImpl implements NamespaceAsset, NamespaceAsset.
     }
 
     public NamespaceAsset apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceAssets()
-            .update(resourceGroupName, namespaceName, assetName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NamespaceAsset apply(Context context) {
@@ -147,11 +141,7 @@ public final class NamespaceAssetImpl implements NamespaceAsset, NamespaceAsset.
     }
 
     public NamespaceAsset refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNamespaceAssets()
-            .getWithResponse(resourceGroupName, namespaceName, assetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NamespaceAsset refresh(Context context) {

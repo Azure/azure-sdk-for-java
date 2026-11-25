@@ -43,8 +43,7 @@ public final class BillingContainersImpl implements BillingContainers {
     }
 
     public PagedIterable<BillingContainer> list() {
-        PagedIterable<BillingContainerInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingContainerImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<BillingContainer> list(Context context) {

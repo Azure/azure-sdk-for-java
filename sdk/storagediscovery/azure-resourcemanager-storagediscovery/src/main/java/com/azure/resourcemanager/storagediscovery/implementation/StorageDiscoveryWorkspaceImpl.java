@@ -86,12 +86,7 @@ public final class StorageDiscoveryWorkspaceImpl
     }
 
     public StorageDiscoveryWorkspace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageDiscoveryWorkspaces()
-            .createOrUpdateWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageDiscoveryWorkspace create(Context context) {
@@ -115,11 +110,7 @@ public final class StorageDiscoveryWorkspaceImpl
     }
 
     public StorageDiscoveryWorkspace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageDiscoveryWorkspaces()
-            .updateWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageDiscoveryWorkspace apply(Context context) {
@@ -143,11 +134,7 @@ public final class StorageDiscoveryWorkspaceImpl
     }
 
     public StorageDiscoveryWorkspace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageDiscoveryWorkspaces()
-            .getByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageDiscoveryWorkspace refresh(Context context) {

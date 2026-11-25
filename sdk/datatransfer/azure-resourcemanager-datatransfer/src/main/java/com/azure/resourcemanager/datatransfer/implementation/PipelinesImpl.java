@@ -62,7 +62,7 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public void update(String resourceGroupName, String pipelineName, PipelinesPatch pipeline) {
-        this.serviceClient().update(resourceGroupName, pipelineName, pipeline);
+        this.update(resourceGroupName, pipelineName, pipeline, Context.NONE);
     }
 
     public void update(String resourceGroupName, String pipelineName, PipelinesPatch pipeline, Context context) {
@@ -70,7 +70,7 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String pipelineName) {
-        this.serviceClient().delete(resourceGroupName, pipelineName);
+        this.delete(resourceGroupName, pipelineName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String pipelineName, Context context) {
@@ -78,8 +78,7 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public PagedIterable<Pipeline> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PipelineInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PipelineImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Pipeline> listByResourceGroup(String resourceGroupName, Context context) {
@@ -88,8 +87,7 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public PagedIterable<Pipeline> listBySubscription() {
-        PagedIterable<PipelineInner> inner = this.serviceClient().listBySubscription();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PipelineImpl(inner1, this.manager()));
+        return this.listBySubscription(Context.NONE);
     }
 
     public PagedIterable<Pipeline> listBySubscription(Context context) {
@@ -98,12 +96,7 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public Connection approveConnection(String resourceGroupName, String pipelineName, ResourceBody connection) {
-        ConnectionInner inner = this.serviceClient().approveConnection(resourceGroupName, pipelineName, connection);
-        if (inner != null) {
-            return new ConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.approveConnection(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
     public Connection approveConnection(String resourceGroupName, String pipelineName, ResourceBody connection,
@@ -140,12 +133,7 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public Pipeline executeAction(String resourceGroupName, String pipelineName, Action action) {
-        PipelineInner inner = this.serviceClient().executeAction(resourceGroupName, pipelineName, action);
-        if (inner != null) {
-            return new PipelineImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.executeAction(resourceGroupName, pipelineName, action, Context.NONE);
     }
 
     public Pipeline executeAction(String resourceGroupName, String pipelineName, Action action, Context context) {
@@ -205,12 +193,7 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public Connection rejectConnection(String resourceGroupName, String pipelineName, ResourceBody connection) {
-        ConnectionInner inner = this.serviceClient().rejectConnection(resourceGroupName, pipelineName, connection);
-        if (inner != null) {
-            return new ConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.rejectConnection(resourceGroupName, pipelineName, connection, Context.NONE);
     }
 
     public Connection rejectConnection(String resourceGroupName, String pipelineName, ResourceBody connection,
@@ -247,74 +230,30 @@ public final class PipelinesImpl implements Pipelines {
     }
 
     public Pipeline getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String pipelineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "pipelineName");
-        if (pipelineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, pipelineName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Pipeline> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String pipelineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String pipelineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "pipelineName");
-        if (pipelineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
-        }
+            "pipelineName", "pipelines", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, pipelineName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String pipelineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "pipelineName");
-        if (pipelineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
-        }
-        this.delete(resourceGroupName, pipelineName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String pipelineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String pipelineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}",
-            "pipelineName");
-        if (pipelineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
-        }
+            "pipelineName", "pipelines", LOGGER);
         this.delete(resourceGroupName, pipelineName, context);
     }
 

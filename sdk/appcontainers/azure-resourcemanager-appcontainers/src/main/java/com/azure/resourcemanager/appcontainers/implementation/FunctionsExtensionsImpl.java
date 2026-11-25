@@ -32,8 +32,10 @@ public final class FunctionsExtensionsImpl implements FunctionsExtensions {
 
     public String invokeFunctionsHost(String resourceGroupName, String containerAppName, String revisionName,
         String functionAppName) {
-        return this.serviceClient()
-            .invokeFunctionsHost(resourceGroupName, containerAppName, revisionName, functionAppName);
+        return this
+            .invokeFunctionsHostWithResponse(resourceGroupName, containerAppName, revisionName, functionAppName,
+                Context.NONE)
+            .getValue();
     }
 
     private FunctionsExtensionsClient serviceClient() {

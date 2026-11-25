@@ -26,6 +26,15 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/fileImports/{fileImportId}",
+            "resourceGroupName");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/fileImports/{fileImportId}",
+            "workspaceName");
+        this.fileImportId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/fileImports/{fileImportId}",
+            "fileImportId");
     }
 
     public String id() {
@@ -122,11 +131,7 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
     }
 
     public FileImport create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileImports()
-            .createWithResponse(resourceGroupName, workspaceName, fileImportId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FileImport create(Context context) {
@@ -144,11 +149,7 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
     }
 
     public FileImport refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileImports()
-            .getWithResponse(resourceGroupName, workspaceName, fileImportId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FileImport refresh(Context context) {

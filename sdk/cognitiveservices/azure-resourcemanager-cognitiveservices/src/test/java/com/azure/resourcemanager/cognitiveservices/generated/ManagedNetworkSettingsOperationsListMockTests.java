@@ -28,7 +28,7 @@ public final class ManagedNetworkSettingsOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"AllowOnlyApprovedOutbound\",\"Disabled\"],\"isolationMode\":\"AllowOnlyApprovedOutbound\",\"networkId\":\"zbpcwtwtrch\",\"outboundRules\":{\"zyqokbgum\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Provisioning\",\"errorInformation\":\"esqsqmie\",\"parentRuleNames\":[\"p\",\"qchf\",\"tykkvjjlba\",\"cu\"]},\"cn\":{\"type\":\"OutboundRule\",\"category\":\"UserDefined\",\"status\":\"Active\",\"errorInformation\":\"xxizc\",\"parentRuleNames\":[\"uzginrkjkn\",\"zfsul\",\"ybhozlsbufnhb\"]},\"fwl\":{\"type\":\"OutboundRule\",\"category\":\"Required\",\"status\":\"Provisioning\",\"errorInformation\":\"trsljzmzuic\",\"parentRuleNames\":[\"sxznbppmkqby\",\"bbnjldicqoman\"]},\"eechcayvqbeqp\":{\"type\":\"OutboundRule\",\"category\":\"Dependency\",\"status\":\"Deleting\",\"errorInformation\":\"yahfoyfz\",\"parentRuleNames\":[\"yaeprevcj\",\"kfalw\"]}},\"status\":{\"status\":\"Active\"},\"firewallSku\":\"Basic\",\"managedNetworkKind\":\"V1\",\"firewallPublicIpAddress\":\"hicrjriy\",\"provisioningState\":\"Updating\"},\"provisioningState\":\"Succeeded\"},\"id\":\"lqllbofsn\",\"name\":\"ocyb\",\"type\":\"hxgiknr\"}]}";
+            = "{\"value\":[{\"properties\":{\"managedNetwork\":{\"changeableIsolationModes\":[\"Disabled\",\"AllowInternetOutbound\"],\"isolationMode\":\"Disabled\",\"networkId\":\"vnxoqaa\",\"outboundRules\":{\"iyuq\":{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Failed\",\"errorInformation\":\"tevfeugcwt\",\"parentRuleNames\":[\"x\",\"swvfrymqqfks\",\"fcxdleohy\",\"dgkbaxygwvtkr\"]}},\"status\":{\"status\":\"Active\"},\"firewallSku\":\"Standard\",\"managedNetworkKind\":\"V2\",\"firewallPublicIpAddress\":\"jmeipfo\",\"provisioningState\":\"Deferred\"},\"provisioningState\":\"Succeeded\"},\"id\":\"k\",\"name\":\"oabcoxqaavjkre\",\"type\":\"q\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,19 +39,19 @@ public final class ManagedNetworkSettingsOperationsListMockTests {
 
         PagedIterable<ManagedNetworkSettingsPropertiesBasicResource> response
             = manager.managedNetworkSettingsOperations()
-                .list("hdnhhcmt", "lptbdponhblqi", com.azure.core.util.Context.NONE);
+                .list("bgmjrvrsqrjco", "rwrylcttvxk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(IsolationMode.ALLOW_ONLY_APPROVED_OUTBOUND,
+        Assertions.assertEquals(IsolationMode.DISABLED,
             response.iterator().next().properties().managedNetwork().isolationMode());
-        Assertions.assertEquals(RuleCategory.USER_DEFINED,
-            response.iterator().next().properties().managedNetwork().outboundRules().get("zyqokbgum").category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING,
-            response.iterator().next().properties().managedNetwork().outboundRules().get("zyqokbgum").status());
+        Assertions.assertEquals(RuleCategory.RECOMMENDED,
+            response.iterator().next().properties().managedNetwork().outboundRules().get("iyuq").category());
+        Assertions.assertEquals(RuleStatus.FAILED,
+            response.iterator().next().properties().managedNetwork().outboundRules().get("iyuq").status());
         Assertions.assertEquals(ManagedNetworkStatus.ACTIVE,
             response.iterator().next().properties().managedNetwork().status().status());
-        Assertions.assertEquals(FirewallSku.BASIC,
+        Assertions.assertEquals(FirewallSku.STANDARD,
             response.iterator().next().properties().managedNetwork().firewallSku());
-        Assertions.assertEquals(ManagedNetworkKind.V1,
+        Assertions.assertEquals(ManagedNetworkKind.V2,
             response.iterator().next().properties().managedNetwork().managedNetworkKind());
     }
 }

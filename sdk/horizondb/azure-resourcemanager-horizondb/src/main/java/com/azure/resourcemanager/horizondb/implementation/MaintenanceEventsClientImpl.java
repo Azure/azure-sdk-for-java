@@ -169,19 +169,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets information about a maintenance event for a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a HorizonDB pool along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceEventInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, String maintenanceEventId) {
@@ -193,18 +181,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets information about a maintenance event for a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a HorizonDB pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceEventInner> getAsync(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId) {
@@ -212,19 +189,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets information about a maintenance event for a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a HorizonDB pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceEventInner> getWithResponse(String resourceGroupName, String clusterName,
         String poolName, String maintenanceEventId, Context context) {
@@ -233,18 +198,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             resourceGroupName, clusterName, poolName, maintenanceEventId, accept, context);
     }
 
-    /**
-     * Gets information about a maintenance event for a HorizonDB pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a maintenance event for a HorizonDB pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventInner get(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId) {
@@ -278,20 +232,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists maintenance events for a HorizonDB pool. Use the OData $filter query parameter to filter by
-     * properties/status with the eq and or operators. For example, properties/status eq 'Planned' or properties/status
-     * eq 'InProgress' returns upcoming events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param filter The OData filter expression to apply to the list operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEvent list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceEventInner> listAsync(String resourceGroupName, String clusterName, String poolName,
         String filter) {
@@ -299,19 +240,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists maintenance events for a HorizonDB pool. Use the OData $filter query parameter to filter by
-     * properties/status with the eq and or operators. For example, properties/status eq 'Planned' or properties/status
-     * eq 'InProgress' returns upcoming events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEvent list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceEventInner> listAsync(String resourceGroupName, String clusterName, String poolName) {
         final String filter = null;
@@ -336,12 +265,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceEventInner> listSinglePage(String resourceGroupName, String clusterName,
         String poolName, String filter) {
-        final String accept = "application/json";
-        Response<MaintenanceEventListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, poolName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, poolName, filter, Context.NONE);
     }
 
     /**
@@ -370,41 +294,14 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists maintenance events for a HorizonDB pool. Use the OData $filter query parameter to filter by
-     * properties/status with the eq and or operators. For example, properties/status eq 'Planned' or properties/status
-     * eq 'InProgress' returns upcoming events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEvent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceEventInner> list(String resourceGroupName, String clusterName, String poolName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, poolName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, poolName, filter, Context.NONE);
     }
 
-    /**
-     * Lists maintenance events for a HorizonDB pool. Use the OData $filter query parameter to filter by
-     * properties/status with the eq and or operators. For example, properties/status eq 'Planned' or properties/status
-     * eq 'InProgress' returns upcoming events.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param filter The OData filter expression to apply to the list operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a MaintenanceEvent list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceEventInner> list(String resourceGroupName, String clusterName, String poolName,
         String filter, Context context) {
@@ -412,20 +309,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             nextLink -> listNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> rescheduleWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
@@ -454,11 +338,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> rescheduleWithResponse(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.rescheduleSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, maintenanceEventId, contentType,
-            accept, body, Context.NONE);
+        return rescheduleWithResponse(resourceGroupName, clusterName, poolName, maintenanceEventId, body, Context.NONE);
     }
 
     /**
@@ -485,20 +365,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             accept, body, context);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response from a maintenance event reschedule or apply-now
-     * action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginRescheduleAsync(String resourceGroupName, String clusterName, String poolName, String maintenanceEventId,
@@ -510,46 +377,15 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             MaintenanceEventActionResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from a maintenance event reschedule or apply-now
-     * action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginReschedule(String resourceGroupName, String clusterName, String poolName, String maintenanceEventId,
             MaintenanceEventRescheduleRequest body) {
-        Response<BinaryData> response
-            = rescheduleWithResponse(resourceGroupName, clusterName, poolName, maintenanceEventId, body);
-        return this.client.<MaintenanceEventActionResponseInner, MaintenanceEventActionResponseInner>getLroResult(
-            response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class,
-            Context.NONE);
+        return beginReschedule(resourceGroupName, clusterName, poolName, maintenanceEventId, body, Context.NONE);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from a maintenance event reschedule or apply-now
-     * action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginReschedule(String resourceGroupName, String clusterName, String poolName, String maintenanceEventId,
@@ -560,20 +396,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class, context);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceEventActionResponseInner> rescheduleAsync(String resourceGroupName, String clusterName,
         String poolName, String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
@@ -581,59 +404,22 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner reschedule(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body) {
-        return beginReschedule(resourceGroupName, clusterName, poolName, maintenanceEventId, body).getFinalResult();
+        return reschedule(resourceGroupName, clusterName, poolName, maintenanceEventId, body, Context.NONE);
     }
 
-    /**
-     * Reschedules a maintenance event to a new date and time.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner reschedule(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId, MaintenanceEventRescheduleRequest body, Context context) {
-        return beginReschedule(resourceGroupName, clusterName, poolName, maintenanceEventId, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginReschedule(resourceGroupName, clusterName, poolName, maintenanceEventId, body, context));
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> applyNowWithResponseAsync(String resourceGroupName, String clusterName,
         String poolName, String maintenanceEventId) {
@@ -660,10 +446,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> applyNowWithResponse(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId) {
-        final String accept = "application/json";
-        return service.applyNowSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, poolName, maintenanceEventId, accept,
-            Context.NONE);
+        return applyNowWithResponse(resourceGroupName, clusterName, poolName, maintenanceEventId, Context.NONE);
     }
 
     /**
@@ -688,19 +471,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             context);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response from a maintenance event reschedule or apply-now
-     * action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginApplyNowAsync(String resourceGroupName, String clusterName, String poolName, String maintenanceEventId) {
@@ -711,43 +482,14 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             MaintenanceEventActionResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from a maintenance event reschedule or apply-now
-     * action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginApplyNow(String resourceGroupName, String clusterName, String poolName, String maintenanceEventId) {
-        Response<BinaryData> response
-            = applyNowWithResponse(resourceGroupName, clusterName, poolName, maintenanceEventId);
-        return this.client.<MaintenanceEventActionResponseInner, MaintenanceEventActionResponseInner>getLroResult(
-            response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class,
-            Context.NONE);
+        return beginApplyNow(resourceGroupName, clusterName, poolName, maintenanceEventId, Context.NONE);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from a maintenance event reschedule or apply-now
-     * action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MaintenanceEventActionResponseInner>, MaintenanceEventActionResponseInner>
         beginApplyNow(String resourceGroupName, String clusterName, String poolName, String maintenanceEventId,
@@ -758,19 +500,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             response, MaintenanceEventActionResponseInner.class, MaintenanceEventActionResponseInner.class, context);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceEventActionResponseInner> applyNowAsync(String resourceGroupName, String clusterName,
         String poolName, String maintenanceEventId) {
@@ -778,41 +508,19 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner applyNow(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId) {
-        return beginApplyNow(resourceGroupName, clusterName, poolName, maintenanceEventId).getFinalResult();
+        return applyNow(resourceGroupName, clusterName, poolName, maintenanceEventId, Context.NONE);
     }
 
-    /**
-     * Applies the maintenance event immediately.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param poolName The name of the HorizonDB pool.
-     * @param maintenanceEventId The identifier of the maintenance event.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a maintenance event reschedule or apply-now action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MaintenanceEventActionResponseInner applyNow(String resourceGroupName, String clusterName, String poolName,
         String maintenanceEventId, Context context) {
-        return beginApplyNow(resourceGroupName, clusterName, poolName, maintenanceEventId, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginApplyNow(resourceGroupName, clusterName, poolName, maintenanceEventId, context));
     }
 
     /**
@@ -845,11 +553,7 @@ public final class MaintenanceEventsClientImpl implements MaintenanceEventsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MaintenanceEventInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MaintenanceEventListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

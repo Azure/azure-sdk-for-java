@@ -43,12 +43,7 @@ public final class GuestAgentsImpl implements GuestAgents {
     }
 
     public GuestAgent create(String resourceUri, GuestAgentInner resource) {
-        GuestAgentInner inner = this.serviceClient().create(resourceUri, resource);
-        if (inner != null) {
-            return new GuestAgentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.create(resourceUri, resource, Context.NONE);
     }
 
     public GuestAgent create(String resourceUri, GuestAgentInner resource, Context context) {
@@ -61,7 +56,7 @@ public final class GuestAgentsImpl implements GuestAgents {
     }
 
     public void delete(String resourceUri) {
-        this.serviceClient().delete(resourceUri);
+        this.delete(resourceUri, Context.NONE);
     }
 
     public void delete(String resourceUri, Context context) {
@@ -69,8 +64,7 @@ public final class GuestAgentsImpl implements GuestAgents {
     }
 
     public PagedIterable<GuestAgent> listByVirtualMachineInstance(String resourceUri) {
-        PagedIterable<GuestAgentInner> inner = this.serviceClient().listByVirtualMachineInstance(resourceUri);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GuestAgentImpl(inner1, this.manager()));
+        return this.listByVirtualMachineInstance(resourceUri, Context.NONE);
     }
 
     public PagedIterable<GuestAgent> listByVirtualMachineInstance(String resourceUri, Context context) {

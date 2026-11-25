@@ -49,7 +49,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public void delete(String resourceGroupName, String resourceName, String recoveryPlanName) {
-        this.serviceClient().delete(resourceGroupName, resourceName, recoveryPlanName);
+        this.delete(resourceGroupName, resourceName, recoveryPlanName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String recoveryPlanName, Context context) {
@@ -57,8 +57,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public PagedIterable<RecoveryPlan> list(String resourceGroupName, String resourceName) {
-        PagedIterable<RecoveryPlanInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPlanImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<RecoveryPlan> list(String resourceGroupName, String resourceName, Context context) {
@@ -67,13 +66,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public RecoveryPlan failoverCancel(String resourceGroupName, String resourceName, String recoveryPlanName) {
-        RecoveryPlanInner inner
-            = this.serviceClient().failoverCancel(resourceGroupName, resourceName, recoveryPlanName);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failoverCancel(resourceGroupName, resourceName, recoveryPlanName, Context.NONE);
     }
 
     public RecoveryPlan failoverCancel(String resourceGroupName, String resourceName, String recoveryPlanName,
@@ -88,13 +81,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public RecoveryPlan failoverCommit(String resourceGroupName, String resourceName, String recoveryPlanName) {
-        RecoveryPlanInner inner
-            = this.serviceClient().failoverCommit(resourceGroupName, resourceName, recoveryPlanName);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.failoverCommit(resourceGroupName, resourceName, recoveryPlanName, Context.NONE);
     }
 
     public RecoveryPlan failoverCommit(String resourceGroupName, String resourceName, String recoveryPlanName,
@@ -110,13 +97,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
 
     public RecoveryPlan plannedFailover(String resourceGroupName, String resourceName, String recoveryPlanName,
         RecoveryPlanPlannedFailoverInput input) {
-        RecoveryPlanInner inner
-            = this.serviceClient().plannedFailover(resourceGroupName, resourceName, recoveryPlanName, input);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.plannedFailover(resourceGroupName, resourceName, recoveryPlanName, input, Context.NONE);
     }
 
     public RecoveryPlan plannedFailover(String resourceGroupName, String resourceName, String recoveryPlanName,
@@ -131,12 +112,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public RecoveryPlan reprotect(String resourceGroupName, String resourceName, String recoveryPlanName) {
-        RecoveryPlanInner inner = this.serviceClient().reprotect(resourceGroupName, resourceName, recoveryPlanName);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.reprotect(resourceGroupName, resourceName, recoveryPlanName, Context.NONE);
     }
 
     public RecoveryPlan reprotect(String resourceGroupName, String resourceName, String recoveryPlanName,
@@ -152,13 +128,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
 
     public RecoveryPlan testFailover(String resourceGroupName, String resourceName, String recoveryPlanName,
         RecoveryPlanTestFailoverInput input) {
-        RecoveryPlanInner inner
-            = this.serviceClient().testFailover(resourceGroupName, resourceName, recoveryPlanName, input);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailover(resourceGroupName, resourceName, recoveryPlanName, input, Context.NONE);
     }
 
     public RecoveryPlan testFailover(String resourceGroupName, String resourceName, String recoveryPlanName,
@@ -174,13 +144,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
 
     public RecoveryPlan testFailoverCleanup(String resourceGroupName, String resourceName, String recoveryPlanName,
         RecoveryPlanTestFailoverCleanupInput input) {
-        RecoveryPlanInner inner
-            = this.serviceClient().testFailoverCleanup(resourceGroupName, resourceName, recoveryPlanName, input);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.testFailoverCleanup(resourceGroupName, resourceName, recoveryPlanName, input, Context.NONE);
     }
 
     public RecoveryPlan testFailoverCleanup(String resourceGroupName, String resourceName, String recoveryPlanName,
@@ -196,13 +160,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
 
     public RecoveryPlan unplannedFailover(String resourceGroupName, String resourceName, String recoveryPlanName,
         RecoveryPlanUnplannedFailoverInput input) {
-        RecoveryPlanInner inner
-            = this.serviceClient().unplannedFailover(resourceGroupName, resourceName, recoveryPlanName, input);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.unplannedFailover(resourceGroupName, resourceName, recoveryPlanName, input, Context.NONE);
     }
 
     public RecoveryPlan unplannedFailover(String resourceGroupName, String resourceName, String recoveryPlanName,
@@ -217,102 +175,36 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public RecoveryPlan getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "recoveryPlanName");
-        if (recoveryPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, resourceName, recoveryPlanName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<RecoveryPlan> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceName", "vaults", LOGGER);
+        String recoveryPlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "recoveryPlanName");
-        if (recoveryPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
-        }
+            "recoveryPlanName", "replicationRecoveryPlans", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, recoveryPlanName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "recoveryPlanName");
-        if (recoveryPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
-        }
-        this.delete(resourceGroupName, resourceName, recoveryPlanName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceName", "vaults", LOGGER);
+        String recoveryPlanName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}",
-            "recoveryPlanName");
-        if (recoveryPlanName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
-        }
+            "recoveryPlanName", "replicationRecoveryPlans", LOGGER);
         this.delete(resourceGroupName, resourceName, recoveryPlanName, context);
     }
 

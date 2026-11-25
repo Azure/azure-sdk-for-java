@@ -114,18 +114,7 @@ public final class ManagedMaintenanceWindowStatusesClientImpl implements Managed
         return getWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the maintenance window status of the Service Fabric Managed Cluster along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedMaintenanceWindowStatusInner> getWithResponse(String resourceGroupName, String clusterName,
         Context context) {
@@ -134,16 +123,7 @@ public final class ManagedMaintenanceWindowStatusesClientImpl implements Managed
             resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Action to get Maintenance Window Status of the Service Fabric Managed Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the maintenance window status of the Service Fabric Managed Cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedMaintenanceWindowStatusInner get(String resourceGroupName, String clusterName) {
         return getWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();

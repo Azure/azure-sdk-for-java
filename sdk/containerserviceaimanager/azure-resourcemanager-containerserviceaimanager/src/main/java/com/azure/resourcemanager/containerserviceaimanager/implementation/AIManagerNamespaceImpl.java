@@ -76,11 +76,7 @@ public final class AIManagerNamespaceImpl
     }
 
     public AIManagerNamespace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAIManagerNamespaces()
-            .createOrUpdate(resourceGroupName, aiManagerName, namespaceName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AIManagerNamespace create(Context context) {
@@ -107,11 +103,7 @@ public final class AIManagerNamespaceImpl
     }
 
     public AIManagerNamespace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAIManagerNamespaces()
-            .createOrUpdate(resourceGroupName, aiManagerName, namespaceName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AIManagerNamespace apply(Context context) {
@@ -138,11 +130,7 @@ public final class AIManagerNamespaceImpl
     }
 
     public AIManagerNamespace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAIManagerNamespaces()
-            .getWithResponse(resourceGroupName, aiManagerName, namespaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AIManagerNamespace refresh(Context context) {

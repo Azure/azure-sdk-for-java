@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class RaiRegosDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/DeleteRaiRego.json
+     * x-ms-original-file: 2026-11-15-preview/DeleteRaiRego.json
      */
     /**
      * Sample code: Delete a reusable Rego artifact.

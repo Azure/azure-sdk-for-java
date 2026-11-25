@@ -95,10 +95,7 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
     }
 
     public NginxDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .createOrUpdate(resourceGroupName, deploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxDeployment create(Context context) {
@@ -120,10 +117,7 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
     }
 
     public NginxDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .update(resourceGroupName, deploymentName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NginxDeployment apply(Context context) {
@@ -145,11 +139,7 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
     }
 
     public NginxDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDeployments()
-            .getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxDeployment refresh(Context context) {

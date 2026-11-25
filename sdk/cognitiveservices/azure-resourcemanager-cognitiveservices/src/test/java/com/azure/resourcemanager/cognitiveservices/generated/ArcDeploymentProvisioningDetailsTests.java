@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ArcDeploymentProvisioningDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArcDeploymentProvisioningDetails model
-            = BinaryData.fromString("{\"message\":\"c\",\"lastOperationTimestamp\":\"2021-10-29T13:53:51Z\"}")
-                .toObject(ArcDeploymentProvisioningDetails.class);
-        Assertions.assertEquals("c", model.message());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T13:53:51Z"), model.lastOperationTimestamp());
+        ArcDeploymentProvisioningDetails model = BinaryData
+            .fromString("{\"message\":\"yctsdbtqgkuj\",\"lastOperationTimestamp\":\"2021-10-20T16:36:50Z\"}")
+            .toObject(ArcDeploymentProvisioningDetails.class);
+        Assertions.assertEquals("yctsdbtqgkuj", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T16:36:50Z"), model.lastOperationTimestamp());
     }
 }

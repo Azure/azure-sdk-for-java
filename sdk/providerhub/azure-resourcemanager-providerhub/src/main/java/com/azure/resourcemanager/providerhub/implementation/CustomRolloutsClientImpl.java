@@ -231,17 +231,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
         return getWithResponseAsync(providerNamespace, rolloutName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the custom rollout details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom rollout details along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomRolloutInner> getWithResponse(String providerNamespace, String rolloutName, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -267,16 +257,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             providerNamespace, rolloutName, accept, context);
     }
 
-    /**
-     * Gets the custom rollout details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom rollout details.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomRolloutInner get(String providerNamespace, String rolloutName) {
         return getWithResponse(providerNamespace, rolloutName, Context.NONE).getValue();
@@ -341,35 +322,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String providerNamespace, String rolloutName,
         CustomRolloutInner properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (rolloutName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter rolloutName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), providerNamespace, rolloutName, contentType, accept, properties,
-            Context.NONE);
+        return createOrUpdateWithResponse(providerNamespace, rolloutName, properties, Context.NONE);
     }
 
     /**
@@ -439,39 +392,14 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             CustomRolloutInner.class, CustomRolloutInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates the rollout details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomRolloutInner>, CustomRolloutInner> beginCreateOrUpdate(String providerNamespace,
         String rolloutName, CustomRolloutInner properties) {
-        Response<BinaryData> response = createOrUpdateWithResponse(providerNamespace, rolloutName, properties);
-        return this.client.<CustomRolloutInner, CustomRolloutInner>getLroResult(response, CustomRolloutInner.class,
-            CustomRolloutInner.class, Context.NONE);
+        return beginCreateOrUpdate(providerNamespace, rolloutName, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates the rollout details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomRolloutInner>, CustomRolloutInner> beginCreateOrUpdate(String providerNamespace,
         String rolloutName, CustomRolloutInner properties, Context context) {
@@ -499,39 +427,19 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates the rollout details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomRolloutInner createOrUpdate(String providerNamespace, String rolloutName,
         CustomRolloutInner properties) {
-        return beginCreateOrUpdate(providerNamespace, rolloutName, properties).getFinalResult();
+        return createOrUpdate(providerNamespace, rolloutName, properties, Context.NONE);
     }
 
-    /**
-     * Creates or updates the rollout details.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @param properties The custom rollout properties supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomRolloutInner createOrUpdate(String providerNamespace, String rolloutName,
         CustomRolloutInner properties, Context context) {
-        return beginCreateOrUpdate(providerNamespace, rolloutName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(providerNamespace, rolloutName, properties, context));
     }
 
     /**
@@ -582,17 +490,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
         return deleteWithResponseAsync(providerNamespace, rolloutName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the custom rollout resource. Custom rollout must be in terminal state.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, String rolloutName, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -617,15 +515,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             this.client.getSubscriptionId(), providerNamespace, rolloutName, context);
     }
 
-    /**
-     * Deletes the custom rollout resource. Custom rollout must be in terminal state.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace, String rolloutName) {
         deleteWithResponse(providerNamespace, rolloutName, Context.NONE);
@@ -691,26 +581,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomRolloutInner> listByProviderRegistrationSinglePage(String providerNamespace) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<CustomRolloutArrayResponseWithContinuation> res
-            = service.listByProviderRegistrationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), providerNamespace, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProviderRegistrationSinglePage(providerNamespace, Context.NONE);
     }
 
     /**
@@ -748,31 +619,13 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of the custom rollouts for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the custom rollouts for the given provider as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomRolloutInner> listByProviderRegistration(String providerNamespace) {
-        return new PagedIterable<>(() -> listByProviderRegistrationSinglePage(providerNamespace),
-            nextLink -> listByProviderRegistrationNextSinglePage(nextLink));
+        return listByProviderRegistration(providerNamespace, Context.NONE);
     }
 
-    /**
-     * Gets the list of the custom rollouts for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the custom rollouts for the given provider as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomRolloutInner> listByProviderRegistration(String providerNamespace, Context context) {
         return new PagedIterable<>(() -> listByProviderRegistrationSinglePage(providerNamespace, context),
@@ -827,17 +680,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
         return stopWithResponseAsync(providerNamespace, rolloutName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Stops or cancels the custom rollout, if in progress.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopWithResponse(String providerNamespace, String rolloutName, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -862,15 +705,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
             providerNamespace, rolloutName, context);
     }
 
-    /**
-     * Stops or cancels the custom rollout, if in progress.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param rolloutName The rollout name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String providerNamespace, String rolloutName) {
         stopWithResponse(providerNamespace, rolloutName, Context.NONE);
@@ -915,20 +750,7 @@ public final class CustomRolloutsClientImpl implements CustomRolloutsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CustomRolloutInner> listByProviderRegistrationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<CustomRolloutArrayResponseWithContinuation> res
-            = service.listByProviderRegistrationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByProviderRegistrationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

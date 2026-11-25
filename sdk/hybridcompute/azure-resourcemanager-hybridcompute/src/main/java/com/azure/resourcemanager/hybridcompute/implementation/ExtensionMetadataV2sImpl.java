@@ -45,8 +45,7 @@ public final class ExtensionMetadataV2sImpl implements ExtensionMetadataV2s {
     }
 
     public PagedIterable<ExtensionValueV2> list(String location, String publisher, String extensionType) {
-        PagedIterable<ExtensionValueV2Inner> inner = this.serviceClient().list(location, publisher, extensionType);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionValueV2Impl(inner1, this.manager()));
+        return this.list(location, publisher, extensionType, Context.NONE);
     }
 
     public PagedIterable<ExtensionValueV2> list(String location, String publisher, String extensionType,

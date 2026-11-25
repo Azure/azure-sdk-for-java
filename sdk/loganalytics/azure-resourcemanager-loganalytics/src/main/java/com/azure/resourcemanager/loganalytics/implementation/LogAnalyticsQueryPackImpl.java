@@ -97,11 +97,7 @@ public final class LogAnalyticsQueryPackImpl
     }
 
     public LogAnalyticsQueryPack create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQueryPacks()
-            .createOrUpdateWithResponse(resourceGroupName, queryPackName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public LogAnalyticsQueryPack create(Context context) {
@@ -124,11 +120,7 @@ public final class LogAnalyticsQueryPackImpl
     }
 
     public LogAnalyticsQueryPack apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQueryPacks()
-            .updateTagsWithResponse(resourceGroupName, queryPackName, updateQueryPackTags, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public LogAnalyticsQueryPack apply(Context context) {
@@ -152,11 +144,7 @@ public final class LogAnalyticsQueryPackImpl
     }
 
     public LogAnalyticsQueryPack refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getQueryPacks()
-            .getByResourceGroupWithResponse(resourceGroupName, queryPackName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public LogAnalyticsQueryPack refresh(Context context) {

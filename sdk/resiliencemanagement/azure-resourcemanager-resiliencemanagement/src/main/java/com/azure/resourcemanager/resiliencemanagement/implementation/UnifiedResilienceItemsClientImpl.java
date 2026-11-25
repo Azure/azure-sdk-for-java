@@ -151,17 +151,7 @@ public final class UnifiedResilienceItemsClientImpl implements UnifiedResilience
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a UnifiedResilienceItem.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param unifiedResilienceItemName The name of the unified resilience item.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a UnifiedResilienceItem along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnifiedResilienceItemInner> getWithResponse(String serviceGroupName,
         String unifiedResilienceItemName, Context context) {
@@ -170,16 +160,7 @@ public final class UnifiedResilienceItemsClientImpl implements UnifiedResilience
             unifiedResilienceItemName, accept, context);
     }
 
-    /**
-     * Get a UnifiedResilienceItem.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param unifiedResilienceItemName The name of the unified resilience item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a UnifiedResilienceItem.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnifiedResilienceItemInner get(String serviceGroupName, String unifiedResilienceItemName) {
         return getWithResponse(serviceGroupName, unifiedResilienceItemName, Context.NONE).getValue();
@@ -257,11 +238,7 @@ public final class UnifiedResilienceItemsClientImpl implements UnifiedResilience
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UnifiedResilienceItemInner> listSinglePage(String serviceGroupName, String skipToken,
         Integer top) {
-        final String accept = "application/json";
-        Response<UnifiedResilienceItemListResult> res = service.listSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), skipToken, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, skipToken, top, Context.NONE);
     }
 
     /**
@@ -286,35 +263,15 @@ public final class UnifiedResilienceItemsClientImpl implements UnifiedResilience
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List UnifiedResilienceItem resources by tenant.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UnifiedResilienceItem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UnifiedResilienceItemInner> list(String serviceGroupName) {
         final String skipToken = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName, skipToken, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, skipToken, top, Context.NONE);
     }
 
-    /**
-     * List UnifiedResilienceItem resources by tenant.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param skipToken Skip over when retrieving results.
-     * @param top Number of elements to return when retrieving results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a UnifiedResilienceItem list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UnifiedResilienceItemInner> list(String serviceGroupName, String skipToken, Integer top,
         Context context) {
@@ -352,11 +309,7 @@ public final class UnifiedResilienceItemsClientImpl implements UnifiedResilience
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UnifiedResilienceItemInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<UnifiedResilienceItemListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

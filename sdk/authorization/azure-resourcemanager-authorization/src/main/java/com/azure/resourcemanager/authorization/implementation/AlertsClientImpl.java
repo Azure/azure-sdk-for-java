@@ -122,16 +122,7 @@ public final class AlertsClientImpl implements AlertsClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AlertInner>> getWithResponseAsync(String scope, String alertId) {
         if (this.client.getEndpoint() == null) {
@@ -180,63 +171,25 @@ public final class AlertsClientImpl implements AlertsClient {
         return service.get(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context);
     }
 
-    /**
-     * Get the specified alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AlertInner> getAsync(String scope, String alertId) {
         return getWithResponseAsync(scope, alertId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertInner> getWithResponse(String scope, String alertId, Context context) {
         return getWithResponseAsync(scope, alertId, context).block();
     }
 
-    /**
-     * Get the specified alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified alert.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertInner get(String scope, String alertId) {
         return getWithResponse(scope, alertId, Context.NONE).getValue();
     }
 
-    /**
-     * Update an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @param parameters Parameters for the alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(String scope, String alertId, AlertInner parameters) {
         if (this.client.getEndpoint() == null) {
@@ -298,49 +251,19 @@ public final class AlertsClientImpl implements AlertsClient {
         return service.update(this.client.getEndpoint(), apiVersion, scope, alertId, contentType, parameters, context);
     }
 
-    /**
-     * Update an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @param parameters Parameters for the alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAsync(String scope, String alertId, AlertInner parameters) {
         return updateWithResponseAsync(scope, alertId, parameters).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Update an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @param parameters Parameters for the alert.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(String scope, String alertId, AlertInner parameters, Context context) {
         return updateWithResponseAsync(scope, alertId, parameters, context).block();
     }
 
-    /**
-     * Update an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @param parameters Parameters for the alert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String scope, String alertId, AlertInner parameters) {
         updateWithResponse(scope, alertId, parameters, Context.NONE);
@@ -400,15 +323,7 @@ public final class AlertsClientImpl implements AlertsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alerts for a resource scope as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AlertInner> listForScopeAsync(String scope) {
         return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope),
@@ -431,45 +346,19 @@ public final class AlertsClientImpl implements AlertsClient {
             nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alerts for a resource scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listForScope(String scope) {
         return new PagedIterable<>(listForScopeAsync(scope));
     }
 
-    /**
-     * Gets alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alerts for a resource scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listForScope(String scope, Context context) {
         return new PagedIterable<>(listForScopeAsync(scope, context));
     }
 
-    /**
-     * Refresh an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String scope, String alertId) {
         if (this.client.getEndpoint() == null) {
@@ -519,16 +408,7 @@ public final class AlertsClientImpl implements AlertsClient {
         return service.refresh(this.client.getEndpoint(), apiVersion, scope, alertId, accept, context);
     }
 
-    /**
-     * Refresh an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AlertOperationResultInner>, AlertOperationResultInner> beginRefreshAsync(String scope,
         String alertId) {
@@ -558,49 +438,21 @@ public final class AlertsClientImpl implements AlertsClient {
             this.client.getHttpPipeline(), AlertOperationResultInner.class, AlertOperationResultInner.class, context);
     }
 
-    /**
-     * Refresh an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AlertOperationResultInner>, AlertOperationResultInner> beginRefresh(String scope,
         String alertId) {
         return this.beginRefreshAsync(scope, alertId).getSyncPoller();
     }
 
-    /**
-     * Refresh an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AlertOperationResultInner>, AlertOperationResultInner> beginRefresh(String scope,
         String alertId, Context context) {
         return this.beginRefreshAsync(scope, alertId, context).getSyncPoller();
     }
 
-    /**
-     * Refresh an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AlertOperationResultInner> refreshAsync(String scope, String alertId) {
         return beginRefreshAsync(scope, alertId).last().flatMap(this.client::getLroFinalResultOrError);
@@ -622,46 +474,19 @@ public final class AlertsClientImpl implements AlertsClient {
         return beginRefreshAsync(scope, alertId, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refresh an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertOperationResultInner refresh(String scope, String alertId) {
         return refreshAsync(scope, alertId).block();
     }
 
-    /**
-     * Refresh an alert.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param alertId The name of the alert to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertOperationResultInner refresh(String scope, String alertId, Context context) {
         return refreshAsync(scope, alertId, context).block();
     }
 
-    /**
-     * Refresh all alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshAllWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
@@ -703,15 +528,7 @@ public final class AlertsClientImpl implements AlertsClient {
         return service.refreshAll(this.client.getEndpoint(), apiVersion, scope, accept, context);
     }
 
-    /**
-     * Refresh all alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AlertOperationResultInner>, AlertOperationResultInner>
         beginRefreshAllAsync(String scope) {
@@ -740,45 +557,20 @@ public final class AlertsClientImpl implements AlertsClient {
             this.client.getHttpPipeline(), AlertOperationResultInner.class, AlertOperationResultInner.class, context);
     }
 
-    /**
-     * Refresh all alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AlertOperationResultInner>, AlertOperationResultInner> beginRefreshAll(String scope) {
         return this.beginRefreshAllAsync(scope).getSyncPoller();
     }
 
-    /**
-     * Refresh all alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AlertOperationResultInner>, AlertOperationResultInner> beginRefreshAll(String scope,
         Context context) {
         return this.beginRefreshAllAsync(scope, context).getSyncPoller();
     }
 
-    /**
-     * Refresh all alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AlertOperationResultInner> refreshAllAsync(String scope) {
         return beginRefreshAllAsync(scope).last().flatMap(this.client::getLroFinalResultOrError);
@@ -799,30 +591,13 @@ public final class AlertsClientImpl implements AlertsClient {
         return beginRefreshAllAsync(scope, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Refresh all alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertOperationResultInner refreshAll(String scope) {
         return refreshAllAsync(scope).block();
     }
 
-    /**
-     * Refresh all alerts for a resource scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alert operation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertOperationResultInner refreshAll(String scope, Context context) {
         return refreshAllAsync(scope, context).block();

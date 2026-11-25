@@ -255,17 +255,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExascaleDbStorageVault along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExascaleDbStorageVaultInner> getByResourceGroupWithResponse(String resourceGroupName,
         String exascaleDbStorageVaultName, Context context) {
@@ -274,16 +264,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             this.client.getSubscriptionId(), resourceGroupName, exascaleDbStorageVaultName, accept, context);
     }
 
-    /**
-     * Get a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExascaleDbStorageVault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExascaleDbStorageVaultInner getByResourceGroup(String resourceGroupName, String exascaleDbStorageVaultName) {
         return getByResourceGroupWithResponse(resourceGroupName, exascaleDbStorageVaultName, Context.NONE).getValue();
@@ -327,11 +308,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String exascaleDbStorageVaultName,
         ExascaleDbStorageVaultInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exascaleDbStorageVaultName, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, exascaleDbStorageVaultName, resource, Context.NONE);
     }
 
     /**
@@ -377,37 +354,14 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             this.client.getContext());
     }
 
-    /**
-     * Create a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExascaleDbStorageVaultInner>, ExascaleDbStorageVaultInner>
         beginCreate(String resourceGroupName, String exascaleDbStorageVaultName, ExascaleDbStorageVaultInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, exascaleDbStorageVaultName, resource);
-        return this.client.<ExascaleDbStorageVaultInner, ExascaleDbStorageVaultInner>getLroResult(response,
-            ExascaleDbStorageVaultInner.class, ExascaleDbStorageVaultInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, exascaleDbStorageVaultName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExascaleDbStorageVaultInner>, ExascaleDbStorageVaultInner> beginCreate(
         String resourceGroupName, String exascaleDbStorageVaultName, ExascaleDbStorageVaultInner resource,
@@ -436,39 +390,19 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExascaleDbStorageVaultInner create(String resourceGroupName, String exascaleDbStorageVaultName,
         ExascaleDbStorageVaultInner resource) {
-        return beginCreate(resourceGroupName, exascaleDbStorageVaultName, resource).getFinalResult();
+        return create(resourceGroupName, exascaleDbStorageVaultName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExascaleDbStorageVaultInner create(String resourceGroupName, String exascaleDbStorageVaultName,
         ExascaleDbStorageVaultInner resource, Context context) {
-        return beginCreate(resourceGroupName, exascaleDbStorageVaultName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, exascaleDbStorageVaultName, resource, context));
     }
 
     /**
@@ -509,11 +443,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String exascaleDbStorageVaultName,
         ExascaleDbStorageVaultTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exascaleDbStorageVaultName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, exascaleDbStorageVaultName, properties, Context.NONE);
     }
 
     /**
@@ -559,37 +489,14 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             this.client.getContext());
     }
 
-    /**
-     * Update a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExascaleDbStorageVaultInner>, ExascaleDbStorageVaultInner> beginUpdate(
         String resourceGroupName, String exascaleDbStorageVaultName, ExascaleDbStorageVaultTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, exascaleDbStorageVaultName, properties);
-        return this.client.<ExascaleDbStorageVaultInner, ExascaleDbStorageVaultInner>getLroResult(response,
-            ExascaleDbStorageVaultInner.class, ExascaleDbStorageVaultInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, exascaleDbStorageVaultName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExascaleDbStorageVaultInner>, ExascaleDbStorageVaultInner> beginUpdate(
         String resourceGroupName, String exascaleDbStorageVaultName, ExascaleDbStorageVaultTagsUpdate properties,
@@ -618,39 +525,19 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExascaleDbStorageVaultInner update(String resourceGroupName, String exascaleDbStorageVaultName,
         ExascaleDbStorageVaultTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, exascaleDbStorageVaultName, properties).getFinalResult();
+        return update(resourceGroupName, exascaleDbStorageVaultName, properties, Context.NONE);
     }
 
-    /**
-     * Update a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exascaleDbStorageVault resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExascaleDbStorageVaultInner update(String resourceGroupName, String exascaleDbStorageVaultName,
         ExascaleDbStorageVaultTagsUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, exascaleDbStorageVaultName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, exascaleDbStorageVaultName, properties, context));
     }
 
     /**
@@ -684,8 +571,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String exascaleDbStorageVaultName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exascaleDbStorageVaultName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, exascaleDbStorageVaultName, Context.NONE);
     }
 
     /**
@@ -724,33 +610,13 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             this.client.getContext());
     }
 
-    /**
-     * Delete a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String exascaleDbStorageVaultName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, exascaleDbStorageVaultName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, exascaleDbStorageVaultName, Context.NONE);
     }
 
-    /**
-     * Delete a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String exascaleDbStorageVaultName,
         Context context) {
@@ -774,33 +640,16 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String exascaleDbStorageVaultName) {
-        beginDelete(resourceGroupName, exascaleDbStorageVaultName).getFinalResult();
+        delete(resourceGroupName, exascaleDbStorageVaultName, Context.NONE);
     }
 
-    /**
-     * Delete a ExascaleDbStorageVault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exascaleDbStorageVaultName The name of the ExascaleDbStorageVault.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String exascaleDbStorageVaultName, Context context) {
-        beginDelete(resourceGroupName, exascaleDbStorageVaultName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, exascaleDbStorageVaultName, context));
     }
 
     /**
@@ -851,11 +700,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbStorageVaultInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ExascaleDbStorageVaultListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -878,31 +723,13 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ExascaleDbStorageVault resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExascaleDbStorageVault list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExascaleDbStorageVaultInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List ExascaleDbStorageVault resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExascaleDbStorageVault list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExascaleDbStorageVaultInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -950,11 +777,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbStorageVaultInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ExascaleDbStorageVaultListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -975,27 +798,13 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ExascaleDbStorageVault resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExascaleDbStorageVault list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExascaleDbStorageVaultInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List ExascaleDbStorageVault resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExascaleDbStorageVault list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExascaleDbStorageVaultInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1034,11 +843,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbStorageVaultInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExascaleDbStorageVaultListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1093,11 +898,7 @@ public final class ExascaleDbStorageVaultsClientImpl implements ExascaleDbStorag
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbStorageVaultInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExascaleDbStorageVaultListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

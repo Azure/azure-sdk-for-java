@@ -46,7 +46,7 @@ public final class AutonomousDatabaseBackupsImpl implements AutonomousDatabaseBa
     }
 
     public void delete(String resourceGroupName, String autonomousdatabasename, String adbbackupid) {
-        this.serviceClient().delete(resourceGroupName, autonomousdatabasename, adbbackupid);
+        this.delete(resourceGroupName, autonomousdatabasename, adbbackupid, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String autonomousdatabasename, String adbbackupid, Context context) {
@@ -55,9 +55,7 @@ public final class AutonomousDatabaseBackupsImpl implements AutonomousDatabaseBa
 
     public PagedIterable<AutonomousDatabaseBackup> listByAutonomousDatabase(String resourceGroupName,
         String autonomousdatabasename) {
-        PagedIterable<AutonomousDatabaseBackupInner> inner
-            = this.serviceClient().listByAutonomousDatabase(resourceGroupName, autonomousdatabasename);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AutonomousDatabaseBackupImpl(inner1, this.manager()));
+        return this.listByAutonomousDatabase(resourceGroupName, autonomousdatabasename, Context.NONE);
     }
 
     public PagedIterable<AutonomousDatabaseBackup> listByAutonomousDatabase(String resourceGroupName,
@@ -68,102 +66,36 @@ public final class AutonomousDatabaseBackupsImpl implements AutonomousDatabaseBa
     }
 
     public AutonomousDatabaseBackup getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "autonomousdatabasename");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
-        String adbbackupid = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "adbbackupid");
-        if (adbbackupid == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabaseBackups'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, autonomousdatabasename, adbbackupid, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AutonomousDatabaseBackup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String autonomousdatabasename = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "autonomousdatabasename");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
-        String adbbackupid = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "autonomousdatabasename", "autonomousDatabases", LOGGER);
+        String adbbackupid = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "adbbackupid");
-        if (adbbackupid == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabaseBackups'.", id)));
-        }
+            "adbbackupid", "autonomousDatabaseBackups", LOGGER);
         return this.getWithResponse(resourceGroupName, autonomousdatabasename, adbbackupid, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "autonomousdatabasename");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
-        String adbbackupid = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "adbbackupid");
-        if (adbbackupid == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabaseBackups'.", id)));
-        }
-        this.delete(resourceGroupName, autonomousdatabasename, adbbackupid, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String autonomousdatabasename = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "autonomousdatabasename");
-        if (autonomousdatabasename == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
-        }
-        String adbbackupid = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "autonomousdatabasename", "autonomousDatabases", LOGGER);
+        String adbbackupid = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups/{adbbackupid}",
-            "adbbackupid");
-        if (adbbackupid == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabaseBackups'.", id)));
-        }
+            "adbbackupid", "autonomousDatabaseBackups", LOGGER);
         this.delete(resourceGroupName, autonomousdatabasename, adbbackupid, context);
     }
 
