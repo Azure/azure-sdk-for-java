@@ -26,8 +26,7 @@ public final class WorkspaceFeaturesImpl implements WorkspaceFeatures {
     }
 
     public PagedIterable<AmlUserFeature> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<AmlUserFeatureInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AmlUserFeatureImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, workspaceName, Context.NONE);
     }
 
     public PagedIterable<AmlUserFeature> list(String resourceGroupName, String workspaceName, Context context) {

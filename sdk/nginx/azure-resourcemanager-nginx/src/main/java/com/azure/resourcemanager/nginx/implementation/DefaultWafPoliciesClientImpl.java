@@ -114,17 +114,7 @@ public final class DefaultWafPoliciesClientImpl implements DefaultWafPoliciesCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the Nginx Waf Policy of given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx Waf Policy of given Nginx deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NginxDeploymentDefaultWafPolicyListResponseInner> listWithResponse(String resourceGroupName,
         String deploymentName, Context context) {
@@ -133,16 +123,7 @@ public final class DefaultWafPoliciesClientImpl implements DefaultWafPoliciesCli
             resourceGroupName, deploymentName, accept, context);
     }
 
-    /**
-     * Get the Nginx Waf Policy of given Nginx deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted NGINX deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx Waf Policy of given Nginx deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NginxDeploymentDefaultWafPolicyListResponseInner list(String resourceGroupName, String deploymentName) {
         return listWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();

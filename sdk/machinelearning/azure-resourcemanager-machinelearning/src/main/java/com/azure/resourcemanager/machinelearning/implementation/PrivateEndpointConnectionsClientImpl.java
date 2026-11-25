@@ -199,18 +199,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Called by end-users to get a PE connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param privateEndpointConnectionName NRP Private Endpoint Connection Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, Context context) {
@@ -219,17 +208,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, workspaceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Called by end-users to get a PE connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param privateEndpointConnectionName NRP Private Endpoint Connection Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName) {
@@ -289,23 +268,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Called by end-users to approve or reject a PE connection.
-     * This method must validate and forward the call to NRP.
-     * 
-     * Called by end-users to approve or reject a PE connection.
-     * This method must validate and forward the call to NRP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param privateEndpointConnectionName NRP Private Endpoint Connection Name.
-     * @param body PrivateEndpointConnection object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(String resourceGroupName,
         String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner body,
@@ -317,22 +280,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             contentType, accept, body, context);
     }
 
-    /**
-     * Called by end-users to approve or reject a PE connection.
-     * This method must validate and forward the call to NRP.
-     * 
-     * Called by end-users to approve or reject a PE connection.
-     * This method must validate and forward the call to NRP.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param privateEndpointConnectionName NRP Private Endpoint Connection Name.
-     * @param body PrivateEndpointConnection object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner body) {
@@ -377,18 +325,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Called by end-users to delete a PE connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param privateEndpointConnectionName NRP Private Endpoint Connection Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
         String privateEndpointConnectionName, Context context) {
@@ -396,16 +333,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, privateEndpointConnectionName, context);
     }
 
-    /**
-     * Called by end-users to delete a PE connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param privateEndpointConnectionName NRP Private Endpoint Connection Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
         deleteWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
@@ -465,12 +393,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -496,35 +419,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Called by end-users to get all PE connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Called by end-users to get all PE connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified workspace as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String workspaceName,
         Context context) {
@@ -567,11 +468,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

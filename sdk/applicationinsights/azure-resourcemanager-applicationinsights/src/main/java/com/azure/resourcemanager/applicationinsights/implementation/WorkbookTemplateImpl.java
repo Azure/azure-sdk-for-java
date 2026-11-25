@@ -113,11 +113,7 @@ public final class WorkbookTemplateImpl
     }
 
     public WorkbookTemplate create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbookTemplates()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkbookTemplate create(Context context) {
@@ -141,11 +137,7 @@ public final class WorkbookTemplateImpl
     }
 
     public WorkbookTemplate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbookTemplates()
-            .updateWithResponse(resourceGroupName, resourceName, updateWorkbookTemplateUpdateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkbookTemplate apply(Context context) {
@@ -169,11 +161,7 @@ public final class WorkbookTemplateImpl
     }
 
     public WorkbookTemplate refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkbookTemplates()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkbookTemplate refresh(Context context) {

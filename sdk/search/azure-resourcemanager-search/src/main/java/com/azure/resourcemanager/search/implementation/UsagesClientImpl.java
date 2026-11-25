@@ -144,16 +144,7 @@ public final class UsagesClientImpl implements UsagesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get a list of all Azure AI Search quota usages across the subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QuotaUsageResultInner> listBySubscriptionAsync(String location) {
         return new PagedFlux<>(() -> listBySubscriptionSinglePageAsync(location),
@@ -177,32 +168,13 @@ public final class UsagesClientImpl implements UsagesClient {
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all Azure AI Search quota usages across the subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaUsageResultInner> listBySubscription(String location) {
         return new PagedIterable<>(listBySubscriptionAsync(location));
     }
 
-    /**
-     * Get a list of all Azure AI Search quota usages across the subscription.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure AI Search quota usages across the subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaUsageResultInner> listBySubscription(String location, Context context) {
         return new PagedIterable<>(listBySubscriptionAsync(location, context));

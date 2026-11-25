@@ -65,11 +65,7 @@ public final class GuestSubscriptionImpl implements GuestSubscription, GuestSubs
     }
 
     public GuestSubscription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGuestSubscriptions()
-            .createWithResponse(location, guestSubscriptionId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public GuestSubscription create(Context context) {
@@ -87,11 +83,7 @@ public final class GuestSubscriptionImpl implements GuestSubscription, GuestSubs
     }
 
     public GuestSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getGuestSubscriptions()
-            .getWithResponse(location, guestSubscriptionId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public GuestSubscription refresh(Context context) {

@@ -117,17 +117,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Get the specified role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignmentScheduleRequestInner>> getWithResponseAsync(String scope,
         String roleAssignmentScheduleRequestName) {
@@ -183,65 +173,27 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             context);
     }
 
-    /**
-     * Get the specified role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule request on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentScheduleRequestInner> getAsync(String scope, String roleAssignmentScheduleRequestName) {
         return getWithResponseAsync(scope, roleAssignmentScheduleRequestName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the specified role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleAssignmentScheduleRequestInner> getWithResponse(String scope,
         String roleAssignmentScheduleRequestName, Context context) {
         return getWithResponseAsync(scope, roleAssignmentScheduleRequestName, context).block();
     }
 
-    /**
-     * Get the specified role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentScheduleRequestInner get(String scope, String roleAssignmentScheduleRequestName) {
         return getWithResponse(scope, roleAssignmentScheduleRequestName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignmentScheduleRequestInner>> createWithResponseAsync(String scope,
         String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
@@ -309,17 +261,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates a role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentScheduleRequestInner> createAsync(String scope, String roleAssignmentScheduleRequestName,
         RoleAssignmentScheduleRequestInner parameters) {
@@ -327,35 +269,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates a role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleAssignmentScheduleRequestInner> createWithResponse(String scope,
         String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters, Context context) {
         return createWithResponseAsync(scope, roleAssignmentScheduleRequestName, parameters, context).block();
     }
 
-    /**
-     * Creates a role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentScheduleRequestInner create(String scope, String roleAssignmentScheduleRequestName,
         RoleAssignmentScheduleRequestInner parameters) {
@@ -433,36 +354,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets role assignment schedule requests for a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule
-     * requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule requests
-     * at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role assignment
-     * schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule
-     * requests created for the current user. Use $filter=asApprover() to return all role assignment schedule requests
-     * where the current user is an approver.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment schedule requests for a scope as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentScheduleRequestInner> listForScopeAsync(String scope, String filter) {
         return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter),
             nextLink -> listForScopeNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets role assignment schedule requests for a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment schedule requests for a scope as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentScheduleRequestInner> listForScopeAsync(String scope) {
         final String filter = null;
@@ -493,53 +392,21 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets role assignment schedule requests for a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment schedule requests for a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentScheduleRequestInner> listForScope(String scope) {
         final String filter = null;
         return new PagedIterable<>(listForScopeAsync(scope, filter));
     }
 
-    /**
-     * Gets role assignment schedule requests for a scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule
-     * requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule requests
-     * at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role assignment
-     * schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule
-     * requests created for the current user. Use $filter=asApprover() to return all role assignment schedule requests
-     * where the current user is an approver.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment schedule requests for a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentScheduleRequestInner> listForScope(String scope, String filter,
         Context context) {
         return new PagedIterable<>(listForScopeAsync(scope, filter, context));
     }
 
-    /**
-     * Cancels a pending role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String scope, String roleAssignmentScheduleRequestName) {
         if (this.client.getEndpoint() == null) {
@@ -590,62 +457,25 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         return service.cancel(this.client.getEndpoint(), apiVersion, scope, roleAssignmentScheduleRequestName, context);
     }
 
-    /**
-     * Cancels a pending role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String scope, String roleAssignmentScheduleRequestName) {
         return cancelWithResponseAsync(scope, roleAssignmentScheduleRequestName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels a pending role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String scope, String roleAssignmentScheduleRequestName, Context context) {
         return cancelWithResponseAsync(scope, roleAssignmentScheduleRequestName, context).block();
     }
 
-    /**
-     * Cancels a pending role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String scope, String roleAssignmentScheduleRequestName) {
         cancelWithResponse(scope, roleAssignmentScheduleRequestName, Context.NONE);
     }
 
-    /**
-     * Validates a new role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignmentScheduleRequestInner>> validateWithResponseAsync(String scope,
         String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
@@ -713,17 +543,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Validates a new role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentScheduleRequestInner> validateAsync(String scope,
         String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
@@ -731,35 +551,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validates a new role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleAssignmentScheduleRequestInner> validateWithResponse(String scope,
         String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters, Context context) {
         return validateWithResponseAsync(scope, roleAssignmentScheduleRequestName, parameters, context).block();
     }
 
-    /**
-     * Validates a new role assignment schedule request.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
-     * @param parameters Parameters for the role assignment schedule request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment schedule request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentScheduleRequestInner validate(String scope, String roleAssignmentScheduleRequestName,
         RoleAssignmentScheduleRequestInner parameters) {

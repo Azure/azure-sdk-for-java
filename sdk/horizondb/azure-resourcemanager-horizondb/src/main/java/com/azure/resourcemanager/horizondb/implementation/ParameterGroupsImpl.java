@@ -47,7 +47,7 @@ public final class ParameterGroupsImpl implements ParameterGroups {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String parameterGroupName) {
-        this.serviceClient().delete(resourceGroupName, parameterGroupName);
+        this.delete(resourceGroupName, parameterGroupName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String parameterGroupName, Context context) {
@@ -55,8 +55,7 @@ public final class ParameterGroupsImpl implements ParameterGroups {
     }
 
     public PagedIterable<ParameterGroup> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ParameterGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ParameterGroupImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ParameterGroup> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class ParameterGroupsImpl implements ParameterGroups {
     }
 
     public PagedIterable<ParameterGroup> list() {
-        PagedIterable<ParameterGroupInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ParameterGroupImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ParameterGroup> list(Context context) {
@@ -76,10 +74,7 @@ public final class ParameterGroupsImpl implements ParameterGroups {
 
     public PagedIterable<ParameterGroupConnectionProperties> listConnections(String resourceGroupName,
         String parameterGroupName) {
-        PagedIterable<ParameterGroupConnectionPropertiesInner> inner
-            = this.serviceClient().listConnections(resourceGroupName, parameterGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ParameterGroupConnectionPropertiesImpl(inner1, this.manager()));
+        return this.listConnections(resourceGroupName, parameterGroupName, Context.NONE);
     }
 
     public PagedIterable<ParameterGroupConnectionProperties> listConnections(String resourceGroupName,
@@ -91,74 +86,30 @@ public final class ParameterGroupsImpl implements ParameterGroups {
     }
 
     public ParameterGroup getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String parameterGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "parameterGroupName");
-        if (parameterGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'parameterGroups'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, parameterGroupName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ParameterGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String parameterGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String parameterGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "parameterGroupName");
-        if (parameterGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'parameterGroups'.", id)));
-        }
+            "parameterGroupName", "parameterGroups", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, parameterGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String parameterGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "parameterGroupName");
-        if (parameterGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'parameterGroups'.", id)));
-        }
-        this.delete(resourceGroupName, parameterGroupName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String parameterGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String parameterGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}",
-            "parameterGroupName");
-        if (parameterGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'parameterGroups'.", id)));
-        }
+            "parameterGroupName", "parameterGroups", LOGGER);
         this.delete(resourceGroupName, parameterGroupName, context);
     }
 

@@ -112,12 +112,7 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
     }
 
     public ApplicationPackage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationPackages()
-            .createWithResponse(resourceGroupName, accountName, applicationName, versionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationPackage create(Context context) {
@@ -136,11 +131,7 @@ public final class ApplicationPackageImpl implements ApplicationPackage, Applica
     }
 
     public ApplicationPackage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplicationPackages()
-            .getWithResponse(resourceGroupName, accountName, applicationName, versionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationPackage refresh(Context context) {

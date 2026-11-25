@@ -210,19 +210,7 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific disk job along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeMachineDiskJobInner> getWithResponse(String resourceGroupName, String edgeMachineName,
         String diskName, String jobName, Context context) {
@@ -231,18 +219,7 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
             resourceGroupName, edgeMachineName, diskName, jobName, accept, context);
     }
 
-    /**
-     * Get a specific disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific disk job.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDiskJobInner get(String resourceGroupName, String edgeMachineName, String diskName,
         String jobName) {
@@ -305,12 +282,7 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineDiskJobInner> listSinglePage(String resourceGroupName, String edgeMachineName,
         String diskName) {
-        final String accept = "application/json";
-        Response<EdgeMachineDiskJobListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, edgeMachineName, diskName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, edgeMachineName, diskName, Context.NONE);
     }
 
     /**
@@ -336,36 +308,14 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all jobs for a disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineDiskJob list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineDiskJobInner> list(String resourceGroupName, String edgeMachineName,
         String diskName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, edgeMachineName, diskName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, edgeMachineName, diskName, Context.NONE);
     }
 
-    /**
-     * List all jobs for a disk.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a EdgeMachineDiskJob list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeMachineDiskJobInner> list(String resourceGroupName, String edgeMachineName,
         String diskName, Context context) {
@@ -415,11 +365,8 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String edgeMachineName,
         String diskName, String jobName, EdgeMachineDiskJobInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, diskName, jobName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, edgeMachineName, diskName, jobName, resource,
+            Context.NONE);
     }
 
     /**
@@ -470,43 +417,15 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
             this.client.getContext());
     }
 
-    /**
-     * Create or update a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of disk Job resource for managing operations on disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineDiskJobInner>, EdgeMachineDiskJobInner> beginCreateOrUpdate(
         String resourceGroupName, String edgeMachineName, String diskName, String jobName,
         EdgeMachineDiskJobInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, edgeMachineName, diskName, jobName, resource);
-        return this.client.<EdgeMachineDiskJobInner, EdgeMachineDiskJobInner>getLroResult(response,
-            EdgeMachineDiskJobInner.class, EdgeMachineDiskJobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, jobName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of disk Job resource for managing operations on disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EdgeMachineDiskJobInner>, EdgeMachineDiskJobInner> beginCreateOrUpdate(
         String resourceGroupName, String edgeMachineName, String diskName, String jobName,
@@ -537,44 +456,19 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk Job resource for managing operations on disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDiskJobInner createOrUpdate(String resourceGroupName, String edgeMachineName, String diskName,
         String jobName, EdgeMachineDiskJobInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, jobName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, edgeMachineName, diskName, jobName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk Job resource for managing operations on disks.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EdgeMachineDiskJobInner createOrUpdate(String resourceGroupName, String edgeMachineName, String diskName,
         String jobName, EdgeMachineDiskJobInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, jobName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, edgeMachineName, diskName, jobName, resource, context));
     }
 
     /**
@@ -613,8 +507,7 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String edgeMachineName, String diskName,
         String jobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeMachineName, diskName, jobName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, edgeMachineName, diskName, jobName, Context.NONE);
     }
 
     /**
@@ -658,38 +551,14 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
             this.client.getContext());
     }
 
-    /**
-     * Delete a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String diskName, String jobName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, edgeMachineName, diskName, jobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, edgeMachineName, diskName, jobName, Context.NONE);
     }
 
-    /**
-     * Delete a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String edgeMachineName,
         String diskName, String jobName, Context context) {
@@ -716,38 +585,18 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String diskName, String jobName) {
-        beginDelete(resourceGroupName, edgeMachineName, diskName, jobName).getFinalResult();
+        delete(resourceGroupName, edgeMachineName, diskName, jobName, Context.NONE);
     }
 
-    /**
-     * Delete a disk job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param edgeMachineName Name of Device.
-     * @param diskName The name of the EdgeMachineDisk.
-     * @param jobName The name of the EdgeMachineDiskJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String edgeMachineName, String diskName, String jobName,
         Context context) {
-        beginDelete(resourceGroupName, edgeMachineName, diskName, jobName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, edgeMachineName, diskName, jobName, context));
     }
 
     /**
@@ -780,11 +629,7 @@ public final class EdgeMachineDiskJobsClientImpl implements EdgeMachineDiskJobsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EdgeMachineDiskJobInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EdgeMachineDiskJobListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

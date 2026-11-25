@@ -75,11 +75,7 @@ public final class ActionResponseImpl implements ActionResponse, ActionResponse.
     }
 
     public ActionResponse create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getActions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, ruleId, actionId, createAction, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ActionResponse create(Context context) {
@@ -102,11 +98,7 @@ public final class ActionResponseImpl implements ActionResponse, ActionResponse.
     }
 
     public ActionResponse apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getActions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, ruleId, actionId, updateAction, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ActionResponse apply(Context context) {
@@ -136,11 +128,7 @@ public final class ActionResponseImpl implements ActionResponse, ActionResponse.
     }
 
     public ActionResponse refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getActions()
-            .getWithResponse(resourceGroupName, workspaceName, ruleId, actionId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ActionResponse refresh(Context context) {

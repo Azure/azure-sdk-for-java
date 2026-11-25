@@ -230,20 +230,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a quota transfer.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a quota transfer along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaTransferInner> getWithResponse(String targetProvider, String region, String transferName,
         Context context) {
@@ -252,19 +239,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             targetProvider, region, transferName, accept, context);
     }
 
-    /**
-     * Get a quota transfer.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a quota transfer.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaTransferInner get(String targetProvider, String region, String transferName) {
         return getWithResponse(targetProvider, region, transferName, Context.NONE).getValue();
@@ -318,11 +293,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String targetProvider, String region, String transferName,
         QuotaTransferInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), targetProvider, region, transferName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(targetProvider, region, transferName, resource, Context.NONE);
     }
 
     /**
@@ -377,47 +348,14 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             QuotaTransferInner.class, QuotaTransferInner.class, this.client.getContext());
     }
 
-    /**
-     * Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
-     * cached outcome and the same `transferId`; a retry with a different financial body
-     * returns 409 BodyMismatch.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a quota transfer authored on the donor side.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<QuotaTransferInner>, QuotaTransferInner> beginCreateOrUpdate(String targetProvider,
         String region, String transferName, QuotaTransferInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(targetProvider, region, transferName, resource);
-        return this.client.<QuotaTransferInner, QuotaTransferInner>getLroResult(response, QuotaTransferInner.class,
-            QuotaTransferInner.class, Context.NONE);
+        return beginCreateOrUpdate(targetProvider, region, transferName, resource, Context.NONE);
     }
 
-    /**
-     * Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
-     * cached outcome and the same `transferId`; a retry with a different financial body
-     * returns 409 BodyMismatch.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a quota transfer authored on the donor side.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<QuotaTransferInner>, QuotaTransferInner> beginCreateOrUpdate(String targetProvider,
         String region, String transferName, QuotaTransferInner resource, Context context) {
@@ -450,49 +388,19 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
-     * cached outcome and the same `transferId`; a retry with a different financial body
-     * returns 409 BodyMismatch.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a quota transfer authored on the donor side.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaTransferInner createOrUpdate(String targetProvider, String region, String transferName,
         QuotaTransferInner resource) {
-        return beginCreateOrUpdate(targetProvider, region, transferName, resource).getFinalResult();
+        return createOrUpdate(targetProvider, region, transferName, resource, Context.NONE);
     }
 
-    /**
-     * Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
-     * cached outcome and the same `transferId`; a retry with a different financial body
-     * returns 409 BodyMismatch.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a quota transfer authored on the donor side.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaTransferInner createOrUpdate(String targetProvider, String region, String transferName,
         QuotaTransferInner resource, Context context) {
-        return beginCreateOrUpdate(targetProvider, region, transferName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(targetProvider, region, transferName, resource, context));
     }
 
     /**
@@ -536,21 +444,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
         return deleteWithResponseAsync(targetProvider, region, transferName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a quota transfer record. Quota is not moved by delete; only the resource entry
-     * is removed.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String targetProvider, String region, String transferName,
         Context context) {
@@ -558,19 +452,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             this.client.getSubscriptionId(), targetProvider, region, transferName, context);
     }
 
-    /**
-     * Delete a quota transfer record. Quota is not moved by delete; only the resource entry
-     * is removed.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String targetProvider, String region, String transferName) {
         deleteWithResponse(targetProvider, region, transferName, Context.NONE);
@@ -629,11 +511,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaTransferInner> listSinglePage(String targetProvider, String region) {
-        final String accept = "application/json";
-        Response<QuotaTransferListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), targetProvider, region, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(targetProvider, region, Context.NONE);
     }
 
     /**
@@ -657,35 +535,13 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List quota transfers at the (subscription, targetProvider, region) scope.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a QuotaTransfer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaTransferInner> list(String targetProvider, String region) {
-        return new PagedIterable<>(() -> listSinglePage(targetProvider, region),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(targetProvider, region, Context.NONE);
     }
 
-    /**
-     * List quota transfers at the (subscription, targetProvider, region) scope.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a QuotaTransfer list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QuotaTransferInner> list(String targetProvider, String region, Context context) {
         return new PagedIterable<>(() -> listSinglePage(targetProvider, region, context),
@@ -740,22 +596,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Cancel a Pending quota transfer. Synchronous. Transitions the transfer to Cancelled
-     * and returns the refreshed resource envelope.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a quota transfer authored on the donor side along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaTransferInner> cancelWithResponse(String targetProvider, String region, String transferName,
         QuotaTransferCancelRequest body, Context context) {
@@ -765,20 +606,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
             CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
-    /**
-     * Cancel a Pending quota transfer. Synchronous. Transitions the transfer to Cancelled
-     * and returns the refreshed resource envelope.
-     * 
-     * @param targetProvider The ARM provider namespace whose quota is being transferred (for example,
-     * `Microsoft.Compute`).
-     * @param region The Azure region the quota transfer applies to. A transfer URI is region-singular.
-     * @param transferName The donor-chosen name segment of the quota transfer. Used as the idempotency key
-     * for retries on the donor side.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a quota transfer authored on the donor side.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaTransferInner cancel(String targetProvider, String region, String transferName) {
         final QuotaTransferCancelRequest body = null;
@@ -815,11 +643,7 @@ public final class QuotaTransfersClientImpl implements QuotaTransfersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaTransferInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<QuotaTransferListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

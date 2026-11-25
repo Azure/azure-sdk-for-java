@@ -284,17 +284,7 @@ public final class BotsClientImpl implements BotsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthBot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HealthBotInner> getByResourceGroupWithResponse(String resourceGroupName, String botName,
         Context context) {
@@ -303,16 +293,7 @@ public final class BotsClientImpl implements BotsClient {
             this.client.getSubscriptionId(), resourceGroupName, botName, accept, context);
     }
 
-    /**
-     * Get a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HealthBot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner getByResourceGroup(String resourceGroupName, String botName) {
         return getByResourceGroupWithResponse(resourceGroupName, botName, Context.NONE).getValue();
@@ -355,10 +336,7 @@ public final class BotsClientImpl implements BotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String botName,
         HealthBotInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, botName, contentType, accept, parameters, Context.NONE);
+        return createWithResponse(resourceGroupName, botName, parameters, Context.NONE);
     }
 
     /**
@@ -401,37 +379,14 @@ public final class BotsClientImpl implements BotsClient {
             HealthBotInner.class, HealthBotInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a new Azure Health Bot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created Azure Health Bot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthBotInner>, HealthBotInner> beginCreate(String resourceGroupName, String botName,
         HealthBotInner parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, botName, parameters);
-        return this.client.<HealthBotInner, HealthBotInner>getLroResult(response, HealthBotInner.class,
-            HealthBotInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, botName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a new Azure Health Bot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created Azure Health Bot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthBotInner>, HealthBotInner> beginCreate(String resourceGroupName, String botName,
         HealthBotInner parameters, Context context) {
@@ -457,37 +412,16 @@ public final class BotsClientImpl implements BotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a new Azure Health Bot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created Azure Health Bot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner create(String resourceGroupName, String botName, HealthBotInner parameters) {
-        return beginCreate(resourceGroupName, botName, parameters).getFinalResult();
+        return create(resourceGroupName, botName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a new Azure Health Bot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the created Azure Health Bot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner create(String resourceGroupName, String botName, HealthBotInner parameters, Context context) {
-        return beginCreate(resourceGroupName, botName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreate(resourceGroupName, botName, parameters, context));
     }
 
     /**
@@ -527,10 +461,7 @@ public final class BotsClientImpl implements BotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String botName,
         HealthBotUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, botName, contentType, accept, parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, botName, parameters, Context.NONE);
     }
 
     /**
@@ -573,37 +504,14 @@ public final class BotsClientImpl implements BotsClient {
             HealthBotInner.class, HealthBotInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required Azure Health Bot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthBotInner>, HealthBotInner> beginUpdate(String resourceGroupName, String botName,
         HealthBotUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, botName, parameters);
-        return this.client.<HealthBotInner, HealthBotInner>getLroResult(response, HealthBotInner.class,
-            HealthBotInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, botName, parameters, Context.NONE);
     }
 
-    /**
-     * Patch a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required Azure Health Bot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HealthBotInner>, HealthBotInner> beginUpdate(String resourceGroupName, String botName,
         HealthBotUpdateParameters parameters, Context context) {
@@ -630,38 +538,17 @@ public final class BotsClientImpl implements BotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required Azure Health Bot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner update(String resourceGroupName, String botName, HealthBotUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, botName, parameters).getFinalResult();
+        return update(resourceGroupName, botName, parameters, Context.NONE);
     }
 
-    /**
-     * Patch a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param parameters The parameters to provide for the required Azure Health Bot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Health Bot resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotInner update(String resourceGroupName, String botName, HealthBotUpdateParameters parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, botName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, botName, parameters, context));
     }
 
     /**
@@ -694,8 +581,7 @@ public final class BotsClientImpl implements BotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String botName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, botName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, botName, Context.NONE);
     }
 
     /**
@@ -732,33 +618,13 @@ public final class BotsClientImpl implements BotsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String botName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, botName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, botName, Context.NONE);
     }
 
-    /**
-     * Delete a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String botName, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, botName, context);
@@ -780,33 +646,16 @@ public final class BotsClientImpl implements BotsClient {
         return beginDeleteAsync(resourceGroupName, botName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String botName) {
-        beginDelete(resourceGroupName, botName).getFinalResult();
+        delete(resourceGroupName, botName, Context.NONE);
     }
 
-    /**
-     * Delete a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String botName, Context context) {
-        beginDelete(resourceGroupName, botName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, botName, context));
     }
 
     /**
@@ -856,11 +705,7 @@ public final class BotsClientImpl implements BotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HealthBotInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<BotResponseList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -882,31 +727,13 @@ public final class BotsClientImpl implements BotsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all the resources of a particular type belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Azure Health Bot operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Returns all the resources of a particular type belonging to a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Azure Health Bot operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -953,11 +780,7 @@ public final class BotsClientImpl implements BotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HealthBotInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<BotResponseList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -978,27 +801,13 @@ public final class BotsClientImpl implements BotsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all the resources of a particular type belonging to a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Azure Health Bot operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Returns all the resources of a particular type belonging to a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Azure Health Bot operation response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HealthBotInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1040,17 +849,7 @@ public final class BotsClientImpl implements BotsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all secrets of a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health Bot Keys Response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HealthBotKeysResponseInner> listSecretsWithResponse(String resourceGroupName, String botName,
         Context context) {
@@ -1059,16 +858,7 @@ public final class BotsClientImpl implements BotsClient {
             this.client.getSubscriptionId(), resourceGroupName, botName, accept, context);
     }
 
-    /**
-     * List all secrets of a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health Bot Keys Response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotKeysResponseInner listSecrets(String resourceGroupName, String botName) {
         return listSecretsWithResponse(resourceGroupName, botName, Context.NONE).getValue();
@@ -1111,17 +901,7 @@ public final class BotsClientImpl implements BotsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Regenerate the API JWT Secret of a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entry of HealthBotKeysResponse along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HealthBotKeyInner> regenerateApiJwtSecretWithResponse(String resourceGroupName, String botName,
         Context context) {
@@ -1130,16 +910,7 @@ public final class BotsClientImpl implements BotsClient {
             this.client.getSubscriptionId(), resourceGroupName, botName, accept, context);
     }
 
-    /**
-     * Regenerate the API JWT Secret of a HealthBot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param botName The name of the Bot resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an entry of HealthBotKeysResponse.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HealthBotKeyInner regenerateApiJwtSecret(String resourceGroupName, String botName) {
         return regenerateApiJwtSecretWithResponse(resourceGroupName, botName, Context.NONE).getValue();
@@ -1177,11 +948,7 @@ public final class BotsClientImpl implements BotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HealthBotInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BotResponseList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1233,10 +1000,7 @@ public final class BotsClientImpl implements BotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HealthBotInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BotResponseList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

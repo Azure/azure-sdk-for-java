@@ -99,10 +99,7 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
     }
 
     public StoragePool create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .create(resourceGroupName, storagePoolName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StoragePool create(Context context) {
@@ -124,10 +121,7 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
     }
 
     public StoragePool apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .update(resourceGroupName, storagePoolName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StoragePool apply(Context context) {
@@ -150,11 +144,7 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
     }
 
     public StoragePool refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStoragePools()
-            .getByResourceGroupWithResponse(resourceGroupName, storagePoolName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StoragePool refresh(Context context) {

@@ -83,12 +83,7 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
     }
 
     public RaiPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), createIfMatch,
-                createIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RaiPolicy create(Context context) {
@@ -115,12 +110,7 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
     }
 
     public RaiPolicy apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiPolicies()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, raiPolicyName, this.innerModel(), updateIfMatch,
-                updateIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RaiPolicy apply(Context context) {
@@ -148,11 +138,7 @@ public final class RaiPolicyImpl implements RaiPolicy, RaiPolicy.Definition, Rai
     }
 
     public RaiPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRaiPolicies()
-            .getWithResponse(resourceGroupName, accountName, raiPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RaiPolicy refresh(Context context) {

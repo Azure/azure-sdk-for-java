@@ -182,12 +182,7 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupJobResourceInner> listSinglePage(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters, String filter) {
-        final String accept = "application/json";
-        Response<AzureBackupJobResourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
-                this.client.getSubscriptionId(), location, filter, accept, parameters, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, location, parameters, filter, Context.NONE);
     }
 
     /**
@@ -214,38 +209,15 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Fetches list of Cross Region Restore job belonging to the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, location, parameters, filter, Context.NONE);
     }
 
-    /**
-     * Fetches list of Cross Region Restore job belonging to the vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of the Azure region.
-     * @param parameters Request body for operation.
-     * @param filter OData filter options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AzureBackup Job resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters, String filter, Context context) {
@@ -283,11 +255,7 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AzureBackupJobResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AzureBackupJobResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -147,18 +147,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
         return getByPolicyModeWithResponseAsync(policyMode).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves a data policy manifest.
-     * 
-     * This operation retrieves the data policy manifest with the given policy mode.
-     * 
-     * @param policyMode The policy mode of the data policy manifest to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data policy manifest along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataPolicyManifestInner> getByPolicyModeWithResponse(String policyMode, Context context) {
         final String accept = "application/json";
@@ -166,17 +155,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
             context);
     }
 
-    /**
-     * Retrieves a data policy manifest.
-     * 
-     * This operation retrieves the data policy manifest with the given policy mode.
-     * 
-     * @param policyMode The policy mode of the data policy manifest to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data policy manifest.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataPolicyManifestInner getByPolicyMode(String policyMode) {
         return getByPolicyModeWithResponse(policyMode, Context.NONE).getValue();
@@ -266,11 +245,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataPolicyManifestInner> listSinglePage(String filter) {
-        final String accept = "application/json";
-        Response<DataPolicyManifestListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -299,41 +274,14 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Retrieves data policy manifests.
-     * 
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
-     * values for $filter are: \"$filter=namespace eq '{0}'\". If $filter is not provided, the unfiltered list includes
-     * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
-     * includes all data policy manifests that have a namespace matching the provided value.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataPolicyManifest list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataPolicyManifestInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter), nextLink -> listNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * Retrieves data policy manifests.
-     * 
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
-     * values for $filter are: \"$filter=namespace eq '{0}'\". If $filter is not provided, the unfiltered list includes
-     * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
-     * includes all data policy manifests that have a namespace matching the provided value.
-     * 
-     * @param filter The filter to apply on the operation. Valid values for $filter are: \"namespace eq '{value}'\". If
-     * $filter is not provided, no filtering is performed. If $filter=namespace eq '{value}' is provided, the returned
-     * list only includes all data policy manifests that have a namespace matching the provided value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DataPolicyManifest list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataPolicyManifestInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -374,11 +322,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataPolicyManifestInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataPolicyManifestListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

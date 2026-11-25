@@ -317,19 +317,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a single workbook by its resourceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     * false, only return summary content for workbooks.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook by its resourceName along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbookInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
         Boolean canFetchContent, Context context) {
@@ -339,16 +327,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             resourceGroupName, resourceName, canFetchContent, accept, context);
     }
 
-    /**
-     * Get a single workbook by its resourceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook by its resourceName.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbookInner getByResourceGroup(String resourceGroupName, String resourceName) {
         final Boolean canFetchContent = null;
@@ -400,19 +379,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new workbook.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param workbookProperties Properties that need to be specified to create a new workbook.
-     * @param sourceId Azure Resource Id that will fetch all linked workbooks.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workbook definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbookInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         WorkbookInner workbookProperties, String sourceId, Context context) {
@@ -423,17 +390,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             resourceGroupName, resourceName, sourceId, contentType, accept, workbookProperties, context);
     }
 
-    /**
-     * Create a new workbook.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param workbookProperties Properties that need to be specified to create a new workbook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workbook definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbookInner createOrUpdate(String resourceGroupName, String resourceName,
         WorkbookInner workbookProperties) {
@@ -484,19 +441,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a workbook that has already been added.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param sourceId Azure Resource Id that will fetch all linked workbooks.
-     * @param workbookUpdateParameters Properties that need to be specified to create a new workbook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workbook definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbookInner> updateWithResponse(String resourceGroupName, String resourceName, String sourceId,
         WorkbookUpdateParameters workbookUpdateParameters, Context context) {
@@ -506,16 +451,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             resourceGroupName, resourceName, sourceId, accept, workbookUpdateParameters, context);
     }
 
-    /**
-     * Updates a workbook that has already been added.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workbook definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbookInner update(String resourceGroupName, String resourceName) {
         final String sourceId = null;
@@ -558,17 +494,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
         return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a workbook.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
         final String apiVersion = "2023-06-01";
@@ -576,15 +502,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             resourceGroupName, resourceName, context);
     }
 
-    /**
-     * Delete a workbook.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
         deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
@@ -673,17 +591,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookInner> listSinglePage(CategoryType category, List<String> tags,
         Boolean canFetchContent) {
-        final String apiVersion = "2023-06-01";
-        final String accept = "application/json";
-        String tagsConverted = (tags == null)
-            ? null
-            : tags.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<WorkbooksListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), category, tagsConverted, canFetchContent, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(category, tags, canFetchContent, Context.NONE);
     }
 
     /**
@@ -715,38 +623,15 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all Workbooks defined within a specified subscription and category.
-     * 
-     * @param category Category of workbook to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbooks defined within a specified subscription and category as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookInner> list(CategoryType category) {
         final List<String> tags = null;
         final Boolean canFetchContent = null;
-        return new PagedIterable<>(() -> listSinglePage(category, tags, canFetchContent),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(category, tags, canFetchContent, Context.NONE);
     }
 
-    /**
-     * Get all Workbooks defined within a specified subscription and category.
-     * 
-     * @param category Category of workbook to return.
-     * @param tags Tags presents on each workbook returned.
-     * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     * false, only return summary content for workbooks.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbooks defined within a specified subscription and category as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookInner> list(CategoryType category, List<String> tags, Boolean canFetchContent,
         Context context) {
@@ -806,12 +691,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookInner> revisionsListSinglePage(String resourceGroupName, String resourceName) {
-        final String apiVersion = "2023-06-01";
-        final String accept = "application/json";
-        Response<WorkbooksListResult> res = service.revisionsListSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return revisionsListSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -836,35 +716,13 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the revisions for the workbook defined by its resourceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the revisions for the workbook defined by its resourceName as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookInner> revisionsList(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> revisionsListSinglePage(resourceGroupName, resourceName),
-            nextLink -> revisionsListNextSinglePage(nextLink));
+        return revisionsList(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Get the revisions for the workbook defined by its resourceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the revisions for the workbook defined by its resourceName as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookInner> revisionsList(String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(() -> revisionsListSinglePage(resourceGroupName, resourceName, context),
@@ -911,18 +769,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a single workbook revision defined by its revisionId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param revisionId The id of the workbook's revision.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook revision defined by its revisionId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbookInner> revisionGetWithResponse(String resourceGroupName, String resourceName,
         String revisionId, Context context) {
@@ -932,17 +779,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             resourceGroupName, resourceName, revisionId, accept, context);
     }
 
-    /**
-     * Get a single workbook revision defined by its revisionId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the workbook resource. The value must be an UUID.
-     * @param revisionId The id of the workbook's revision.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook revision defined by its revisionId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbookInner revisionGet(String resourceGroupName, String resourceName, String revisionId) {
         return revisionGetWithResponse(resourceGroupName, resourceName, revisionId, Context.NONE).getValue();
@@ -1043,18 +880,8 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookInner> listByResourceGroupSinglePage(String resourceGroupName, CategoryType category,
         List<String> tags, String sourceId, Boolean canFetchContent) {
-        final String apiVersion = "2023-06-01";
-        final String accept = "application/json";
-        String tagsConverted = (tags == null)
-            ? null
-            : tags.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<WorkbooksListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, category, tagsConverted, sourceId, canFetchContent, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, category, tags, sourceId, canFetchContent,
+            Context.NONE);
     }
 
     /**
@@ -1089,43 +916,16 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all Workbooks defined within a specified resource group and category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param category Category of workbook to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbooks defined within a specified resource group and category as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category) {
         final List<String> tags = null;
         final String sourceId = null;
         final Boolean canFetchContent = null;
-        return new PagedIterable<>(
-            () -> listByResourceGroupSinglePage(resourceGroupName, category, tags, sourceId, canFetchContent),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, category, tags, sourceId, canFetchContent, Context.NONE);
     }
 
-    /**
-     * Get all Workbooks defined within a specified resource group and category.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param category Category of workbook to return.
-     * @param tags Tags presents on each workbook returned.
-     * @param sourceId Azure Resource Id that will fetch all linked workbooks.
-     * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If
-     * false, only return summary content for workbooks.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws WorkbookErrorDefinitionException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbooks defined within a specified resource group and category as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category,
         List<String> tags, String sourceId, Boolean canFetchContent, Context context) {
@@ -1166,11 +966,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkbooksListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1223,11 +1019,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookInner> revisionsListNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkbooksListResult> res
-            = service.revisionsListNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return revisionsListNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1281,11 +1073,7 @@ public final class WorkbooksClientImpl implements WorkbooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbookInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkbooksListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

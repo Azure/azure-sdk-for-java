@@ -234,18 +234,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets properties of a forwarding rule in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a forwarding rule in a DNS forwarding ruleset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ForwardingRuleInner> getWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String forwardingRuleName, Context context) {
@@ -254,17 +243,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, accept, context);
     }
 
-    /**
-     * Gets properties of a forwarding rule in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a forwarding rule in a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ForwardingRuleInner get(String resourceGroupName, String dnsForwardingRulesetName,
         String forwardingRuleName) {
@@ -323,23 +302,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             parameters, ifMatch, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     * resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ForwardingRuleInner> createOrUpdateWithResponse(String resourceGroupName,
         String dnsForwardingRulesetName, String forwardingRuleName, ForwardingRuleInner parameters, String ifMatch,
@@ -351,18 +314,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             ifNoneMatch, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates a forwarding rule in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ForwardingRuleInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
         String forwardingRuleName, ForwardingRuleInner parameters) {
@@ -419,21 +371,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a forwarding rule in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ForwardingRuleInner> updateWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String forwardingRuleName, ForwardingRulePatch parameters, String ifMatch, Context context) {
@@ -444,18 +382,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates a forwarding rule in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a forwarding rule within a DNS forwarding ruleset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ForwardingRuleInner update(String resourceGroupName, String dnsForwardingRulesetName,
         String forwardingRuleName, ForwardingRulePatch parameters) {
@@ -506,20 +433,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String dnsForwardingRulesetName,
         String forwardingRuleName, String ifMatch, Context context) {
@@ -528,16 +442,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             context);
     }
 
-    /**
-     * Deletes a forwarding rule in a DNS forwarding ruleset. WARNING: This operation cannot be undone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param forwardingRuleName The name of the forwarding rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {
         final String ifMatch = null;
@@ -617,12 +522,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ForwardingRuleInner> listSinglePage(String resourceGroupName, String dnsForwardingRulesetName,
         Integer top) {
-        final String accept = "application/json";
-        Response<ForwardingRuleListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, dnsForwardingRulesetName, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, dnsForwardingRulesetName, top, Context.NONE);
     }
 
     /**
@@ -648,35 +548,14 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists forwarding rules in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ForwardingRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ForwardingRuleInner> list(String resourceGroupName, String dnsForwardingRulesetName) {
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, dnsForwardingRulesetName, top),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, dnsForwardingRulesetName, top, Context.NONE);
     }
 
-    /**
-     * Lists forwarding rules in a DNS forwarding ruleset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param top The maximum number of results to return. If not specified, returns up to 100 results.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ForwardingRule list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ForwardingRuleInner> list(String resourceGroupName, String dnsForwardingRulesetName,
         Integer top, Context context) {
@@ -714,11 +593,7 @@ public final class ForwardingRulesClientImpl implements ForwardingRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ForwardingRuleInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ForwardingRuleListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -198,16 +198,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<P2SVpnGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String gatewayName) {
@@ -270,65 +261,27 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             resourceGroupName, gatewayName, accept, context);
     }
 
-    /**
-     * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> getByResourceGroupAsync(String resourceGroupName, String gatewayName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, gatewayName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<P2SVpnGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String gatewayName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, gatewayName, context).block();
     }
 
-    /**
-     * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner getByResourceGroup(String resourceGroupName, String gatewayName) {
         return getByResourceGroupWithResponse(resourceGroupName, gatewayName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters) {
@@ -407,17 +360,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             resourceGroupName, gatewayName, contentType, accept, p2SVpnGatewayParameters, context);
     }
 
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters) {
@@ -449,35 +392,14 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
     }
 
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters).getSyncPoller();
     }
 
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(String resourceGroupName,
         String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context) {
@@ -485,17 +407,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .getSyncPoller();
     }
 
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> createOrUpdateAsync(String resourceGroupName, String gatewayName,
         P2SVpnGatewayInner p2SVpnGatewayParameters) {
@@ -522,52 +434,21 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner createOrUpdate(String resourceGroupName, String gatewayName,
         P2SVpnGatewayInner p2SVpnGatewayParameters) {
         return createOrUpdateAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters).block();
     }
 
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner createOrUpdate(String resourceGroupName, String gatewayName,
         P2SVpnGatewayInner p2SVpnGatewayParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters, context).block();
     }
 
-    /**
-     * Updates virtual wan p2s vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String gatewayName,
         TagsObject p2SVpnGatewayParameters) {
@@ -646,17 +527,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             resourceGroupName, gatewayName, contentType, accept, p2SVpnGatewayParameters, context);
     }
 
-    /**
-     * Updates virtual wan p2s vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(String resourceGroupName,
         String gatewayName, TagsObject p2SVpnGatewayParameters) {
@@ -688,35 +559,14 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
     }
 
-    /**
-     * Updates virtual wan p2s vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(String resourceGroupName,
         String gatewayName, TagsObject p2SVpnGatewayParameters) {
         return this.beginUpdateTagsAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters).getSyncPoller();
     }
 
-    /**
-     * Updates virtual wan p2s vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(String resourceGroupName,
         String gatewayName, TagsObject p2SVpnGatewayParameters, Context context) {
@@ -724,17 +574,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .getSyncPoller();
     }
 
-    /**
-     * Updates virtual wan p2s vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> updateTagsAsync(String resourceGroupName, String gatewayName,
         TagsObject p2SVpnGatewayParameters) {
@@ -761,51 +601,21 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates virtual wan p2s vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner updateTags(String resourceGroupName, String gatewayName,
         TagsObject p2SVpnGatewayParameters) {
         return updateTagsAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters).block();
     }
 
-    /**
-     * Updates virtual wan p2s vpn gateway tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner updateTags(String resourceGroupName, String gatewayName,
         TagsObject p2SVpnGatewayParameters, Context context) {
         return updateTagsAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters, context).block();
     }
 
-    /**
-     * Deletes a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String gatewayName) {
         if (this.client.getEndpoint() == null) {
@@ -865,16 +675,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             gatewayName, context);
     }
 
-    /**
-     * Deletes a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String gatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName);
@@ -902,48 +703,20 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             context);
     }
 
-    /**
-     * Deletes a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName) {
         return this.beginDeleteAsync(resourceGroupName, gatewayName).getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, gatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String gatewayName) {
         return beginDeleteAsync(resourceGroupName, gatewayName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -966,30 +739,13 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String gatewayName) {
         deleteAsync(resourceGroupName, gatewayName).block();
     }
 
-    /**
-     * Deletes a virtual wan p2s vpn gateway.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String gatewayName, Context context) {
         deleteAsync(resourceGroupName, gatewayName, context).block();
@@ -1065,15 +821,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the P2SVpnGateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<P2SVpnGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -1096,30 +844,13 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the P2SVpnGateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the P2SVpnGateways in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -1181,13 +912,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the P2SVpnGateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<P2SVpnGatewayInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
@@ -1208,42 +933,19 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the P2SVpnGateways in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the P2SVpnGateways in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
-    /**
-     * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(String resourceGroupName, String gatewayName) {
         if (this.client.getEndpoint() == null) {
@@ -1305,16 +1007,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             gatewayName, accept, context);
     }
 
-    /**
-     * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginResetAsync(String resourceGroupName,
         String gatewayName) {
@@ -1343,49 +1036,21 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
     }
 
-    /**
-     * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(String resourceGroupName,
         String gatewayName) {
         return this.beginResetAsync(resourceGroupName, gatewayName).getSyncPoller();
     }
 
-    /**
-     * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(String resourceGroupName,
         String gatewayName, Context context) {
         return this.beginResetAsync(resourceGroupName, gatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName) {
         return beginResetAsync(resourceGroupName, gatewayName).last().flatMap(this.client::getLroFinalResultOrError);
@@ -1408,49 +1073,19 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner reset(String resourceGroupName, String gatewayName) {
         return resetAsync(resourceGroupName, gatewayName).block();
     }
 
-    /**
-     * Resets the primary of the p2s vpn gateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner reset(String resourceGroupName, String gatewayName, Context context) {
         return resetAsync(resourceGroupName, gatewayName, context).block();
     }
 
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(String resourceGroupName,
         String gatewayName, P2SVpnProfileParameters parameters) {
@@ -1526,17 +1161,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             resourceGroupName, gatewayName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGenerateVpnProfileAsync(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters) {
@@ -1569,52 +1194,21 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             this.client.getHttpPipeline(), VpnProfileResponseInner.class, VpnProfileResponseInner.class, context);
     }
 
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGenerateVpnProfile(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters) {
         return this.beginGenerateVpnProfileAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
     }
 
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context) {
         return this.beginGenerateVpnProfileAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
     }
 
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnProfileResponseInner> generateVpnProfileAsync(String resourceGroupName, String gatewayName,
         P2SVpnProfileParameters parameters) {
@@ -1641,52 +1235,21 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName,
         P2SVpnProfileParameters parameters) {
         return generateVpnProfileAsync(resourceGroupName, gatewayName, parameters).block();
     }
 
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName,
         P2SVpnProfileParameters parameters, Context context) {
         return generateVpnProfileAsync(resourceGroupName, gatewayName, parameters, context).block();
     }
 
-    /**
-     * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group
-     * along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthWithResponseAsync(String resourceGroupName,
         String gatewayName) {
@@ -1750,17 +1313,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             resourceGroupName, gatewayName, accept, context);
     }
 
-    /**
-     * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the connection health of P2S clients of the virtual wan
-     * P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner>
         beginGetP2SVpnConnectionHealthAsync(String resourceGroupName, String gatewayName) {
@@ -1792,52 +1345,21 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
     }
 
-    /**
-     * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection health of P2S clients of the virtual wan
-     * P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner>
         beginGetP2SVpnConnectionHealth(String resourceGroupName, String gatewayName) {
         return this.beginGetP2SVpnConnectionHealthAsync(resourceGroupName, gatewayName).getSyncPoller();
     }
 
-    /**
-     * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the connection health of P2S clients of the virtual wan
-     * P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner>
         beginGetP2SVpnConnectionHealth(String resourceGroupName, String gatewayName, Context context) {
         return this.beginGetP2SVpnConnectionHealthAsync(resourceGroupName, gatewayName, context).getSyncPoller();
     }
 
-    /**
-     * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> getP2SVpnConnectionHealthAsync(String resourceGroupName, String gatewayName) {
         return beginGetP2SVpnConnectionHealthAsync(resourceGroupName, gatewayName).last()
@@ -1863,50 +1385,19 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner getP2SVpnConnectionHealth(String resourceGroupName, String gatewayName) {
         return getP2SVpnConnectionHealthAsync(resourceGroupName, gatewayName).block();
     }
 
-    /**
-     * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnGatewayInner getP2SVpnConnectionHealth(String resourceGroupName, String gatewayName, Context context) {
         return getP2SVpnConnectionHealthAsync(resourceGroupName, gatewayName, context).block();
     }
 
-    /**
-     * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param request Request parameters supplied to get p2s vpn connections detailed health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthDetailedWithResponseAsync(String resourceGroupName,
         String gatewayName, P2SVpnConnectionHealthRequest request) {
@@ -1984,19 +1475,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             this.client.getSubscriptionId(), resourceGroupName, gatewayName, contentType, accept, request, context);
     }
 
-    /**
-     * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param request Request parameters supplied to get p2s vpn connections detailed health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the sas url to get the connection health detail of P2S clients of
-     * the virtual wan P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailedAsync(String resourceGroupName, String gatewayName,
@@ -2034,19 +1513,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             context);
     }
 
-    /**
-     * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param request Request parameters supplied to get p2s vpn connections detailed health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the sas url to get the connection health detail of P2S clients of
-     * the virtual wan P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
@@ -2055,20 +1522,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .getSyncPoller();
     }
 
-    /**
-     * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param request Request parameters supplied to get p2s vpn connections detailed health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the sas url to get the connection health detail of P2S clients of
-     * the virtual wan P2SVpnGateway in the specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
@@ -2077,19 +1531,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .getSyncPoller();
     }
 
-    /**
-     * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param request Request parameters supplied to get p2s vpn connections detailed health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnConnectionHealthInner> getP2SVpnConnectionHealthDetailedAsync(String resourceGroupName,
         String gatewayName, P2SVpnConnectionHealthRequest request) {
@@ -2118,56 +1560,21 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param request Request parameters supplied to get p2s vpn connections detailed health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnConnectionHealthInner getP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
         P2SVpnConnectionHealthRequest request) {
         return getP2SVpnConnectionHealthDetailedAsync(resourceGroupName, gatewayName, request).block();
     }
 
-    /**
-     * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param request Request parameters supplied to get p2s vpn connections detailed health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     * specified resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public P2SVpnConnectionHealthInner getP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
         P2SVpnConnectionHealthRequest request, Context context) {
         return getP2SVpnConnectionHealthDetailedAsync(resourceGroupName, gatewayName, request, context).block();
     }
 
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param p2sVpnGatewayName The name of the P2S Vpn Gateway.
-     * @param request The parameters are supplied to disconnect p2s vpn connections.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> disconnectP2SVpnConnectionsWithResponseAsync(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request) {
@@ -2243,17 +1650,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             this.client.getSubscriptionId(), resourceGroupName, p2sVpnGatewayName, contentType, request, context);
     }
 
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param p2sVpnGatewayName The name of the P2S Vpn Gateway.
-     * @param request The parameters are supplied to disconnect p2s vpn connections.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDisconnectP2SVpnConnectionsAsync(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request) {
@@ -2285,17 +1682,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             context);
     }
 
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param p2sVpnGatewayName The name of the P2S Vpn Gateway.
-     * @param request The parameters are supplied to disconnect p2s vpn connections.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request) {
@@ -2303,18 +1690,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .getSyncPoller();
     }
 
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param p2sVpnGatewayName The name of the P2S Vpn Gateway.
-     * @param request The parameters are supplied to disconnect p2s vpn connections.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request, Context context) {
@@ -2322,17 +1698,7 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .getSyncPoller();
     }
 
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param p2sVpnGatewayName The name of the P2S Vpn Gateway.
-     * @param request The parameters are supplied to disconnect p2s vpn connections.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disconnectP2SVpnConnectionsAsync(String resourceGroupName, String p2sVpnGatewayName,
         P2SVpnConnectionRequest request) {
@@ -2359,33 +1725,14 @@ public final class P2SVpnGatewaysClientImpl implements InnerSupportsGet<P2SVpnGa
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param p2sVpnGatewayName The name of the P2S Vpn Gateway.
-     * @param request The parameters are supplied to disconnect p2s vpn connections.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disconnectP2SVpnConnections(String resourceGroupName, String p2sVpnGatewayName,
         P2SVpnConnectionRequest request) {
         disconnectP2SVpnConnectionsAsync(resourceGroupName, p2sVpnGatewayName, request).block();
     }
 
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param p2sVpnGatewayName The name of the P2S Vpn Gateway.
-     * @param request The parameters are supplied to disconnect p2s vpn connections.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disconnectP2SVpnConnections(String resourceGroupName, String p2sVpnGatewayName,
         P2SVpnConnectionRequest request, Context context) {

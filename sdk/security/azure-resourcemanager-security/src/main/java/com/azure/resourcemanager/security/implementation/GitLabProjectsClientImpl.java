@@ -201,19 +201,7 @@ public final class GitLabProjectsClientImpl implements GitLabProjectsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a monitored GitLab Project resource for a given fully-qualified group name and project name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @param projectName The projectName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitLab Project resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitLabProjectInner> getWithResponse(String resourceGroupName, String securityConnectorName,
         String groupFQName, String projectName, Context context) {
@@ -221,18 +209,7 @@ public final class GitLabProjectsClientImpl implements GitLabProjectsClient {
             .block();
     }
 
-    /**
-     * Returns a monitored GitLab Project resource for a given fully-qualified group name and project name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @param projectName The projectName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitLab Project resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GitLabProjectInner get(String resourceGroupName, String securityConnectorName, String groupFQName,
         String projectName) {
@@ -369,37 +346,14 @@ public final class GitLabProjectsClientImpl implements GitLabProjectsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of GitLab projects that are directly owned by given group and onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of GitLab projects that are directly owned by given group and onboarded to the connector as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitLabProjectInner> list(String resourceGroupName, String securityConnectorName,
         String groupFQName) {
         return new PagedIterable<>(listAsync(resourceGroupName, securityConnectorName, groupFQName));
     }
 
-    /**
-     * Gets a list of GitLab projects that are directly owned by given group and onboarded to the connector.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param groupFQName The groupFQName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of GitLab projects that are directly owned by given group and onboarded to the connector as
-     * paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GitLabProjectInner> list(String resourceGroupName, String securityConnectorName,
         String groupFQName, Context context) {

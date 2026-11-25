@@ -50,9 +50,8 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
 
     public void delete(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
-        this.serviceClient()
-            .delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
-                storageClassificationMappingName);
+        this.delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
+            storageClassificationMappingName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String resourceName, String fabricName,
@@ -64,11 +63,8 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
 
     public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceGroupName,
         String resourceName, String fabricName, String storageClassificationName) {
-        PagedIterable<StorageClassificationMappingInner> inner = this.serviceClient()
-            .listByReplicationStorageClassifications(resourceGroupName, resourceName, fabricName,
-                storageClassificationName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
+        return this.listByReplicationStorageClassifications(resourceGroupName, resourceName, fabricName,
+            storageClassificationName, Context.NONE);
     }
 
     public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceGroupName,
@@ -81,10 +77,7 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
     }
 
     public PagedIterable<StorageClassificationMapping> list(String resourceGroupName, String resourceName) {
-        PagedIterable<StorageClassificationMappingInner> inner
-            = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<StorageClassificationMapping> list(String resourceGroupName, String resourceName,
@@ -96,167 +89,49 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
     }
 
     public StorageClassificationMapping getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String storageClassificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationName");
-        if (storageClassificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassifications'.", id)));
-        }
-        String storageClassificationMappingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationMappingName");
-        if (storageClassificationMappingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
-                id)));
-        }
-        return this
-            .getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
-                storageClassificationMappingName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StorageClassificationMapping> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceName", "vaults", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String storageClassificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "fabricName", "replicationFabrics", LOGGER);
+        String storageClassificationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationName");
-        if (storageClassificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassifications'.", id)));
-        }
-        String storageClassificationMappingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "storageClassificationName", "replicationStorageClassifications", LOGGER);
+        String storageClassificationMappingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationMappingName");
-        if (storageClassificationMappingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
-                id)));
-        }
+            "storageClassificationMappingName", "replicationStorageClassificationMappings", LOGGER);
         return this.getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
             storageClassificationMappingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String storageClassificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationName");
-        if (storageClassificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassifications'.", id)));
-        }
-        String storageClassificationMappingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationMappingName");
-        if (storageClassificationMappingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
-                id)));
-        }
-        this.delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
-            storageClassificationMappingName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String resourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String resourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "resourceName");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
-        String fabricName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceName", "vaults", LOGGER);
+        String fabricName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "fabricName");
-        if (fabricName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
-        }
-        String storageClassificationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "fabricName", "replicationFabrics", LOGGER);
+        String storageClassificationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationName");
-        if (storageClassificationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassifications'.", id)));
-        }
-        String storageClassificationMappingName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "storageClassificationName", "replicationStorageClassifications", LOGGER);
+        String storageClassificationMappingName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}",
-            "storageClassificationMappingName");
-        if (storageClassificationMappingName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
-                id)));
-        }
+            "storageClassificationMappingName", "replicationStorageClassificationMappings", LOGGER);
         this.delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
             storageClassificationMappingName, context);
     }

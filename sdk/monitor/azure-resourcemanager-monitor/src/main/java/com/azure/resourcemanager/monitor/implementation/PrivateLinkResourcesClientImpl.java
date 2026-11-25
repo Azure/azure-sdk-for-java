@@ -78,18 +78,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @param groupName The name of the private link associated with the Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String scopeName,
         String groupName) {
@@ -160,70 +149,27 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             scopeName, groupName, accept, context);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @param groupName The name of the private link associated with the Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String scopeName, String groupName) {
         return getWithResponseAsync(resourceGroupName, scopeName, groupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @param groupName The name of the private link associated with the Azure resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String scopeName,
         String groupName, Context context) {
         return getWithResponseAsync(resourceGroupName, scopeName, groupName, context).block();
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @param groupName The name of the private link associated with the Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String scopeName, String groupName) {
         return getWithResponse(resourceGroupName, scopeName, groupName, Context.NONE).getValue();
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourceListResultInner>>
         listByPrivateLinkScopeWithResponseAsync(String resourceGroupName, String scopeName) {
@@ -287,17 +233,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             resourceGroupName, scopeName, accept, context);
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourceListResultInner> listByPrivateLinkScopeAsync(String resourceGroupName,
         String scopeName) {
@@ -305,34 +241,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceListResultInner> listByPrivateLinkScopeWithResponse(String resourceGroupName,
         String scopeName, Context context) {
         return listByPrivateLinkScopeWithResponseAsync(resourceGroupName, scopeName, context).block();
     }
 
-    /**
-     * Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceListResultInner listByPrivateLinkScope(String resourceGroupName, String scopeName) {
         return listByPrivateLinkScopeWithResponse(resourceGroupName, scopeName, Context.NONE).getValue();

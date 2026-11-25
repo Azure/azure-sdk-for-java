@@ -64,11 +64,7 @@ public final class ComponentLinkedStorageAccountsImpl implements ComponentLinked
     }
 
     public ComponentLinkedStorageAccounts create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentLinkedStorageAccountsOperations()
-            .createAndUpdateWithResponse(resourceGroupName, resourceName, storageType, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ComponentLinkedStorageAccounts create(Context context) {
@@ -92,12 +88,7 @@ public final class ComponentLinkedStorageAccountsImpl implements ComponentLinked
     }
 
     public ComponentLinkedStorageAccounts apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentLinkedStorageAccountsOperations()
-            .updateWithResponse(resourceGroupName, resourceName, storageType, updateLinkedStorageAccountsProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ComponentLinkedStorageAccounts apply(Context context) {
@@ -125,11 +116,7 @@ public final class ComponentLinkedStorageAccountsImpl implements ComponentLinked
     }
 
     public ComponentLinkedStorageAccounts refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentLinkedStorageAccountsOperations()
-            .getWithResponse(resourceGroupName, resourceName, storageType, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ComponentLinkedStorageAccounts refresh(Context context) {

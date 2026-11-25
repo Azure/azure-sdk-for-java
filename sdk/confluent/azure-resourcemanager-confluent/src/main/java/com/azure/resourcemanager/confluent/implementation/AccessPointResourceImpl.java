@@ -84,11 +84,7 @@ public final class AccessPointResourceImpl implements AccessPointResource, Acces
     }
 
     public AccessPointResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPointResources()
-            .createOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
-                this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccessPointResource create(Context context) {
@@ -106,12 +102,7 @@ public final class AccessPointResourceImpl implements AccessPointResource, Acces
     }
 
     public AccessPointResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccessPointResources()
-            .getWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId, accessPointId,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccessPointResource refresh(Context context) {

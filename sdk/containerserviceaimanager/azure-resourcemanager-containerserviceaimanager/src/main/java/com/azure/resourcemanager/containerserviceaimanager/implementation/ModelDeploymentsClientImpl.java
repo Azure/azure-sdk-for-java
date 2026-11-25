@@ -214,19 +214,7 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ModelDeployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ModelDeploymentInner> getWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, String modelDeploymentName, Context context) {
@@ -235,18 +223,7 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
             resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, accept, context);
     }
 
-    /**
-     * Get a ModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ModelDeployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelDeploymentInner get(String resourceGroupName, String aiManagerName, String namespaceName,
         String modelDeploymentName) {
@@ -317,11 +294,8 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, String modelDeploymentName, ModelDeploymentInner resource, String ifMatch,
         String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, aiManagerName, namespaceName,
-            modelDeploymentName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName,
+            resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -452,69 +426,22 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
     private SyncPoller<PollResult<ModelDeploymentInner>, ModelDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, String modelDeploymentName,
         ModelDeploymentInner resource, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName,
-            modelDeploymentName, resource, ifMatch, ifNoneMatch);
-        return this.client.<ModelDeploymentInner, ModelDeploymentInner>getLroResult(response,
-            ModelDeploymentInner.class, ModelDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, resource,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create or update a `ModelDeployment`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a running deployment of a model in an AI Manager namespace.
-     * 
-     * PUT (create or update) on this resource is a full replace: the request body
-     * represents the complete desired state, and any optional property omitted
-     * from the body is reset to its default value (or cleared, if it has no
-     * default).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ModelDeploymentInner>, ModelDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, String modelDeploymentName,
         ModelDeploymentInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName,
-            modelDeploymentName, resource, ifMatch, ifNoneMatch);
-        return this.client.<ModelDeploymentInner, ModelDeploymentInner>getLroResult(response,
-            ModelDeploymentInner.class, ModelDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, resource,
+            ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create or update a `ModelDeployment`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a running deployment of a model in an AI Manager namespace.
-     * 
-     * PUT (create or update) on this resource is a full replace: the request body
-     * represents the complete desired state, and any optional property omitted
-     * from the body is reset to its default value (or cleared, if it has no
-     * default).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ModelDeploymentInner>, ModelDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, String modelDeploymentName,
@@ -586,66 +513,23 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
             ifMatch, ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a `ModelDeployment`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a running deployment of a model in an AI Manager namespace.
-     * 
-     * PUT (create or update) on this resource is a full replace: the request body
-     * represents the complete desired state, and any optional property omitted
-     * from the body is reset to its default value (or cleared, if it has no
-     * default).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelDeploymentInner createOrUpdate(String resourceGroupName, String aiManagerName, String namespaceName,
         String modelDeploymentName, ModelDeploymentInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, resource,
-            ifMatch, ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create or update a `ModelDeployment`. This is a full-replace operation: any optional property omitted from the
-     * request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields,
-     * perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match` header to
-     * avoid concurrent overwrites.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a running deployment of a model in an AI Manager namespace.
-     * 
-     * PUT (create or update) on this resource is a full replace: the request body
-     * represents the complete desired state, and any optional property omitted
-     * from the body is reset to its default value (or cleared, if it has no
-     * default).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ModelDeploymentInner createOrUpdate(String resourceGroupName, String aiManagerName, String namespaceName,
         String modelDeploymentName, ModelDeploymentInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, resource,
-            ifMatch, ifNoneMatch, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName,
+            modelDeploymentName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -687,9 +571,8 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, String modelDeploymentName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, aiManagerName, namespaceName,
-            modelDeploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch,
+            Context.NONE);
     }
 
     /**
@@ -774,46 +657,18 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName, String modelDeploymentName, String ifMatch) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName, String modelDeploymentName) {
         final String ifMatch = null;
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName, String modelDeploymentName, String ifMatch, Context context) {
@@ -862,42 +717,20 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String namespaceName,
         String modelDeploymentName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch).getFinalResult();
+        delete(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a ModelDeployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param modelDeploymentName The name of the model deployment resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String namespaceName, String modelDeploymentName,
         String ifMatch, Context context) {
-        beginDelete(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch, context)
-            .getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch, context));
     }
 
     /**
@@ -958,12 +791,7 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelDeploymentInner> listByAIManagerNamespaceSinglePage(String resourceGroupName,
         String aiManagerName, String namespaceName) {
-        final String accept = "application/json";
-        Response<ModelDeploymentListResult> res
-            = service.listByAIManagerNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, aiManagerName, namespaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAIManagerNamespaceSinglePage(resourceGroupName, aiManagerName, namespaceName, Context.NONE);
     }
 
     /**
@@ -989,37 +817,14 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ModelDeployment resources by AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ModelDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelDeploymentInner> listByAIManagerNamespace(String resourceGroupName, String aiManagerName,
         String namespaceName) {
-        return new PagedIterable<>(
-            () -> listByAIManagerNamespaceSinglePage(resourceGroupName, aiManagerName, namespaceName),
-            nextLink -> listByAIManagerNamespaceNextSinglePage(nextLink));
+        return listByAIManagerNamespace(resourceGroupName, aiManagerName, namespaceName, Context.NONE);
     }
 
-    /**
-     * List ModelDeployment resources by AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ModelDeployment list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ModelDeploymentInner> listByAIManagerNamespace(String resourceGroupName, String aiManagerName,
         String namespaceName, Context context) {
@@ -1060,11 +865,7 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ModelDeploymentInner> listByAIManagerNamespaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ModelDeploymentListResult> res
-            = service.listByAIManagerNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAIManagerNamespaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

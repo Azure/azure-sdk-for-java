@@ -234,19 +234,7 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Volume Snapshot along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotInner> getWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String snapshotName, Context context) {
@@ -281,18 +269,7 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
             resourceGroupName, elasticSanName, volumeGroupName, snapshotName, accept, context);
     }
 
-    /**
-     * Get a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Volume Snapshot.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner get(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String snapshotName) {
@@ -369,43 +346,8 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String snapshotName, SnapshotInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (volumeGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
-        }
-        if (snapshotName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, snapshotName,
-            contentType, accept, parameters, Context.NONE);
+        return createWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, parameters,
+            Context.NONE);
     }
 
     /**
@@ -486,42 +428,14 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
             SnapshotInner.class, SnapshotInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @param parameters Snapshot object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume Snapshot request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName,
         String elasticSanName, String volumeGroupName, String snapshotName, SnapshotInner parameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, parameters);
-        return this.client.<SnapshotInner, SnapshotInner>getLroResult(response, SnapshotInner.class,
-            SnapshotInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @param parameters Snapshot object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume Snapshot request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName,
         String elasticSanName, String volumeGroupName, String snapshotName, SnapshotInner parameters, Context context) {
@@ -551,45 +465,19 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @param parameters Snapshot object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume Snapshot request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner create(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String snapshotName, SnapshotInner parameters) {
-        return beginCreate(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, parameters)
-            .getFinalResult();
+        return create(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @param parameters Snapshot object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume Snapshot request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SnapshotInner create(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String snapshotName, SnapshotInner parameters, Context context) {
-        return beginCreate(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, parameters, context));
     }
 
     /**
@@ -649,35 +537,7 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String snapshotName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (volumeGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
-        }
-        if (snapshotName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, snapshotName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, Context.NONE);
     }
 
     /**
@@ -747,39 +607,14 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String snapshotName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, Context.NONE);
     }
 
-    /**
-     * Delete a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String snapshotName, Context context) {
@@ -807,38 +642,18 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName) {
-        beginDelete(resourceGroupName, elasticSanName, volumeGroupName, snapshotName).getFinalResult();
+        delete(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, Context.NONE);
     }
 
-    /**
-     * Delete a Volume Snapshot.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param snapshotName The name of the volume snapshot within the given volume group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String snapshotName,
         Context context) {
-        beginDelete(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, context));
     }
 
     /**
@@ -940,34 +755,7 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listByVolumeGroupSinglePage(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (volumeGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SnapshotList> res = service.listByVolumeGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, elasticSanName,
-            volumeGroupName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeGroupSinglePage(resourceGroupName, elasticSanName, volumeGroupName, filter, Context.NONE);
     }
 
     /**
@@ -1016,39 +804,15 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Snapshots in a VolumeGroup or List Snapshots by Volume (name) in a VolumeGroup using filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
         String volumeGroupName) {
         final String filter = null;
-        return new PagedIterable<>(
-            () -> listByVolumeGroupSinglePage(resourceGroupName, elasticSanName, volumeGroupName, filter),
-            nextLink -> listByVolumeGroupNextSinglePage(nextLink));
+        return listByVolumeGroup(resourceGroupName, elasticSanName, volumeGroupName, filter, Context.NONE);
     }
 
-    /**
-     * List Snapshots in a VolumeGroup or List Snapshots by Volume (name) in a VolumeGroup using filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param filter Specify $filter='volumeName eq &lt;volume name&gt;' to filter on volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String filter, Context context) {
@@ -1094,20 +858,7 @@ public final class VolumeSnapshotsClientImpl implements VolumeSnapshotsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SnapshotInner> listByVolumeGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SnapshotList> res
-            = service.listByVolumeGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByVolumeGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

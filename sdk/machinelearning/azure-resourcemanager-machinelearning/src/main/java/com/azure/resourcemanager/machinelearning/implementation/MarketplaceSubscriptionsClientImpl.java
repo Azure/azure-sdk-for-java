@@ -200,18 +200,7 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MarketplaceSubscriptionInner> getWithResponse(String resourceGroupName, String workspaceName,
         String name, Context context) {
@@ -220,17 +209,7 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
             resourceGroupName, workspaceName, name, accept, context);
     }
 
-    /**
-     * Get container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceSubscriptionInner get(String resourceGroupName, String workspaceName, String name) {
         return getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
@@ -276,11 +255,7 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String name,
         MarketplaceSubscriptionInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
     /**
@@ -328,39 +303,14 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
             this.client.getContext());
     }
 
-    /**
-     * Create or update Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @param body Marketplace Subscription entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MarketplaceSubscriptionInner>, MarketplaceSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, MarketplaceSubscriptionInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body);
-        return this.client.<MarketplaceSubscriptionInner, MarketplaceSubscriptionInner>getLroResult(response,
-            MarketplaceSubscriptionInner.class, MarketplaceSubscriptionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @param body Marketplace Subscription entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MarketplaceSubscriptionInner>, MarketplaceSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, MarketplaceSubscriptionInner body,
@@ -390,41 +340,19 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @param body Marketplace Subscription entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceSubscriptionInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         MarketplaceSubscriptionInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @param body Marketplace Subscription entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MarketplaceSubscriptionInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         MarketplaceSubscriptionInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context));
     }
 
     /**
@@ -460,8 +388,7 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     /**
@@ -502,35 +429,13 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
             this.client.getContext());
     }
 
-    /**
-     * Delete Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -555,35 +460,16 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name) {
-        beginDelete(resourceGroupName, workspaceName, name).getFinalResult();
+        delete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete Marketplace Subscription (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name, Context context) {
-        beginDelete(resourceGroupName, workspaceName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, name, context));
     }
 
     /**
@@ -659,12 +545,7 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarketplaceSubscriptionInner> listSinglePage(String resourceGroupName, String workspaceName,
         String skip) {
-        final String accept = "application/json";
-        Response<MarketplaceSubscriptionResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, skip, Context.NONE);
     }
 
     /**
@@ -690,35 +571,14 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of MarketplaceSubscription entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarketplaceSubscriptionInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, skip, Context.NONE);
     }
 
-    /**
-     * List containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of MarketplaceSubscription entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MarketplaceSubscriptionInner> list(String resourceGroupName, String workspaceName, String skip,
         Context context) {
@@ -760,11 +620,7 @@ public final class MarketplaceSubscriptionsClientImpl implements MarketplaceSubs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<MarketplaceSubscriptionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<MarketplaceSubscriptionResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -118,10 +118,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .create(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OrganizationResource create(Context context) {
@@ -143,11 +140,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .updateWithResponse(resourceGroupName, organizationName, updateBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OrganizationResource apply(Context context) {
@@ -171,11 +164,7 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOrganizations()
-            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OrganizationResource refresh(Context context) {

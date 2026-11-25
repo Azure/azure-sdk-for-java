@@ -67,7 +67,7 @@ public final class BackupResourceStorageConfigsNonCrrsImpl implements BackupReso
     }
 
     public void patch(String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
-        this.serviceClient().patch(vaultName, resourceGroupName, parameters);
+        this.patchWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 
     private BackupResourceStorageConfigsNonCrrsClient serviceClient() {

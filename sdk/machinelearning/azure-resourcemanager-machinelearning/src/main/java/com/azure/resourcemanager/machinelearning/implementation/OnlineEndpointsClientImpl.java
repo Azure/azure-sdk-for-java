@@ -290,18 +290,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Online Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return online Endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OnlineEndpointInner> getWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, Context context) {
@@ -310,17 +299,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             resourceGroupName, workspaceName, endpointName, accept, context);
     }
 
-    /**
-     * Get Online Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return online Endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineEndpointInner get(String resourceGroupName, String workspaceName, String endpointName) {
         return getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
@@ -367,11 +346,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, OnlineEndpointInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
     /**
@@ -420,42 +395,14 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             OnlineEndpointInner.class, OnlineEndpointInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, endpointName, body);
-        return this.client.<OnlineEndpointInner, OnlineEndpointInner>getLroResult(response, OnlineEndpointInner.class,
-            OnlineEndpointInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
-    /**
-     * Create or update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body,
@@ -486,41 +433,19 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineEndpointInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
         OnlineEndpointInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
-    /**
-     * Create or update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineEndpointInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
         OnlineEndpointInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, body, context));
     }
 
     /**
@@ -564,11 +489,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName, String endpointName,
         PartialMinimalTrackedResourceWithIdentity body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
     /**
@@ -617,41 +538,14 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             OnlineEndpointInner.class, OnlineEndpointInner.class, this.client.getContext());
     }
 
-    /**
-     * Update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdate(String resourceGroupName,
         String workspaceName, String endpointName, PartialMinimalTrackedResourceWithIdentity body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, endpointName, body);
-        return this.client.<OnlineEndpointInner, OnlineEndpointInner>getLroResult(response, OnlineEndpointInner.class,
-            OnlineEndpointInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
-    /**
-     * Update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginUpdate(String resourceGroupName,
         String workspaceName, String endpointName, PartialMinimalTrackedResourceWithIdentity body, Context context) {
@@ -681,41 +575,19 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineEndpointInner update(String resourceGroupName, String workspaceName, String endpointName,
         PartialMinimalTrackedResourceWithIdentity body) {
-        return beginUpdate(resourceGroupName, workspaceName, endpointName, body).getFinalResult();
+        return update(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
-    /**
-     * Update Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineEndpointInner update(String resourceGroupName, String workspaceName, String endpointName,
         PartialMinimalTrackedResourceWithIdentity body, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, endpointName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, endpointName, body, context));
     }
 
     /**
@@ -752,8 +624,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName,
         String endpointName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE);
     }
 
     /**
@@ -794,36 +665,14 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String endpointName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, endpointName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, endpointName, Context.NONE);
     }
 
-    /**
-     * Delete Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String endpointName, Context context) {
@@ -848,35 +697,16 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String endpointName) {
-        beginDelete(resourceGroupName, workspaceName, endpointName).getFinalResult();
+        delete(resourceGroupName, workspaceName, endpointName, Context.NONE);
     }
 
-    /**
-     * Delete Online Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, endpointName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, endpointName, context));
     }
 
     /**
@@ -986,12 +816,8 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     private PagedResponse<OnlineEndpointInner> listSinglePage(String resourceGroupName, String workspaceName,
         String name, Integer count, EndpointComputeType computeType, String skip, String tags, String properties,
         OrderString orderBy) {
-        final String accept = "application/json";
-        Response<OnlineEndpointTrackedResourceArmPaginatedResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, count,
-            computeType, skip, tags, properties, orderBy, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, name, count, computeType, skip, tags, properties,
+            orderBy, Context.NONE);
     }
 
     /**
@@ -1026,16 +852,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Online Endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineEndpointInner> list(String resourceGroupName, String workspaceName) {
         final String name = null;
@@ -1045,30 +862,11 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         final String tags = null;
         final String properties = null;
         final OrderString orderBy = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, name, count, computeType,
-            skip, tags, properties, orderBy), nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, name, count, computeType, skip, tags, properties, orderBy,
+            Context.NONE);
     }
 
-    /**
-     * List Online Endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Name of the endpoint.
-     * @param count Number of endpoints to be retrieved in a page of results.
-     * @param computeType EndpointComputeType to be filtered by.
-     * @param skip Continuation token for pagination.
-     * @param tags A set of tags with which to filter the returned models. It is a comma separated string of tags key or
-     * tags key=value. Example: tagKey1,tagKey2,tagKey3=value3 .
-     * @param properties A set of properties with which to filter the returned models. It is a comma separated string of
-     * properties key and/or properties key=value Example: propKey1,propKey2,propKey3=value3 .
-     * @param orderBy The option to order the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of OnlineEndpoint entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineEndpointInner> list(String resourceGroupName, String workspaceName, String name,
         Integer count, EndpointComputeType computeType, String skip, String tags, String properties,
@@ -1116,18 +914,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointAuthKeysInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, Context context) {
@@ -1136,17 +923,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, accept, context);
     }
 
-    /**
-     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String endpointName) {
         return listKeysWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
@@ -1190,10 +967,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> regenerateKeysWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, RegenerateEndpointKeysRequest body) {
-        final String contentType = "application/json";
-        return service.regenerateKeysSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, contentType, body,
-            Context.NONE);
+        return regenerateKeysWithResponse(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
     /**
@@ -1239,39 +1013,14 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             this.client.getContext());
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body RegenerateKeys request .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateKeys(String resourceGroupName, String workspaceName,
         String endpointName, RegenerateEndpointKeysRequest body) {
-        Response<BinaryData> response
-            = regenerateKeysWithResponse(resourceGroupName, workspaceName, endpointName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRegenerateKeys(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body RegenerateKeys request .
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateKeys(String resourceGroupName, String workspaceName,
         String endpointName, RegenerateEndpointKeysRequest body, Context context) {
@@ -1299,39 +1048,19 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body RegenerateKeys request .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void regenerateKeys(String resourceGroupName, String workspaceName, String endpointName,
         RegenerateEndpointKeysRequest body) {
-        beginRegenerateKeys(resourceGroupName, workspaceName, endpointName, body).getFinalResult();
+        regenerateKeys(resourceGroupName, workspaceName, endpointName, body, Context.NONE);
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param body RegenerateKeys request .
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void regenerateKeys(String resourceGroupName, String workspaceName, String endpointName,
         RegenerateEndpointKeysRequest body, Context context) {
-        beginRegenerateKeys(resourceGroupName, workspaceName, endpointName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginRegenerateKeys(resourceGroupName, workspaceName, endpointName, body, context));
     }
 
     /**
@@ -1373,18 +1102,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve a valid AML token for an Endpoint using AMLToken-based authentication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Token along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointAuthTokenInner> getTokenWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, Context context) {
@@ -1393,17 +1111,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, accept, context);
     }
 
-    /**
-     * Retrieve a valid AML token for an Endpoint using AMLToken-based authentication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service Token.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointAuthTokenInner getToken(String resourceGroupName, String workspaceName, String endpointName) {
         return getTokenWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE).getValue();
@@ -1443,11 +1151,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineEndpointInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OnlineEndpointTrackedResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

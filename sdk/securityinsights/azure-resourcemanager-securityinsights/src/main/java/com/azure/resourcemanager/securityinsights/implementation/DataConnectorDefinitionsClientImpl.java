@@ -198,18 +198,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a data connector definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorDefinitionName The data connector definition name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data connector definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataConnectorDefinitionInner> getWithResponse(String resourceGroupName, String workspaceName,
         String dataConnectorDefinitionName, Context context) {
@@ -218,17 +207,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
             resourceGroupName, workspaceName, dataConnectorDefinitionName, accept, context);
     }
 
-    /**
-     * Gets a data connector definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorDefinitionName The data connector definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data connector definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnectorDefinitionInner get(String resourceGroupName, String workspaceName,
         String dataConnectorDefinitionName) {
@@ -284,21 +263,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
             connectorDefinitionInput).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the data connector definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorDefinitionName The data connector definition name.
-     * @param connectorDefinitionInput The data connector definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource, which encapsulate the entire info requires to display a data connector page in Azure
-     * portal,
-     * and the info required to define data connections along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataConnectorDefinitionInner> createOrUpdateWithResponse(String resourceGroupName,
         String workspaceName, String dataConnectorDefinitionName, DataConnectorDefinitionInner connectorDefinitionInput,
@@ -310,20 +275,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
             accept, connectorDefinitionInput, context);
     }
 
-    /**
-     * Creates or updates the data connector definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorDefinitionName The data connector definition name.
-     * @param connectorDefinitionInput The data connector definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure resource, which encapsulate the entire info requires to display a data connector page in Azure
-     * portal,
-     * and the info required to define data connections.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnectorDefinitionInner createOrUpdate(String resourceGroupName, String workspaceName,
         String dataConnectorDefinitionName, DataConnectorDefinitionInner connectorDefinitionInput) {
@@ -367,18 +319,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete the data connector definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorDefinitionName The data connector definition name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
         String dataConnectorDefinitionName, Context context) {
@@ -386,16 +327,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, dataConnectorDefinitionName, context);
     }
 
-    /**
-     * Delete the data connector definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param dataConnectorDefinitionName The data connector definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String dataConnectorDefinitionName) {
         deleteWithResponse(resourceGroupName, workspaceName, dataConnectorDefinitionName, Context.NONE);
@@ -451,12 +383,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataConnectorDefinitionInner> listSinglePage(String resourceGroupName, String workspaceName) {
-        final String accept = "application/json";
-        Response<DataConnectorDefinitionArmCollectionWrapper> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -481,33 +408,13 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all data connector definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connector definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnectorDefinitionInner> list(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Gets all data connector definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the monitor workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all data connector definitions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnectorDefinitionInner> list(String resourceGroupName, String workspaceName,
         Context context) {
@@ -544,11 +451,7 @@ public final class DataConnectorDefinitionsClientImpl implements DataConnectorDe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DataConnectorDefinitionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataConnectorDefinitionArmCollectionWrapper> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -71,10 +71,7 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
     }
 
     public PolicyModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .create(resourceGroupName, vaultName, policyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PolicyModel create(Context context) {
@@ -92,11 +89,7 @@ public final class PolicyModelImpl implements PolicyModel, PolicyModel.Definitio
     }
 
     public PolicyModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPolicies()
-            .getWithResponse(resourceGroupName, vaultName, policyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PolicyModel refresh(Context context) {

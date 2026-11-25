@@ -47,7 +47,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String imageTemplateName) {
-        this.serviceClient().delete(resourceGroupName, imageTemplateName);
+        this.delete(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String imageTemplateName, Context context) {
@@ -55,8 +55,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     }
 
     public PagedIterable<ImageTemplate> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<ImageTemplateInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageTemplateImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<ImageTemplate> listByResourceGroup(String resourceGroupName, Context context) {
@@ -65,8 +64,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     }
 
     public PagedIterable<ImageTemplate> list() {
-        PagedIterable<ImageTemplateInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ImageTemplateImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<ImageTemplate> list(Context context) {
@@ -75,7 +73,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     }
 
     public void run(String resourceGroupName, String imageTemplateName) {
-        this.serviceClient().run(resourceGroupName, imageTemplateName);
+        this.run(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     public void run(String resourceGroupName, String imageTemplateName, Context context) {
@@ -83,7 +81,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     }
 
     public void cancel(String resourceGroupName, String imageTemplateName) {
-        this.serviceClient().cancel(resourceGroupName, imageTemplateName);
+        this.cancel(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     public void cancel(String resourceGroupName, String imageTemplateName, Context context) {
@@ -108,8 +106,7 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     }
 
     public PagedIterable<RunOutput> listRunOutputs(String resourceGroupName, String imageTemplateName) {
-        PagedIterable<RunOutputInner> inner = this.serviceClient().listRunOutputs(resourceGroupName, imageTemplateName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RunOutputImpl(inner1, this.manager()));
+        return this.listRunOutputs(resourceGroupName, imageTemplateName, Context.NONE);
     }
 
     public PagedIterable<RunOutput> listRunOutputs(String resourceGroupName, String imageTemplateName,
@@ -120,74 +117,30 @@ public final class VirtualMachineImageTemplatesImpl implements VirtualMachineIma
     }
 
     public ImageTemplate getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "imageTemplateName");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ImageTemplate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String imageTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "imageTemplateName");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
+            "imageTemplateName", "imageTemplates", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "imageTemplateName");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
-        this.delete(resourceGroupName, imageTemplateName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String imageTemplateName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String imageTemplateName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}",
-            "imageTemplateName");
-        if (imageTemplateName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'imageTemplates'.", id)));
-        }
+            "imageTemplateName", "imageTemplates", LOGGER);
         this.delete(resourceGroupName, imageTemplateName, context);
     }
 

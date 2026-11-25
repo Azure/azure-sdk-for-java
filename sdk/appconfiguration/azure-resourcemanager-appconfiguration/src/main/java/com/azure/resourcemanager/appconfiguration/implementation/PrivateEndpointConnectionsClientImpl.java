@@ -216,19 +216,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the configuration store along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, Context context) {
@@ -237,17 +225,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, configStoreName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Gets the specified private endpoint connection associated with the configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the configuration store.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner get(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName) {
@@ -299,11 +277,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, privateEndpointConnectionName,
-            contentType, accept, privateEndpointConnection, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName,
+            privateEndpointConnection, Context.NONE);
     }
 
     /**
@@ -357,45 +332,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Update the state of the specified private endpoint connection associated with the configuration store. This
-     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
-     * with the Network resource provider.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param privateEndpointConnection The private endpoint connection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, configStoreName,
-            privateEndpointConnectionName, privateEndpointConnection);
-        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(response,
-            PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName,
+            privateEndpointConnection, Context.NONE);
     }
 
-    /**
-     * Update the state of the specified private endpoint connection associated with the configuration store. This
-     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
-     * with the Network resource provider.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param privateEndpointConnection The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
@@ -427,48 +373,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             privateEndpointConnection).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the state of the specified private endpoint connection associated with the configuration store. This
-     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
-     * with the Network resource provider.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param privateEndpointConnection The private endpoint connection properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        return beginCreateOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName,
-            privateEndpointConnection).getFinalResult();
+        return createOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName,
+            privateEndpointConnection, Context.NONE);
     }
 
-    /**
-     * Update the state of the specified private endpoint connection associated with the configuration store. This
-     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
-     * with the Network resource provider.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param privateEndpointConnection The private endpoint connection properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, configStoreName, privateEndpointConnectionName,
-            privateEndpointConnection, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, configStoreName,
+            privateEndpointConnectionName, privateEndpointConnection, context));
     }
 
     /**
@@ -506,9 +425,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, configStoreName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -551,37 +468,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, configStoreName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
         String privateEndpointConnectionName, Context context) {
@@ -608,36 +502,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, configStoreName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, configStoreName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, configStoreName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, configStoreName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -694,12 +570,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByConfigurationStoreSinglePage(String resourceGroupName,
         String configStoreName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listByConfigurationStoreSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, configStoreName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreSinglePage(resourceGroupName, configStoreName, Context.NONE);
     }
 
     /**
@@ -724,36 +595,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all private endpoint connections for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName) {
-        return new PagedIterable<>(() -> listByConfigurationStoreSinglePage(resourceGroupName, configStoreName),
-            nextLink -> listByConfigurationStoreNextSinglePage(nextLink));
+        return listByConfigurationStore(resourceGroupName, configStoreName, Context.NONE);
     }
 
-    /**
-     * Lists all private endpoint connections for a configuration store.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configStoreName The name of the configuration store.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listByConfigurationStore(String resourceGroupName,
         String configStoreName, Context context) {
@@ -795,11 +644,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionInner> listByConfigurationStoreNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionListResult> res
-            = service.listByConfigurationStoreNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByConfigurationStoreNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

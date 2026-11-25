@@ -69,12 +69,7 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateDescription create(Context context) {
@@ -99,12 +94,7 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CertificateDescription apply(Context context) {
@@ -132,11 +122,7 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificates()
-            .getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateDescription refresh(Context context) {

@@ -141,32 +141,7 @@ public final class BackupsUnderAccountsClientImpl implements BackupsUnderAccount
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> migrateBackupsWithResponse(String resourceGroupName, String accountName,
         BackupsMigrationRequest body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String contentType = "application/json";
-        return service.migrateBackupsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, contentType, body, Context.NONE);
+        return migrateBackupsWithResponse(resourceGroupName, accountName, body, Context.NONE);
     }
 
     /**
@@ -231,36 +206,14 @@ public final class BackupsUnderAccountsClientImpl implements BackupsUnderAccount
             this.client.getContext());
     }
 
-    /**
-     * Migrate the backups under a NetApp account to backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body Migrate backups under an account payload supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateBackups(String resourceGroupName, String accountName,
         BackupsMigrationRequest body) {
-        Response<BinaryData> response = migrateBackupsWithResponse(resourceGroupName, accountName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginMigrateBackups(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Migrate the backups under a NetApp account to backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body Migrate backups under an account payload supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrateBackups(String resourceGroupName, String accountName,
         BackupsMigrationRequest body, Context context) {
@@ -285,36 +238,17 @@ public final class BackupsUnderAccountsClientImpl implements BackupsUnderAccount
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Migrate the backups under a NetApp account to backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body Migrate backups under an account payload supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrateBackups(String resourceGroupName, String accountName, BackupsMigrationRequest body) {
-        beginMigrateBackups(resourceGroupName, accountName, body).getFinalResult();
+        migrateBackups(resourceGroupName, accountName, body, Context.NONE);
     }
 
-    /**
-     * Migrate the backups under a NetApp account to backup vault.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body Migrate backups under an account payload supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void migrateBackups(String resourceGroupName, String accountName, BackupsMigrationRequest body,
         Context context) {
-        beginMigrateBackups(resourceGroupName, accountName, body, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginMigrateBackups(resourceGroupName, accountName, body, context));
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupsUnderAccountsClientImpl.class);

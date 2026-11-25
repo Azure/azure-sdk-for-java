@@ -72,10 +72,7 @@ public final class SharedPrivateLinkResourceImpl
     }
 
     public SharedPrivateLinkResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSharedPrivateLinkResources()
-            .create(resourceGroupName, watcherName, sharedPrivateLinkResourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SharedPrivateLinkResource create(Context context) {
@@ -93,11 +90,7 @@ public final class SharedPrivateLinkResourceImpl
     }
 
     public SharedPrivateLinkResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSharedPrivateLinkResources()
-            .getWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SharedPrivateLinkResource refresh(Context context) {

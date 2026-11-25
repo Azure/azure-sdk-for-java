@@ -88,10 +88,7 @@ public final class ReplicaImpl implements Replica, Replica.Definition {
     }
 
     public Replica create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicas()
-            .create(resourceGroupName, configStoreName, replicaName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Replica create(Context context) {
@@ -108,11 +105,7 @@ public final class ReplicaImpl implements Replica, Replica.Definition {
     }
 
     public Replica refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicas()
-            .getWithResponse(resourceGroupName, configStoreName, replicaName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Replica refresh(Context context) {

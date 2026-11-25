@@ -66,10 +66,7 @@ public final class FeaturesetVersionImpl
     }
 
     public FeaturesetVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturesetVersions()
-            .createOrUpdate(resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FeaturesetVersion create(Context context) {
@@ -91,10 +88,7 @@ public final class FeaturesetVersionImpl
     }
 
     public FeaturesetVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturesetVersions()
-            .createOrUpdate(resourceGroupName, workspaceName, name, version, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FeaturesetVersion apply(Context context) {
@@ -123,11 +117,7 @@ public final class FeaturesetVersionImpl
     }
 
     public FeaturesetVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFeaturesetVersions()
-            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FeaturesetVersion refresh(Context context) {

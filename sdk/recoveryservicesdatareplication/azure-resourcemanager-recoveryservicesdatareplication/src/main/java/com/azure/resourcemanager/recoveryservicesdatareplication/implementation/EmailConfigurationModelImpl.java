@@ -71,11 +71,7 @@ public final class EmailConfigurationModelImpl implements EmailConfigurationMode
     }
 
     public EmailConfigurationModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEmailConfigurations()
-            .createWithResponse(resourceGroupName, vaultName, emailConfigurationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EmailConfigurationModel create(Context context) {
@@ -94,11 +90,7 @@ public final class EmailConfigurationModelImpl implements EmailConfigurationMode
     }
 
     public EmailConfigurationModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEmailConfigurations()
-            .getWithResponse(resourceGroupName, vaultName, emailConfigurationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EmailConfigurationModel refresh(Context context) {

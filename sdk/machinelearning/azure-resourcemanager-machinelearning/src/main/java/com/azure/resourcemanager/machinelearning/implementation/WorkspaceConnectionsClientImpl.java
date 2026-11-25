@@ -244,19 +244,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists machine learning workspaces connections by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceConnectionPropertiesV2BasicResourceInner> getWithResponse(String resourceGroupName,
         String workspaceName, String connectionName, Context context) {
@@ -265,17 +253,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             resourceGroupName, workspaceName, connectionName, accept, context);
     }
 
-    /**
-     * Lists machine learning workspaces connections by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceConnectionPropertiesV2BasicResourceInner get(String resourceGroupName, String workspaceName,
         String connectionName) {
@@ -325,20 +303,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update machine learning workspaces connections under the specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @param body The object for creating or updating a new workspace connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceConnectionPropertiesV2BasicResourceInner> createWithResponse(String resourceGroupName,
         String workspaceName, String connectionName, WorkspaceConnectionPropertiesV2BasicResourceInner body,
@@ -348,17 +313,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, connectionName, accept, body, context);
     }
 
-    /**
-     * Create or update machine learning workspaces connections under the specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceConnectionPropertiesV2BasicResourceInner create(String resourceGroupName, String workspaceName,
         String connectionName) {
@@ -409,20 +364,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update machine learning workspaces connections under the specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @param body Parameters for workspace connection update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceConnectionPropertiesV2BasicResourceInner> updateWithResponse(String resourceGroupName,
         String workspaceName, String connectionName, WorkspaceConnectionUpdateParameter body, Context context) {
@@ -431,17 +373,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, connectionName, accept, body, context);
     }
 
-    /**
-     * Update machine learning workspaces connections under the specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceConnectionPropertiesV2BasicResourceInner update(String resourceGroupName, String workspaceName,
         String connectionName) {
@@ -486,18 +418,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete machine learning workspaces connections by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String connectionName,
         Context context) {
@@ -505,16 +426,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, connectionName, context);
     }
 
-    /**
-     * Delete machine learning workspaces connections by name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String connectionName) {
         deleteWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE);
@@ -619,12 +531,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceConnectionPropertiesV2BasicResourceInner> listSinglePage(String resourceGroupName,
         String workspaceName, String target, String category, Boolean includeAll) {
-        final String accept = "application/json";
-        Response<WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, target, category, includeAll, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, target, category, includeAll, Context.NONE);
     }
 
     /**
@@ -655,47 +562,17 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the available machine learning workspaces connections under the specified workspace.
-     * 
-     * Lists all the available machine learning workspaces connections under the specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of WorkspaceConnectionPropertiesV2BasicResource items as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceConnectionPropertiesV2BasicResourceInner> list(String resourceGroupName,
         String workspaceName) {
         final String target = null;
         final String category = null;
         final Boolean includeAll = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, target, category, includeAll),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, target, category, includeAll, Context.NONE);
     }
 
-    /**
-     * List all the available machine learning workspaces connections under the specified workspace.
-     * 
-     * Lists all the available machine learning workspaces connections under the specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param target Target of the workspace connection.
-     * @param category Category of the workspace connection.
-     * @param includeAll query parameter that indicates if get connection call should return both connections and
-     * datastores.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of WorkspaceConnectionPropertiesV2BasicResource items as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceConnectionPropertiesV2BasicResourceInner> list(String resourceGroupName,
         String workspaceName, String target, String category, Boolean includeAll, Context context) {
@@ -745,19 +622,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all the secrets of a machine learning workspaces connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceConnectionPropertiesV2BasicResourceInner> listSecretsWithResponse(String resourceGroupName,
         String workspaceName, String connectionName, Context context) {
@@ -766,17 +631,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, connectionName, accept, context);
     }
 
-    /**
-     * List all the secrets of a machine learning workspaces connections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param connectionName Friendly name of the workspace connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceConnectionPropertiesV2BasicResourceInner listSecrets(String resourceGroupName, String workspaceName,
         String connectionName) {
@@ -819,11 +674,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceConnectionPropertiesV2BasicResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

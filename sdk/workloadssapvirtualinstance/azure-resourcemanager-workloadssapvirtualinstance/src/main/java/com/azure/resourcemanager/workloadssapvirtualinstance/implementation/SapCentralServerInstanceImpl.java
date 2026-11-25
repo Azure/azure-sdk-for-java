@@ -92,10 +92,7 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapCentralServerInstances()
-            .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SapCentralServerInstance create(Context context) {
@@ -118,12 +115,7 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapCentralServerInstances()
-            .updateWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SapCentralServerInstance apply(Context context) {
@@ -151,11 +143,7 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSapCentralServerInstances()
-            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SapCentralServerInstance refresh(Context context) {

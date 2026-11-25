@@ -137,18 +137,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified private endpoint by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint by resource group along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String privateEndpointName, String expand) {
@@ -215,16 +204,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             resourceGroupName, privateEndpointName, expand, accept, context);
     }
 
-    /**
-     * Gets the specified private endpoint by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint by resource group on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointInner> getByResourceGroupAsync(String resourceGroupName, String privateEndpointName) {
         final String expand = null;
@@ -232,51 +212,21 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private endpoint by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint by resource group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointInner> getByResourceGroupWithResponse(String resourceGroupName,
         String privateEndpointName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, privateEndpointName, expand, context).block();
     }
 
-    /**
-     * Gets the specified private endpoint by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint by resource group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointInner getByResourceGroup(String resourceGroupName, String privateEndpointName) {
         final String expand = null;
         return getByResourceGroupWithResponse(resourceGroupName, privateEndpointName, expand, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String privateEndpointName, PrivateEndpointInner parameters) {
@@ -355,17 +305,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             resourceGroupName, privateEndpointName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of private endpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
@@ -397,35 +337,14 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             PrivateEndpointInner.class, PrivateEndpointInner.class, context);
     }
 
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private endpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointInner>, PrivateEndpointInner>
         beginCreateOrUpdate(String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, privateEndpointName, parameters).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of private endpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context) {
@@ -433,17 +352,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointInner> createOrUpdateAsync(String resourceGroupName, String privateEndpointName,
         PrivateEndpointInner parameters) {
@@ -470,51 +379,21 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointInner createOrUpdate(String resourceGroupName, String privateEndpointName,
         PrivateEndpointInner parameters) {
         return createOrUpdateAsync(resourceGroupName, privateEndpointName, parameters).block();
     }
 
-    /**
-     * Creates or updates an private endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Parameters supplied to the create or update private endpoint operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointInner createOrUpdate(String resourceGroupName, String privateEndpointName,
         PrivateEndpointInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, privateEndpointName, parameters, context).block();
     }
 
-    /**
-     * Deletes the specified private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String privateEndpointName) {
@@ -577,16 +456,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             privateEndpointName, context);
     }
 
-    /**
-     * Deletes the specified private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateEndpointName);
@@ -615,48 +485,20 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             context);
     }
 
-    /**
-     * Deletes the specified private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName) {
         return this.beginDeleteAsync(resourceGroupName, privateEndpointName).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName,
         Context context) {
         return this.beginDeleteAsync(resourceGroupName, privateEndpointName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes the specified private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String privateEndpointName) {
         return beginDeleteAsync(resourceGroupName, privateEndpointName).last()
@@ -680,30 +522,13 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateEndpointName) {
         deleteAsync(resourceGroupName, privateEndpointName).block();
     }
 
-    /**
-     * Deletes the specified private endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String privateEndpointName, Context context) {
         deleteAsync(resourceGroupName, privateEndpointName, context).block();
@@ -779,15 +604,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all private endpoints in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoints in a resource group as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -810,30 +627,13 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all private endpoints in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoints in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Gets all private endpoints in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoints in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -895,13 +695,7 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all private endpoints in a subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoints in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(),
@@ -923,27 +717,13 @@ public final class PrivateEndpointsClientImpl implements InnerSupportsGet<Privat
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all private endpoints in a subscription.
-     * 
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoints in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all private endpoints in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoints in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

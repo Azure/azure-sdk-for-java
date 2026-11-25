@@ -296,17 +296,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcpOpenShiftCluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HcpOpenShiftClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
         String hcpOpenShiftClusterName, Context context) {
@@ -315,16 +305,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, accept, context);
     }
 
-    /**
-     * Get a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcpOpenShiftCluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterInner getByResourceGroup(String resourceGroupName, String hcpOpenShiftClusterName) {
         return getByResourceGroupWithResponse(resourceGroupName, hcpOpenShiftClusterName, Context.NONE).getValue();
@@ -367,11 +348,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         HcpOpenShiftClusterInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, hcpOpenShiftClusterName, resource, Context.NONE);
     }
 
     /**
@@ -417,38 +394,14 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             this.client.getContext());
     }
 
-    /**
-     * Create a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterInner>, HcpOpenShiftClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String hcpOpenShiftClusterName, HcpOpenShiftClusterInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, hcpOpenShiftClusterName, resource);
-        return this.client.<HcpOpenShiftClusterInner, HcpOpenShiftClusterInner>getLroResult(response,
-            HcpOpenShiftClusterInner.class, HcpOpenShiftClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, resource, Context.NONE);
     }
 
-    /**
-     * Create a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterInner>, HcpOpenShiftClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String hcpOpenShiftClusterName, HcpOpenShiftClusterInner resource, Context context) {
@@ -476,39 +429,19 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterInner createOrUpdate(String resourceGroupName, String hcpOpenShiftClusterName,
         HcpOpenShiftClusterInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, hcpOpenShiftClusterName, resource, Context.NONE);
     }
 
-    /**
-     * Create a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterInner createOrUpdate(String resourceGroupName, String hcpOpenShiftClusterName,
         HcpOpenShiftClusterInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, hcpOpenShiftClusterName, resource, context));
     }
 
     /**
@@ -548,11 +481,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String hcpOpenShiftClusterName,
         HcpOpenShiftClusterInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, hcpOpenShiftClusterName, properties, Context.NONE);
     }
 
     /**
@@ -598,37 +527,14 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             this.client.getContext());
     }
 
-    /**
-     * Update a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterInner>, HcpOpenShiftClusterInner>
         beginUpdate(String resourceGroupName, String hcpOpenShiftClusterName, HcpOpenShiftClusterInner properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, hcpOpenShiftClusterName, properties);
-        return this.client.<HcpOpenShiftClusterInner, HcpOpenShiftClusterInner>getLroResult(response,
-            HcpOpenShiftClusterInner.class, HcpOpenShiftClusterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, properties, Context.NONE);
     }
 
-    /**
-     * Update a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterInner>, HcpOpenShiftClusterInner> beginUpdate(
         String resourceGroupName, String hcpOpenShiftClusterName, HcpOpenShiftClusterInner properties,
@@ -657,39 +563,19 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterInner update(String resourceGroupName, String hcpOpenShiftClusterName,
         HcpOpenShiftClusterInner properties) {
-        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, properties).getFinalResult();
+        return update(resourceGroupName, hcpOpenShiftClusterName, properties, Context.NONE);
     }
 
-    /**
-     * Update a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCP cluster resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterInner update(String resourceGroupName, String hcpOpenShiftClusterName,
         HcpOpenShiftClusterInner properties, Context context) {
-        return beginUpdate(resourceGroupName, hcpOpenShiftClusterName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, hcpOpenShiftClusterName, properties, context));
     }
 
     /**
@@ -723,8 +609,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String hcpOpenShiftClusterName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     /**
@@ -763,33 +648,13 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             this.client.getContext());
     }
 
-    /**
-     * Delete a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hcpOpenShiftClusterName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, hcpOpenShiftClusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
-    /**
-     * Delete a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hcpOpenShiftClusterName,
         Context context) {
@@ -813,33 +678,16 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName) {
-        beginDelete(resourceGroupName, hcpOpenShiftClusterName).getFinalResult();
+        delete(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
-    /**
-     * Delete a HcpOpenShiftCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, Context context) {
-        beginDelete(resourceGroupName, hcpOpenShiftClusterName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, hcpOpenShiftClusterName, context));
     }
 
     /**
@@ -889,11 +737,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOpenShiftClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<HcpOpenShiftClusterListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -916,31 +760,13 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List HcpOpenShiftCluster resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOpenShiftCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOpenShiftClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List HcpOpenShiftCluster resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOpenShiftCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOpenShiftClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -988,11 +814,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOpenShiftClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<HcpOpenShiftClusterListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1013,27 +835,13 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List HcpOpenShiftCluster resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOpenShiftCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOpenShiftClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List HcpOpenShiftCluster resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOpenShiftCluster list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOpenShiftClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1077,11 +885,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> requestAdminCredentialWithResponse(String resourceGroupName,
         String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.requestAdminCredentialSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, contentType, accept, body,
-            Context.NONE);
+        return requestAdminCredentialWithResponse(resourceGroupName, hcpOpenShiftClusterName, body, Context.NONE);
     }
 
     /**
@@ -1129,41 +933,15 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
                 HcpOpenShiftClusterAdminCredentialInner.class, this.client.getContext());
     }
 
-    /**
-     * Request a temporary admin kubeconfig for the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hCP cluster admin credential.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterAdminCredentialInner>, HcpOpenShiftClusterAdminCredentialInner>
         beginRequestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName,
             HcpOpenShiftClusterAdminCredentialRequest body) {
-        Response<BinaryData> response
-            = requestAdminCredentialWithResponse(resourceGroupName, hcpOpenShiftClusterName, body);
-        return this.client
-            .<HcpOpenShiftClusterAdminCredentialInner, HcpOpenShiftClusterAdminCredentialInner>getLroResult(response,
-                HcpOpenShiftClusterAdminCredentialInner.class, HcpOpenShiftClusterAdminCredentialInner.class,
-                Context.NONE);
+        return beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, Context.NONE);
     }
 
-    /**
-     * Request a temporary admin kubeconfig for the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of hCP cluster admin credential.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterAdminCredentialInner>, HcpOpenShiftClusterAdminCredentialInner>
         beginRequestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName,
@@ -1193,39 +971,19 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Request a temporary admin kubeconfig for the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCP cluster admin credential.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterAdminCredentialInner requestAdminCredential(String resourceGroupName,
         String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
-        return beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body).getFinalResult();
+        return requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, Context.NONE);
     }
 
-    /**
-     * Request a temporary admin kubeconfig for the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCP cluster admin credential.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterAdminCredentialInner requestAdminCredential(String resourceGroupName,
         String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body, Context context) {
-        return beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, context));
     }
 
     /**
@@ -1260,8 +1018,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> revokeCredentialsWithResponse(String resourceGroupName,
         String hcpOpenShiftClusterName) {
-        return service.revokeCredentialsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
+        return revokeCredentialsWithResponse(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     /**
@@ -1301,34 +1058,14 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             this.client.getContext());
     }
 
-    /**
-     * Revoke all credentials issued by requestAdminCredential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeCredentials(String resourceGroupName,
         String hcpOpenShiftClusterName) {
-        Response<BinaryData> response = revokeCredentialsWithResponse(resourceGroupName, hcpOpenShiftClusterName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRevokeCredentials(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
-    /**
-     * Revoke all credentials issued by requestAdminCredential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevokeCredentials(String resourceGroupName,
         String hcpOpenShiftClusterName, Context context) {
@@ -1353,33 +1090,17 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Revoke all credentials issued by requestAdminCredential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeCredentials(String resourceGroupName, String hcpOpenShiftClusterName) {
-        beginRevokeCredentials(resourceGroupName, hcpOpenShiftClusterName).getFinalResult();
+        revokeCredentials(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
-    /**
-     * Revoke all credentials issued by requestAdminCredential.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeCredentials(String resourceGroupName, String hcpOpenShiftClusterName, Context context) {
-        beginRevokeCredentials(resourceGroupName, hcpOpenShiftClusterName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginRevokeCredentials(resourceGroupName, hcpOpenShiftClusterName, context));
     }
 
     /**
@@ -1414,11 +1135,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOpenShiftClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HcpOpenShiftClusterListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1473,11 +1190,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOpenShiftClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HcpOpenShiftClusterListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

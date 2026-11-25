@@ -215,33 +215,14 @@ public final class StandardsClientImpl implements StandardsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific security standard for the requested scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific security standard for the requested scope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandardInner> getByResourceGroupWithResponse(String resourceGroupName, String standardId,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, standardId, context).block();
     }
 
-    /**
-     * Get a specific security standard for the requested scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific security standard for the requested scope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandardInner getByResourceGroup(String resourceGroupName, String standardId) {
         return getByResourceGroupWithResponse(resourceGroupName, standardId, Context.NONE).getValue();
@@ -354,37 +335,14 @@ public final class StandardsClientImpl implements StandardsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a security standard on the given scope. Available only for custom standards. Will create/update the
-     * required standard definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param standard Custom security standard over a pre-defined scope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Standard on a resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandardInner> createOrUpdateWithResponse(String resourceGroupName, String standardId,
         StandardInner standard, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, standardId, standard, context).block();
     }
 
-    /**
-     * Create a security standard on the given scope. Available only for custom standards. Will create/update the
-     * required standard definitions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param standard Custom security standard over a pre-defined scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Standard on a resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandardInner createOrUpdate(String resourceGroupName, String standardId, StandardInner standard) {
         return createOrUpdateWithResponse(resourceGroupName, standardId, standard, Context.NONE).getValue();
@@ -473,31 +431,13 @@ public final class StandardsClientImpl implements StandardsClient {
         return deleteWithResponseAsync(resourceGroupName, standardId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a security standard on a scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String standardId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, standardId, context).block();
     }
 
-    /**
-     * Delete a security standard on a scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standardId The Security Standard key - unique key for the standard type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String standardId) {
         deleteWithResponse(resourceGroupName, standardId, Context.NONE);
@@ -604,30 +544,13 @@ public final class StandardsClientImpl implements StandardsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get security standards on all your resources inside a scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security standards on all your resources inside a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandardInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Get security standards on all your resources inside a scope.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security standards on all your resources inside a scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandardInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -719,29 +642,13 @@ public final class StandardsClientImpl implements StandardsClient {
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get a list of all relevant security standards over a subscription level scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant security standards over a subscription level scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandardInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Get a list of all relevant security standards over a subscription level scope.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all relevant security standards over a subscription level scope as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandardInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

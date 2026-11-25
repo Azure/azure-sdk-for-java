@@ -88,11 +88,7 @@ public final class AlertImpl implements Alert, Alert.Definition {
     }
 
     public Alert create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationAlertSettings()
-            .createWithResponse(resourceGroupName, resourceName, alertSettingName, createRequest, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Alert create(Context context) {
@@ -110,11 +106,7 @@ public final class AlertImpl implements Alert, Alert.Definition {
     }
 
     public Alert refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationAlertSettings()
-            .getWithResponse(resourceGroupName, resourceName, alertSettingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Alert refresh(Context context) {

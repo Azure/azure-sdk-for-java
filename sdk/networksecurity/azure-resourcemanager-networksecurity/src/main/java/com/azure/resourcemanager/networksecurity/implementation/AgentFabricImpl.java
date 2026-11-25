@@ -89,10 +89,7 @@ public final class AgentFabricImpl implements AgentFabric, AgentFabric.Definitio
     }
 
     public AgentFabric create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentFabrics()
-            .createOrUpdate(resourceGroupName, agentFabricName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AgentFabric create(Context context) {
@@ -114,10 +111,7 @@ public final class AgentFabricImpl implements AgentFabric, AgentFabric.Definitio
     }
 
     public AgentFabric apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentFabrics()
-            .update(resourceGroupName, agentFabricName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AgentFabric apply(Context context) {
@@ -140,11 +134,7 @@ public final class AgentFabricImpl implements AgentFabric, AgentFabric.Definitio
     }
 
     public AgentFabric refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAgentFabrics()
-            .getByResourceGroupWithResponse(resourceGroupName, agentFabricName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AgentFabric refresh(Context context) {

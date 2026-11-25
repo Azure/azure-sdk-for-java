@@ -273,18 +273,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Workspace under an Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workspace under an Organization along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceResourceInner> getWithResponse(String resourceGroupName, String organizationName,
         String workspaceName, Context context) {
@@ -293,17 +282,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             resourceGroupName, organizationName, workspaceName, accept, context);
     }
 
-    /**
-     * Get a Workspace under an Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workspace under an Organization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceResourceInner get(String resourceGroupName, String organizationName, String workspaceName) {
         return getWithResponse(resourceGroupName, organizationName, workspaceName, Context.NONE).getValue();
@@ -353,11 +332,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
         String workspaceName, WorkspaceResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, workspaceName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, organizationName, workspaceName, resource, Context.NONE);
     }
 
     /**
@@ -409,44 +384,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or update a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Workspace resource in the Kore.AgentPlatform provider.
-     * 
-     * Child proxy resource type under an Organization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceResourceInner>, WorkspaceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String organizationName, String workspaceName, WorkspaceResourceInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, organizationName, workspaceName, resource);
-        return this.client.<WorkspaceResourceInner, WorkspaceResourceInner>getLroResult(response,
-            WorkspaceResourceInner.class, WorkspaceResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, organizationName, workspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Workspace resource in the Kore.AgentPlatform provider.
-     * 
-     * Child proxy resource type under an Organization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceResourceInner>, WorkspaceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String organizationName, String workspaceName, WorkspaceResourceInner resource,
@@ -478,46 +423,19 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workspace resource in the Kore.AgentPlatform provider.
-     * 
-     * Child proxy resource type under an Organization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceResourceInner createOrUpdate(String resourceGroupName, String organizationName,
         String workspaceName, WorkspaceResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, workspaceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, organizationName, workspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Workspace resource in the Kore.AgentPlatform provider.
-     * 
-     * Child proxy resource type under an Organization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceResourceInner createOrUpdate(String resourceGroupName, String organizationName,
         String workspaceName, WorkspaceResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, organizationName, workspaceName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, organizationName, workspaceName, resource, context));
     }
 
     /**
@@ -554,8 +472,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String organizationName,
         String workspaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, workspaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, organizationName, workspaceName, Context.NONE);
     }
 
     /**
@@ -597,36 +514,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String workspaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, organizationName, workspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, organizationName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Delete a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName,
         String workspaceName, Context context) {
@@ -651,35 +546,16 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String workspaceName) {
-        beginDelete(resourceGroupName, organizationName, workspaceName).getFinalResult();
+        delete(resourceGroupName, organizationName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Delete a Workspace under an Organization (long-running).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String organizationName, String workspaceName, Context context) {
-        beginDelete(resourceGroupName, organizationName, workspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, organizationName, workspaceName, context));
     }
 
     /**
@@ -735,12 +611,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceResourceInner> listByOrganizationSinglePage(String resourceGroupName,
         String organizationName) {
-        final String accept = "application/json";
-        Response<WorkspaceResourceListResult> res
-            = service.listByOrganizationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, organizationName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByOrganizationSinglePage(resourceGroupName, organizationName, Context.NONE);
     }
 
     /**
@@ -765,33 +636,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Workspaces under an Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspaceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceResourceInner> listByOrganization(String resourceGroupName, String organizationName) {
-        return new PagedIterable<>(() -> listByOrganizationSinglePage(resourceGroupName, organizationName),
-            nextLink -> listByOrganizationNextSinglePage(nextLink));
+        return listByOrganization(resourceGroupName, organizationName, Context.NONE);
     }
 
-    /**
-     * List Workspaces under an Organization.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspaceResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceResourceInner> listByOrganization(String resourceGroupName, String organizationName,
         Context context) {
@@ -841,10 +692,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String organizationName,
         String workspaceName, WorkspaceSaaSData body) {
-        final String contentType = "application/json";
-        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, organizationName, workspaceName, contentType, body,
-            Context.NONE);
+        return linkSaaSWithResponse(resourceGroupName, organizationName, workspaceName, body, Context.NONE);
     }
 
     /**
@@ -894,42 +742,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getContext());
     }
 
-    /**
-     * Links SaaS resources to the workspace.
-     * 
-     * Links SaaS resources to the workspace. Accepts the full list of SaaS assets to be linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginLinkSaaS(String resourceGroupName, String organizationName,
         String workspaceName, WorkspaceSaaSData body) {
-        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, organizationName, workspaceName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginLinkSaaS(resourceGroupName, organizationName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Links SaaS resources to the workspace.
-     * 
-     * Links SaaS resources to the workspace. Accepts the full list of SaaS assets to be linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginLinkSaaS(String resourceGroupName, String organizationName,
         String workspaceName, WorkspaceSaaSData body, Context context) {
@@ -959,43 +779,19 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Links SaaS resources to the workspace.
-     * 
-     * Links SaaS resources to the workspace. Accepts the full list of SaaS assets to be linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void linkSaaS(String resourceGroupName, String organizationName, String workspaceName,
         WorkspaceSaaSData body) {
-        beginLinkSaaS(resourceGroupName, organizationName, workspaceName, body).getFinalResult();
+        linkSaaS(resourceGroupName, organizationName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Links SaaS resources to the workspace.
-     * 
-     * Links SaaS resources to the workspace. Accepts the full list of SaaS assets to be linked.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void linkSaaS(String resourceGroupName, String organizationName, String workspaceName,
         WorkspaceSaaSData body, Context context) {
-        beginLinkSaaS(resourceGroupName, organizationName, workspaceName, body, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginLinkSaaS(resourceGroupName, organizationName, workspaceName, body, context));
     }
 
     /**
@@ -1039,18 +835,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the list of SaaS resources linked to the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of SaaS resources linked to the Workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceLinkedSaaSListResponseInner> listLinkedSaaSWithResponse(String resourceGroupName,
         String organizationName, String workspaceName, Context context) {
@@ -1059,17 +844,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, workspaceName, accept, context);
     }
 
-    /**
-     * Returns the list of SaaS resources linked to the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the list of SaaS resources linked to the Workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceLinkedSaaSListResponseInner listLinkedSaaS(String resourceGroupName, String organizationName,
         String workspaceName) {
@@ -1116,18 +891,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the complete Workspace details reported by Kore, including its projects.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return complete Workspace details returned by Kore along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceDetailInner> getDetailsWithResponse(String resourceGroupName, String organizationName,
         String workspaceName, Context context) {
@@ -1136,17 +900,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             this.client.getSubscriptionId(), resourceGroupName, organizationName, workspaceName, accept, context);
     }
 
-    /**
-     * Returns the complete Workspace details reported by Kore, including its projects.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param organizationName Name of the Organization.
-     * @param workspaceName Name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return complete Workspace details returned by Kore.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceDetailInner getDetails(String resourceGroupName, String organizationName, String workspaceName) {
         return getDetailsWithResponse(resourceGroupName, organizationName, workspaceName, Context.NONE).getValue();
@@ -1184,11 +938,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceResourceInner> listByOrganizationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceResourceListResult> res
-            = service.listByOrganizationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByOrganizationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

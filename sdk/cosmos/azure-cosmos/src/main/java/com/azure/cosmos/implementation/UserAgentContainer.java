@@ -7,9 +7,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.text.Normalizer;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Pattern;
 
 /**
@@ -21,12 +21,12 @@ public class UserAgentContainer {
     private static final int MAX_USER_AGENT_LENGTH = 255;
     private final int maxSuffixLength;
     private final String baseUserAgent;
-    private final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
-    private final ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
-    private final ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
-    private String suffix;
-    private String userAgent;
+    private final ReentrantLock writeLock = new ReentrantLock();
+    private volatile String suffix;
+    private volatile String userAgent;
     private String baseUserAgentWithSuffix;
+    private int featureFlags;
+    private int additionalFeatureFlags;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
     public final static String BASE_USER_AGENT_STRING = Utils.getUserAgent(
@@ -57,14 +57,29 @@ public class UserAgentContainer {
         writeLock.lock();
         try {
 
-            int value = 0;
+            this.featureFlags = 0;
 
             for (UserAgentFeatureFlags userAgentFeatureFlag : userAgentFeatureFlags) {
-                value += userAgentFeatureFlag.getValue();
+                this.featureFlags |= userAgentFeatureFlag.getValue();
             }
 
-            this.userAgent = !Strings.isNullOrEmpty(this.baseUserAgentWithSuffix) ? this.baseUserAgentWithSuffix : this.baseUserAgent;
-            this.userAgent = this.userAgent + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
+            this.userAgent = getUserAgentWithFeatureFlags();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    /**
+     * Adds an explicitly enabled flag, preserving it when evaluated feature flags are refreshed.
+     *
+     * @param userAgentFeatureFlag the flag to add
+     */
+    public void addFeatureEnabledFlag(UserAgentFeatureFlags userAgentFeatureFlag) {
+        Objects.requireNonNull(userAgentFeatureFlag, "userAgentFeatureFlag");
+        writeLock.lock();
+        try {
+            this.additionalFeatureFlags |= userAgentFeatureFlag.getValue();
+            this.userAgent = getUserAgentWithFeatureFlags();
         } finally {
             writeLock.unlock();
         }
@@ -73,29 +88,61 @@ public class UserAgentContainer {
     public void setSuffix(String suffix) {
         writeLock.lock();
         try {
-            if (suffix == null) {
-                suffix = "";
+            this.featureFlags = 0;
+            this.userAgent = this.setSuffixInternal(suffix) + getFeatureFlagsSuffix();
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    public void appendSuffix(String suffix) {
+        if (Strings.isNullOrEmpty(suffix)) {
+            return;
+        }
+
+        writeLock.lock();
+        try {
+            for (String token : this.suffix.split("\\s+")) {
+                if (suffix.equals(token)) {
+                    return;
+                }
             }
 
-            if (suffix.length() > maxSuffixLength) {
-                suffix = suffix.substring(0, maxSuffixLength);
-            }
-
-            this.suffix = suffix;
-            this.userAgent = stripNonAsciiCharacters(baseUserAgent.concat(" ").concat(this.suffix));
-            this.baseUserAgentWithSuffix = this.userAgent;
+            String appendedSuffix = Strings.isNullOrEmpty(this.suffix)
+                ? suffix
+                : this.suffix + " " + suffix;
+            this.userAgent = this.setSuffixInternal(appendedSuffix) + getFeatureFlagsSuffix();
         } finally {
             writeLock.unlock();
         }
     }
 
     public String getUserAgent() {
-        readLock.lock();
-        try {
-            return this.userAgent;
-        } finally {
-            readLock.unlock();
+        return this.userAgent;
+    }
+
+    private String getUserAgentWithFeatureFlags() {
+        return (!Strings.isNullOrEmpty(this.baseUserAgentWithSuffix)
+            ? this.baseUserAgentWithSuffix : this.baseUserAgent) + getFeatureFlagsSuffix();
+    }
+
+    private String getFeatureFlagsSuffix() {
+        int value = this.featureFlags | this.additionalFeatureFlags;
+        return value == 0 ? "" : "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
+    }
+
+    private String setSuffixInternal(String suffix) {
+        if (suffix == null) {
+            suffix = "";
         }
+
+        if (suffix.length() > maxSuffixLength) {
+            suffix = suffix.substring(0, maxSuffixLength);
+        }
+
+        this.suffix = suffix;
+        this.baseUserAgentWithSuffix = stripNonAsciiCharacters(baseUserAgent.concat(" ").concat(this.suffix));
+        return this.baseUserAgentWithSuffix;
     }
 
     private static String stripNonAsciiCharacters(String input) {

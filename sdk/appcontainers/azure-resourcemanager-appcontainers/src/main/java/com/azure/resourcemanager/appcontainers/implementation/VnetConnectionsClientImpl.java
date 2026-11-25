@@ -210,18 +210,7 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a VnetConnection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VnetConnectionInner> getWithResponse(String resourceGroupName, String sandboxGroupName,
         String vnetConnectionName, Context context) {
@@ -230,17 +219,7 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
             resourceGroupName, sandboxGroupName, vnetConnectionName, accept, context);
     }
 
-    /**
-     * Get the properties of a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a VnetConnection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VnetConnectionInner get(String resourceGroupName, String sandboxGroupName, String vnetConnectionName) {
         return getWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE).getValue();
@@ -290,19 +269,7 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network connection associated with a SandboxGroup along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VnetConnectionInner> createOrUpdateWithResponse(String resourceGroupName, String sandboxGroupName,
         String vnetConnectionName, VnetConnectionInner resource, Context context) {
@@ -313,18 +280,7 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
             accept, resource, context);
     }
 
-    /**
-     * Create or update a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network connection associated with a SandboxGroup.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VnetConnectionInner createOrUpdate(String resourceGroupName, String sandboxGroupName,
         String vnetConnectionName, VnetConnectionInner resource) {
@@ -366,8 +322,7 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sandboxGroupName,
         String vnetConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE);
     }
 
     /**
@@ -409,36 +364,14 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sandboxGroupName,
         String vnetConnectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, sandboxGroupName, vnetConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sandboxGroupName,
         String vnetConnectionName, Context context) {
@@ -464,35 +397,17 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sandboxGroupName, String vnetConnectionName) {
-        beginDelete(resourceGroupName, sandboxGroupName, vnetConnectionName).getFinalResult();
+        delete(resourceGroupName, sandboxGroupName, vnetConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete a VnetConnection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param vnetConnectionName The name of the VnetConnection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String sandboxGroupName, String vnetConnectionName, Context context) {
-        beginDelete(resourceGroupName, sandboxGroupName, vnetConnectionName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, sandboxGroupName, vnetConnectionName, context));
     }
 
     /**
@@ -547,12 +462,7 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VnetConnectionInner> listBySandboxGroupSinglePage(String resourceGroupName,
         String sandboxGroupName) {
-        final String accept = "application/json";
-        Response<VnetConnectionListResult> res
-            = service.listBySandboxGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, sandboxGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySandboxGroupSinglePage(resourceGroupName, sandboxGroupName, Context.NONE);
     }
 
     /**
@@ -577,33 +487,13 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all VnetConnections in the specified SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VnetConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VnetConnectionInner> listBySandboxGroup(String resourceGroupName, String sandboxGroupName) {
-        return new PagedIterable<>(() -> listBySandboxGroupSinglePage(resourceGroupName, sandboxGroupName),
-            nextLink -> listBySandboxGroupNextSinglePage(nextLink));
+        return listBySandboxGroup(resourceGroupName, sandboxGroupName, Context.NONE);
     }
 
-    /**
-     * List all VnetConnections in the specified SandboxGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sandboxGroupName The name of the SandboxGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VnetConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VnetConnectionInner> listBySandboxGroup(String resourceGroupName, String sandboxGroupName,
         Context context) {
@@ -643,11 +533,7 @@ public final class VnetConnectionsClientImpl implements VnetConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VnetConnectionInner> listBySandboxGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<VnetConnectionListResult> res
-            = service.listBySandboxGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySandboxGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

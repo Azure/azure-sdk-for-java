@@ -71,10 +71,7 @@ public final class FabricAgentModelImpl implements FabricAgentModel, FabricAgent
     }
 
     public FabricAgentModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFabricAgents()
-            .create(resourceGroupName, fabricName, fabricAgentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FabricAgentModel create(Context context) {
@@ -92,11 +89,7 @@ public final class FabricAgentModelImpl implements FabricAgentModel, FabricAgent
     }
 
     public FabricAgentModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFabricAgents()
-            .getWithResponse(resourceGroupName, fabricName, fabricAgentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FabricAgentModel refresh(Context context) {

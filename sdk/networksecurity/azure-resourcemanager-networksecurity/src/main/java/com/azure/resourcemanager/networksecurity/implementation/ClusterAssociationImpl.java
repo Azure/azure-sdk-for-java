@@ -92,11 +92,7 @@ public final class ClusterAssociationImpl
     }
 
     public ClusterAssociation create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterAssociations()
-            .createOrUpdate(resourceGroupName, agentFabricName, clusterAssociationName, this.innerModel(),
-                createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ClusterAssociation create(Context context) {
@@ -121,10 +117,7 @@ public final class ClusterAssociationImpl
     }
 
     public ClusterAssociation apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterAssociations()
-            .update(resourceGroupName, agentFabricName, clusterAssociationName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ClusterAssociation apply(Context context) {
@@ -150,11 +143,7 @@ public final class ClusterAssociationImpl
     }
 
     public ClusterAssociation refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getClusterAssociations()
-            .getWithResponse(resourceGroupName, agentFabricName, clusterAssociationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ClusterAssociation refresh(Context context) {

@@ -69,18 +69,7 @@ public final class AccessReviewHistoryDefinitionInstancesClientImpl
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
-     * retrieved by fetching the accessReviewHistoryDefinition object.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param instanceId The id of the access review history definition instance to generate a URI for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition Instance along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewHistoryInstanceInner>>
         generateDownloadUriWithResponseAsync(String historyDefinitionId, String instanceId) {
@@ -145,17 +134,7 @@ public final class AccessReviewHistoryDefinitionInstancesClientImpl
             historyDefinitionId, instanceId, accept, context);
     }
 
-    /**
-     * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
-     * retrieved by fetching the accessReviewHistoryDefinition object.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param instanceId The id of the access review history definition instance to generate a URI for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition Instance on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewHistoryInstanceInner> generateDownloadUriAsync(String historyDefinitionId,
         String instanceId) {
@@ -163,35 +142,14 @@ public final class AccessReviewHistoryDefinitionInstancesClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
-     * retrieved by fetching the accessReviewHistoryDefinition object.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param instanceId The id of the access review history definition instance to generate a URI for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition Instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewHistoryInstanceInner> generateDownloadUriWithResponse(String historyDefinitionId,
         String instanceId, Context context) {
         return generateDownloadUriWithResponseAsync(historyDefinitionId, instanceId, context).block();
     }
 
-    /**
-     * Generates a uri which can be used to retrieve review history data. This URI has a TTL of 1 day and can be
-     * retrieved by fetching the accessReviewHistoryDefinition object.
-     * 
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param instanceId The id of the access review history definition instance to generate a URI for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition Instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewHistoryInstanceInner generateDownloadUri(String historyDefinitionId, String instanceId) {
         return generateDownloadUriWithResponse(historyDefinitionId, instanceId, Context.NONE).getValue();

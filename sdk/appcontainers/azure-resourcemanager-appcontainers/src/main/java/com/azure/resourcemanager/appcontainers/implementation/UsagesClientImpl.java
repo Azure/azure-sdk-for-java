@@ -141,11 +141,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<ListUsagesResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -168,32 +164,13 @@ public final class UsagesClientImpl implements UsagesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets, for the specified location, the current resource usage information as well as the limits under the
-     * subscription.
-     * 
-     * @param location The location for which resource usage is queried.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Usage items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Gets, for the specified location, the current resource usage information as well as the limits under the
-     * subscription.
-     * 
-     * @param location The location for which resource usage is queried.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Usage items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -230,11 +207,7 @@ public final class UsagesClientImpl implements UsagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<UsageInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ListUsagesResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

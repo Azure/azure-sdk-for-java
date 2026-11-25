@@ -119,10 +119,7 @@ public final class StorageTargetImpl implements StorageTarget, StorageTarget.Def
     }
 
     public StorageTarget create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTargets()
-            .createOrUpdate(resourceGroupName, cacheName, storageTargetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageTarget create(Context context) {
@@ -143,10 +140,7 @@ public final class StorageTargetImpl implements StorageTarget, StorageTarget.Def
     }
 
     public StorageTarget apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTargets()
-            .createOrUpdate(resourceGroupName, cacheName, storageTargetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageTarget apply(Context context) {
@@ -172,11 +166,7 @@ public final class StorageTargetImpl implements StorageTarget, StorageTarget.Def
     }
 
     public StorageTarget refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageTargets()
-            .getWithResponse(resourceGroupName, cacheName, storageTargetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageTarget refresh(Context context) {

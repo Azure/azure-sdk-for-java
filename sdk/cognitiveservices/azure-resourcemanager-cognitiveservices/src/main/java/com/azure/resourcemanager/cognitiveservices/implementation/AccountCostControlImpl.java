@@ -75,12 +75,7 @@ public final class AccountCostControlImpl
     }
 
     public AccountCostControl create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountCostControls()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, costControlName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AccountCostControl create(Context context) {
@@ -108,12 +103,7 @@ public final class AccountCostControlImpl
     }
 
     public AccountCostControl apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountCostControls()
-            .updateWithResponse(resourceGroupName, accountName, costControlName, updateProperties, updateIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AccountCostControl apply(Context context) {
@@ -141,11 +131,7 @@ public final class AccountCostControlImpl
     }
 
     public AccountCostControl refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAccountCostControls()
-            .getWithResponse(resourceGroupName, accountName, costControlName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AccountCostControl refresh(Context context) {

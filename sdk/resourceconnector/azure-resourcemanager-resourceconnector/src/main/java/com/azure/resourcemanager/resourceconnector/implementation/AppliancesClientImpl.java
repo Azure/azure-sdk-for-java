@@ -367,21 +367,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Appliance.
-     * 
-     * Gets the details of an Appliance with a specified resource group and name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Appliance.
-     * 
-     * Gets the details of an Appliance with a specified resource group and name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplianceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -390,20 +376,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Gets an Appliance.
-     * 
-     * Gets the details of an Appliance with a specified resource group and name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Appliance.
-     * 
-     * Gets the details of an Appliance with a specified resource group and name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceInner getByResourceGroup(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -450,11 +423,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         ApplianceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
     /**
@@ -502,41 +471,14 @@ public final class AppliancesClientImpl implements AppliancesClient {
             ApplianceInner.class, ApplianceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates an Appliance.
-     * 
-     * Creates or updates an Appliance in the specified Subscription and Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param parameters Parameters supplied to create or update an Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appliances definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, ApplianceInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceName, parameters);
-        return this.client.<ApplianceInner, ApplianceInner>getLroResult(response, ApplianceInner.class,
-            ApplianceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Appliance.
-     * 
-     * Creates or updates an Appliance in the specified Subscription and Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param parameters Parameters supplied to create or update an Appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appliances definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplianceInner>, ApplianceInner> beginCreateOrUpdate(String resourceGroupName,
         String resourceName, ApplianceInner parameters, Context context) {
@@ -566,42 +508,18 @@ public final class AppliancesClientImpl implements AppliancesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Appliance.
-     * 
-     * Creates or updates an Appliance in the specified Subscription and Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param parameters Parameters supplied to create or update an Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appliances definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceInner createOrUpdate(String resourceGroupName, String resourceName, ApplianceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Appliance.
-     * 
-     * Creates or updates an Appliance in the specified Subscription and Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param parameters Parameters supplied to create or update an Appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appliances definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceInner createOrUpdate(String resourceGroupName, String resourceName, ApplianceInner parameters,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceName, parameters, context));
     }
 
     /**
@@ -647,20 +565,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an Appliance.
-     * 
-     * Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param parameters The updatable fields of an existing Appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appliances definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplianceInner> updateWithResponse(String resourceGroupName, String resourceName,
         PatchableAppliance parameters, Context context) {
@@ -670,19 +575,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates an Appliance.
-     * 
-     * Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param parameters The updatable fields of an existing Appliance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appliances definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceInner update(String resourceGroupName, String resourceName, PatchableAppliance parameters) {
         return updateWithResponse(resourceGroupName, resourceName, parameters, Context.NONE).getValue();
@@ -722,8 +615,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -764,37 +656,13 @@ public final class AppliancesClientImpl implements AppliancesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes an Appliance.
-     * 
-     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Deletes an Appliance.
-     * 
-     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         Context context) {
@@ -819,37 +687,16 @@ public final class AppliancesClientImpl implements AppliancesClient {
         return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an Appliance.
-     * 
-     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
-        beginDelete(resourceGroupName, resourceName).getFinalResult();
+        delete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Deletes an Appliance.
-     * 
-     * Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, Context context) {
-        beginDelete(resourceGroupName, resourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, context));
     }
 
     /**
@@ -915,11 +762,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplianceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ApplianceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -946,43 +789,13 @@ public final class AppliancesClientImpl implements AppliancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Appliances in the specified subscription and resource group.
-     * 
-     * Gets a list of Appliances in the specified subscription and resource group. The operation returns properties of
-     * each Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Appliances in the specified subscription and resource group.
-     * 
-     * Gets a list of Appliances in the specified subscription and resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplianceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets a list of Appliances in the specified subscription and resource group.
-     * 
-     * Gets a list of Appliances in the specified subscription and resource group. The operation returns properties of
-     * each Appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Appliances in the specified subscription and resource group.
-     * 
-     * Gets a list of Appliances in the specified subscription and resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplianceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1042,11 +855,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplianceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ApplianceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1071,35 +880,13 @@ public final class AppliancesClientImpl implements AppliancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Appliances in a subscription.
-     * 
-     * Gets a list of Appliances in the specified subscription. The operation returns properties of each Appliance.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Appliances in a subscription.
-     * 
-     * Gets a list of Appliances in the specified subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplianceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets a list of Appliances in a subscription.
-     * 
-     * Gets a list of Appliances in the specified subscription. The operation returns properties of each Appliance.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Appliances in a subscription.
-     * 
-     * Gets a list of Appliances in the specified subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplianceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1149,19 +936,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the cluster user credential.
-     * 
-     * Returns the cluster user credentials for the dedicated appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Cluster User Credential appliance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplianceListCredentialResultsInner> listClusterUserCredentialWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -1170,18 +945,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Returns the cluster user credential.
-     * 
-     * Returns the cluster user credentials for the dedicated appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Cluster User Credential appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceListCredentialResultsInner listClusterUserCredential(String resourceGroupName,
         String resourceName) {
@@ -1235,22 +999,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the management config.
-     * 
-     * Returns the cluster customer credentials for the dedicated appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param artifactType This sets the type of artifact being returned, when empty no artifact endpoint is returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the management config.
-     * 
-     * Returns the cluster customer credentials for the dedicated appliance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplianceListKeysResultsInner> listKeysWithResponse(String resourceGroupName, String resourceName,
         String artifactType, Context context) {
@@ -1259,20 +1008,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, artifactType, accept, context);
     }
 
-    /**
-     * Gets the management config.
-     * 
-     * Returns the cluster customer credentials for the dedicated appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the management config.
-     * 
-     * Returns the cluster customer credentials for the dedicated appliance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceListKeysResultsInner listKeys(String resourceGroupName, String resourceName) {
         final String artifactType = null;
@@ -1328,23 +1064,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an Appliance upgrade graph.
-     * 
-     * Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param upgradeGraph Upgrade graph version, ex - stable.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Appliance upgrade graph.
-     * 
-     * Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpgradeGraphInner> getUpgradeGraphWithResponse(String resourceGroupName, String resourceName,
         String upgradeGraph, Context context) {
@@ -1353,21 +1073,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             this.client.getSubscriptionId(), resourceGroupName, resourceName, upgradeGraph, accept, context);
     }
 
-    /**
-     * Gets an Appliance upgrade graph.
-     * 
-     * Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName Appliances name.
-     * @param upgradeGraph Upgrade graph version, ex - stable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Appliance upgrade graph.
-     * 
-     * Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpgradeGraphInner getUpgradeGraph(String resourceGroupName, String resourceName, String upgradeGraph) {
         return getUpgradeGraphWithResponse(resourceGroupName, resourceName, upgradeGraph, Context.NONE).getValue();
@@ -1413,11 +1119,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplianceOperationInner> listOperationsSinglePage() {
-        final String accept = "application/json";
-        Response<ApplianceOperationsList> res
-            = service.listOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOperationsSinglePage(Context.NONE);
     }
 
     /**
@@ -1438,28 +1140,13 @@ public final class AppliancesClientImpl implements AppliancesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all available Appliances operations.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ApplianceOperation items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplianceOperationInner> listOperations() {
-        return new PagedIterable<>(() -> listOperationsSinglePage(),
-            nextLink -> listOperationsNextSinglePage(nextLink));
+        return listOperations(Context.NONE);
     }
 
-    /**
-     * Lists all available Appliances operations.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ApplianceOperation items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplianceOperationInner> listOperations(Context context) {
         return new PagedIterable<>(() -> listOperationsSinglePage(context),
@@ -1494,15 +1181,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
         return getTelemetryConfigWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the telemetry config.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the telemetry config along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplianceGetTelemetryConfigResultInner> getTelemetryConfigWithResponse(Context context) {
         final String accept = "application/json";
@@ -1510,13 +1189,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Gets the telemetry config.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the telemetry config.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceGetTelemetryConfigResultInner getTelemetryConfig() {
         return getTelemetryConfigWithResponse(Context.NONE).getValue();
@@ -1562,11 +1235,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplianceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplianceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1632,11 +1301,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplianceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplianceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1693,11 +1358,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplianceOperationInner> listOperationsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplianceOperationsList> res
-            = service.listOperationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOperationsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

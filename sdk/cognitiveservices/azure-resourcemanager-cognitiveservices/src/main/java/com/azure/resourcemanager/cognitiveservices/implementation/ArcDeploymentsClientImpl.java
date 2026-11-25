@@ -224,19 +224,7 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Arc deployment associated with the Cognitive Services account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArcDeploymentInner> getWithResponse(String resourceGroupName, String accountName,
         String deploymentName, Context context) {
@@ -245,18 +233,7 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             resourceGroupName, accountName, deploymentName, accept, context);
     }
 
-    /**
-     * Gets the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Arc deployment associated with the Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArcDeploymentInner get(String resourceGroupName, String accountName, String deploymentName) {
         return getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE).getValue();
@@ -305,11 +282,7 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String deploymentName, ArcDeploymentInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, deploymentName, resource, Context.NONE);
     }
 
     /**
@@ -360,44 +333,14 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             ArcDeploymentInner.class, ArcDeploymentInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates an Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param resource The Arc deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account Arc deployment, backed by
-     * customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArcDeploymentInner>, ArcDeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String deploymentName, ArcDeploymentInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, deploymentName, resource);
-        return this.client.<ArcDeploymentInner, ArcDeploymentInner>getLroResult(response, ArcDeploymentInner.class,
-            ArcDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param resource The Arc deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account Arc deployment, backed by
-     * customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArcDeploymentInner>, ArcDeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String deploymentName, ArcDeploymentInner resource, Context context) {
@@ -428,43 +371,19 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param resource The Arc deployment properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArcDeploymentInner createOrUpdate(String resourceGroupName, String accountName, String deploymentName,
         ArcDeploymentInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, deploymentName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates an Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param resource The Arc deployment properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArcDeploymentInner createOrUpdate(String resourceGroupName, String accountName, String deploymentName,
         ArcDeploymentInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, deploymentName, resource, context));
     }
 
     /**
@@ -510,11 +429,7 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String deploymentName,
         ArcDeploymentUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, accountName, deploymentName, properties, Context.NONE);
     }
 
     /**
@@ -565,43 +480,14 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             ArcDeploymentInner.class, ArcDeploymentInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param properties The Arc deployment update properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account Arc deployment, backed by
-     * customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArcDeploymentInner>, ArcDeploymentInner> beginUpdate(String resourceGroupName,
         String accountName, String deploymentName, ArcDeploymentUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, accountName, deploymentName, properties);
-        return this.client.<ArcDeploymentInner, ArcDeploymentInner>getLroResult(response, ArcDeploymentInner.class,
-            ArcDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, accountName, deploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param properties The Arc deployment update properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services account Arc deployment, backed by
-     * customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArcDeploymentInner>, ArcDeploymentInner> beginUpdate(String resourceGroupName,
         String accountName, String deploymentName, ArcDeploymentUpdate properties, Context context) {
@@ -632,43 +518,19 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param properties The Arc deployment update properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArcDeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
         ArcDeploymentUpdate properties) {
-        return beginUpdate(resourceGroupName, accountName, deploymentName, properties).getFinalResult();
+        return update(resourceGroupName, accountName, deploymentName, properties, Context.NONE);
     }
 
-    /**
-     * Updates the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param properties The Arc deployment update properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArcDeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
         ArcDeploymentUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, accountName, deploymentName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, accountName, deploymentName, properties, context));
     }
 
     /**
@@ -711,8 +573,7 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String deploymentName,
         Boolean force) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, deploymentName, force, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, deploymentName, force, Context.NONE);
     }
 
     /**
@@ -799,45 +660,18 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String deploymentName, Boolean force) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, deploymentName, force);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, deploymentName, force, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String deploymentName) {
         final Boolean force = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, deploymentName, force);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, deploymentName, force, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param force Whether to delete the Arc deployment even when its associated extension is disconnected. Defaults to
-     * false.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String deploymentName, Boolean force, Context context) {
@@ -885,41 +719,19 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String deploymentName) {
         final Boolean force = null;
-        beginDelete(resourceGroupName, accountName, deploymentName, force).getFinalResult();
+        delete(resourceGroupName, accountName, deploymentName, force, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Arc deployment associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the Arc deployment associated with the Cognitive Services Account. The name
-     * must be unique within the account across deployments, managedComputeDeployments, and arcDeployments.
-     * @param force Whether to delete the Arc deployment even when its associated extension is disconnected. Defaults to
-     * false.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String deploymentName, Boolean force,
         Context context) {
-        beginDelete(resourceGroupName, accountName, deploymentName, force, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, deploymentName, force, context));
     }
 
     /**
@@ -973,11 +785,7 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArcDeploymentInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<ArcDeploymentListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -1001,35 +809,13 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the Arc deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Arc deployments associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArcDeploymentInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets the Arc deployments associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Arc deployments associated with the Cognitive Services account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArcDeploymentInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -1066,11 +852,7 @@ public final class ArcDeploymentsClientImpl implements ArcDeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArcDeploymentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ArcDeploymentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

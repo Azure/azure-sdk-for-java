@@ -286,17 +286,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentInner> getByResourceGroupWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -306,16 +296,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Returns an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentInner getByResourceGroup(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -366,19 +347,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
-     * InstrumentationKey nor AppId in the Put operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param insightProperties Properties that need to be specified to create an Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentInner> createOrUpdateWithResponse(String resourceGroupName,
         String resourceName, ApplicationInsightsComponentInner insightProperties, Context context) {
@@ -389,18 +358,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             resourceGroupName, resourceName, contentType, accept, insightProperties, context);
     }
 
-    /**
-     * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
-     * InstrumentationKey nor AppId in the Put operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param insightProperties Properties that need to be specified to create an Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentInner createOrUpdate(String resourceGroupName, String resourceName,
         ApplicationInsightsComponentInner insightProperties) {
@@ -450,18 +408,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param componentTags Updated tag information to set into the component instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentInner> updateTagsWithResponse(String resourceGroupName,
         String resourceName, TagsResource componentTags, Context context) {
@@ -472,17 +419,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             resourceGroupName, resourceName, contentType, accept, componentTags, context);
     }
 
-    /**
-     * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param componentTags Updated tag information to set into the component instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentInner updateTags(String resourceGroupName, String resourceName,
         TagsResource componentTags) {
@@ -523,17 +460,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
         return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
         final String apiVersion = "2025-01-23-preview";
@@ -541,15 +468,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             resourceGroupName, resourceName, context);
     }
 
-    /**
-     * Deletes an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
         deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
@@ -605,13 +524,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String apiVersion = "2025-01-23-preview";
-        final String accept = "application/json";
-        Response<ApplicationInsightsComponentListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -635,33 +548,13 @@ public final class ComponentsClientImpl implements ComponentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of Application Insights components within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Application Insights components within a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets a list of Application Insights components within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Application Insights components within a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -711,12 +604,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentInner> listSinglePage() {
-        final String apiVersion = "2025-01-23-preview";
-        final String accept = "application/json";
-        Response<ApplicationInsightsComponentListResult> res = service.listSync(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -738,29 +626,13 @@ public final class ComponentsClientImpl implements ComponentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of all Application Insights components within a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Application Insights components within a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets a list of all Application Insights components within a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Application Insights components within a subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -826,27 +698,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Purges data in an Application Insights component by a set of user-defined filters.
-     * 
-     * In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
-     * execution of purge requests by sending a single command whose predicate includes all user identities that require
-     * purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
-     * request to verify that the results are expected.
-     * Note: this operation is intended for Classic resources, for workspace-based Application Insights resource please
-     * run purge operation (directly on the
-     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
-     * resource id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComponentPurgeResponseInner> purgeWithResponse(String resourceGroupName, String resourceName,
         ComponentPurgeBody body, Context context) {
@@ -857,26 +709,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             resourceGroupName, resourceName, contentType, accept, body, context);
     }
 
-    /**
-     * Purges data in an Application Insights component by a set of user-defined filters.
-     * 
-     * In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
-     * execution of purge requests by sending a single command whose predicate includes all user identities that require
-     * purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
-     * request to verify that the results are expected.
-     * Note: this operation is intended for Classic resources, for workspace-based Application Insights resource please
-     * run purge operation (directly on the
-     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
-     * resource id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComponentPurgeResponseInner purge(String resourceGroupName, String resourceName, ComponentPurgeBody body) {
         return purgeWithResponse(resourceGroupName, resourceName, body, Context.NONE).getValue();
@@ -923,18 +756,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get status for an ongoing purge operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status for an ongoing purge operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComponentPurgeStatusResponseInner> getPurgeStatusWithResponse(String resourceGroupName,
         String resourceName, String purgeId, Context context) {
@@ -944,17 +766,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
             resourceGroupName, resourceName, purgeId, accept, context);
     }
 
-    /**
-     * Get status for an ongoing purge operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status for an ongoing purge operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComponentPurgeStatusResponseInner getPurgeStatus(String resourceGroupName, String resourceName,
         String purgeId) {
@@ -994,11 +806,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplicationInsightsComponentListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1051,11 +859,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplicationInsightsComponentListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

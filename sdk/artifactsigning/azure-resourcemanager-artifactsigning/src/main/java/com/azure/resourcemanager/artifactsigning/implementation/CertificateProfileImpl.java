@@ -123,10 +123,7 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
     }
 
     public CertificateProfile create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateProfiles()
-            .create(resourceGroupName, accountName, profileName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CertificateProfile create(Context context) {
@@ -144,11 +141,7 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
     }
 
     public CertificateProfile refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCertificateProfiles()
-            .getWithResponse(resourceGroupName, accountName, profileName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CertificateProfile refresh(Context context) {

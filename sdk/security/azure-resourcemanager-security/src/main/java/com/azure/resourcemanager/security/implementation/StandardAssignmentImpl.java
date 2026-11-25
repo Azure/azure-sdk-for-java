@@ -108,11 +108,7 @@ public final class StandardAssignmentImpl implements StandardAssignment, Standar
     }
 
     public StandardAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandardAssignments()
-            .createWithResponse(resourceId, standardAssignmentName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StandardAssignment create(Context context) {
@@ -130,11 +126,7 @@ public final class StandardAssignmentImpl implements StandardAssignment, Standar
     }
 
     public StandardAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandardAssignments()
-            .getWithResponse(resourceId, standardAssignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StandardAssignment refresh(Context context) {

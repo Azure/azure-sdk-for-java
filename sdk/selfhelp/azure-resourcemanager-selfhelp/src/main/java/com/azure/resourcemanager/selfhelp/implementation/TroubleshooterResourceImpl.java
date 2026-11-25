@@ -94,11 +94,7 @@ public final class TroubleshooterResourceImpl implements TroubleshooterResource,
     }
 
     public TroubleshooterResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTroubleshooters()
-            .createWithResponse(scope, troubleshooterName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TroubleshooterResource create(Context context) {
@@ -116,11 +112,7 @@ public final class TroubleshooterResourceImpl implements TroubleshooterResource,
     }
 
     public TroubleshooterResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTroubleshooters()
-            .getWithResponse(scope, troubleshooterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TroubleshooterResource refresh(Context context) {

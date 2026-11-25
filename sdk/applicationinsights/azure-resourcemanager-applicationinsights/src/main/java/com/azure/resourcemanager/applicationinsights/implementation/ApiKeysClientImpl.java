@@ -209,12 +209,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentApiKeyInner> listSinglePage(String resourceGroupName,
         String resourceName) {
-        final String apiVersion = "2015-05-01";
-        final String accept = "application/json";
-        Response<ApplicationInsightsComponentAPIKeyListResult> res = service.listSync(this.client.getEndpoint(),
-            apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -239,33 +234,13 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of API keys of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentApiKeyInner> list(String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Gets a list of API keys of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInsightsComponentApiKeyInner> list(String resourceGroupName, String resourceName,
         Context context) {
@@ -319,19 +294,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create an API Key of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param apiKeyProperties Properties that need to be specified to create an API Key of an Application Insights
-     * component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentApiKeyInner> createWithResponse(String resourceGroupName,
         String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
@@ -342,18 +305,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             resourceGroupName, resourceName, contentType, accept, apiKeyProperties, context);
     }
 
-    /**
-     * Create an API Key of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param apiKeyProperties Properties that need to be specified to create an API Key of an Application Insights
-     * component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentApiKeyInner create(String resourceGroupName, String resourceName,
         ApiKeyRequest apiKeyProperties) {
@@ -402,18 +354,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Delete an API Key of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param keyId The API Key ID. This is unique within a Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentApiKeyInner> deleteWithResponse(String resourceGroupName,
         String resourceName, String keyId, Context context) {
@@ -423,17 +364,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             this.client.getSubscriptionId(), resourceName, keyId, accept, context);
     }
 
-    /**
-     * Delete an API Key of an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param keyId The API Key ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentApiKeyInner delete(String resourceGroupName, String resourceName, String keyId) {
         return deleteWithResponse(resourceGroupName, resourceName, keyId, Context.NONE).getValue();
@@ -479,18 +410,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the API Key for this key id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param keyId The API Key ID. This is unique within a Application Insights component.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API Key for this key id along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentApiKeyInner> getWithResponse(String resourceGroupName,
         String resourceName, String keyId, Context context) {
@@ -500,17 +420,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
             this.client.getSubscriptionId(), resourceName, keyId, accept, context);
     }
 
-    /**
-     * Get the API Key for this key id.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param keyId The API Key ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API Key for this key id.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentApiKeyInner get(String resourceGroupName, String resourceName, String keyId) {
         return getWithResponse(resourceGroupName, resourceName, keyId, Context.NONE).getValue();
@@ -547,11 +457,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationInsightsComponentApiKeyInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ApplicationInsightsComponentAPIKeyListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

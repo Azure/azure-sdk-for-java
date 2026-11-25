@@ -67,12 +67,7 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatastores()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), createSkipValidation,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Datastore create(Context context) {
@@ -97,12 +92,7 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatastores()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), updateSkipValidation,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Datastore apply(Context context) {
@@ -130,11 +120,7 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDatastores()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Datastore refresh(Context context) {

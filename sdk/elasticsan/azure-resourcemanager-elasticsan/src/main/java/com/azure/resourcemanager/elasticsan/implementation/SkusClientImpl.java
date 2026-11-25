@@ -160,21 +160,7 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuInformationInner> listSinglePage(String filter) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuInformationList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -206,29 +192,14 @@ public final class SkusClientImpl implements SkusClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all the available Skus in the region and information related to them.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU Information objects as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter), nextLink -> listNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * List all the available Skus in the region and information related to them.
-     * 
-     * @param filter Specify $filter='location eq &lt;location&gt;' to filter on location.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SKU Information objects as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuInformationInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -276,20 +247,7 @@ public final class SkusClientImpl implements SkusClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuInformationInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<SkuInformationList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

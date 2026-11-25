@@ -126,10 +126,7 @@ public final class ApplicationResourceImpl
     }
 
     public ApplicationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .createOrUpdate(resourceGroupName, clusterName, applicationName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ApplicationResource create(Context context) {
@@ -152,10 +149,7 @@ public final class ApplicationResourceImpl
     }
 
     public ApplicationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .update(resourceGroupName, clusterName, applicationName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ApplicationResource apply(Context context) {
@@ -181,11 +175,7 @@ public final class ApplicationResourceImpl
     }
 
     public ApplicationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getApplications()
-            .getWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ApplicationResource refresh(Context context) {

@@ -162,11 +162,7 @@ public final class HcpOperatorIdentityRoleSetsClientImpl implements HcpOperatorI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOperatorIdentityRoleSetInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<HcpOperatorIdentityRoleSetListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -188,32 +184,13 @@ public final class HcpOperatorIdentityRoleSetsClientImpl implements HcpOperatorI
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List HcpOperatorIdentityRoleSet resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOperatorIdentityRoleSet list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOperatorIdentityRoleSetInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * List HcpOperatorIdentityRoleSet resources by SubscriptionLocationResource.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a HcpOperatorIdentityRoleSet list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HcpOperatorIdentityRoleSetInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -256,17 +233,7 @@ public final class HcpOperatorIdentityRoleSetsClientImpl implements HcpOperatorI
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a HcpOperatorIdentityRoleSet.
-     * 
-     * @param location The name of the Azure region.
-     * @param hcpOperatorIdentityRoleSetName The OpenShift minor version these identities are required for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcpOperatorIdentityRoleSet along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HcpOperatorIdentityRoleSetInner> getWithResponse(String location,
         String hcpOperatorIdentityRoleSetName, Context context) {
@@ -275,16 +242,7 @@ public final class HcpOperatorIdentityRoleSetsClientImpl implements HcpOperatorI
             location, hcpOperatorIdentityRoleSetName, accept, context);
     }
 
-    /**
-     * Get a HcpOperatorIdentityRoleSet.
-     * 
-     * @param location The name of the Azure region.
-     * @param hcpOperatorIdentityRoleSetName The OpenShift minor version these identities are required for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a HcpOperatorIdentityRoleSet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOperatorIdentityRoleSetInner get(String location, String hcpOperatorIdentityRoleSetName) {
         return getWithResponse(location, hcpOperatorIdentityRoleSetName, Context.NONE).getValue();
@@ -320,11 +278,7 @@ public final class HcpOperatorIdentityRoleSetsClientImpl implements HcpOperatorI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HcpOperatorIdentityRoleSetInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HcpOperatorIdentityRoleSetListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

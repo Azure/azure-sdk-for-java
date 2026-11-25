@@ -121,11 +121,7 @@ public final class StandardImpl implements Standard, Standard.Definition, Standa
     }
 
     public Standard create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandards()
-            .createOrUpdateWithResponse(resourceGroupName, standardId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Standard create(Context context) {
@@ -147,11 +143,7 @@ public final class StandardImpl implements Standard, Standard.Definition, Standa
     }
 
     public Standard apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandards()
-            .createOrUpdateWithResponse(resourceGroupName, standardId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Standard apply(Context context) {
@@ -174,11 +166,7 @@ public final class StandardImpl implements Standard, Standard.Definition, Standa
     }
 
     public Standard refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStandards()
-            .getByResourceGroupWithResponse(resourceGroupName, standardId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Standard refresh(Context context) {

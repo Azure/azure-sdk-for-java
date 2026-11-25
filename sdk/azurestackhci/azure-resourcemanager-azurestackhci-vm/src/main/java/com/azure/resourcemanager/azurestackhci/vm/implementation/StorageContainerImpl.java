@@ -90,10 +90,7 @@ public final class StorageContainerImpl
     }
 
     public StorageContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageContainers()
-            .createOrUpdate(resourceGroupName, storageContainerName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageContainer create(Context context) {
@@ -116,10 +113,7 @@ public final class StorageContainerImpl
     }
 
     public StorageContainer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageContainers()
-            .update(resourceGroupName, storageContainerName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageContainer apply(Context context) {
@@ -142,11 +136,7 @@ public final class StorageContainerImpl
     }
 
     public StorageContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageContainers()
-            .getByResourceGroupWithResponse(resourceGroupName, storageContainerName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageContainer refresh(Context context) {

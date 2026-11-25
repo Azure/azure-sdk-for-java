@@ -131,11 +131,7 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
     }
 
     public FileImport create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileImports()
-            .createWithResponse(resourceGroupName, workspaceName, fileImportId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FileImport create(Context context) {
@@ -153,11 +149,7 @@ public final class FileImportImpl implements FileImport, FileImport.Definition {
     }
 
     public FileImport refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileImports()
-            .getWithResponse(resourceGroupName, workspaceName, fileImportId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FileImport refresh(Context context) {

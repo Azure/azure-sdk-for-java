@@ -155,15 +155,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
         return createProductSerialNumberWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The createProductSerialNumber operation.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return create Product Serial Number Request status along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductSerialNumberRequestStatusInner> createProductSerialNumberWithResponse(Context context) {
         final String accept = "application/json";
@@ -171,13 +163,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * The createProductSerialNumber operation.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return create Product Serial Number Request status.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductSerialNumberRequestStatusInner createProductSerialNumber() {
         return createProductSerialNumberWithResponse(Context.NONE).getValue();
@@ -211,15 +197,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
         return listCloudManagerTenantsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The listCloudManagerTenants operation.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Manager Tenant along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloudManagerTenantListInner> listCloudManagerTenantsWithResponse(Context context) {
         final String accept = "application/json";
@@ -227,13 +205,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * The listCloudManagerTenants operation.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cloud Manager Tenant.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudManagerTenantListInner listCloudManagerTenants() {
         return listCloudManagerTenantsWithResponse(Context.NONE).getValue();
@@ -268,15 +240,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
         return listProductSerialNumberStatusWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The listProductSerialNumberStatus operation.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product serial and status for the service along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductSerialNumberStatusInner> listProductSerialNumberStatusWithResponse(Context context) {
         final String accept = "application/json";
@@ -284,13 +248,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * The listProductSerialNumberStatus operation.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product serial and status for the service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProductSerialNumberStatusInner listProductSerialNumberStatus() {
         return listProductSerialNumberStatusWithResponse(Context.NONE).getValue();
@@ -324,15 +282,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
         return listSupportInfoWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The listSupportInfo operation.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the service along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SupportInfoModelInner> listSupportInfoWithResponse(Context context) {
         final String accept = "application/json";
@@ -340,13 +290,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * The listSupportInfo operation.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return support information for the service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SupportInfoModelInner listSupportInfo() {
         return listSupportInfoWithResponse(Context.NONE).getValue();

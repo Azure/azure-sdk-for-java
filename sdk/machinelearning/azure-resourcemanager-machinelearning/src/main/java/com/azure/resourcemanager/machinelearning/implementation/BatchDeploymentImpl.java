@@ -106,11 +106,7 @@ public final class BatchDeploymentImpl implements BatchDeployment, BatchDeployme
     }
 
     public BatchDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchDeployments()
-            .createOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BatchDeployment create(Context context) {
@@ -132,10 +128,7 @@ public final class BatchDeploymentImpl implements BatchDeployment, BatchDeployme
     }
 
     public BatchDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchDeployments()
-            .update(resourceGroupName, workspaceName, endpointName, deploymentName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BatchDeployment apply(Context context) {
@@ -164,11 +157,7 @@ public final class BatchDeploymentImpl implements BatchDeployment, BatchDeployme
     }
 
     public BatchDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchDeployments()
-            .getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BatchDeployment refresh(Context context) {

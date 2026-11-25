@@ -265,17 +265,7 @@ public final class LicensesClientImpl implements LicensesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about the view of a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LicenseInner> getByResourceGroupWithResponse(String resourceGroupName, String licenseName,
         Context context) {
@@ -284,16 +274,7 @@ public final class LicensesClientImpl implements LicensesClient {
             this.client.getSubscriptionId(), resourceGroupName, licenseName, accept, context);
     }
 
-    /**
-     * Retrieves information about the view of a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner getByResourceGroup(String resourceGroupName, String licenseName) {
         return getByResourceGroupWithResponse(resourceGroupName, licenseName, Context.NONE).getValue();
@@ -337,11 +318,7 @@ public final class LicensesClientImpl implements LicensesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String licenseName,
         LicenseInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, licenseName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, licenseName, parameters, Context.NONE);
     }
 
     /**
@@ -385,37 +362,14 @@ public final class LicensesClientImpl implements LicensesClient {
             LicenseInner.class, LicenseInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Create license operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(String resourceGroupName,
         String licenseName, LicenseInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, licenseName, parameters);
-        return this.client.<LicenseInner, LicenseInner>getLroResult(response, LicenseInner.class, LicenseInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, licenseName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Create license operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginCreateOrUpdate(String resourceGroupName,
         String licenseName, LicenseInner parameters, Context context) {
@@ -442,38 +396,18 @@ public final class LicensesClientImpl implements LicensesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Create license operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner createOrUpdate(String resourceGroupName, String licenseName, LicenseInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, licenseName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, licenseName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Create license operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner createOrUpdate(String resourceGroupName, String licenseName, LicenseInner parameters,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, licenseName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, licenseName, parameters, context));
     }
 
     /**
@@ -512,11 +446,7 @@ public final class LicensesClientImpl implements LicensesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String licenseName,
         LicenseUpdate parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, licenseName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, licenseName, parameters, Context.NONE);
     }
 
     /**
@@ -559,37 +489,14 @@ public final class LicensesClientImpl implements LicensesClient {
             LicenseInner.class, LicenseInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Update license operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginUpdate(String resourceGroupName, String licenseName,
         LicenseUpdate parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, licenseName, parameters);
-        return this.client.<LicenseInner, LicenseInner>getLroResult(response, LicenseInner.class, LicenseInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, licenseName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Update license operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginUpdate(String resourceGroupName, String licenseName,
         LicenseUpdate parameters, Context context) {
@@ -615,38 +522,17 @@ public final class LicensesClientImpl implements LicensesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Update license operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner update(String resourceGroupName, String licenseName, LicenseUpdate parameters) {
-        return beginUpdate(resourceGroupName, licenseName, parameters).getFinalResult();
+        return update(resourceGroupName, licenseName, parameters, Context.NONE);
     }
 
-    /**
-     * The operation to update a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param parameters Parameters supplied to the Update license operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner update(String resourceGroupName, String licenseName, LicenseUpdate parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, licenseName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, licenseName, parameters, context));
     }
 
     /**
@@ -679,8 +565,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String licenseName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, licenseName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, licenseName, Context.NONE);
     }
 
     /**
@@ -717,33 +602,13 @@ public final class LicensesClientImpl implements LicensesClient {
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String licenseName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, licenseName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, licenseName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String licenseName,
         Context context) {
@@ -766,33 +631,16 @@ public final class LicensesClientImpl implements LicensesClient {
         return beginDeleteAsync(resourceGroupName, licenseName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String licenseName) {
-        beginDelete(resourceGroupName, licenseName).getFinalResult();
+        delete(resourceGroupName, licenseName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a license.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param licenseName The name of the license.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String licenseName, Context context) {
-        beginDelete(resourceGroupName, licenseName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, licenseName, context));
     }
 
     /**
@@ -842,11 +690,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<LicensesListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -868,31 +712,13 @@ public final class LicensesClientImpl implements LicensesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The operation to get all licenses of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of License items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * The operation to get all licenses of a non-Azure machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of License items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -940,11 +766,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<LicensesListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -965,27 +787,13 @@ public final class LicensesClientImpl implements LicensesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * The operation to get all licenses of a non-Azure machine.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of License items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * The operation to get all licenses of a non-Azure machine.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of License items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1023,10 +831,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateLicenseWithResponse(LicenseInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateLicenseSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), contentType, accept, parameters, Context.NONE);
+        return validateLicenseWithResponse(parameters, Context.NONE);
     }
 
     /**
@@ -1063,32 +868,13 @@ public final class LicensesClientImpl implements LicensesClient {
             LicenseInner.class, LicenseInner.class, this.client.getContext());
     }
 
-    /**
-     * The operation to validate a license.
-     * 
-     * @param parameters The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(LicenseInner parameters) {
-        Response<BinaryData> response = validateLicenseWithResponse(parameters);
-        return this.client.<LicenseInner, LicenseInner>getLroResult(response, LicenseInner.class, LicenseInner.class,
-            Context.NONE);
+        return beginValidateLicense(parameters, Context.NONE);
     }
 
-    /**
-     * The operation to validate a license.
-     * 
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(LicenseInner parameters,
         Context context) {
@@ -1111,33 +897,16 @@ public final class LicensesClientImpl implements LicensesClient {
         return beginValidateLicenseAsync(parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to validate a license.
-     * 
-     * @param parameters The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner validateLicense(LicenseInner parameters) {
-        return beginValidateLicense(parameters).getFinalResult();
+        return validateLicense(parameters, Context.NONE);
     }
 
-    /**
-     * The operation to validate a license.
-     * 
-     * @param parameters The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a license in a hybrid machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LicenseInner validateLicense(LicenseInner parameters, Context context) {
-        return beginValidateLicense(parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginValidateLicense(parameters, context));
     }
 
     /**
@@ -1172,11 +941,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LicensesListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1230,11 +995,7 @@ public final class LicensesClientImpl implements LicensesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LicenseInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LicensesListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
