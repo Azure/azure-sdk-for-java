@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -17,6 +18,7 @@ public final class DataLakeFileInputStreamOptions {
     private DataLakeRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
+    private LayoutAwareRouting layoutAwareRouting;
     private Boolean userPrincipalName;
 
     /**
@@ -114,6 +116,26 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
+     * Gets the {@link LayoutAwareRouting}.
+     *
+     * @return {@link LayoutAwareRouting}
+     */
+    public LayoutAwareRouting getLayoutAwareRouting() {
+        return layoutAwareRouting;
+    }
+
+    /**
+     * Sets the {@link LayoutAwareRouting}.
+     *
+     * @param layoutAwareRouting {@link LayoutAwareRouting}
+     * @return The updated options.
+     */
+    public DataLakeFileInputStreamOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        this.layoutAwareRouting = layoutAwareRouting;
+        return this;
+    }
+
+    /**
      * Gets the value for the x-ms-upn header.
      *
      * @return The value for the x-ms-upn header.
@@ -132,4 +154,5 @@ public final class DataLakeFileInputStreamOptions {
         this.userPrincipalName = userPrincipalName;
         return this;
     }
+
 }

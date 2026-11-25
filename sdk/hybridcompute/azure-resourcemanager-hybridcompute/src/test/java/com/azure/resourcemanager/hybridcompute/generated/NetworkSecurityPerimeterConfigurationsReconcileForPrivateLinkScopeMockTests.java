@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class NetworkSecurityPerimeterConfigurationsReconcileForPrivateLinkScopeMockTests {
     @Test
     public void testReconcileForPrivateLinkScope() throws Exception {
-        String responseStr = "{\"location\":\"oakizvoai\"}";
+        String responseStr = "{\"location\":\"ijjj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class NetworkSecurityPerimeterConfigurationsReconcileForPrivateLink
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkSecurityPerimeterConfigurationReconcileResult response = manager.networkSecurityPerimeterConfigurations()
-            .reconcileForPrivateLinkScope("nu", "tggmuwdchozfnkfe", "lv", com.azure.core.util.Context.NONE);
+            .reconcileForPrivateLinkScope("gxhqfgqkayejs", "tlgflwfgz", "iucijjcea", com.azure.core.util.Context.NONE);
 
     }
 }

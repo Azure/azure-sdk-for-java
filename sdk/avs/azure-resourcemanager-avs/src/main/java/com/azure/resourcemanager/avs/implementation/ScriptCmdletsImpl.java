@@ -28,9 +28,7 @@ public final class ScriptCmdletsImpl implements ScriptCmdlets {
 
     public PagedIterable<ScriptCmdlet> list(String resourceGroupName, String privateCloudName,
         String scriptPackageName) {
-        PagedIterable<ScriptCmdletInner> inner
-            = this.serviceClient().list(resourceGroupName, privateCloudName, scriptPackageName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScriptCmdletImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, privateCloudName, scriptPackageName, Context.NONE);
     }
 
     public PagedIterable<ScriptCmdlet> list(String resourceGroupName, String privateCloudName, String scriptPackageName,

@@ -9,7 +9,20 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Workspaces_List.json
+     * x-ms-original-file: 2026-11-01/Workspaces_List_EncryptionPending.json
+     */
+    /**
+     * Sample code: List CMK-created Workspaces with customer key replacement pending.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void listCMKCreatedWorkspacesWithCustomerKeyReplacementPending(
+        com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces().listByResourceGroup("exampleRG", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-01/Workspaces_List.json
      */
     /**
      * Sample code: List all Workspaces in a resource group.

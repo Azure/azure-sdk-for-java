@@ -190,10 +190,7 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkDevices()
-            .create(resourceGroupName, networkDeviceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkDevice create(Context context) {
@@ -216,10 +213,7 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkDevices()
-            .update(resourceGroupName, networkDeviceName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public NetworkDevice apply(Context context) {
@@ -242,11 +236,7 @@ public final class NetworkDeviceImpl implements NetworkDevice, NetworkDevice.Def
     }
 
     public NetworkDevice refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkDevices()
-            .getByResourceGroupWithResponse(resourceGroupName, networkDeviceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkDevice refresh(Context context) {

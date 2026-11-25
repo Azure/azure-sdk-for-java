@@ -478,20 +478,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param expand Specify the $expand query. Example:
-     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LabVirtualMachineInner> getWithResponse(String resourceGroupName, String labName, String name,
         String expand, Context context) {
@@ -500,17 +487,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             resourceGroupName, labName, name, expand, accept, context);
     }
 
-    /**
-     * Get virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabVirtualMachineInner get(String resourceGroupName, String labName, String name) {
         final String expand = null;
@@ -556,11 +533,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
         LabVirtualMachineInner labVirtualMachine) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, contentType, accept, labVirtualMachine,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, labName, name, labVirtualMachine, Context.NONE);
     }
 
     /**
@@ -608,39 +581,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Create or replace an existing virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param labVirtualMachine A virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LabVirtualMachineInner>, LabVirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, LabVirtualMachineInner labVirtualMachine) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, labName, name, labVirtualMachine);
-        return this.client.<LabVirtualMachineInner, LabVirtualMachineInner>getLroResult(response,
-            LabVirtualMachineInner.class, LabVirtualMachineInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, labName, name, labVirtualMachine, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param labVirtualMachine A virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LabVirtualMachineInner>, LabVirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, LabVirtualMachineInner labVirtualMachine,
@@ -670,41 +618,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or replace an existing virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param labVirtualMachine A virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabVirtualMachineInner createOrUpdate(String resourceGroupName, String labName, String name,
         LabVirtualMachineInner labVirtualMachine) {
-        return beginCreateOrUpdate(resourceGroupName, labName, name, labVirtualMachine).getFinalResult();
+        return createOrUpdate(resourceGroupName, labName, name, labVirtualMachine, Context.NONE);
     }
 
-    /**
-     * Create or replace an existing virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param labVirtualMachine A virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabVirtualMachineInner createOrUpdate(String resourceGroupName, String labName, String name,
         LabVirtualMachineInner labVirtualMachine, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, labName, name, labVirtualMachine, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, labName, name, labVirtualMachine, context));
     }
 
     /**
@@ -750,19 +676,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of virtual machines. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param labVirtualMachine A virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LabVirtualMachineInner> updateWithResponse(String resourceGroupName, String labName, String name,
         LabVirtualMachineFragment labVirtualMachine, Context context) {
@@ -773,18 +687,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             context);
     }
 
-    /**
-     * Allows modifying tags of virtual machines. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param labVirtualMachine A virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LabVirtualMachineInner update(String resourceGroupName, String labName, String name,
         LabVirtualMachineFragment labVirtualMachine) {
@@ -824,8 +727,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String labName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -865,35 +767,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Delete virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name,
         Context context) {
@@ -917,35 +797,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         return beginDeleteAsync(resourceGroupName, labName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String name) {
-        beginDelete(resourceGroupName, labName, name).getFinalResult();
+        delete(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Delete virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String name, Context context) {
-        beginDelete(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -1035,12 +896,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabVirtualMachineInner> listSinglePage(String resourceGroupName, String labName,
         String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<LabVirtualMachineList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -1069,42 +925,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List virtual machines in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabVirtualMachineInner> list(String resourceGroupName, String labName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, labName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List virtual machines in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param expand Specify the $expand query. Example:
-     * 'properties($expand=artifacts,computeVm,networkInterface,applicableSchedule)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LabVirtualMachineInner> list(String resourceGroupName, String labName, String expand,
         String filter, Integer top, String orderby, Context context) {
@@ -1151,10 +982,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> addDataDiskWithResponse(String resourceGroupName, String labName, String name,
         DataDiskProperties dataDiskProperties) {
-        final String contentType = "application/json";
-        return service.addDataDiskSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, contentType, dataDiskProperties,
-            Context.NONE);
+        return addDataDiskWithResponse(resourceGroupName, labName, name, dataDiskProperties, Context.NONE);
     }
 
     /**
@@ -1200,38 +1028,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param dataDiskProperties Request body for adding a new or existing data disk to a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddDataDisk(String resourceGroupName, String labName, String name,
         DataDiskProperties dataDiskProperties) {
-        Response<BinaryData> response = addDataDiskWithResponse(resourceGroupName, labName, name, dataDiskProperties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginAddDataDisk(resourceGroupName, labName, name, dataDiskProperties, Context.NONE);
     }
 
-    /**
-     * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param dataDiskProperties Request body for adding a new or existing data disk to a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAddDataDisk(String resourceGroupName, String labName, String name,
         DataDiskProperties dataDiskProperties, Context context) {
@@ -1259,39 +1063,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param dataDiskProperties Request body for adding a new or existing data disk to a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addDataDisk(String resourceGroupName, String labName, String name,
         DataDiskProperties dataDiskProperties) {
-        beginAddDataDisk(resourceGroupName, labName, name, dataDiskProperties).getFinalResult();
+        addDataDisk(resourceGroupName, labName, name, dataDiskProperties, Context.NONE);
     }
 
-    /**
-     * Attach a new or existing data disk to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param dataDiskProperties Request body for adding a new or existing data disk to a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addDataDisk(String resourceGroupName, String labName, String name,
         DataDiskProperties dataDiskProperties, Context context) {
-        beginAddDataDisk(resourceGroupName, labName, name, dataDiskProperties, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginAddDataDisk(resourceGroupName, labName, name, dataDiskProperties, context));
     }
 
     /**
@@ -1332,10 +1116,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> applyArtifactsWithResponse(String resourceGroupName, String labName, String name,
         ApplyArtifactsRequest applyArtifactsRequest) {
-        final String contentType = "application/json";
-        return service.applyArtifactsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, contentType, applyArtifactsRequest,
-            Context.NONE);
+        return applyArtifactsWithResponse(resourceGroupName, labName, name, applyArtifactsRequest, Context.NONE);
     }
 
     /**
@@ -1381,39 +1162,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Apply artifacts to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param applyArtifactsRequest Request body for applying artifacts to a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginApplyArtifacts(String resourceGroupName, String labName, String name,
         ApplyArtifactsRequest applyArtifactsRequest) {
-        Response<BinaryData> response
-            = applyArtifactsWithResponse(resourceGroupName, labName, name, applyArtifactsRequest);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginApplyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest, Context.NONE);
     }
 
-    /**
-     * Apply artifacts to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param applyArtifactsRequest Request body for applying artifacts to a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginApplyArtifacts(String resourceGroupName, String labName, String name,
         ApplyArtifactsRequest applyArtifactsRequest, Context context) {
@@ -1441,39 +1197,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Apply artifacts to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param applyArtifactsRequest Request body for applying artifacts to a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void applyArtifacts(String resourceGroupName, String labName, String name,
         ApplyArtifactsRequest applyArtifactsRequest) {
-        beginApplyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest).getFinalResult();
+        applyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest, Context.NONE);
     }
 
-    /**
-     * Apply artifacts to virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param applyArtifactsRequest Request body for applying artifacts to a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void applyArtifacts(String resourceGroupName, String labName, String name,
         ApplyArtifactsRequest applyArtifactsRequest, Context context) {
-        beginApplyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginApplyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest, context));
     }
 
     /**
@@ -1509,8 +1245,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> claimWithResponse(String resourceGroupName, String labName, String name) {
-        return service.claimSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return claimWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -1550,35 +1285,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Take ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaim(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = claimWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginClaim(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Take ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaim(String resourceGroupName, String labName, String name,
         Context context) {
@@ -1602,35 +1315,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         return beginClaimAsync(resourceGroupName, labName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Take ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void claim(String resourceGroupName, String labName, String name) {
-        beginClaim(resourceGroupName, labName, name).getFinalResult();
+        claim(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Take ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void claim(String resourceGroupName, String labName, String name, Context context) {
-        beginClaim(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginClaim(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -1671,10 +1365,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> detachDataDiskWithResponse(String resourceGroupName, String labName, String name,
         DetachDataDiskProperties detachDataDiskProperties) {
-        final String contentType = "application/json";
-        return service.detachDataDiskSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, contentType, detachDataDiskProperties,
-            Context.NONE);
+        return detachDataDiskWithResponse(resourceGroupName, labName, name, detachDataDiskProperties, Context.NONE);
     }
 
     /**
@@ -1720,39 +1411,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param detachDataDiskProperties Request body for detaching data disk from a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachDataDisk(String resourceGroupName, String labName, String name,
         DetachDataDiskProperties detachDataDiskProperties) {
-        Response<BinaryData> response
-            = detachDataDiskWithResponse(resourceGroupName, labName, name, detachDataDiskProperties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDetachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, Context.NONE);
     }
 
-    /**
-     * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param detachDataDiskProperties Request body for detaching data disk from a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachDataDisk(String resourceGroupName, String labName, String name,
         DetachDataDiskProperties detachDataDiskProperties, Context context) {
@@ -1780,39 +1446,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param detachDataDiskProperties Request body for detaching data disk from a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachDataDisk(String resourceGroupName, String labName, String name,
         DetachDataDiskProperties detachDataDiskProperties) {
-        beginDetachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties).getFinalResult();
+        detachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, Context.NONE);
     }
 
-    /**
-     * Detach the specified disk from the virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param detachDataDiskProperties Request body for detaching data disk from a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachDataDisk(String resourceGroupName, String labName, String name,
         DetachDataDiskProperties detachDataDiskProperties, Context context) {
-        beginDetachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDetachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, context));
     }
 
     /**
@@ -1855,19 +1501,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a string that represents the contents of the RDP file for the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a string that represents the contents of the RDP file for the virtual machine along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RdpConnectionInner> getRdpFileContentsWithResponse(String resourceGroupName, String labName,
         String name, Context context) {
@@ -1876,17 +1510,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getSubscriptionId(), resourceGroupName, labName, name, accept, context);
     }
 
-    /**
-     * Gets a string that represents the contents of the RDP file for the virtual machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a string that represents the contents of the RDP file for the virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RdpConnectionInner getRdpFileContents(String resourceGroupName, String labName, String name) {
         return getRdpFileContentsWithResponse(resourceGroupName, labName, name, Context.NONE).getValue();
@@ -1933,18 +1557,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the applicable start/stop schedules, if any.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicableScheduleInner> listApplicableSchedulesWithResponse(String resourceGroupName,
         String labName, String name, Context context) {
@@ -1953,17 +1566,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getSubscriptionId(), resourceGroupName, labName, name, accept, context);
     }
 
-    /**
-     * Lists the applicable start/stop schedules, if any.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicableScheduleInner listApplicableSchedules(String resourceGroupName, String labName, String name) {
         return listApplicableSchedulesWithResponse(resourceGroupName, labName, name, Context.NONE).getValue();
@@ -2002,8 +1605,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> redeployWithResponse(String resourceGroupName, String labName, String name) {
-        return service.redeploySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return redeployWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -2044,35 +1646,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Redeploy a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = redeployWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRedeploy(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Redeploy a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String labName, String name,
         Context context) {
@@ -2097,35 +1677,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Redeploy a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String labName, String name) {
-        beginRedeploy(resourceGroupName, labName, name).getFinalResult();
+        redeploy(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Redeploy a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String labName, String name, Context context) {
-        beginRedeploy(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRedeploy(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -2166,10 +1727,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resizeWithResponse(String resourceGroupName, String labName, String name,
         ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties) {
-        final String contentType = "application/json";
-        return service.resizeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, contentType,
-            resizeLabVirtualMachineProperties, Context.NONE);
+        return resizeWithResponse(resourceGroupName, labName, name, resizeLabVirtualMachineProperties, Context.NONE);
     }
 
     /**
@@ -2215,39 +1773,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Resize Virtual Machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param resizeLabVirtualMachineProperties Request body for resizing a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResize(String resourceGroupName, String labName, String name,
         ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties) {
-        Response<BinaryData> response
-            = resizeWithResponse(resourceGroupName, labName, name, resizeLabVirtualMachineProperties);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginResize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties, Context.NONE);
     }
 
-    /**
-     * Resize Virtual Machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param resizeLabVirtualMachineProperties Request body for resizing a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResize(String resourceGroupName, String labName, String name,
         ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties, Context context) {
@@ -2275,39 +1808,19 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resize Virtual Machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param resizeLabVirtualMachineProperties Request body for resizing a virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resize(String resourceGroupName, String labName, String name,
         ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties) {
-        beginResize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties).getFinalResult();
+        resize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties, Context.NONE);
     }
 
-    /**
-     * Resize Virtual Machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param resizeLabVirtualMachineProperties Request body for resizing a virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resize(String resourceGroupName, String labName, String name,
         ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties, Context context) {
-        beginResize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginResize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties, context));
     }
 
     /**
@@ -2343,8 +1856,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String labName, String name) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return restartWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -2385,35 +1897,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Restart a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Restart a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String labName, String name,
         Context context) {
@@ -2438,35 +1928,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restart a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String labName, String name) {
-        beginRestart(resourceGroupName, labName, name).getFinalResult();
+        restart(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Restart a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String labName, String name, Context context) {
-        beginRestart(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRestart(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -2502,8 +1973,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String labName, String name) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return startWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -2543,35 +2013,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Start a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Start a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String labName, String name,
         Context context) {
@@ -2595,35 +2043,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         return beginStartAsync(resourceGroupName, labName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Start a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String labName, String name) {
-        beginStart(resourceGroupName, labName, name).getFinalResult();
+        start(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Start a virtual machine. This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String labName, String name, Context context) {
-        beginStart(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -2659,8 +2088,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String labName, String name) {
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, labName, name, Context.NONE);
+        return stopWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -2700,35 +2128,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Stop a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Stop a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String labName, String name,
         Context context) {
@@ -2752,35 +2158,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
         return beginStopAsync(resourceGroupName, labName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stop a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String labName, String name) {
-        beginStop(resourceGroupName, labName, name).getFinalResult();
+        stop(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Stop a virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String labName, String name, Context context) {
-        beginStop(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStop(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -2818,8 +2205,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> transferDisksWithResponse(String resourceGroupName, String labName, String name) {
-        return service.transferDisksSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return transferDisksWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -2862,38 +2248,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
-     * a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTransferDisks(String resourceGroupName, String labName,
         String name) {
-        Response<BinaryData> response = transferDisksWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginTransferDisks(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
-     * a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTransferDisks(String resourceGroupName, String labName, String name,
         Context context) {
@@ -2919,37 +2281,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
-     * a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void transferDisks(String resourceGroupName, String labName, String name) {
-        beginTransferDisks(resourceGroupName, labName, name).getFinalResult();
+        transferDisks(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Transfers all data disks attached to the virtual machine to be owned by the current user. This operation can take
-     * a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void transferDisks(String resourceGroupName, String labName, String name, Context context) {
-        beginTransferDisks(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginTransferDisks(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -2985,8 +2326,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> unClaimWithResponse(String resourceGroupName, String labName, String name) {
-        return service.unClaimSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, labName, name, Context.NONE);
+        return unClaimWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     /**
@@ -3027,35 +2367,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             this.client.getContext());
     }
 
-    /**
-     * Release ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnClaim(String resourceGroupName, String labName, String name) {
-        Response<BinaryData> response = unClaimWithResponse(resourceGroupName, labName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginUnClaim(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Release ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnClaim(String resourceGroupName, String labName, String name,
         Context context) {
@@ -3080,35 +2398,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Release ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unClaim(String resourceGroupName, String labName, String name) {
-        beginUnClaim(resourceGroupName, labName, name).getFinalResult();
+        unClaim(resourceGroupName, labName, name, Context.NONE);
     }
 
-    /**
-     * Release ownership of an existing virtual machine This operation can take a while to complete.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void unClaim(String resourceGroupName, String labName, String name, Context context) {
-        beginUnClaim(resourceGroupName, labName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginUnClaim(resourceGroupName, labName, name, context));
     }
 
     /**
@@ -3141,11 +2440,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<LabVirtualMachineInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LabVirtualMachineList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

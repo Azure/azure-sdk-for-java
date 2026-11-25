@@ -93,11 +93,7 @@ public final class IspCacheNodeResourceImpl
     }
 
     public IspCacheNodeResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCacheNodesOperations()
-            .createOrUpdate(resourceGroupName, customerResourceName, cacheNodeResourceName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IspCacheNodeResource create(Context context) {
@@ -120,12 +116,7 @@ public final class IspCacheNodeResourceImpl
     }
 
     public IspCacheNodeResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCacheNodesOperations()
-            .updateWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, updateProperties,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public IspCacheNodeResource apply(Context context) {
@@ -153,11 +144,7 @@ public final class IspCacheNodeResourceImpl
     }
 
     public IspCacheNodeResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIspCacheNodesOperations()
-            .getWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IspCacheNodeResource refresh(Context context) {

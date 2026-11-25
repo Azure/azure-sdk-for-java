@@ -4,12 +4,12 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.models.AIProjectIndex;
-import com.azure.ai.projects.models.AgentInsightMonitorUpdate;
-import com.azure.ai.projects.models.AgentInsightUpdate;
-import com.azure.ai.projects.models.AgentInsightsOverviewOverride;
+import com.azure.ai.projects.models.AgentInsightPriorities;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.EmbeddingConfiguration;
 import com.azure.ai.projects.models.FieldMapping;
+import com.azure.ai.projects.models.UpdateAgentInsightMonitorOptions;
+import com.azure.ai.projects.models.UpdateAgentInsightOptions;
 import com.azure.ai.projects.models.UpdateModelVersionInput;
 import java.util.Map;
 
@@ -17,60 +17,6 @@ import java.util.Map;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
-
-    private static AgentInsightMonitorUpdateAccessor agentInsightMonitorUpdateAccessor;
-
-    public interface AgentInsightMonitorUpdateAccessor {
-
-        AgentInsightMonitorUpdate prepareModelForJsonMergePatch(AgentInsightMonitorUpdate agentInsightMonitorUpdate,
-            boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(AgentInsightMonitorUpdate agentInsightMonitorUpdate);
-    }
-
-    public static void setAgentInsightMonitorUpdateAccessor(AgentInsightMonitorUpdateAccessor accessor) {
-        agentInsightMonitorUpdateAccessor = accessor;
-    }
-
-    public static AgentInsightMonitorUpdateAccessor getAgentInsightMonitorUpdateAccessor() {
-        return agentInsightMonitorUpdateAccessor;
-    }
-
-    private static AgentInsightsOverviewOverrideAccessor agentInsightsOverviewOverrideAccessor;
-
-    public interface AgentInsightsOverviewOverrideAccessor {
-
-        AgentInsightsOverviewOverride prepareModelForJsonMergePatch(
-            AgentInsightsOverviewOverride agentInsightsOverviewOverride, boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(AgentInsightsOverviewOverride agentInsightsOverviewOverride);
-    }
-
-    public static void setAgentInsightsOverviewOverrideAccessor(AgentInsightsOverviewOverrideAccessor accessor) {
-        agentInsightsOverviewOverrideAccessor = accessor;
-    }
-
-    public static AgentInsightsOverviewOverrideAccessor getAgentInsightsOverviewOverrideAccessor() {
-        return agentInsightsOverviewOverrideAccessor;
-    }
-
-    private static AgentInsightUpdateAccessor agentInsightUpdateAccessor;
-
-    public interface AgentInsightUpdateAccessor {
-
-        AgentInsightUpdate prepareModelForJsonMergePatch(AgentInsightUpdate agentInsightUpdate,
-            boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(AgentInsightUpdate agentInsightUpdate);
-    }
-
-    public static void setAgentInsightUpdateAccessor(AgentInsightUpdateAccessor accessor) {
-        agentInsightUpdateAccessor = accessor;
-    }
-
-    public static AgentInsightUpdateAccessor getAgentInsightUpdateAccessor() {
-        return agentInsightUpdateAccessor;
-    }
 
     private static UpdateModelVersionInputAccessor updateModelVersionInputAccessor;
 
@@ -88,6 +34,60 @@ public class JsonMergePatchHelper {
 
     public static UpdateModelVersionInputAccessor getUpdateModelVersionInputAccessor() {
         return updateModelVersionInputAccessor;
+    }
+
+    private static AgentInsightPrioritiesAccessor agentInsightPrioritiesAccessor;
+
+    public interface AgentInsightPrioritiesAccessor {
+
+        AgentInsightPriorities prepareModelForJsonMergePatch(AgentInsightPriorities agentInsightPriorities,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(AgentInsightPriorities agentInsightPriorities);
+    }
+
+    public static void setAgentInsightPrioritiesAccessor(AgentInsightPrioritiesAccessor accessor) {
+        agentInsightPrioritiesAccessor = accessor;
+    }
+
+    public static AgentInsightPrioritiesAccessor getAgentInsightPrioritiesAccessor() {
+        return agentInsightPrioritiesAccessor;
+    }
+
+    private static UpdateAgentInsightMonitorOptionsAccessor updateAgentInsightMonitorOptionsAccessor;
+
+    public interface UpdateAgentInsightMonitorOptionsAccessor {
+
+        UpdateAgentInsightMonitorOptions prepareModelForJsonMergePatch(
+            UpdateAgentInsightMonitorOptions updateAgentInsightMonitorOptions, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateAgentInsightMonitorOptions updateAgentInsightMonitorOptions);
+    }
+
+    public static void setUpdateAgentInsightMonitorOptionsAccessor(UpdateAgentInsightMonitorOptionsAccessor accessor) {
+        updateAgentInsightMonitorOptionsAccessor = accessor;
+    }
+
+    public static UpdateAgentInsightMonitorOptionsAccessor getUpdateAgentInsightMonitorOptionsAccessor() {
+        return updateAgentInsightMonitorOptionsAccessor;
+    }
+
+    private static UpdateAgentInsightOptionsAccessor updateAgentInsightOptionsAccessor;
+
+    public interface UpdateAgentInsightOptionsAccessor {
+
+        UpdateAgentInsightOptions prepareModelForJsonMergePatch(UpdateAgentInsightOptions updateAgentInsightOptions,
+            boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateAgentInsightOptions updateAgentInsightOptions);
+    }
+
+    public static void setUpdateAgentInsightOptionsAccessor(UpdateAgentInsightOptionsAccessor accessor) {
+        updateAgentInsightOptionsAccessor = accessor;
+    }
+
+    public static UpdateAgentInsightOptionsAccessor getUpdateAgentInsightOptionsAccessor() {
+        return updateAgentInsightOptionsAccessor;
     }
 
     private static DatasetVersionAccessor datasetVersionAccessor;

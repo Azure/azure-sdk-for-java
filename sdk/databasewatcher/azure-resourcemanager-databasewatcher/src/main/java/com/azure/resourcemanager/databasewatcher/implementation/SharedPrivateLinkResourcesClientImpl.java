@@ -204,18 +204,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SharedPrivateLinkResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedPrivateLinkResourceInner> getWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, Context context) {
@@ -224,17 +213,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             resourceGroupName, watcherName, sharedPrivateLinkResourceName, accept, context);
     }
 
-    /**
-     * Get a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SharedPrivateLinkResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner get(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName) {
@@ -282,11 +261,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, watcherName, sharedPrivateLinkResourceName, contentType,
-            accept, resource, Context.NONE);
+        return createWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName, resource,
+            Context.NONE);
     }
 
     /**
@@ -337,43 +313,15 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             this.client.getContext());
     }
 
-    /**
-     * Create a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreate(
         String resourceGroupName, String watcherName, String sharedPrivateLinkResourceName,
         SharedPrivateLinkResourceInner resource) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName, resource);
-        return this.client.<SharedPrivateLinkResourceInner, SharedPrivateLinkResourceInner>getLroResult(response,
-            SharedPrivateLinkResourceInner.class, SharedPrivateLinkResourceInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, watcherName, sharedPrivateLinkResourceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreate(
         String resourceGroupName, String watcherName, String sharedPrivateLinkResourceName,
@@ -404,42 +352,19 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner create(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner resource) {
-        return beginCreate(resourceGroupName, watcherName, sharedPrivateLinkResourceName, resource).getFinalResult();
+        return create(resourceGroupName, watcherName, sharedPrivateLinkResourceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner create(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner resource, Context context) {
-        return beginCreate(resourceGroupName, watcherName, sharedPrivateLinkResourceName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, watcherName, sharedPrivateLinkResourceName, resource, context));
     }
 
     /**
@@ -475,9 +400,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, watcherName, sharedPrivateLinkResourceName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName, Context.NONE);
     }
 
     /**
@@ -519,37 +442,14 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             this.client.getContext());
     }
 
-    /**
-     * Delete a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, watcherName, sharedPrivateLinkResourceName, Context.NONE);
     }
 
-    /**
-     * Delete a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String watcherName,
         String sharedPrivateLinkResourceName, Context context) {
@@ -575,36 +475,18 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName, String sharedPrivateLinkResourceName) {
-        beginDelete(resourceGroupName, watcherName, sharedPrivateLinkResourceName).getFinalResult();
+        delete(resourceGroupName, watcherName, sharedPrivateLinkResourceName, Context.NONE);
     }
 
-    /**
-     * Delete a SharedPrivateLinkResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param sharedPrivateLinkResourceName The Shared Private Link resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String watcherName, String sharedPrivateLinkResourceName,
         Context context) {
-        beginDelete(resourceGroupName, watcherName, sharedPrivateLinkResourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, watcherName, sharedPrivateLinkResourceName, context));
     }
 
     /**
@@ -659,12 +541,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listByWatcherSinglePage(String resourceGroupName,
         String watcherName) {
-        final String accept = "application/json";
-        Response<SharedPrivateLinkResourceListResult> res
-            = service.listByWatcherSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, watcherName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWatcherSinglePage(resourceGroupName, watcherName, Context.NONE);
     }
 
     /**
@@ -689,35 +566,13 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List SharedPrivateLinkResource resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SharedPrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> listByWatcher(String resourceGroupName, String watcherName) {
-        return new PagedIterable<>(() -> listByWatcherSinglePage(resourceGroupName, watcherName),
-            nextLink -> listByWatcherNextSinglePage(nextLink));
+        return listByWatcher(resourceGroupName, watcherName, Context.NONE);
     }
 
-    /**
-     * List SharedPrivateLinkResource resources by Watcher.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param watcherName The database watcher name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SharedPrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> listByWatcher(String resourceGroupName, String watcherName,
         Context context) {
@@ -756,11 +611,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SharedPrivateLinkResourceInner> listByWatcherNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SharedPrivateLinkResourceListResult> res
-            = service.listByWatcherNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWatcherNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

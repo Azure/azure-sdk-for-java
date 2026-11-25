@@ -47,7 +47,7 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String azureKeyVaultSecretProviderClassName) {
-        this.serviceClient().delete(resourceGroupName, azureKeyVaultSecretProviderClassName);
+        this.delete(resourceGroupName, azureKeyVaultSecretProviderClassName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String azureKeyVaultSecretProviderClassName, Context context) {
@@ -55,10 +55,7 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public PagedIterable<AzureKeyVaultSecretProviderClass> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<AzureKeyVaultSecretProviderClassInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new AzureKeyVaultSecretProviderClassImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<AzureKeyVaultSecretProviderClass> listByResourceGroup(String resourceGroupName,
@@ -70,9 +67,7 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public PagedIterable<AzureKeyVaultSecretProviderClass> list() {
-        PagedIterable<AzureKeyVaultSecretProviderClassInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new AzureKeyVaultSecretProviderClassImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<AzureKeyVaultSecretProviderClass> list(Context context) {
@@ -82,76 +77,30 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public AzureKeyVaultSecretProviderClass getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "azureKeyVaultSecretProviderClassName");
-        if (azureKeyVaultSecretProviderClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));
-        }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<AzureKeyVaultSecretProviderClass> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "azureKeyVaultSecretProviderClassName");
-        if (azureKeyVaultSecretProviderClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));
-        }
+            "azureKeyVaultSecretProviderClassName", "azureKeyVaultSecretProviderClasses", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "azureKeyVaultSecretProviderClassName");
-        if (azureKeyVaultSecretProviderClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));
-        }
-        this.delete(resourceGroupName, azureKeyVaultSecretProviderClassName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
-            "azureKeyVaultSecretProviderClassName");
-        if (azureKeyVaultSecretProviderClassName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));
-        }
+            "azureKeyVaultSecretProviderClassName", "azureKeyVaultSecretProviderClasses", LOGGER);
         this.delete(resourceGroupName, azureKeyVaultSecretProviderClassName, context);
     }
 

@@ -124,20 +124,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Uploads a certificate for a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param certificateName Certificate friendly name.
-     * @param certificateRequest Input parameters for uploading the vault certificate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultCertificateResponseInner> createWithResponse(String resourceGroupName, String vaultName,
         String certificateName, CertificateRequest certificateRequest, Context context) {
@@ -148,18 +135,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
             certificateRequest, context);
     }
 
-    /**
-     * Uploads a certificate for a resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the recovery services vault.
-     * @param certificateName Certificate friendly name.
-     * @param certificateRequest Input parameters for uploading the vault certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VaultCertificateResponseInner create(String resourceGroupName, String vaultName, String certificateName,
         CertificateRequest certificateRequest) {

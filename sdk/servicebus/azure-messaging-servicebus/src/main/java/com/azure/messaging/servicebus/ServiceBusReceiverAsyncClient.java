@@ -31,6 +31,10 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
+import com.azure.messaging.servicebus.models.DeleteMessagesResult;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
+import com.azure.messaging.servicebus.models.PurgeMessagesResult;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -907,6 +911,116 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Permanently deletes up to {@code maxMessages} eligible messages from the Service Bus entity or subqueue. Large
+     * messages can cause the service to delete fewer messages than requested. Locked, deferred, and scheduled messages
+     * are not eligible. Currently, batch delete is not supported when partitioning is enabled.
+     *
+     * <p>The SDK sends the destructive request once. If an error, cancellation, or timeout occurs, the deletion outcome
+     * is unknown and the request is not automatically dispatched again.</p>
+     *
+     * @param maxMessages The positive maximum number of messages to delete. The service limit is 500 for Basic and
+     * Standard and 4,000 for Premium.
+     * @return The result containing the number of messages actually deleted by the service.
+     * @throws IllegalArgumentException if {@code maxMessages} is not positive.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if the request fails.
+     */
+    public Mono<DeleteMessagesResult> deleteMessages(int maxMessages) {
+        return deleteMessages(maxMessages, new DeleteMessagesOptions());
+    }
+
+    /**
+     * Permanently deletes up to {@code maxMessages} eligible messages from the Service Bus entity or subqueue. The
+     * operation is best effort and may return a short positive count. Locked, deferred, and scheduled messages are not
+     * eligible. A dispatched request is not automatically retried and an error can leave an unknown outcome.
+     *
+     * @param maxMessages The positive maximum number of messages to delete. The service limit is 500 for Basic and
+     * Standard and 4,000 for Premium.
+     * @param options Options that configure the delete operation.
+     * @return The result containing the number of messages actually deleted by the service.
+     * @throws NullPointerException if {@code options} is null.
+     * @throws IllegalArgumentException if {@code maxMessages} is not positive.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if the request fails.
+     */
+    public Mono<DeleteMessagesResult> deleteMessages(int maxMessages, DeleteMessagesOptions options) {
+        if (isDisposed.get()) {
+            return monoError(LOGGER,
+                new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "deleteMessages")));
+        }
+        if (maxMessages < 1) {
+            return monoError(LOGGER,
+                new IllegalArgumentException("'maxMessages' must be positive; got " + maxMessages + "."));
+        }
+        if (options == null) {
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+        }
+
+        final OffsetDateTime configuredCutoff = options.getEnqueueTimeUtcOlderThan();
+        final String sessionId = receiverOptions.getSessionId();
+        return Mono.defer(() -> {
+            final OffsetDateTime cutoff = configuredCutoff == null ? OffsetDateTime.now() : configuredCutoff;
+            return tracer.traceMono("ServiceBus.deleteMessages",
+                connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                    .flatMap(node -> node.deleteMessages(maxMessages, cutoff, sessionId, getLinkName(sessionId)))
+                    .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE)));
+        });
+    }
+
+    /**
+     * Permanently purges eligible messages enqueued before the purge started. The purge start time stays unchanged for
+     * every request, so newer messages remain. Large messages can produce smaller batches, which purge continues
+     * processing. Locked, deferred, and scheduled messages remain. Currently, purge is not supported when partitioning
+     * is enabled. If an error, cancellation, or timeout occurs after dispatch, the purge can be partial and its exact
+     * deletion outcome is unknown.
+     *
+     * <p>The configured try timeout applies separately to each batch, not to the entire purge.</p>
+     *
+     * @return The result containing the total number of messages deleted by the service.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if any request fails.
+     */
+    public Mono<PurgeMessagesResult> purgeMessages() {
+        return purgeMessages(new PurgeMessagesOptions());
+    }
+
+    /**
+     * Permanently purges eligible messages enqueued before the configured time, using that same time and request size
+     * for every request. Large messages can produce smaller batches, which purge continues processing. Locked,
+     * deferred, and scheduled messages remain. Currently, purge is not supported when partitioning is enabled. If an
+     * error, cancellation, or timeout occurs after dispatch, the purge can be partial and its exact deletion outcome is
+     * unknown.
+     *
+     * <p>The configured try timeout applies separately to each batch, not to the entire purge.</p>
+     *
+     * @param options Options that configure the purge operation.
+     * @return The result containing the total number of messages deleted by the service.
+     * @throws NullPointerException if {@code options} is null.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if any request fails.
+     */
+    public Mono<PurgeMessagesResult> purgeMessages(PurgeMessagesOptions options) {
+        if (isDisposed.get()) {
+            return monoError(LOGGER,
+                new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "purgeMessages")));
+        }
+        if (options == null) {
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+        }
+
+        final OffsetDateTime configuredCutoff = options.getEnqueueTimeUtcOlderThan();
+        final int maxMessagesPerBatch = options.getMaxMessagesPerBatch();
+        return Mono.defer(() -> {
+            final OffsetDateTime cutoff = configuredCutoff == null ? OffsetDateTime.now() : configuredCutoff;
+            return deleteMessages(maxMessagesPerBatch, new DeleteMessagesOptions().setEnqueueTimeUtcOlderThan(cutoff))
+                .repeat()
+                .takeUntil(result -> result.getDeletedCount() == 0)
+                .reduce(0L, (totalDeleted, result) -> Math.addExact(totalDeleted, result.getDeletedCount()))
+                .map(PurgeMessagesResult::new);
+        });
+    }
+
+    /**
      * Receives an <b>infinite</b> stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
      * This Flux continuously receives messages from a Service Bus entity until either:
      *
@@ -987,12 +1101,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiveMessagesWithContext(1);
     }
 
+    Flux<ServiceBusMessageContext> receiveMessagesWithContextForAsyncProcessor() {
+        return receiveMessagesWithContext(1, false);
+    }
+
     private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
+        return receiveMessagesWithContext(highTide, true);
+    }
+
+    private Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide, boolean instrumentProcess) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
 
-        final Flux<ServiceBusMessageContext> messageFluxWithTracing = new FluxTrace(messageFlux, instrumentation);
+        final Flux<ServiceBusMessageContext> messageFluxWithTracing
+            = instrumentProcess ? new FluxTrace(messageFlux, instrumentation) : messageFlux;
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
 
         if (!isSessionEnabled && receiverOptions.isAutoLockRenewEnabled()) {
@@ -1903,6 +2026,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     boolean isAutoLockRenewRequested() {
         return receiverOptions.isAutoLockRenewEnabled();
+    }
+
+    void endLockRenewal(ServiceBusReceivedMessage message) {
+        if (!isSessionEnabled
+            && receiverOptions.isAutoLockRenewEnabled()
+            && message != null
+            && message.getLockToken() != null) {
+            renewalContainer.remove(message.getLockToken());
+        }
     }
 
     boolean isV2() {

@@ -86,10 +86,7 @@ public final class BackupVaultImpl implements BackupVault, BackupVault.Definitio
     }
 
     public BackupVault create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .createOrUpdate(resourceGroupName, accountName, backupVaultName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BackupVault create(Context context) {
@@ -111,10 +108,7 @@ public final class BackupVaultImpl implements BackupVault, BackupVault.Definitio
     }
 
     public BackupVault apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .update(resourceGroupName, accountName, backupVaultName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BackupVault apply(Context context) {
@@ -139,11 +133,7 @@ public final class BackupVaultImpl implements BackupVault, BackupVault.Definitio
     }
 
     public BackupVault refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBackupVaults()
-            .getWithResponse(resourceGroupName, accountName, backupVaultName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BackupVault refresh(Context context) {

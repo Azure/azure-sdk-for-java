@@ -348,21 +348,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedEnvironmentInner> getByResourceGroupWithResponse(String resourceGroupName,
         String environmentName, Context context) {
@@ -371,20 +357,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             this.client.getSubscriptionId(), resourceGroupName, environmentName, accept, context);
     }
 
-    /**
-     * Get the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a Managed Environment.
-     * 
-     * Get the properties of a Managed Environment used to host container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner getByResourceGroup(String resourceGroupName, String environmentName) {
         return getByResourceGroupWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
@@ -432,11 +405,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         ManagedEnvironmentInner environmentEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, contentType, accept,
-            environmentEnvelope, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, environmentEnvelope, Context.NONE);
     }
 
     /**
@@ -486,42 +455,14 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a Managed Environment.
-     * 
-     * Creates or updates a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, environmentName, environmentEnvelope);
-        return this.client.<ManagedEnvironmentInner, ManagedEnvironmentInner>getLroResult(response,
-            ManagedEnvironmentInner.class, ManagedEnvironmentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, environmentName, environmentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Managed Environment.
-     * 
-     * Creates or updates a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope,
@@ -552,43 +493,19 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a Managed Environment.
-     * 
-     * Creates or updates a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner createOrUpdate(String resourceGroupName, String environmentName,
         ManagedEnvironmentInner environmentEnvelope) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, environmentEnvelope).getFinalResult();
+        return createOrUpdate(resourceGroupName, environmentName, environmentEnvelope, Context.NONE);
     }
 
-    /**
-     * Creates or updates a Managed Environment.
-     * 
-     * Creates or updates a Managed Environment used to host container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner createOrUpdate(String resourceGroupName, String environmentName,
         ManagedEnvironmentInner environmentEnvelope, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, environmentName, environmentEnvelope, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, environmentName, environmentEnvelope, context));
     }
 
     /**
@@ -633,11 +550,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String environmentName,
         ManagedEnvironmentInner environmentEnvelope) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, contentType, accept,
-            environmentEnvelope, Context.NONE);
+        return updateWithResponse(resourceGroupName, environmentName, environmentEnvelope, Context.NONE);
     }
 
     /**
@@ -687,41 +600,14 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             this.client.getContext());
     }
 
-    /**
-     * Update Managed Environment's properties.
-     * 
-     * Patches a Managed Environment using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner>
         beginUpdate(String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, environmentName, environmentEnvelope);
-        return this.client.<ManagedEnvironmentInner, ManagedEnvironmentInner>getLroResult(response,
-            ManagedEnvironmentInner.class, ManagedEnvironmentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, environmentName, environmentEnvelope, Context.NONE);
     }
 
-    /**
-     * Update Managed Environment's properties.
-     * 
-     * Patches a Managed Environment using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginUpdate(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope,
@@ -752,43 +638,19 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update Managed Environment's properties.
-     * 
-     * Patches a Managed Environment using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner update(String resourceGroupName, String environmentName,
         ManagedEnvironmentInner environmentEnvelope) {
-        return beginUpdate(resourceGroupName, environmentName, environmentEnvelope).getFinalResult();
+        return update(resourceGroupName, environmentName, environmentEnvelope, Context.NONE);
     }
 
-    /**
-     * Update Managed Environment's properties.
-     * 
-     * Patches a Managed Environment using JSON Merge Patch.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param environmentEnvelope Configuration details of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for hosting container apps.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedEnvironmentInner update(String resourceGroupName, String environmentName,
         ManagedEnvironmentInner environmentEnvelope, Context context) {
-        return beginUpdate(resourceGroupName, environmentName, environmentEnvelope, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, environmentName, environmentEnvelope, context));
     }
 
     /**
@@ -825,8 +687,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String environmentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, environmentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -867,37 +728,13 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             this.client.getContext());
     }
 
-    /**
-     * Delete a Managed Environment.
-     * 
-     * Delete a Managed Environment if it does not have any container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, environmentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Delete a Managed Environment.
-     * 
-     * Delete a Managed Environment if it does not have any container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName,
         Context context) {
@@ -923,37 +760,16 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Managed Environment.
-     * 
-     * Delete a Managed Environment if it does not have any container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName) {
-        beginDelete(resourceGroupName, environmentName).getFinalResult();
+        delete(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Delete a Managed Environment.
-     * 
-     * Delete a Managed Environment if it does not have any container apps.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, Context context) {
-        beginDelete(resourceGroupName, environmentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, environmentName, context));
     }
 
     /**
@@ -1015,11 +831,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedEnvironmentInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<ManagedEnvironmentsCollection> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1046,39 +858,13 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all the Environments in a resource group.
-     * 
-     * Get all the Managed Environments in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Environments in a resource group.
-     * 
-     * Get all the Managed Environments in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedEnvironmentInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Get all the Environments in a resource group.
-     * 
-     * Get all the Managed Environments in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Environments in a resource group.
-     * 
-     * Get all the Managed Environments in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedEnvironmentInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1138,11 +924,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedEnvironmentInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ManagedEnvironmentsCollection> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1167,35 +949,13 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all Environments for a subscription.
-     * 
-     * Get all Managed Environments for a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Environments for a subscription.
-     * 
-     * Get all Managed Environments for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedEnvironmentInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Get all Environments for a subscription.
-     * 
-     * Get all Managed Environments for a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Environments for a subscription.
-     * 
-     * Get all Managed Environments for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedEnvironmentInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1246,21 +1006,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get auth token for a managed environment
-     * 
-     * Checks if resource name is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auth token for a managed environment
-     * 
-     * Checks if resource name is available along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnvironmentAuthTokenInner> getAuthTokenWithResponse(String resourceGroupName,
         String environmentName, Context context) {
@@ -1269,20 +1015,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             this.client.getSubscriptionId(), resourceGroupName, environmentName, accept, context);
     }
 
-    /**
-     * Get auth token for a managed environment
-     * 
-     * Checks if resource name is available.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auth token for a managed environment
-     * 
-     * Checks if resource name is available.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnvironmentAuthTokenInner getAuthToken(String resourceGroupName, String environmentName) {
         return getAuthTokenWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
@@ -1354,12 +1087,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadProfileStatesInner> listWorkloadProfileStatesSinglePage(String resourceGroupName,
         String environmentName) {
-        final String accept = "application/json";
-        Response<WorkloadProfileStatesCollection> res
-            = service.listWorkloadProfileStatesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, environmentName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listWorkloadProfileStatesSinglePage(resourceGroupName, environmentName, Context.NONE);
     }
 
     /**
@@ -1388,42 +1116,14 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all workload Profile States for a Managed Environment..
-     * 
-     * Get all workload Profile States for a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Managed Environment..
-     * 
-     * Get all workload Profile States for a Managed Environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadProfileStatesInner> listWorkloadProfileStates(String resourceGroupName,
         String environmentName) {
-        return new PagedIterable<>(() -> listWorkloadProfileStatesSinglePage(resourceGroupName, environmentName),
-            nextLink -> listWorkloadProfileStatesNextSinglePage(nextLink));
+        return listWorkloadProfileStates(resourceGroupName, environmentName, Context.NONE);
     }
 
-    /**
-     * Get all workload Profile States for a Managed Environment..
-     * 
-     * Get all workload Profile States for a Managed Environment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Managed Environment..
-     * 
-     * Get all workload Profile States for a Managed Environment as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkloadProfileStatesInner> listWorkloadProfileStates(String resourceGroupName,
         String environmentName, Context context) {
@@ -1475,18 +1175,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether a Managed Environment can be migrated to a target mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param body The migration eligibility check request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of a read-only managed environment migration eligibility check along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckMigrationEligibilityResponseInner> checkMigrationEligibilityWithResponse(
         String resourceGroupName, String environmentName, CheckMigrationEligibilityRequest body, Context context) {
@@ -1496,17 +1185,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
             this.client.getSubscriptionId(), resourceGroupName, environmentName, contentType, accept, body, context);
     }
 
-    /**
-     * Checks whether a Managed Environment can be migrated to a target mode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param body The migration eligibility check request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of a read-only managed environment migration eligibility check.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckMigrationEligibilityResponseInner checkMigrationEligibility(String resourceGroupName,
         String environmentName, CheckMigrationEligibilityRequest body) {
@@ -1553,11 +1232,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedEnvironmentInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedEnvironmentsCollection> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1623,11 +1298,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ManagedEnvironmentInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ManagedEnvironmentsCollection> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1694,11 +1365,7 @@ public final class ManagedEnvironmentsClientImpl implements ManagedEnvironmentsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkloadProfileStatesInner> listWorkloadProfileStatesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkloadProfileStatesCollection> res
-            = service.listWorkloadProfileStatesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listWorkloadProfileStatesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

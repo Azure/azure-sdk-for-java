@@ -90,10 +90,7 @@ public final class TaskRunImpl implements TaskRun, TaskRun.Definition, TaskRun.U
     }
 
     public TaskRun create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskRuns()
-            .create(resourceGroupName, registryName, taskRunName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TaskRun create(Context context) {
@@ -116,10 +113,7 @@ public final class TaskRunImpl implements TaskRun, TaskRun.Definition, TaskRun.U
     }
 
     public TaskRun apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskRuns()
-            .update(resourceGroupName, registryName, taskRunName, updateUpdateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TaskRun apply(Context context) {
@@ -145,11 +139,7 @@ public final class TaskRunImpl implements TaskRun, TaskRun.Definition, TaskRun.U
     }
 
     public TaskRun refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTaskRuns()
-            .getWithResponse(resourceGroupName, registryName, taskRunName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TaskRun refresh(Context context) {

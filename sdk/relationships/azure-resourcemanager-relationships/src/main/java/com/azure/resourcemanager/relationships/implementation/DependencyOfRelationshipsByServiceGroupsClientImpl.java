@@ -190,17 +190,7 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
         return getWithResponseAsync(serviceGroupName, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DependencyOfRelationship along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DependencyOfRelationshipInner> getWithResponse(String serviceGroupName, String name,
         Context context) {
@@ -209,16 +199,7 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
             context);
     }
 
-    /**
-     * Get a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DependencyOfRelationship.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DependencyOfRelationshipInner get(String serviceGroupName, String name) {
         return getWithResponse(serviceGroupName, name, Context.NONE).getValue();
@@ -261,10 +242,7 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String serviceGroupName, String name,
         DependencyOfRelationshipInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), serviceGroupName,
-            name, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(serviceGroupName, name, resource, Context.NONE);
     }
 
     /**
@@ -308,37 +286,14 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DependencyOfRelationshipInner>, DependencyOfRelationshipInner>
         beginCreateOrUpdate(String serviceGroupName, String name, DependencyOfRelationshipInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(serviceGroupName, name, resource);
-        return this.client.<DependencyOfRelationshipInner, DependencyOfRelationshipInner>getLroResult(response,
-            DependencyOfRelationshipInner.class, DependencyOfRelationshipInner.class, Context.NONE);
+        return beginCreateOrUpdate(serviceGroupName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DependencyOfRelationshipInner>, DependencyOfRelationshipInner> beginCreateOrUpdate(
         String serviceGroupName, String name, DependencyOfRelationshipInner resource, Context context) {
@@ -365,39 +320,18 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DependencyOfRelationshipInner createOrUpdate(String serviceGroupName, String name,
         DependencyOfRelationshipInner resource) {
-        return beginCreateOrUpdate(serviceGroupName, name, resource).getFinalResult();
+        return createOrUpdate(serviceGroupName, name, resource, Context.NONE);
     }
 
-    /**
-     * Create a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a dependencyOf relationship resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DependencyOfRelationshipInner createOrUpdate(String serviceGroupName, String name,
         DependencyOfRelationshipInner resource, Context context) {
-        return beginCreateOrUpdate(serviceGroupName, name, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(serviceGroupName, name, resource, context));
     }
 
     /**
@@ -430,8 +364,7 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String serviceGroupName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), serviceGroupName, name,
-            Context.NONE);
+        return deleteWithResponse(serviceGroupName, name, Context.NONE);
     }
 
     /**
@@ -468,33 +401,13 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
             this.client.getContext());
     }
 
-    /**
-     * Delete a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String name) {
-        Response<BinaryData> response = deleteWithResponse(serviceGroupName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(serviceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Delete a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String serviceGroupName, String name, Context context) {
         Response<BinaryData> response = deleteWithResponse(serviceGroupName, name, context);
@@ -516,33 +429,16 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
         return beginDeleteAsync(serviceGroupName, name).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String name) {
-        beginDelete(serviceGroupName, name).getFinalResult();
+        delete(serviceGroupName, name, Context.NONE);
     }
 
-    /**
-     * Delete a DependencyOfRelationship.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param name Name of dependencyOf relationship.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String serviceGroupName, String name, Context context) {
-        beginDelete(serviceGroupName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(serviceGroupName, name, context));
     }
 
     /**
@@ -592,11 +488,7 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DependencyOfRelationshipInner> listSinglePage(String serviceGroupName) {
-        final String accept = "application/json";
-        Response<DependencyOfRelationshipListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), serviceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(serviceGroupName, Context.NONE);
     }
 
     /**
@@ -618,32 +510,13 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DependencyOfRelationship resources by scope.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DependencyOfRelationship list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DependencyOfRelationshipInner> list(String serviceGroupName) {
-        return new PagedIterable<>(() -> listSinglePage(serviceGroupName), nextLink -> listNextSinglePage(nextLink));
+        return list(serviceGroupName, Context.NONE);
     }
 
-    /**
-     * List DependencyOfRelationship resources by scope.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DependencyOfRelationship list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DependencyOfRelationshipInner> list(String serviceGroupName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(serviceGroupName, context),
@@ -680,11 +553,7 @@ public final class DependencyOfRelationshipsByServiceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DependencyOfRelationshipInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DependencyOfRelationshipListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

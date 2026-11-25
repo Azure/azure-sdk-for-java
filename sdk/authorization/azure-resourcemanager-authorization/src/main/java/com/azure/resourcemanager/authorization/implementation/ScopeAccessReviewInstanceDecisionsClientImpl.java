@@ -164,20 +164,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Get access review instance decisions.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instance decisions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewDecisionInner> listAsync(String scope, String scheduleDefinitionId, String id,
         String filter) {
@@ -185,17 +172,7 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Get access review instance decisions.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instance decisions as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AccessReviewDecisionInner> listAsync(String scope, String scheduleDefinitionId, String id) {
         final String filter = null;
@@ -225,38 +202,14 @@ public final class ScopeAccessReviewInstanceDecisionsClientImpl implements Scope
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Get access review instance decisions.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instance decisions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewDecisionInner> list(String scope, String scheduleDefinitionId, String id) {
         final String filter = null;
         return new PagedIterable<>(listAsync(scope, scheduleDefinitionId, id, filter));
     }
 
-    /**
-     * Get access review instance decisions.
-     * 
-     * @param scope The scope of the resource.
-     * @param scheduleDefinitionId The id of the access review schedule definition.
-     * @param id The id of the access review instance.
-     * @param filter The filter to apply on the operation. Other than standard filters, one custom filter option is
-     * supported : 'assignedToMeToReview()'. When one specified $filter=assignedToMeToReview(), only items that are
-     * assigned to the calling user to review are returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access review instance decisions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessReviewDecisionInner> list(String scope, String scheduleDefinitionId, String id,
         String filter, Context context) {

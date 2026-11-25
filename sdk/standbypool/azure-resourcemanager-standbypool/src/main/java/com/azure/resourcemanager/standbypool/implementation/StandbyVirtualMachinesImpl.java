@@ -48,10 +48,8 @@ public final class StandbyVirtualMachinesImpl implements StandbyVirtualMachines 
 
     public PagedIterable<StandbyVirtualMachineResource>
         listByStandbyVirtualMachinePoolResource(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        PagedIterable<StandbyVirtualMachineResourceInner> inner = this.serviceClient()
-            .listByStandbyVirtualMachinePoolResource(resourceGroupName, standbyVirtualMachinePoolName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new StandbyVirtualMachineResourceImpl(inner1, this.manager()));
+        return this.listByStandbyVirtualMachinePoolResource(resourceGroupName, standbyVirtualMachinePoolName,
+            Context.NONE);
     }
 
     public PagedIterable<StandbyVirtualMachineResource> listByStandbyVirtualMachinePoolResource(

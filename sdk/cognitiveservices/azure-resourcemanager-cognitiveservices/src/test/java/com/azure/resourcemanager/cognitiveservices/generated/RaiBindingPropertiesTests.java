@@ -12,18 +12,18 @@ public final class RaiBindingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBindingProperties model
-            = BinaryData.fromString("{\"boundResourceId\":\"igjkskyrio\",\"targetPolicyName\":\"vzidsxwaab\"}")
+            = BinaryData.fromString("{\"boundResourceId\":\"nosbz\",\"targetPolicyName\":\"ehgcvkbcknjo\"}")
                 .toObject(RaiBindingProperties.class);
-        Assertions.assertEquals("igjkskyrio", model.boundResourceId());
-        Assertions.assertEquals("vzidsxwaab", model.targetPolicyName());
+        Assertions.assertEquals("nosbz", model.boundResourceId());
+        Assertions.assertEquals("ehgcvkbcknjo", model.targetPolicyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBindingProperties model
-            = new RaiBindingProperties().withBoundResourceId("igjkskyrio").withTargetPolicyName("vzidsxwaab");
+            = new RaiBindingProperties().withBoundResourceId("nosbz").withTargetPolicyName("ehgcvkbcknjo");
         model = BinaryData.fromObject(model).toObject(RaiBindingProperties.class);
-        Assertions.assertEquals("igjkskyrio", model.boundResourceId());
-        Assertions.assertEquals("vzidsxwaab", model.targetPolicyName());
+        Assertions.assertEquals("nosbz", model.boundResourceId());
+        Assertions.assertEquals("ehgcvkbcknjo", model.targetPolicyName());
     }
 }

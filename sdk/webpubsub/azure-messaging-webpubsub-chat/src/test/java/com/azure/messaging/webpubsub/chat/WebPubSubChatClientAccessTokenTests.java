@@ -8,7 +8,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.messaging.webpubsub.chat.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.chat.models.ClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.chat.models.WebPubSubClientAccessToken;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
@@ -42,7 +42,7 @@ public class WebPubSubChatClientAccessTokenTests {
 
         Instant before = Instant.now();
         WebPubSubClientAccessToken token
-            = client.getClientAccessToken(new GetClientAccessTokenOptions().setUserId("alice"));
+            = client.getClientAccessToken(new ClientAccessTokenOptions().setUserId("alice"));
 
         assertNotNull(token.getToken());
         assertEquals("wss://example.webpubsub.azure.com/client/hubs/chat?access_token=" + token.getToken(),
@@ -64,7 +64,7 @@ public class WebPubSubChatClientAccessTokenTests {
             .buildAsyncClient();
 
         WebPubSubClientAccessToken token
-            = client.getClientAccessToken(new GetClientAccessTokenOptions().setUserId("alice")).block();
+            = client.getClientAccessToken(new ClientAccessTokenOptions().setUserId("alice")).block();
 
         assertNotNull(token);
         JWTClaimsSet claims = SignedJWT.parse(token.getToken()).getJWTClaimsSet();
@@ -80,7 +80,7 @@ public class WebPubSubChatClientAccessTokenTests {
             .httpClient(request -> Mono.error(new AssertionError("Local token generation must not send a request.")))
             .buildClient();
 
-        WebPubSubClientAccessToken token = client.getClientAccessToken(new GetClientAccessTokenOptions());
+        WebPubSubClientAccessToken token = client.getClientAccessToken(new ClientAccessTokenOptions());
 
         assertTrue(token.getUrl().startsWith("wss://example.webpubsub.azure.com:8443/client/hubs/chat?access_token="));
     }
@@ -92,7 +92,7 @@ public class WebPubSubChatClientAccessTokenTests {
             .credential(new AzureKeyCredential("short-key"))
             .buildClient();
 
-        WebPubSubClientAccessToken token = client.getClientAccessToken(new GetClientAccessTokenOptions());
+        WebPubSubClientAccessToken token = client.getClientAccessToken(new ClientAccessTokenOptions());
 
         assertNull(token.getToken());
         assertEquals("wss://example.webpubsub.azure.com/client/hubs/chat?access_token=null", token.getUrl());
@@ -104,7 +104,7 @@ public class WebPubSubChatClientAccessTokenTests {
         WebPubSubChatServiceClient client = createTokenCredentialClient(sentRequest, null);
 
         WebPubSubClientAccessToken token = client.getClientAccessToken(
-            new GetClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofMinutes(30)));
+            new ClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofMinutes(30)));
 
         assertEquals("server-token", token.getToken());
         assertEquals("wss://example.webpubsub.azure.com/client/hubs/chat?access_token=server-token", token.getUrl());
@@ -133,7 +133,7 @@ public class WebPubSubChatClientAccessTokenTests {
             .buildAsyncClient();
 
         WebPubSubClientAccessToken token
-            = client.getClientAccessToken(new GetClientAccessTokenOptions().setUserId("alice")).block();
+            = client.getClientAccessToken(new ClientAccessTokenOptions().setUserId("alice")).block();
 
         assertNotNull(token);
         assertEquals("server-token", token.getToken());
@@ -147,7 +147,7 @@ public class WebPubSubChatClientAccessTokenTests {
         AtomicReference<HttpRequest> sentRequest = new AtomicReference<>();
         WebPubSubChatServiceClient client = createTokenCredentialClient(sentRequest, "https://proxy.example/gateway");
 
-        client.getClientAccessToken(new GetClientAccessTokenOptions());
+        client.getClientAccessToken(new ClientAccessTokenOptions());
 
         assertEquals("proxy.example", sentRequest.get().getUrl().getHost());
         assertEquals("/gateway/api/hubs/chat/:generateToken", sentRequest.get().getUrl().getPath());
@@ -163,9 +163,9 @@ public class WebPubSubChatClientAccessTokenTests {
 
         assertThrows(NullPointerException.class, () -> client.getClientAccessToken(null));
         assertThrows(NullPointerException.class,
-            () -> client.getClientAccessToken(new GetClientAccessTokenOptions().setExpiresAfter(null)));
-        assertThrows(IllegalArgumentException.class, () -> client
-            .getClientAccessToken(new GetClientAccessTokenOptions().setExpiresAfter(Duration.ofSeconds(59))));
+            () -> client.getClientAccessToken(new ClientAccessTokenOptions().setExpiresAfter(null)));
+        assertThrows(IllegalArgumentException.class,
+            () -> client.getClientAccessToken(new ClientAccessTokenOptions().setExpiresAfter(Duration.ofSeconds(59))));
     }
 
     private static WebPubSubChatServiceClient createTokenCredentialClient(AtomicReference<HttpRequest> sentRequest,

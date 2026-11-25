@@ -111,17 +111,7 @@ public final class NetworkProfilesClientImpl implements NetworkProfilesClient {
         return getWithResponseAsync(resourceGroupName, machineName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * The operation to get network information of hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the network information on this machine along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkProfileInner> getWithResponse(String resourceGroupName, String machineName,
         Context context) {
@@ -130,16 +120,7 @@ public final class NetworkProfilesClientImpl implements NetworkProfilesClient {
             resourceGroupName, machineName, accept, context);
     }
 
-    /**
-     * The operation to get network information of hybrid machine.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the network information on this machine.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkProfileInner get(String resourceGroupName, String machineName) {
         return getWithResponse(resourceGroupName, machineName, Context.NONE).getValue();

@@ -522,6 +522,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void createIfNotExistsOnPathOfAnotherType() {
+        String pathName = generatePathName();
+        DataLakeFileAsyncClient file = dataLakeFileSystemAsyncClient.getFileAsyncClient(pathName);
+
+        StepVerifier.create(dataLakeFileSystemAsyncClient.createDirectory(pathName).then(file.createIfNotExists()))
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, "PathConflict"));
+    }
+
     @ParameterizedTest
     @CsvSource(value = { "null,null,null,null,null", "control, disposition, encoding, language, type" })
     public void createIfNotExistsHeaders(String cacheControl, String contentDisposition, String contentEncoding,

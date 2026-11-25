@@ -49,9 +49,8 @@ public final class MetricNamespacesImpl implements MetricNamespaces {
 
     public PagedIterable<MetricNamespaceResource> listByMetricsContainer(String resourceGroupName,
         String azureMonitorWorkspaceName, String metricsContainerName) {
-        PagedIterable<MetricNamespaceResourceInner> inner = this.serviceClient()
-            .listByMetricsContainer(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MetricNamespaceResourceImpl(inner1, this.manager()));
+        return this.listByMetricsContainer(resourceGroupName, azureMonitorWorkspaceName, metricsContainerName,
+            Context.NONE);
     }
 
     public PagedIterable<MetricNamespaceResource> listByMetricsContainer(String resourceGroupName,

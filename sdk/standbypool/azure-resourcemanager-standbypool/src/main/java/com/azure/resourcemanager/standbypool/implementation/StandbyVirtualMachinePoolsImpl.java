@@ -47,7 +47,7 @@ public final class StandbyVirtualMachinePoolsImpl implements StandbyVirtualMachi
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String standbyVirtualMachinePoolName) {
-        this.serviceClient().delete(resourceGroupName, standbyVirtualMachinePoolName);
+        this.delete(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String standbyVirtualMachinePoolName, Context context) {
@@ -55,10 +55,7 @@ public final class StandbyVirtualMachinePoolsImpl implements StandbyVirtualMachi
     }
 
     public PagedIterable<StandbyVirtualMachinePoolResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<StandbyVirtualMachinePoolResourceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new StandbyVirtualMachinePoolResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<StandbyVirtualMachinePoolResource> listByResourceGroup(String resourceGroupName,
@@ -70,9 +67,7 @@ public final class StandbyVirtualMachinePoolsImpl implements StandbyVirtualMachi
     }
 
     public PagedIterable<StandbyVirtualMachinePoolResource> list() {
-        PagedIterable<StandbyVirtualMachinePoolResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new StandbyVirtualMachinePoolResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<StandbyVirtualMachinePoolResource> list(Context context) {
@@ -82,75 +77,30 @@ public final class StandbyVirtualMachinePoolsImpl implements StandbyVirtualMachi
     }
 
     public StandbyVirtualMachinePoolResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String standbyVirtualMachinePoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "standbyVirtualMachinePoolName");
-        if (standbyVirtualMachinePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'standbyVirtualMachinePools'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<StandbyVirtualMachinePoolResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String standbyVirtualMachinePoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String standbyVirtualMachinePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "standbyVirtualMachinePoolName");
-        if (standbyVirtualMachinePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'standbyVirtualMachinePools'.", id)));
-        }
+            "standbyVirtualMachinePoolName", "standbyVirtualMachinePools", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, standbyVirtualMachinePoolName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String standbyVirtualMachinePoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "standbyVirtualMachinePoolName");
-        if (standbyVirtualMachinePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'standbyVirtualMachinePools'.", id)));
-        }
-        this.delete(resourceGroupName, standbyVirtualMachinePoolName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String standbyVirtualMachinePoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String standbyVirtualMachinePoolName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}",
-            "standbyVirtualMachinePoolName");
-        if (standbyVirtualMachinePoolName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'standbyVirtualMachinePools'.", id)));
-        }
+            "standbyVirtualMachinePoolName", "standbyVirtualMachinePools", LOGGER);
         this.delete(resourceGroupName, standbyVirtualMachinePoolName, context);
     }
 

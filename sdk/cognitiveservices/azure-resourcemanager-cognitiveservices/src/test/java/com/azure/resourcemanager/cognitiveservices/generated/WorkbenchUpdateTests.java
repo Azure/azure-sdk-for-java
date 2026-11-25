@@ -18,31 +18,30 @@ public final class WorkbenchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbenchUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"targetClusterId\":\"kerv\",\"idleTimeBeforeShutdown\":\"hoadhrsxqvzv\",\"instanceType\":\"abdsr\",\"gpuCount\":1070435847},\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"rsubklrxhjnl\",\"principalId\":\"etjdvqydieqqkwa\",\"userAssignedIdentities\":{\"xbibanbaupw\":{\"principalId\":\"xv\",\"clientId\":\"xoebwg\"},\"s\":{\"principalId\":\"vpaklozkxbz\",\"clientId\":\"ejpl\"},\"xunrswgkpjhboy\":{\"principalId\":\"bttt\",\"clientId\":\"s\"}}}}")
+            "{\"properties\":{\"targetClusterId\":\"dtoakatpryt\",\"idleTimeBeforeShutdown\":\"hzbqfdpfawrptvcs\",\"instanceType\":\"kutzct\",\"gpuCount\":1875266590},\"identity\":{\"type\":\"None\",\"tenantId\":\"d\",\"principalId\":\"m\",\"userAssignedIdentities\":{\"gftt\":{\"principalId\":\"cfjfxtbwjj\",\"clientId\":\"muy\"}}}}")
             .toObject(WorkbenchUpdate.class);
-        Assertions.assertEquals("kerv", model.properties().targetClusterId());
-        Assertions.assertEquals("hoadhrsxqvzv", model.properties().idleTimeBeforeShutdown());
-        Assertions.assertEquals("abdsr", model.properties().instanceType());
-        Assertions.assertEquals(1070435847, model.properties().gpuCount());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dtoakatpryt", model.properties().targetClusterId());
+        Assertions.assertEquals("hzbqfdpfawrptvcs", model.properties().idleTimeBeforeShutdown());
+        Assertions.assertEquals("kutzct", model.properties().instanceType());
+        Assertions.assertEquals(1875266590, model.properties().gpuCount());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkbenchUpdate model = new WorkbenchUpdate()
-            .withProperties(new WorkbenchUpdateProperties().withTargetClusterId("kerv")
-                .withIdleTimeBeforeShutdown("hoadhrsxqvzv")
-                .withInstanceType("abdsr")
-                .withGpuCount(1070435847))
-            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("xbibanbaupw", new UserAssignedIdentity(), "s",
-                    new UserAssignedIdentity(), "xunrswgkpjhboy", new UserAssignedIdentity())));
+            .withProperties(new WorkbenchUpdateProperties().withTargetClusterId("dtoakatpryt")
+                .withIdleTimeBeforeShutdown("hzbqfdpfawrptvcs")
+                .withInstanceType("kutzct")
+                .withGpuCount(1875266590))
+            .withIdentity(new Identity().withType(ResourceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("gftt", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(WorkbenchUpdate.class);
-        Assertions.assertEquals("kerv", model.properties().targetClusterId());
-        Assertions.assertEquals("hoadhrsxqvzv", model.properties().idleTimeBeforeShutdown());
-        Assertions.assertEquals("abdsr", model.properties().instanceType());
-        Assertions.assertEquals(1070435847, model.properties().gpuCount());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dtoakatpryt", model.properties().targetClusterId());
+        Assertions.assertEquals("hzbqfdpfawrptvcs", model.properties().idleTimeBeforeShutdown());
+        Assertions.assertEquals("kutzct", model.properties().instanceType());
+        Assertions.assertEquals(1875266590, model.properties().gpuCount());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
     }
 
     // Use "Map.of" if available

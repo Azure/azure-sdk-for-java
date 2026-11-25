@@ -222,18 +222,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DiscoverySourceResource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiscoverySourceResourceInner> getWithResponse(String resourceGroupName, String mapName,
         String sourceName, Context context) {
@@ -242,17 +231,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             resourceGroupName, mapName, sourceName, accept, context);
     }
 
-    /**
-     * Get a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DiscoverySourceResource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner get(String resourceGroupName, String mapName, String sourceName) {
         return getWithResponse(resourceGroupName, mapName, sourceName, Context.NONE).getValue();
@@ -297,11 +276,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, mapName, sourceName, resource, Context.NONE);
     }
 
     /**
@@ -349,39 +324,14 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             this.client.getContext());
     }
 
-    /**
-     * Create a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, mapName, sourceName, resource);
-        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(response,
-            DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, mapName, sourceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceInner resource,
@@ -411,41 +361,19 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner createOrUpdate(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, mapName, sourceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, mapName, sourceName, resource, Context.NONE);
     }
 
-    /**
-     * Create a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner createOrUpdate(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, mapName, sourceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, mapName, sourceName, resource, context));
     }
 
     /**
@@ -487,11 +415,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, mapName, sourceName, properties, Context.NONE);
     }
 
     /**
@@ -539,39 +463,14 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             this.client.getContext());
     }
 
-    /**
-     * Update a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceTagsUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, mapName, sourceName, properties);
-        return this.client.<DiscoverySourceResourceInner, DiscoverySourceResourceInner>getLroResult(response,
-            DiscoverySourceResourceInner.class, DiscoverySourceResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, mapName, sourceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiscoverySourceResourceInner>, DiscoverySourceResourceInner> beginUpdate(
         String resourceGroupName, String mapName, String sourceName, DiscoverySourceResourceTagsUpdate properties,
@@ -600,41 +499,19 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner update(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceTagsUpdate properties) {
-        return beginUpdate(resourceGroupName, mapName, sourceName, properties).getFinalResult();
+        return update(resourceGroupName, mapName, sourceName, properties, Context.NONE);
     }
 
-    /**
-     * Update a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Discovery Source resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoverySourceResourceInner update(String resourceGroupName, String mapName, String sourceName,
         DiscoverySourceResourceTagsUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, mapName, sourceName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, mapName, sourceName, properties, context));
     }
 
     /**
@@ -670,8 +547,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String mapName, String sourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, mapName, sourceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, mapName, sourceName, Context.NONE);
     }
 
     /**
@@ -712,35 +588,13 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             this.client.getContext());
     }
 
-    /**
-     * Delete a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName, String sourceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, mapName, sourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, mapName, sourceName, Context.NONE);
     }
 
-    /**
-     * Delete a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mapName, String sourceName,
         Context context) {
@@ -765,35 +619,16 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName, String sourceName) {
-        beginDelete(resourceGroupName, mapName, sourceName).getFinalResult();
+        delete(resourceGroupName, mapName, sourceName, Context.NONE);
     }
 
-    /**
-     * Delete a DiscoverySourceResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param sourceName discovery source resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String mapName, String sourceName, Context context) {
-        beginDelete(resourceGroupName, mapName, sourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, mapName, sourceName, context));
     }
 
     /**
@@ -848,12 +683,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceSinglePage(String resourceGroupName,
         String mapName) {
-        final String accept = "application/json";
-        Response<DiscoverySourceResourceListResult> res
-            = service.listByMapsResourceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, mapName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMapsResourceSinglePage(resourceGroupName, mapName, Context.NONE);
     }
 
     /**
@@ -877,35 +707,13 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List DiscoverySourceResource resources by MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DiscoverySourceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoverySourceResourceInner> listByMapsResource(String resourceGroupName, String mapName) {
-        return new PagedIterable<>(() -> listByMapsResourceSinglePage(resourceGroupName, mapName),
-            nextLink -> listByMapsResourceNextSinglePage(nextLink));
+        return listByMapsResource(resourceGroupName, mapName, Context.NONE);
     }
 
-    /**
-     * List DiscoverySourceResource resources by MapsResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DiscoverySourceResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoverySourceResourceInner> listByMapsResource(String resourceGroupName, String mapName,
         Context context) {
@@ -945,11 +753,7 @@ public final class DiscoverySourcesClientImpl implements DiscoverySourcesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DiscoverySourceResourceInner> listByMapsResourceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DiscoverySourceResourceListResult> res
-            = service.listByMapsResourceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByMapsResourceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

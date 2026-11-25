@@ -31,10 +31,7 @@ public final class GroupQuotaLimitsRequestsImpl implements GroupQuotaLimitsReque
 
     public PagedIterable<SubmittedResourceRequestStatus> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String filter) {
-        PagedIterable<SubmittedResourceRequestStatusInner> inner
-            = this.serviceClient().list(managementGroupId, groupQuotaName, resourceProviderName, filter);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new SubmittedResourceRequestStatusImpl(inner1, this.manager()));
+        return this.list(managementGroupId, groupQuotaName, resourceProviderName, filter, Context.NONE);
     }
 
     public PagedIterable<SubmittedResourceRequestStatus> list(String managementGroupId, String groupQuotaName,

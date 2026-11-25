@@ -133,11 +133,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listOperationsSinglePage() {
-        final String accept = "application/json";
-        Response<OperationListResult> res
-            = service.listOperationsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOperationsSinglePage(Context.NONE);
     }
 
     /**
@@ -158,28 +154,13 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the available NetworkFunction Rest API operations.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Operation items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations() {
-        return new PagedIterable<>(() -> listOperationsSinglePage(),
-            nextLink -> listOperationsNextSinglePage(nextLink));
+        return listOperations(Context.NONE);
     }
 
-    /**
-     * Lists all of the available NetworkFunction Rest API operations.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Operation items as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations(Context context) {
         return new PagedIterable<>(() -> listOperationsSinglePage(context),
@@ -217,11 +198,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listOperationsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OperationListResult> res
-            = service.listOperationsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listOperationsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

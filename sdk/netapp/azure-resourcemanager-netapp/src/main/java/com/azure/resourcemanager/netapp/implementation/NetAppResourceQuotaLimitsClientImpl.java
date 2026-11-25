@@ -160,17 +160,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
         return getWithResponseAsync(location, quotaLimitName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the default and current quota limit.
-     * 
-     * @param location The name of the Azure region.
-     * @param quotaLimitName The name of the Quota Limit.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current quota limit along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionQuotaItemInner> getWithResponse(String location, String quotaLimitName,
         Context context) {
@@ -197,16 +187,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
             location, quotaLimitName, accept, context);
     }
 
-    /**
-     * Get the default and current quota limit.
-     * 
-     * @param location The name of the Azure region.
-     * @param quotaLimitName The name of the Quota Limit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current quota limit.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionQuotaItemInner get(String location, String quotaLimitName) {
         return getWithResponse(location, quotaLimitName, Context.NONE).getValue();
@@ -269,25 +250,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubscriptionQuotaItemInner> listSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<QuotaItemList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -323,30 +286,13 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the default and current limits for quotas.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionQuotaItemInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Get the default and current limits for quotas.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionQuotaItemInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -390,19 +336,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SubscriptionQuotaItemInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<QuotaItemList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

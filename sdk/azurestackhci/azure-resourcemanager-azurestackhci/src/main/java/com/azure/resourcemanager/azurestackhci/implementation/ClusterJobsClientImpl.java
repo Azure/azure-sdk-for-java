@@ -198,18 +198,7 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ClusterJob along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterJobInner> getWithResponse(String resourceGroupName, String clusterName, String jobsName,
         Context context) {
@@ -218,17 +207,7 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             resourceGroupName, clusterName, jobsName, accept, context);
     }
 
-    /**
-     * Get a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ClusterJob.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterJobInner get(String resourceGroupName, String clusterName, String jobsName) {
         return getWithResponse(resourceGroupName, clusterName, jobsName, Context.NONE).getValue();
@@ -273,11 +252,7 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String jobsName, ClusterJobInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, jobsName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, jobsName, resource, Context.NONE);
     }
 
     /**
@@ -324,39 +299,14 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             ClusterJobInner.class, ClusterJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterJobInner>, ClusterJobInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String jobsName, ClusterJobInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName, jobsName, resource);
-        return this.client.<ClusterJobInner, ClusterJobInner>getLroResult(response, ClusterJobInner.class,
-            ClusterJobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, jobsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cluster Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterJobInner>, ClusterJobInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String jobsName, ClusterJobInner resource, Context context) {
@@ -385,41 +335,19 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterJobInner createOrUpdate(String resourceGroupName, String clusterName, String jobsName,
         ClusterJobInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, jobsName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, jobsName, resource, Context.NONE);
     }
 
-    /**
-     * Create a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster Jobs resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterJobInner createOrUpdate(String resourceGroupName, String clusterName, String jobsName,
         ClusterJobInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, jobsName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, clusterName, jobsName, resource, context));
     }
 
     /**
@@ -455,8 +383,7 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String jobsName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, jobsName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, jobsName, Context.NONE);
     }
 
     /**
@@ -497,36 +424,14 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String jobsName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, jobsName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, jobsName, Context.NONE);
     }
 
-    /**
-     * Delete a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String jobsName,
         Context context) {
@@ -551,35 +456,16 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String jobsName) {
-        beginDelete(resourceGroupName, clusterName, jobsName).getFinalResult();
+        delete(resourceGroupName, clusterName, jobsName, Context.NONE);
     }
 
-    /**
-     * Delete a ClusterJob.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param jobsName Name of ClusterJob.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String jobsName, Context context) {
-        beginDelete(resourceGroupName, clusterName, jobsName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, jobsName, context));
     }
 
     /**
@@ -632,11 +518,7 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterJobInner> listSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<ClusterJobListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -660,33 +542,13 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ClusterJob resources by Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Cluster Job resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterJobInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * List ClusterJob resources by Clusters.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Cluster Job resources for the HCI cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterJobInner> list(String resourceGroupName, String clusterName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName, context),
@@ -723,11 +585,7 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterJobInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ClusterJobListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -206,16 +206,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         return getWithResponseAsync(connectorName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connector along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectorInner> getWithResponse(String connectorName, Context context) {
         final String accept = "application/json";
@@ -223,15 +214,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             connectorName, accept, context);
     }
 
-    /**
-     * Get a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connector.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorInner get(String connectorName) {
         return getWithResponse(connectorName, Context.NONE).getValue();
@@ -272,10 +255,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String connectorName, ConnectorInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), connectorName, contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(connectorName, resource, Context.NONE);
     }
 
     /**
@@ -318,37 +298,14 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             ConnectorInner.class, ConnectorInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a connector is a resource that can be used to proactively report
-     * impacts against workloads in Azure to Microsoft.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectorInner>, ConnectorInner> beginCreateOrUpdate(String connectorName,
         ConnectorInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(connectorName, resource);
-        return this.client.<ConnectorInner, ConnectorInner>getLroResult(response, ConnectorInner.class,
-            ConnectorInner.class, Context.NONE);
+        return beginCreateOrUpdate(connectorName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a connector is a resource that can be used to proactively report
-     * impacts against workloads in Azure to Microsoft.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectorInner>, ConnectorInner> beginCreateOrUpdate(String connectorName,
         ConnectorInner resource, Context context) {
@@ -373,37 +330,16 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         return beginCreateOrUpdateAsync(connectorName, resource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector is a resource that can be used to proactively report impacts against workloads in Azure to
-     * Microsoft.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorInner createOrUpdate(String connectorName, ConnectorInner resource) {
-        return beginCreateOrUpdate(connectorName, resource).getFinalResult();
+        return createOrUpdate(connectorName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector is a resource that can be used to proactively report impacts against workloads in Azure to
-     * Microsoft.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorInner createOrUpdate(String connectorName, ConnectorInner resource, Context context) {
-        return beginCreateOrUpdate(connectorName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(connectorName, resource, context));
     }
 
     /**
@@ -443,18 +379,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         return updateWithResponseAsync(connectorName, properties).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector is a resource that can be used to proactively report impacts against workloads in Azure to
-     * Microsoft along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectorInner> updateWithResponse(String connectorName, ConnectorUpdate properties,
         Context context) {
@@ -464,17 +389,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             this.client.getSubscriptionId(), connectorName, contentType, accept, properties, context);
     }
 
-    /**
-     * Update a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector is a resource that can be used to proactively report impacts against workloads in Azure to
-     * Microsoft.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorInner update(String connectorName, ConnectorUpdate properties) {
         return updateWithResponse(connectorName, properties, Context.NONE).getValue();
@@ -511,30 +426,14 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         return deleteWithResponseAsync(connectorName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String connectorName, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), connectorName, context);
     }
 
-    /**
-     * Delete a Connector.
-     * 
-     * @param connectorName The name of the connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String connectorName) {
         deleteWithResponse(connectorName, Context.NONE);
@@ -581,11 +480,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectorInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<ConnectorListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -606,27 +501,13 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Connector resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Connector list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List Connector resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Connector list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -665,11 +546,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ConnectorInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ConnectorListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

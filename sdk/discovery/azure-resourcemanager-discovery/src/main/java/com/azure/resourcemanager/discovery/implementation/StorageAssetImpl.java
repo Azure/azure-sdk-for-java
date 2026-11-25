@@ -84,10 +84,7 @@ public final class StorageAssetImpl implements StorageAsset, StorageAsset.Defini
     }
 
     public StorageAsset create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAssets()
-            .createOrUpdate(resourceGroupName, storageContainerName, storageAssetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public StorageAsset create(Context context) {
@@ -108,10 +105,7 @@ public final class StorageAssetImpl implements StorageAsset, StorageAsset.Defini
     }
 
     public StorageAsset apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAssets()
-            .update(resourceGroupName, storageContainerName, storageAssetName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public StorageAsset apply(Context context) {
@@ -137,11 +131,7 @@ public final class StorageAssetImpl implements StorageAsset, StorageAsset.Defini
     }
 
     public StorageAsset refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getStorageAssets()
-            .getWithResponse(resourceGroupName, storageContainerName, storageAssetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public StorageAsset refresh(Context context) {

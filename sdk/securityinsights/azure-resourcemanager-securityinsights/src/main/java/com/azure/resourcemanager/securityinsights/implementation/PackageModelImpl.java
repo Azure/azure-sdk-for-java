@@ -176,11 +176,7 @@ public final class PackageModelImpl implements PackageModel, PackageModel.Defini
     }
 
     public PackageModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentPackageOperations()
-            .installWithResponse(resourceGroupName, workspaceName, packageId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PackageModel create(Context context) {
@@ -202,11 +198,7 @@ public final class PackageModelImpl implements PackageModel, PackageModel.Defini
     }
 
     public PackageModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getContentPackageOperations()
-            .installWithResponse(resourceGroupName, workspaceName, packageId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PackageModel apply(Context context) {

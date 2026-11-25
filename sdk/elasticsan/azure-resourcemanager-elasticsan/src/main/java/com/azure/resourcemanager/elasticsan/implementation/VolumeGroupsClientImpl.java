@@ -253,18 +253,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an VolumeGroups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an VolumeGroups along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VolumeGroupInner> getWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, Context context) {
@@ -295,17 +284,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             resourceGroupName, elasticSanName, volumeGroupName, accept, context);
     }
 
-    /**
-     * Get an VolumeGroups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an VolumeGroups.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner get(String resourceGroupName, String elasticSanName, String volumeGroupName) {
         return getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE).getValue();
@@ -374,39 +353,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, VolumeGroupInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (volumeGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, contentType, accept,
-            parameters, Context.NONE);
+        return createWithResponse(resourceGroupName, elasticSanName, volumeGroupName, parameters, Context.NONE);
     }
 
     /**
@@ -481,40 +428,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             VolumeGroupInner.class, VolumeGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Volume Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginCreate(String resourceGroupName,
         String elasticSanName, String volumeGroupName, VolumeGroupInner parameters) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, elasticSanName, volumeGroupName, parameters);
-        return this.client.<VolumeGroupInner, VolumeGroupInner>getLroResult(response, VolumeGroupInner.class,
-            VolumeGroupInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, elasticSanName, volumeGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a Volume Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginCreate(String resourceGroupName,
         String elasticSanName, String volumeGroupName, VolumeGroupInner parameters, Context context) {
@@ -543,41 +464,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Volume Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner create(String resourceGroupName, String elasticSanName, String volumeGroupName,
         VolumeGroupInner parameters) {
-        return beginCreate(resourceGroupName, elasticSanName, volumeGroupName, parameters).getFinalResult();
+        return create(resourceGroupName, elasticSanName, volumeGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Create a Volume Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner create(String resourceGroupName, String elasticSanName, String volumeGroupName,
         VolumeGroupInner parameters, Context context) {
-        return beginCreate(resourceGroupName, elasticSanName, volumeGroupName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, elasticSanName, volumeGroupName, parameters, context));
     }
 
     /**
@@ -643,39 +542,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName, VolumeGroupUpdate parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (volumeGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, elasticSanName, volumeGroupName, parameters, Context.NONE);
     }
 
     /**
@@ -750,40 +617,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             VolumeGroupInner.class, VolumeGroupInner.class, this.client.getContext());
     }
 
-    /**
-     * Update an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginUpdate(String resourceGroupName,
         String elasticSanName, String volumeGroupName, VolumeGroupUpdate parameters) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, elasticSanName, volumeGroupName, parameters);
-        return this.client.<VolumeGroupInner, VolumeGroupInner>getLroResult(response, VolumeGroupInner.class,
-            VolumeGroupInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, elasticSanName, volumeGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Update an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupInner>, VolumeGroupInner> beginUpdate(String resourceGroupName,
         String elasticSanName, String volumeGroupName, VolumeGroupUpdate parameters, Context context) {
@@ -812,41 +653,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner update(String resourceGroupName, String elasticSanName, String volumeGroupName,
         VolumeGroupUpdate parameters) {
-        return beginUpdate(resourceGroupName, elasticSanName, volumeGroupName, parameters).getFinalResult();
+        return update(resourceGroupName, elasticSanName, volumeGroupName, parameters, Context.NONE);
     }
 
-    /**
-     * Update an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param parameters Volume Group object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Volume Group request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeGroupInner update(String resourceGroupName, String elasticSanName, String volumeGroupName,
         VolumeGroupUpdate parameters, Context context) {
-        return beginUpdate(resourceGroupName, elasticSanName, volumeGroupName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, elasticSanName, volumeGroupName, parameters, context));
     }
 
     /**
@@ -902,30 +721,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String elasticSanName,
         String volumeGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (volumeGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, volumeGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE);
     }
 
     /**
@@ -989,36 +785,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, elasticSanName, volumeGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE);
     }
 
-    /**
-     * Delete an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         String volumeGroupName, Context context) {
@@ -1043,35 +817,16 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName) {
-        beginDelete(resourceGroupName, elasticSanName, volumeGroupName).getFinalResult();
+        delete(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE);
     }
 
-    /**
-     * Delete an VolumeGroup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param volumeGroupName The name of the VolumeGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, Context context) {
-        beginDelete(resourceGroupName, elasticSanName, volumeGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, elasticSanName, volumeGroupName, context));
     }
 
     /**
@@ -1167,30 +922,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeGroupInner> listByElasticSanSinglePage(String resourceGroupName, String elasticSanName,
         XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VolumeGroupList> res = service.listByElasticSanSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, elasticSanName,
-            xMsAccessSoftDeletedResources, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByElasticSanSinglePage(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources,
+            Context.NONE);
     }
 
     /**
@@ -1235,37 +968,14 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List VolumeGroups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Volume Groups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupInner> listByElasticSan(String resourceGroupName, String elasticSanName) {
         final XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources = null;
-        return new PagedIterable<>(
-            () -> listByElasticSanSinglePage(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources),
-            nextLink -> listByElasticSanNextSinglePage(nextLink, xMsAccessSoftDeletedResources));
+        return listByElasticSan(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources, Context.NONE);
     }
 
-    /**
-     * List VolumeGroups.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
-     * false or if not specified, returns only active volume groups.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Volume Groups as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VolumeGroupInner> listByElasticSan(String resourceGroupName, String elasticSanName,
         XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
@@ -1318,20 +1028,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<VolumeGroupInner> listByElasticSanNextSinglePage(String nextLink,
         XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<VolumeGroupList> res = service.listByElasticSanNextSync(nextLink, this.client.getEndpoint(),
-            xMsAccessSoftDeletedResources, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByElasticSanNextSinglePage(nextLink, xMsAccessSoftDeletedResources, Context.NONE);
     }
 
     /**

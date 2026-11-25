@@ -105,12 +105,7 @@ public final class ForwardingRuleImpl implements ForwardingRule, ForwardingRule.
     }
 
     public ForwardingRule create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getForwardingRules()
-            .createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName,
-                this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ForwardingRule create(Context context) {
@@ -137,12 +132,7 @@ public final class ForwardingRuleImpl implements ForwardingRule, ForwardingRule.
     }
 
     public ForwardingRule apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getForwardingRules()
-            .updateWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, updateParameters,
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ForwardingRule apply(Context context) {
@@ -170,11 +160,7 @@ public final class ForwardingRuleImpl implements ForwardingRule, ForwardingRule.
     }
 
     public ForwardingRule refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getForwardingRules()
-            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ForwardingRule refresh(Context context) {

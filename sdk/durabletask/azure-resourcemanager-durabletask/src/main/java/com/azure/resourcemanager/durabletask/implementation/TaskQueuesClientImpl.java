@@ -230,19 +230,7 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Task Queue along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TaskQueueInner> getWithResponse(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName, Context context) {
@@ -251,18 +239,7 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             resourceGroupName, schedulerName, taskHubName, taskQueueName, accept, context);
     }
 
-    /**
-     * Get a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Task Queue.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskQueueInner get(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName) {
@@ -311,11 +288,8 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String schedulerName,
         String taskHubName, String taskQueueName, TaskQueueInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, taskHubName, taskQueueName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, resource,
+            Context.NONE);
     }
 
     /**
@@ -364,42 +338,15 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             TaskQueueInner.class, TaskQueueInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskQueueInner>, TaskQueueInner> beginCreateOrUpdate(String resourceGroupName,
         String schedulerName, String taskHubName, String taskQueueName, TaskQueueInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, resource);
-        return this.client.<TaskQueueInner, TaskQueueInner>getLroResult(response, TaskQueueInner.class,
-            TaskQueueInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, resource,
+            Context.NONE);
     }
 
-    /**
-     * Create or update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskQueueInner>, TaskQueueInner> beginCreateOrUpdate(String resourceGroupName,
         String schedulerName, String taskHubName, String taskQueueName, TaskQueueInner resource, Context context) {
@@ -429,45 +376,19 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskQueueInner createOrUpdate(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName, TaskQueueInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, resource, Context.NONE);
     }
 
-    /**
-     * Create or update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskQueueInner createOrUpdate(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName, TaskQueueInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, resource, context));
     }
 
     /**
@@ -512,11 +433,8 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName, TaskQueueUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, taskHubName, taskQueueName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, properties,
+            Context.NONE);
     }
 
     /**
@@ -565,42 +483,14 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             TaskQueueInner.class, TaskQueueInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskQueueInner>, TaskQueueInner> beginUpdate(String resourceGroupName,
         String schedulerName, String taskHubName, String taskQueueName, TaskQueueUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, properties);
-        return this.client.<TaskQueueInner, TaskQueueInner>getLroResult(response, TaskQueueInner.class,
-            TaskQueueInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TaskQueueInner>, TaskQueueInner> beginUpdate(String resourceGroupName,
         String schedulerName, String taskHubName, String taskQueueName, TaskQueueUpdate properties, Context context) {
@@ -630,44 +520,19 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskQueueInner update(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName, TaskQueueUpdate properties) {
-        return beginUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, properties).getFinalResult();
+        return update(resourceGroupName, schedulerName, taskHubName, taskQueueName, properties, Context.NONE);
     }
 
-    /**
-     * Update a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Task Queue resource belonging to a Task Hub.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TaskQueueInner update(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName, TaskQueueUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, schedulerName, taskHubName, taskQueueName, properties, context));
     }
 
     /**
@@ -706,9 +571,7 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String schedulerName, String taskHubName,
         String taskQueueName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, schedulerName, taskHubName, taskQueueName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName, Context.NONE);
     }
 
     /**
@@ -752,39 +615,14 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName,
         String taskHubName, String taskQueueName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, schedulerName, taskHubName, taskQueueName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, schedulerName, taskHubName, taskQueueName, Context.NONE);
     }
 
-    /**
-     * Delete a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String schedulerName,
         String taskHubName, String taskQueueName, Context context) {
@@ -812,38 +650,18 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName, String taskHubName, String taskQueueName) {
-        beginDelete(resourceGroupName, schedulerName, taskHubName, taskQueueName).getFinalResult();
+        delete(resourceGroupName, schedulerName, taskHubName, taskQueueName, Context.NONE);
     }
 
-    /**
-     * Delete a Task Queue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param taskQueueName The name of the TaskQueue.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String schedulerName, String taskHubName, String taskQueueName,
         Context context) {
-        beginDelete(resourceGroupName, schedulerName, taskHubName, taskQueueName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, schedulerName, taskHubName, taskQueueName, context));
     }
 
     /**
@@ -902,12 +720,7 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TaskQueueInner> listByTaskHubSinglePage(String resourceGroupName, String schedulerName,
         String taskHubName) {
-        final String accept = "application/json";
-        Response<TaskQueueListResult> res
-            = service.listByTaskHubSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, schedulerName, taskHubName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTaskHubSinglePage(resourceGroupName, schedulerName, taskHubName, Context.NONE);
     }
 
     /**
@@ -933,36 +746,14 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Task Queues by Task Hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TaskQueue list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TaskQueueInner> listByTaskHub(String resourceGroupName, String schedulerName,
         String taskHubName) {
-        return new PagedIterable<>(() -> listByTaskHubSinglePage(resourceGroupName, schedulerName, taskHubName),
-            nextLink -> listByTaskHubNextSinglePage(nextLink));
+        return listByTaskHub(resourceGroupName, schedulerName, taskHubName, Context.NONE);
     }
 
-    /**
-     * List Task Queues by Task Hub.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param schedulerName The name of the Scheduler.
-     * @param taskHubName The name of the TaskHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a TaskQueue list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TaskQueueInner> listByTaskHub(String resourceGroupName, String schedulerName,
         String taskHubName, Context context) {
@@ -1002,11 +793,7 @@ public final class TaskQueuesClientImpl implements TaskQueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<TaskQueueInner> listByTaskHubNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<TaskQueueListResult> res
-            = service.listByTaskHubNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByTaskHubNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

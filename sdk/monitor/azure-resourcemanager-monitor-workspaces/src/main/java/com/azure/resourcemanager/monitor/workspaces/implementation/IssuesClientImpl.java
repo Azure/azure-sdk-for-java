@@ -411,21 +411,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a new issue or updates an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param resource Resource create parameters.
-     * @param related Related resource or alert that is to be added to the issue (default: empty - the issue will be
-     * created without any related resources or alerts).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Issue resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssueResourceInner> createWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, IssueResourceInner resource, String related, Context context) {
@@ -436,18 +422,7 @@ public final class IssuesClientImpl implements IssuesClient {
             contentType, accept, resource, context);
     }
 
-    /**
-     * Create a new issue or updates an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Issue resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssueResourceInner create(String resourceGroupName, String azureMonitorWorkspaceName, String issueName,
         IssueResourceInner resource) {
@@ -499,19 +474,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Issue resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssueResourceInner> updateWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, IssueResourceUpdate properties, Context context) {
@@ -522,18 +485,7 @@ public final class IssuesClientImpl implements IssuesClient {
             accept, properties, context);
     }
 
-    /**
-     * Update an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Issue resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssueResourceInner update(String resourceGroupName, String azureMonitorWorkspaceName, String issueName,
         IssueResourceUpdate properties) {
@@ -579,18 +531,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get issue properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssueResourceInner> getWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, Context context) {
@@ -599,17 +540,7 @@ public final class IssuesClientImpl implements IssuesClient {
             resourceGroupName, azureMonitorWorkspaceName, issueName, accept, context);
     }
 
-    /**
-     * Get issue properties.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssueResourceInner get(String resourceGroupName, String azureMonitorWorkspaceName, String issueName) {
         return getWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, Context.NONE).getValue();
@@ -652,18 +583,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, Context context) {
@@ -671,16 +591,7 @@ public final class IssuesClientImpl implements IssuesClient {
             this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, issueName, context);
     }
 
-    /**
-     * Delete an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String azureMonitorWorkspaceName, String issueName) {
         deleteWithResponse(resourceGroupName, azureMonitorWorkspaceName, issueName, Context.NONE);
@@ -738,11 +649,7 @@ public final class IssuesClientImpl implements IssuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IssueResourceInner> listSinglePage(String resourceGroupName,
         String azureMonitorWorkspaceName) {
-        final String accept = "application/json";
-        Response<IssueResourceListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
     /**
@@ -766,33 +673,13 @@ public final class IssuesClientImpl implements IssuesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List all issues under the parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IssueResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssueResourceInner> list(String resourceGroupName, String azureMonitorWorkspaceName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, azureMonitorWorkspaceName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, azureMonitorWorkspaceName, Context.NONE);
     }
 
-    /**
-     * List all issues under the parent.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a IssueResource list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssueResourceInner> list(String resourceGroupName, String azureMonitorWorkspaceName,
         Context context) {
@@ -844,19 +731,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Adds investigation result.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the investigation result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InvestigationResultInner> addInvestigationResultWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, InvestigationResultInner body, Context context) {
@@ -867,18 +742,7 @@ public final class IssuesClientImpl implements IssuesClient {
             accept, body, context);
     }
 
-    /**
-     * Adds investigation result.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the investigation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InvestigationResultInner addInvestigationResult(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, InvestigationResultInner body) {
@@ -930,19 +794,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetch investigation result.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the investigation result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InvestigationResultInner> fetchInvestigationResultWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, FetchInvestigationResultParameters body, Context context) {
@@ -953,18 +805,7 @@ public final class IssuesClientImpl implements IssuesClient {
             accept, body, context);
     }
 
-    /**
-     * Fetch investigation result.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the investigation result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InvestigationResultInner fetchInvestigationResult(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, FetchInvestigationResultParameters body) {
@@ -1016,19 +857,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all alerts in the issue - this method uses pagination to return all alerts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RelatedAlert items along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PagedRelatedAlertInner> listAlertsWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, ListParameter body, Context context) {
@@ -1039,18 +868,7 @@ public final class IssuesClientImpl implements IssuesClient {
             accept, body, context);
     }
 
-    /**
-     * List all alerts in the issue - this method uses pagination to return all alerts.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RelatedAlert items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedRelatedAlertInner listAlerts(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, ListParameter body) {
@@ -1101,19 +919,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Add or update alerts associated with an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of related alerts along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelatedAlertsInner> addOrUpdateAlertsWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, RelatedAlertsInner body, Context context) {
@@ -1124,18 +930,7 @@ public final class IssuesClientImpl implements IssuesClient {
             accept, body, context);
     }
 
-    /**
-     * Add or update alerts associated with an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of related alerts.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelatedAlertsInner addOrUpdateAlerts(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, RelatedAlertsInner body) {
@@ -1187,19 +982,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List all resources in the issue - this method uses pagination to return all resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RelatedResource items along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PagedRelatedResourceInner> listResourcesWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, ListParameter body, Context context) {
@@ -1210,18 +993,7 @@ public final class IssuesClientImpl implements IssuesClient {
             accept, body, context);
     }
 
-    /**
-     * List all resources in the issue - this method uses pagination to return all resources.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of RelatedResource items.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedRelatedResourceInner listResources(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, ListParameter body) {
@@ -1272,19 +1044,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Add or update resources associated with an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of related resources along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RelatedResourcesInner> addOrUpdateResourcesWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, RelatedResourcesInner body, Context context) {
@@ -1295,18 +1055,7 @@ public final class IssuesClientImpl implements IssuesClient {
             accept, body, context);
     }
 
-    /**
-     * Add or update resources associated with an issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of related resources.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RelatedResourcesInner addOrUpdateResources(String resourceGroupName, String azureMonitorWorkspaceName,
         String issueName, RelatedResourcesInner body) {
@@ -1354,18 +1103,7 @@ public final class IssuesClientImpl implements IssuesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Fetch the background visualization of the issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issue background visualization along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackgroundVisualizationInner> fetchBackgroundVisualizationWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, Context context) {
@@ -1374,17 +1112,7 @@ public final class IssuesClientImpl implements IssuesClient {
             this.client.getSubscriptionId(), resourceGroupName, azureMonitorWorkspaceName, issueName, accept, context);
     }
 
-    /**
-     * Fetch the background visualization of the issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the issue background visualization.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackgroundVisualizationInner fetchBackgroundVisualization(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName) {
@@ -1434,19 +1162,7 @@ public final class IssuesClientImpl implements IssuesClient {
             body).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Set the background visualization for the issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setBackgroundVisualizationWithResponse(String resourceGroupName,
         String azureMonitorWorkspaceName, String issueName, BackgroundVisualizationInner body, Context context) {
@@ -1456,17 +1172,7 @@ public final class IssuesClientImpl implements IssuesClient {
             context);
     }
 
-    /**
-     * Set the background visualization for the issue.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param azureMonitorWorkspaceName The name of the Azure Monitor Workspace. The name is case insensitive.
-     * @param issueName The name of the IssueResource.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setBackgroundVisualization(String resourceGroupName, String azureMonitorWorkspaceName, String issueName,
         BackgroundVisualizationInner body) {
@@ -1504,11 +1210,7 @@ public final class IssuesClientImpl implements IssuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<IssueResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IssueResourceListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

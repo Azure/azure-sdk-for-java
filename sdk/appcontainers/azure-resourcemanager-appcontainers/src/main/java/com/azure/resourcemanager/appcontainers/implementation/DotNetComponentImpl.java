@@ -87,10 +87,7 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDotNetComponents()
-            .createOrUpdate(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DotNetComponent create(Context context) {
@@ -111,10 +108,7 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDotNetComponents()
-            .update(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DotNetComponent apply(Context context) {
@@ -140,11 +134,7 @@ public final class DotNetComponentImpl implements DotNetComponent, DotNetCompone
     }
 
     public DotNetComponent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDotNetComponents()
-            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DotNetComponent refresh(Context context) {

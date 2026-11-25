@@ -20,7 +20,7 @@ public final class MaintenanceEventsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"maintenanceEventId\":\"dbhfhp\",\"maintenanceType\":\"PlannedMaintenance\",\"description\":\"zjzoywjxhpdul\",\"status\":\"Planned\",\"startTime\":\"2021-04-01T12:27:49Z\",\"endTime\":\"2021-11-24T10:15:47Z\",\"estimatedDowntime\":\"np\",\"deferrable\":false,\"deferralDeadline\":\"2020-12-27T20:17:23Z\",\"rescheduledFrom\":\"2021-05-28T12:53:15Z\",\"lastUpdatedTime\":\"2021-07-30T01:45Z\",\"originalStartTime\":\"2021-10-09T16:09:06Z\"},\"id\":\"hrljy\",\"name\":\"ogwxhnsduugwb\",\"type\":\"reur\"}";
+            = "{\"properties\":{\"maintenanceEventId\":\"xmycjimryvwgcw\",\"maintenanceType\":\"PlannedMaintenance\",\"description\":\"mzgwe\",\"status\":\"Canceled\",\"startTime\":\"2021-09-14T09:19:36Z\",\"endTime\":\"2021-11-05T00:53:33Z\",\"estimatedDowntime\":\"wefohecbvo\",\"deferrable\":true,\"deferralDeadline\":\"2021-06-29T01:44:13Z\",\"rescheduledFrom\":\"2021-05-07T06:23:58Z\",\"lastUpdatedTime\":\"2021-10-14T11:15:51Z\",\"originalStartTime\":\"2021-09-07T18:38:54Z\"},\"id\":\"lklmtkhlo\",\"name\":\"kxxpvbrd\",\"type\":\"jmzsyzfh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class MaintenanceEventsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MaintenanceEventResource response = manager.maintenanceEvents()
-            .getWithResponse("arfdlpukhpyrnei", "jcpeogkhnmg", "ro", com.azure.core.util.Context.NONE)
+            .getWithResponse("fbsfarfsiow", "kjxnqpvwgfstmhq", "kizmdksaoafclu", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -22,7 +22,7 @@ public final class DefaultParameterGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"parameters\":[{\"name\":\"xtxsuwprtujw\",\"description\":\"wddji\",\"value\":\"bxv\",\"defaultValue\":\"itvtzeexavo\",\"valueSource\":\"UserOverride\",\"dataType\":\"lecdmdqbw\",\"allowedValues\":\"pqtgsfjac\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"udbxv\",\"unit\":\"htnsi\"},{\"name\":\"dhzmmesckdlp\",\"description\":\"zrcxfailcfxwmdbo\",\"value\":\"fgsftufqob\",\"defaultValue\":\"lnacgcc\",\"valueSource\":\"SystemDefault\",\"dataType\":\"xkizvy\",\"allowedValues\":\"rzvul\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"anokqgu\",\"unit\":\"jqnv\"},{\"name\":\"oylaxxul\",\"description\":\"isdos\",\"value\":\"b\",\"defaultValue\":\"vgjrwhr\",\"valueSource\":\"SystemDefault\",\"dataType\":\"ytdc\",\"allowedValues\":\"gc\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"mbtmvpdvjdhttzae\",\"unit\":\"dxihc\"},{\"name\":\"phkmcrjdqnsdfz\",\"description\":\"gtgkylkdghr\",\"value\":\"uutlwxezwzhok\",\"defaultValue\":\"wnhhtqlgehgppip\",\"valueSource\":\"UserOverride\",\"dataType\":\"f\",\"allowedValues\":\"ajvgcxtxjcsheafi\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"resmkssjhoiftxfk\",\"unit\":\"egprhptil\"}],\"description\":\"cbiqtgdqoh\",\"postgreSqlVersion\":\"17\"},\"id\":\"sldrizetpwbral\",\"name\":\"libph\",\"type\":\"qzmiza\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"parameters\":[{\"name\":\"faey\",\"description\":\"nm\",\"value\":\"vxirpghriypo\",\"defaultValue\":\"yhlqhykprlpyznu\",\"valueSource\":\"UserOverride\",\"dataType\":\"smexiitdf\",\"allowedValues\":\"tyasiibmiybnnust\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"mgixhcmavmqfou\",\"unit\":\"rhc\"}],\"description\":\"yprotwyp\",\"postgreSqlVersion\":\"17\"},\"id\":\"mbxhugcmjkav\",\"name\":\"gorbmftpm\",\"type\":\"tzfjltf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class DefaultParameterGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DefaultParameterGroup response = manager.defaultParameterGroups()
-            .getWithResponse("ojbmxv", "vrefdeesv", com.azure.core.util.Context.NONE)
+            .getWithResponse("wxacevehj", "uyxoaf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xtxsuwprtujw", response.properties().parameters().get(0).name());
-        Assertions.assertEquals("bxv", response.properties().parameters().get(0).value());
-        Assertions.assertEquals("cbiqtgdqoh", response.properties().description());
+        Assertions.assertEquals("faey", response.properties().parameters().get(0).name());
+        Assertions.assertEquals("vxirpghriypo", response.properties().parameters().get(0).value());
+        Assertions.assertEquals("yprotwyp", response.properties().description());
         Assertions.assertEquals(PostgreSqlVersion.V17, response.properties().postgreSqlVersion());
     }
 }

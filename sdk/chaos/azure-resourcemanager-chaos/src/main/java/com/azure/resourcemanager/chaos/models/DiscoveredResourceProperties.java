@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * Model that represents the properties of a discovered resource.
@@ -47,6 +48,20 @@ public final class DiscoveredResourceProperties implements JsonSerializable<Disc
      * The scope of the discovered resource.
      */
     private String scope;
+
+    /*
+     * The Azure region the discovered resource is deployed to, in lowercase with no spaces. Absent when no single
+     * deployment region was captured, including global and multi-region resources.
+     */
+    private String location;
+
+    /*
+     * The availability zones the discovered resource occupies. Values are logical zone identifiers, such as `["1",
+     * "2"]` for a zone-pinned resource, or the single value `zone-redundant` when redundancy is expressed as a flag or
+     * SKU rather than a zone list. Absent, and never empty, when no zone information was captured; a non-zone-aware
+     * resource and a zone-aware resource without an assigned zone are not distinguished.
+     */
+    private List<String> zones;
 
     /**
      * Creates an instance of DiscoveredResourceProperties class.
@@ -109,6 +124,29 @@ public final class DiscoveredResourceProperties implements JsonSerializable<Disc
     }
 
     /**
+     * Get the location property: The Azure region the discovered resource is deployed to, in lowercase with no spaces.
+     * Absent when no single deployment region was captured, including global and multi-region resources.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the zones property: The availability zones the discovered resource occupies. Values are logical zone
+     * identifiers, such as `["1", "2"]` for a zone-pinned resource, or the single value `zone-redundant` when
+     * redundancy is expressed as a flag or SKU rather than a zone list. Absent, and never empty, when no zone
+     * information was captured; a non-zone-aware resource and a zone-aware resource without an assigned zone are not
+     * distinguished.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -146,6 +184,11 @@ public final class DiscoveredResourceProperties implements JsonSerializable<Disc
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("scope".equals(fieldName)) {
                     deserializedDiscoveredResourceProperties.scope = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDiscoveredResourceProperties.location = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiscoveredResourceProperties.zones = zones;
                 } else {
                     reader.skipChildren();
                 }

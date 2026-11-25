@@ -144,19 +144,7 @@ public final class DatadogMonitorResourcesClientImpl implements DatadogMonitorRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * link the latest Saas to the monitor
-     * 
-     * Returns the latest SaaS linked to the Datadog organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
         String monitorName, Context context) {
@@ -165,18 +153,7 @@ public final class DatadogMonitorResourcesClientImpl implements DatadogMonitorRe
             this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context);
     }
 
-    /**
-     * link the latest Saas to the monitor
-     * 
-     * Returns the latest SaaS linked to the Datadog organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get latest linked SaaS resource operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String monitorName) {
         return latestLinkedSaaSWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
@@ -217,10 +194,7 @@ public final class DatadogMonitorResourcesClientImpl implements DatadogMonitorRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> linkSaaSWithResponse(String resourceGroupName, String monitorName, SaaSData body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.linkSaaSSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, contentType, accept, body, Context.NONE);
+        return linkSaaSWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 
     /**
@@ -264,37 +238,14 @@ public final class DatadogMonitorResourcesClientImpl implements DatadogMonitorRe
             this.client.getContext());
     }
 
-    /**
-     * Links a new SaaS to the Datadog organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Link SaaS body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginLinkSaaS(String resourceGroupName, String monitorName, SaaSData body) {
-        Response<BinaryData> response = linkSaaSWithResponse(resourceGroupName, monitorName, body);
-        return this.client.<DatadogMonitorResourceInner, DatadogMonitorResourceInner>getLroResult(response,
-            DatadogMonitorResourceInner.class, DatadogMonitorResourceInner.class, Context.NONE);
+        return beginLinkSaaS(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the Datadog organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Link SaaS body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
         beginLinkSaaS(String resourceGroupName, String monitorName, SaaSData body, Context context) {
@@ -321,37 +272,16 @@ public final class DatadogMonitorResourcesClientImpl implements DatadogMonitorRe
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Links a new SaaS to the Datadog organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Link SaaS body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner linkSaaS(String resourceGroupName, String monitorName, SaaSData body) {
-        return beginLinkSaaS(resourceGroupName, monitorName, body).getFinalResult();
+        return linkSaaS(resourceGroupName, monitorName, body, Context.NONE);
     }
 
-    /**
-     * Links a new SaaS to the Datadog organization of the underlying monitor.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param body Link SaaS body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatadogMonitorResourceInner linkSaaS(String resourceGroupName, String monitorName, SaaSData body,
         Context context) {
-        return beginLinkSaaS(resourceGroupName, monitorName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginLinkSaaS(resourceGroupName, monitorName, body, context));
     }
 }

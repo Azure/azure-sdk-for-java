@@ -11,7 +11,7 @@ public final class StorageMbCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageMbCapability model = BinaryData.fromString(
-            "{\"supportedIops\":1829917026,\"supportedMaximumIops\":1256720827,\"storageSizeMb\":4316338834967316017,\"maximumStorageSizeMb\":67075187560460490,\"supportedThroughput\":194924410,\"supportedMaximumThroughput\":1799745167,\"defaultIopsTier\":\"dz\",\"supportedIopsTiers\":[{\"name\":\"wva\",\"iops\":129407729,\"status\":\"Visible\",\"reason\":\"fonkphhqyikvyla\"},{\"name\":\"avluwmncs\",\"iops\":736005906,\"status\":\"Available\",\"reason\":\"bvpoekrsgsgbdhu\"}],\"status\":\"Disabled\",\"reason\":\"j\"}")
+            "{\"supportedIops\":432176032,\"supportedMaximumIops\":1574366459,\"storageSizeMb\":1154240979019407664,\"maximumStorageSizeMb\":862360995672746944,\"supportedThroughput\":1343904651,\"supportedMaximumThroughput\":587108165,\"defaultIopsTier\":\"ojcmisofieyp\",\"supportedIopsTiers\":[{\"name\":\"yqdhcuplcplcw\",\"iops\":904085535,\"status\":\"Default\",\"reason\":\"lhzdsqtzb\"},{\"name\":\"gnowcjhfgmveca\",\"iops\":1483507807,\"status\":\"Available\",\"reason\":\"teyowclu\"},{\"name\":\"vekqvgqo\",\"iops\":979668528,\"status\":\"Available\",\"reason\":\"pjwyiv\"},{\"name\":\"kfxcvhrfs\",\"iops\":1587826907,\"status\":\"Disabled\",\"reason\":\"ttikteusqczkvykl\"}],\"status\":\"Default\",\"reason\":\"jaffmmfblcqcuu\"}")
             .toObject(StorageMbCapability.class);
     }
 }

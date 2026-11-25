@@ -13,21 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuMixPlacementInstanceDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuMixPlacementInstanceDescription model = BinaryData.fromString(
-            "{\"vmSizes\":[{\"name\":\"jbp\",\"rank\":1969463366},{\"name\":\"s\",\"rank\":96730142},{\"name\":\"gvfcj\",\"rank\":1821850933}]}")
-            .toObject(SkuMixPlacementInstanceDescription.class);
-        Assertions.assertEquals("jbp", model.vmSizes().get(0).name());
-        Assertions.assertEquals(1969463366, model.vmSizes().get(0).rank());
+        SkuMixPlacementInstanceDescription model
+            = BinaryData.fromString("{\"vmSizes\":[{\"name\":\"juvf\",\"rank\":984806813}]}")
+                .toObject(SkuMixPlacementInstanceDescription.class);
+        Assertions.assertEquals("juvf", model.vmSizes().get(0).name());
+        Assertions.assertEquals(984806813, model.vmSizes().get(0).rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SkuMixPlacementInstanceDescription model = new SkuMixPlacementInstanceDescription()
-            .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("jbp").withRank(1969463366),
-                new SkuMixPlacementVMSize().withName("s").withRank(96730142),
-                new SkuMixPlacementVMSize().withName("gvfcj").withRank(1821850933)));
+            .withVmSizes(Arrays.asList(new SkuMixPlacementVMSize().withName("juvf").withRank(984806813)));
         model = BinaryData.fromObject(model).toObject(SkuMixPlacementInstanceDescription.class);
-        Assertions.assertEquals("jbp", model.vmSizes().get(0).name());
-        Assertions.assertEquals(1969463366, model.vmSizes().get(0).rank());
+        Assertions.assertEquals("juvf", model.vmSizes().get(0).name());
+        Assertions.assertEquals(984806813, model.vmSizes().get(0).rank());
     }
 }

@@ -89,18 +89,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an incident associated to an alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param incidentName The name of the incident to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident associated to an alert rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IncidentInner>> getWithResponseAsync(String resourceGroupName, String ruleName,
         String incidentName) {
@@ -171,52 +160,21 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
             this.client.getSubscriptionId(), accept, context);
     }
 
-    /**
-     * Gets an incident associated to an alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param incidentName The name of the incident to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident associated to an alert rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IncidentInner> getAsync(String resourceGroupName, String ruleName, String incidentName) {
         return getWithResponseAsync(resourceGroupName, ruleName, incidentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an incident associated to an alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param incidentName The name of the incident to retrieve.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident associated to an alert rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IncidentInner> getWithResponse(String resourceGroupName, String ruleName, String incidentName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, ruleName, incidentName, context).block();
     }
 
-    /**
-     * Gets an incident associated to an alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param incidentName The name of the incident to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an incident associated to an alert rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IncidentInner get(String resourceGroupName, String ruleName, String incidentName) {
         return getWithResponse(resourceGroupName, ruleName, incidentName, Context.NONE).getValue();
@@ -301,16 +259,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of incidents associated to an alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of incidents associated to an alert rule as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncidentInner> listByAlertRuleAsync(String resourceGroupName, String ruleName) {
         return new PagedFlux<>(() -> listByAlertRuleSinglePageAsync(resourceGroupName, ruleName),
@@ -334,32 +283,13 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
             nextLink -> listByAlertRuleNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of incidents associated to an alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of incidents associated to an alert rule as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentInner> listByAlertRule(String resourceGroupName, String ruleName) {
         return new PagedIterable<>(listByAlertRuleAsync(resourceGroupName, ruleName));
     }
 
-    /**
-     * Gets a list of incidents associated to an alert rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ruleName The name of the rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of incidents associated to an alert rule as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentInner> listByAlertRule(String resourceGroupName, String ruleName, Context context) {
         return new PagedIterable<>(listByAlertRuleAsync(resourceGroupName, ruleName, context));

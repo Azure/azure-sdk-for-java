@@ -99,7 +99,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public OperationStatusResult reimage(String resourceGroupName, String virtualMachineName) {
-        return this.serviceClient().reimage(resourceGroupName, virtualMachineName);
+        return this.reimage(resourceGroupName, virtualMachineName, Context.NONE);
     }
 
     public OperationStatusResult reimage(String resourceGroupName, String virtualMachineName, Context context) {
@@ -107,7 +107,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public OperationStatusResult restart(String resourceGroupName, String virtualMachineName) {
-        return this.serviceClient().restart(resourceGroupName, virtualMachineName);
+        return this.restart(resourceGroupName, virtualMachineName, Context.NONE);
     }
 
     public OperationStatusResult restart(String resourceGroupName, String virtualMachineName, Context context) {
@@ -115,7 +115,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public OperationStatusResult start(String resourceGroupName, String virtualMachineName) {
-        return this.serviceClient().start(resourceGroupName, virtualMachineName);
+        return this.start(resourceGroupName, virtualMachineName, Context.NONE);
     }
 
     public OperationStatusResult start(String resourceGroupName, String virtualMachineName, Context context) {
@@ -123,76 +123,32 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     }
 
     public VirtualMachine getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "virtualMachineName");
-        if (virtualMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<VirtualMachine> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "virtualMachineName");
-        if (virtualMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
-        }
+            "virtualMachineName", "virtualMachines", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "virtualMachineName");
-        if (virtualMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
-        }
         String localIfMatch = null;
         String localIfNoneMatch = null;
-        this.delete(resourceGroupName, virtualMachineName, localIfMatch, localIfNoneMatch, Context.NONE);
+        this.deleteByIdWithResponse(id, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String virtualMachineName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String virtualMachineName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}",
-            "virtualMachineName");
-        if (virtualMachineName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
-        }
+            "virtualMachineName", "virtualMachines", LOGGER);
         this.delete(resourceGroupName, virtualMachineName, ifMatch, ifNoneMatch, context);
     }
 

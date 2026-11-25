@@ -371,8 +371,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> finalizeWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        return service.finalizeSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, Context.NONE);
+        return finalizeWithResponse(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -417,39 +416,14 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             this.client.getContext());
     }
 
-    /**
-     * This action finalizes the recovery orchestration plan, ensuring all necessary configurations are in place.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse>
         beginFinalize(String serviceGroupName, String operationId, String recoveryPlanName) {
-        Response<BinaryData> response = finalizeWithResponse(serviceGroupName, operationId, recoveryPlanName);
-        return this.client.<ArmResponseErrorResponse, ArmResponseErrorResponse>getLroResult(response,
-            ArmResponseErrorResponse.class, ArmResponseErrorResponse.class, Context.NONE);
+        return beginFinalize(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action finalizes the recovery orchestration plan, ensuring all necessary configurations are in place.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse>
         beginFinalize(String serviceGroupName, String operationId, String recoveryPlanName, Context context) {
@@ -477,40 +451,18 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action finalizes the recovery orchestration plan, ensuring all necessary configurations are in place.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse finalize(String serviceGroupName, String operationId, String recoveryPlanName) {
-        return beginFinalize(serviceGroupName, operationId, recoveryPlanName).getFinalResult();
+        return finalize(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action finalizes the recovery orchestration plan, ensuring all necessary configurations are in place.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse finalize(String serviceGroupName, String operationId, String recoveryPlanName,
         Context context) {
-        return beginFinalize(serviceGroupName, operationId, recoveryPlanName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginFinalize(serviceGroupName, operationId, recoveryPlanName, context));
     }
 
     /**
@@ -552,10 +504,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateResourcesWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, UpdateRecoveryResourcesRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateResourcesSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, contentType, accept, body, Context.NONE);
+        return updateResourcesWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -603,42 +552,15 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             UpdateRecoveryResourcesResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action adds or updates the resources to be included in the recovery orchestration plan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recoveryResources post action request to update in batch.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRecoveryResourcesResponseInner>, UpdateRecoveryResourcesResponseInner>
         beginUpdateResources(String serviceGroupName, String operationId, String recoveryPlanName,
             UpdateRecoveryResourcesRequest body) {
-        Response<BinaryData> response
-            = updateResourcesWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client.<UpdateRecoveryResourcesResponseInner, UpdateRecoveryResourcesResponseInner>getLroResult(
-            response, UpdateRecoveryResourcesResponseInner.class, UpdateRecoveryResourcesResponseInner.class,
-            Context.NONE);
+        return beginUpdateResources(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action adds or updates the resources to be included in the recovery orchestration plan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recoveryResources post action request to update in batch.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UpdateRecoveryResourcesResponseInner>, UpdateRecoveryResourcesResponseInner>
         beginUpdateResources(String serviceGroupName, String operationId, String recoveryPlanName,
@@ -668,41 +590,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action adds or updates the resources to be included in the recovery orchestration plan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recoveryResources post action request to update in batch.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRecoveryResourcesResponseInner updateResources(String serviceGroupName, String operationId,
         String recoveryPlanName, UpdateRecoveryResourcesRequest body) {
-        return beginUpdateResources(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return updateResources(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action adds or updates the resources to be included in the recovery orchestration plan.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recoveryResources post action request to update in batch.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateRecoveryResourcesResponseInner updateResources(String serviceGroupName, String operationId,
         String recoveryPlanName, UpdateRecoveryResourcesRequest body, Context context) {
-        return beginUpdateResources(serviceGroupName, operationId, recoveryPlanName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateResources(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -746,9 +646,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForOperationWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, ValidateForOperationRequest body) {
-        final String contentType = "application/json";
-        return service.validateForOperationSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, recoveryPlanName, contentType, body, Context.NONE);
+        return validateForOperationWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -798,44 +696,14 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             this.client.getContext());
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for operations like failover and reprotect,
-     * ensuring it meets the necessary criteria.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse> beginValidateForOperation(
         String serviceGroupName, String operationId, String recoveryPlanName, ValidateForOperationRequest body) {
-        Response<BinaryData> response
-            = validateForOperationWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client.<ArmResponseErrorResponse, ArmResponseErrorResponse>getLroResult(response,
-            ArmResponseErrorResponse.class, ArmResponseErrorResponse.class, Context.NONE);
+        return beginValidateForOperation(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for operations like failover and reprotect,
-     * ensuring it meets the necessary criteria.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArmResponseErrorResponse>, ArmResponseErrorResponse> beginValidateForOperation(
         String serviceGroupName, String operationId, String recoveryPlanName, ValidateForOperationRequest body,
@@ -867,46 +735,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for operations like failover and reprotect,
-     * ensuring it meets the necessary criteria.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse validateForOperation(String serviceGroupName, String operationId,
         String recoveryPlanName, ValidateForOperationRequest body) {
-        return beginValidateForOperation(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return validateForOperation(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for operations like failover and reprotect,
-     * ensuring it meets the necessary criteria.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws ManagementException thrown if the request is rejected by server on status code 200.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmResponseErrorResponse validateForOperation(String serviceGroupName, String operationId,
         String recoveryPlanName, ValidateForOperationRequest body, Context context) {
-        return beginValidateForOperation(serviceGroupName, operationId, recoveryPlanName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateForOperation(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -950,10 +791,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForFailoverWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateForFailoverSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, contentType, accept, body, Context.NONE);
+        return validateForFailoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -1005,46 +843,16 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
                 ValidateForRecoveryOperationBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
         beginValidateForFailover(String serviceGroupName, String operationId, String recoveryPlanName,
             FailoverRequest body) {
-        Response<BinaryData> response
-            = validateForFailoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client
-            .<ValidateForRecoveryOperationBaseResponseInner, ValidateForRecoveryOperationBaseResponseInner>getLroResult(
-                response, ValidateForRecoveryOperationBaseResponseInner.class,
-                ValidateForRecoveryOperationBaseResponseInner.class, Context.NONE);
+        return beginValidateForFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
@@ -1078,44 +886,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForFailover(String serviceGroupName,
         String operationId, String recoveryPlanName, FailoverRequest body) {
-        return beginValidateForFailover(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return validateForFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForFailover(String serviceGroupName,
         String operationId, String recoveryPlanName, FailoverRequest body, Context context) {
-        return beginValidateForFailover(serviceGroupName, operationId, recoveryPlanName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateForFailover(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -1156,9 +939,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForFailoverCommitWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        final String accept = "application/json";
-        return service.validateForFailoverCommitSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, recoveryPlanName, accept, Context.NONE);
+        return validateForFailoverCommitWithResponse(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -1206,43 +987,15 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
                 ValidateForRecoveryOperationBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover commit operation, ensuring it
-     * meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
         beginValidateForFailoverCommit(String serviceGroupName, String operationId, String recoveryPlanName) {
-        Response<BinaryData> response
-            = validateForFailoverCommitWithResponse(serviceGroupName, operationId, recoveryPlanName);
-        return this.client
-            .<ValidateForRecoveryOperationBaseResponseInner, ValidateForRecoveryOperationBaseResponseInner>getLroResult(
-                response, ValidateForRecoveryOperationBaseResponseInner.class,
-                ValidateForRecoveryOperationBaseResponseInner.class, Context.NONE);
+        return beginValidateForFailoverCommit(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover commit operation, ensuring it
-     * meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
@@ -1275,42 +1028,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover commit operation, ensuring it
-     * meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForFailoverCommit(String serviceGroupName,
         String operationId, String recoveryPlanName) {
-        return beginValidateForFailoverCommit(serviceGroupName, operationId, recoveryPlanName).getFinalResult();
+        return validateForFailoverCommit(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for failover commit operation, ensuring it
-     * meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForFailoverCommit(String serviceGroupName,
         String operationId, String recoveryPlanName, Context context) {
-        return beginValidateForFailoverCommit(serviceGroupName, operationId, recoveryPlanName, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateForFailoverCommit(serviceGroupName, operationId, recoveryPlanName, context));
     }
 
     /**
@@ -1354,10 +1084,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForTestFailoverWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateForTestFailoverSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, recoveryPlanName, contentType, accept, body, Context.NONE);
+        return validateForTestFailoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -1409,46 +1136,16 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
                 ValidateForRecoveryOperationBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover operation, ensuring it meets
-     * the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
         beginValidateForTestFailover(String serviceGroupName, String operationId, String recoveryPlanName,
             FailoverRequest body) {
-        Response<BinaryData> response
-            = validateForTestFailoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client
-            .<ValidateForRecoveryOperationBaseResponseInner, ValidateForRecoveryOperationBaseResponseInner>getLroResult(
-                response, ValidateForRecoveryOperationBaseResponseInner.class,
-                ValidateForRecoveryOperationBaseResponseInner.class, Context.NONE);
+        return beginValidateForTestFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover operation, ensuring it meets
-     * the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
@@ -1482,44 +1179,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover operation, ensuring it meets
-     * the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForTestFailover(String serviceGroupName,
         String operationId, String recoveryPlanName, FailoverRequest body) {
-        return beginValidateForTestFailover(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return validateForTestFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover operation, ensuring it meets
-     * the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForTestFailover(String serviceGroupName,
         String operationId, String recoveryPlanName, FailoverRequest body, Context context) {
-        return beginValidateForTestFailover(serviceGroupName, operationId, recoveryPlanName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateForTestFailover(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -1560,9 +1232,8 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForTestFailoverCleanupWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        final String accept = "application/json";
-        return service.validateForTestFailoverCleanupSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, recoveryPlanName, accept, Context.NONE);
+        return validateForTestFailoverCleanupWithResponse(serviceGroupName, operationId, recoveryPlanName,
+            Context.NONE);
     }
 
     /**
@@ -1610,43 +1281,15 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
                 ValidateForRecoveryOperationBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover cleanup operation, ensuring
-     * it meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
         beginValidateForTestFailoverCleanup(String serviceGroupName, String operationId, String recoveryPlanName) {
-        Response<BinaryData> response
-            = validateForTestFailoverCleanupWithResponse(serviceGroupName, operationId, recoveryPlanName);
-        return this.client
-            .<ValidateForRecoveryOperationBaseResponseInner, ValidateForRecoveryOperationBaseResponseInner>getLroResult(
-                response, ValidateForRecoveryOperationBaseResponseInner.class,
-                ValidateForRecoveryOperationBaseResponseInner.class, Context.NONE);
+        return beginValidateForTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover cleanup operation, ensuring
-     * it meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
@@ -1679,42 +1322,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover cleanup operation, ensuring
-     * it meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForTestFailoverCleanup(String serviceGroupName,
         String operationId, String recoveryPlanName) {
-        return beginValidateForTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName).getFinalResult();
+        return validateForTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for test failover cleanup operation, ensuring
-     * it meets the necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForTestFailoverCleanup(String serviceGroupName,
         String operationId, String recoveryPlanName, Context context) {
-        return beginValidateForTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateForTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, context));
     }
 
     /**
@@ -1757,9 +1377,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateForReprotectWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, ReprotectRequest body) {
-        final String accept = "application/json";
-        return service.validateForReprotectSync(this.client.getEndpoint(), serviceGroupName,
-            this.client.getApiVersion(), operationId, recoveryPlanName, accept, body, Context.NONE);
+        return validateForReprotectWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -1849,57 +1467,23 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
      * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public
+    private
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
         beginValidateForReprotect(String serviceGroupName, String operationId, String recoveryPlanName,
             ReprotectRequest body) {
-        Response<BinaryData> response
-            = validateForReprotectWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client
-            .<ValidateForRecoveryOperationBaseResponseInner, ValidateForRecoveryOperationBaseResponseInner>getLroResult(
-                response, ValidateForRecoveryOperationBaseResponseInner.class,
-                ValidateForRecoveryOperationBaseResponseInner.class, Context.NONE);
+        return beginValidateForReprotect(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for reprotect operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
         beginValidateForReprotect(String serviceGroupName, String operationId, String recoveryPlanName) {
         final ReprotectRequest body = null;
-        Response<BinaryData> response
-            = validateForReprotectWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client
-            .<ValidateForRecoveryOperationBaseResponseInner, ValidateForRecoveryOperationBaseResponseInner>getLroResult(
-                response, ValidateForRecoveryOperationBaseResponseInner.class,
-                ValidateForRecoveryOperationBaseResponseInner.class, Context.NONE);
+        return beginValidateForReprotect(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for reprotect operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ValidateForRecoveryOperationBaseResponseInner>, ValidateForRecoveryOperationBaseResponseInner>
@@ -1953,44 +1537,20 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for reprotect operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForReprotect(String serviceGroupName,
         String operationId, String recoveryPlanName) {
         final ReprotectRequest body = null;
-        return beginValidateForReprotect(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return validateForReprotect(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action checks if the recovery orchestration plan is eligible for reprotect operation, ensuring it meets the
-     * necessary criteria and provides a list of qualified and unqualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validateForRecoveryOperation post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateForRecoveryOperationBaseResponseInner validateForReprotect(String serviceGroupName,
         String operationId, String recoveryPlanName, ReprotectRequest body, Context context) {
-        return beginValidateForReprotect(serviceGroupName, operationId, recoveryPlanName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateForReprotect(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -2031,9 +1591,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> checkReadinessWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        final String accept = "application/json";
-        return service.checkReadinessSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, accept, Context.NONE);
+        return checkReadinessWithResponse(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -2078,38 +1636,14 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             this.client.getContext());
     }
 
-    /**
-     * This action performs the necessary readiness check on the recovery orchestration plan to ensure it is in the
-     * desired state and eligible for all recovery actions, including all protected resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCheckReadiness(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        Response<BinaryData> response = checkReadinessWithResponse(serviceGroupName, operationId, recoveryPlanName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginCheckReadiness(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action performs the necessary readiness check on the recovery orchestration plan to ensure it is in the
-     * desired state and eligible for all recovery actions, including all protected resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCheckReadiness(String serviceGroupName, String operationId,
         String recoveryPlanName, Context context) {
@@ -2136,37 +1670,17 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action performs the necessary readiness check on the recovery orchestration plan to ensure it is in the
-     * desired state and eligible for all recovery actions, including all protected resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkReadiness(String serviceGroupName, String operationId, String recoveryPlanName) {
-        beginCheckReadiness(serviceGroupName, operationId, recoveryPlanName).getFinalResult();
+        checkReadiness(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action performs the necessary readiness check on the recovery orchestration plan to ensure it is in the
-     * desired state and eligible for all recovery actions, including all protected resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkReadiness(String serviceGroupName, String operationId, String recoveryPlanName, Context context) {
-        beginCheckReadiness(serviceGroupName, operationId, recoveryPlanName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginCheckReadiness(serviceGroupName, operationId, recoveryPlanName, context));
     }
 
     /**
@@ -2208,10 +1722,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.failoverSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, contentType, accept, body, Context.NONE);
+        return failoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -2258,40 +1769,14 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             RecoveryPlanActionBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action triggers the failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginFailover(String serviceGroupName, String operationId, String recoveryPlanName, FailoverRequest body) {
-        Response<BinaryData> response = failoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client.<RecoveryPlanActionBaseResponseInner, RecoveryPlanActionBaseResponseInner>getLroResult(
-            response, RecoveryPlanActionBaseResponseInner.class, RecoveryPlanActionBaseResponseInner.class,
-            Context.NONE);
+        return beginFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginFailover(String serviceGroupName, String operationId, String recoveryPlanName, FailoverRequest body,
@@ -2321,41 +1806,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action triggers the failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner failover(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        return beginFailover(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return failover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner failover(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body, Context context) {
-        return beginFailover(serviceGroupName, operationId, recoveryPlanName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginFailover(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -2396,9 +1859,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> failoverCommitWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        final String accept = "application/json";
-        return service.failoverCommitSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, accept, Context.NONE);
+        return failoverCommitWithResponse(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
     /**
@@ -2444,40 +1905,14 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             RecoveryPlanActionBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action triggers the failover commit operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginFailoverCommit(String serviceGroupName, String operationId, String recoveryPlanName) {
-        Response<BinaryData> response = failoverCommitWithResponse(serviceGroupName, operationId, recoveryPlanName);
-        return this.client.<RecoveryPlanActionBaseResponseInner, RecoveryPlanActionBaseResponseInner>getLroResult(
-            response, RecoveryPlanActionBaseResponseInner.class, RecoveryPlanActionBaseResponseInner.class,
-            Context.NONE);
+        return beginFailoverCommit(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action triggers the failover commit operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginFailoverCommit(String serviceGroupName, String operationId, String recoveryPlanName, Context context) {
@@ -2506,41 +1941,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action triggers the failover commit operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner failoverCommit(String serviceGroupName, String operationId,
         String recoveryPlanName) {
-        return beginFailoverCommit(serviceGroupName, operationId, recoveryPlanName).getFinalResult();
+        return failoverCommit(serviceGroupName, operationId, recoveryPlanName, Context.NONE);
     }
 
-    /**
-     * This action triggers the failover commit operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner failoverCommit(String serviceGroupName, String operationId,
         String recoveryPlanName, Context context) {
-        return beginFailoverCommit(serviceGroupName, operationId, recoveryPlanName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginFailoverCommit(serviceGroupName, operationId, recoveryPlanName, context));
     }
 
     /**
@@ -2581,9 +1994,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reprotectWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, ReprotectRequest body) {
-        final String accept = "application/json";
-        return service.reprotectSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, accept, body, Context.NONE);
+        return reprotectWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -2665,48 +2076,20 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
      * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
+    private SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginReprotect(String serviceGroupName, String operationId, String recoveryPlanName, ReprotectRequest body) {
-        Response<BinaryData> response = reprotectWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client.<RecoveryPlanActionBaseResponseInner, RecoveryPlanActionBaseResponseInner>getLroResult(
-            response, RecoveryPlanActionBaseResponseInner.class, RecoveryPlanActionBaseResponseInner.class,
-            Context.NONE);
+        return beginReprotect(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the reprotect operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginReprotect(String serviceGroupName, String operationId, String recoveryPlanName) {
         final ReprotectRequest body = null;
-        Response<BinaryData> response = reprotectWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client.<RecoveryPlanActionBaseResponseInner, RecoveryPlanActionBaseResponseInner>getLroResult(
-            response, RecoveryPlanActionBaseResponseInner.class, RecoveryPlanActionBaseResponseInner.class,
-            Context.NONE);
+        return beginReprotect(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the reprotect operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginReprotect(String serviceGroupName, String operationId, String recoveryPlanName, ReprotectRequest body,
@@ -2755,41 +2138,20 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action triggers the reprotect operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner reprotect(String serviceGroupName, String operationId,
         String recoveryPlanName) {
         final ReprotectRequest body = null;
-        return beginReprotect(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return reprotect(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the reprotect operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner reprotect(String serviceGroupName, String operationId,
         String recoveryPlanName, ReprotectRequest body, Context context) {
-        return beginReprotect(serviceGroupName, operationId, recoveryPlanName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginReprotect(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -2831,10 +2193,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> testFailoverWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testFailoverSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, contentType, accept, body, Context.NONE);
+        return testFailoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -2882,40 +2241,14 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             RecoveryPlanActionBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action triggers the test failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginTestFailover(String serviceGroupName, String operationId, String recoveryPlanName, FailoverRequest body) {
-        Response<BinaryData> response = testFailoverWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client.<RecoveryPlanActionBaseResponseInner, RecoveryPlanActionBaseResponseInner>getLroResult(
-            response, RecoveryPlanActionBaseResponseInner.class, RecoveryPlanActionBaseResponseInner.class,
-            Context.NONE);
+        return beginTestFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the test failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginTestFailover(String serviceGroupName, String operationId, String recoveryPlanName, FailoverRequest body,
@@ -2945,41 +2278,19 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action triggers the test failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner testFailover(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body) {
-        return beginTestFailover(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return testFailover(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the test failover operation on the recovery orchestration plan for the qualified resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner testFailover(String serviceGroupName, String operationId,
         String recoveryPlanName, FailoverRequest body, Context context) {
-        return beginTestFailover(serviceGroupName, operationId, recoveryPlanName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginTestFailover(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 
     /**
@@ -3023,10 +2334,7 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> testFailoverCleanupWithResponse(String serviceGroupName, String operationId,
         String recoveryPlanName, TestFailoverCleanupRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.testFailoverCleanupSync(this.client.getEndpoint(), serviceGroupName, this.client.getApiVersion(),
-            operationId, recoveryPlanName, contentType, accept, body, Context.NONE);
+        return testFailoverCleanupWithResponse(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
     /**
@@ -3076,44 +2384,15 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             RecoveryPlanActionBaseResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * This action triggers the test failover cleanup operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginTestFailoverCleanup(String serviceGroupName, String operationId, String recoveryPlanName,
             TestFailoverCleanupRequest body) {
-        Response<BinaryData> response
-            = testFailoverCleanupWithResponse(serviceGroupName, operationId, recoveryPlanName, body);
-        return this.client.<RecoveryPlanActionBaseResponseInner, RecoveryPlanActionBaseResponseInner>getLroResult(
-            response, RecoveryPlanActionBaseResponseInner.class, RecoveryPlanActionBaseResponseInner.class,
-            Context.NONE);
+        return beginTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the test failover cleanup operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanActionBaseResponseInner>, RecoveryPlanActionBaseResponseInner>
         beginTestFailoverCleanup(String serviceGroupName, String operationId, String recoveryPlanName,
@@ -3144,43 +2423,18 @@ public final class RecoveryPlanActionsClientImpl implements RecoveryPlanActionsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * This action triggers the test failover cleanup operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner testFailoverCleanup(String serviceGroupName, String operationId,
         String recoveryPlanName, TestFailoverCleanupRequest body) {
-        return beginTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, body).getFinalResult();
+        return testFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, body, Context.NONE);
     }
 
-    /**
-     * This action triggers the test failover cleanup operation on the recovery orchestration plan for the qualified
-     * resources.
-     * 
-     * @param serviceGroupName The name of the service group.
-     * @param operationId A GUID that represents the Long Running OperationId.
-     * @param recoveryPlanName The name of the recovery orchestration plan.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery Orchestration Plan post action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPlanActionBaseResponseInner testFailoverCleanup(String serviceGroupName, String operationId,
         String recoveryPlanName, TestFailoverCleanupRequest body, Context context) {
-        return beginTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginTestFailoverCleanup(serviceGroupName, operationId, recoveryPlanName, body, context));
     }
 }

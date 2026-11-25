@@ -150,16 +150,7 @@ public final class SubscriptionRaiPoliciesClientImpl implements SubscriptionRaiP
         return getWithResponseAsync(raiPolicyName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified Content Filters associated with the Subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiPolicyInner> getWithResponse(String raiPolicyName, Context context) {
         final String accept = "application/json";
@@ -167,15 +158,7 @@ public final class SubscriptionRaiPoliciesClientImpl implements SubscriptionRaiP
             raiPolicyName, accept, context);
     }
 
-    /**
-     * Gets the specified Content Filters associated with the Subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Content Filters associated with the Subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiPolicyInner get(String raiPolicyName) {
         return getWithResponse(raiPolicyName, Context.NONE).getValue();
@@ -218,17 +201,7 @@ public final class SubscriptionRaiPoliciesClientImpl implements SubscriptionRaiP
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update the state of specified Content Filters associated with the subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param raiPolicy Properties describing the Content Filters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiPolicy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiPolicyInner> createOrUpdateWithResponse(String raiPolicyName, RaiPolicyInner raiPolicy,
         Context context) {
@@ -238,16 +211,7 @@ public final class SubscriptionRaiPoliciesClientImpl implements SubscriptionRaiP
             this.client.getSubscriptionId(), raiPolicyName, contentType, accept, raiPolicy, context);
     }
 
-    /**
-     * Update the state of specified Content Filters associated with the subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param raiPolicy Properties describing the Content Filters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services RaiPolicy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiPolicyInner createOrUpdate(String raiPolicyName, RaiPolicyInner raiPolicy) {
         return createOrUpdateWithResponse(raiPolicyName, raiPolicy, Context.NONE).getValue();
@@ -281,8 +245,7 @@ public final class SubscriptionRaiPoliciesClientImpl implements SubscriptionRaiP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String raiPolicyName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), raiPolicyName, Context.NONE);
+        return deleteWithResponse(raiPolicyName, Context.NONE);
     }
 
     /**
@@ -317,31 +280,13 @@ public final class SubscriptionRaiPoliciesClientImpl implements SubscriptionRaiP
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified Content Filters associated with the subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String raiPolicyName) {
-        Response<BinaryData> response = deleteWithResponse(raiPolicyName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(raiPolicyName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Content Filters associated with the subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String raiPolicyName, Context context) {
         Response<BinaryData> response = deleteWithResponse(raiPolicyName, context);
@@ -362,30 +307,15 @@ public final class SubscriptionRaiPoliciesClientImpl implements SubscriptionRaiP
         return beginDeleteAsync(raiPolicyName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified Content Filters associated with the subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String raiPolicyName) {
-        beginDelete(raiPolicyName).getFinalResult();
+        delete(raiPolicyName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified Content Filters associated with the subscription.
-     * 
-     * @param raiPolicyName The name of the RaiPolicy associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String raiPolicyName, Context context) {
-        beginDelete(raiPolicyName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(raiPolicyName, context));
     }
 }

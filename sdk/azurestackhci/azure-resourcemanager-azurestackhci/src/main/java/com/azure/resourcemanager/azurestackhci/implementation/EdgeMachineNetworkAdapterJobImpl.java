@@ -65,11 +65,7 @@ public final class EdgeMachineNetworkAdapterJobImpl implements EdgeMachineNetwor
     }
 
     public EdgeMachineNetworkAdapterJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineNetworkAdapterJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, networkAdapterName, jobName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineNetworkAdapterJob create(Context context) {
@@ -92,11 +88,7 @@ public final class EdgeMachineNetworkAdapterJobImpl implements EdgeMachineNetwor
     }
 
     public EdgeMachineNetworkAdapterJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineNetworkAdapterJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, networkAdapterName, jobName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineNetworkAdapterJob apply(Context context) {
@@ -126,11 +118,7 @@ public final class EdgeMachineNetworkAdapterJobImpl implements EdgeMachineNetwor
     }
 
     public EdgeMachineNetworkAdapterJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineNetworkAdapterJobs()
-            .getWithResponse(resourceGroupName, edgeMachineName, networkAdapterName, jobName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineNetworkAdapterJob refresh(Context context) {

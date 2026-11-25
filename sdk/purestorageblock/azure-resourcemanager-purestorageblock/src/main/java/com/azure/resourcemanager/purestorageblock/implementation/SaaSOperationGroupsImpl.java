@@ -26,12 +26,7 @@ public final class SaaSOperationGroupsImpl implements SaaSOperationGroups {
     }
 
     public SaaSResourceDetailsResponse activateResource(ActivateSaaSRequest body) {
-        SaaSResourceDetailsResponseInner inner = this.serviceClient().activateResource(body);
-        if (inner != null) {
-            return new SaaSResourceDetailsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.activateResource(body, Context.NONE);
     }
 
     public SaaSResourceDetailsResponse activateResource(ActivateSaaSRequest body, Context context) {

@@ -200,18 +200,7 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified custom topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom topic associated with the Azure OpenAI account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiTopicInner> getWithResponse(String resourceGroupName, String accountName, String raiTopicName,
         Context context) {
@@ -220,17 +209,7 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
             resourceGroupName, accountName, raiTopicName, accept, context);
     }
 
-    /**
-     * Gets the specified custom topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified custom topic associated with the Azure OpenAI account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiTopicInner get(String resourceGroupName, String accountName, String raiTopicName) {
         return getWithResponse(resourceGroupName, accountName, raiTopicName, Context.NONE).getValue();
@@ -279,19 +258,7 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create the rai topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @param raiTopic Properties describing the rai topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Rai Topic along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RaiTopicInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String raiTopicName, RaiTopicInner raiTopic, Context context) {
@@ -302,18 +269,7 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
             raiTopic, context);
     }
 
-    /**
-     * Create the rai topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @param raiTopic Properties describing the rai topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Rai Topic.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RaiTopicInner createOrUpdate(String resourceGroupName, String accountName, String raiTopicName,
         RaiTopicInner raiTopic) {
@@ -354,8 +310,7 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String raiTopicName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, raiTopicName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, raiTopicName, Context.NONE);
     }
 
     /**
@@ -396,36 +351,14 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified custom topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiTopicName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, raiTopicName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, raiTopicName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified custom topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String raiTopicName, Context context) {
@@ -450,35 +383,16 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified custom topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiTopicName) {
-        beginDelete(resourceGroupName, accountName, raiTopicName).getFinalResult();
+        delete(resourceGroupName, accountName, raiTopicName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified custom topic associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param raiTopicName The name of the Rai Topic associated with the Cognitive Services Account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String raiTopicName, Context context) {
-        beginDelete(resourceGroupName, accountName, raiTopicName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, raiTopicName, context));
     }
 
     /**
@@ -531,11 +445,7 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiTopicInner> listSinglePage(String resourceGroupName, String accountName) {
-        final String accept = "application/json";
-        Response<RaiTopicResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -558,35 +468,13 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the custom topics associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom topics associated with the Azure OpenAI account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiTopicInner> list(String resourceGroupName, String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets the custom topics associated with the Azure OpenAI account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom topics associated with the Azure OpenAI account as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RaiTopicInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, context),
@@ -623,10 +511,7 @@ public final class RaiTopicsClientImpl implements RaiTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RaiTopicInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RaiTopicResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

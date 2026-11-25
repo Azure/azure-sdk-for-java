@@ -69,6 +69,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
         try {
             SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller = contentUnderstandingClient
                 .beginCreateAnalyzer(sourceAnalyzerId, createAnalyzer("Common API compatibility analyzer"), true);
+            setPlaybackSyncPollerPollInterval(createPoller);
             ContentAnalyzer created = requireSuccessfulResult(createPoller.waitForCompletion().getStatus(),
                 createPoller::getFinalResult, "Common API analyzer creation");
             assertEquals(sourceAnalyzerId, created.getAnalyzerId());
@@ -94,6 +95,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
 
             SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
                 = contentUnderstandingClient.beginCopyAnalyzer(copiedAnalyzerId, sourceAnalyzerId);
+            setPlaybackSyncPollerPollInterval(copyPoller);
             ContentAnalyzer copied = requireSuccessfulResult(copyPoller.waitForCompletion().getStatus(),
                 copyPoller::getFinalResult, "Common API analyzer copy");
             assertEquals(copiedAnalyzerId, copied.getAnalyzerId());
@@ -118,12 +120,12 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
         boolean sourceAnalyzerDeleted = false;
         boolean copiedAnalyzerDeleted = false;
         try {
-            ContentAnalyzer created = contentUnderstandingAsyncClient
-                .beginCreateAnalyzer(sourceAnalyzerId, createAnalyzer("Async common API compatibility analyzer"), true)
-                .last()
-                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
-                    "Async common API analyzer creation"))
-                .block();
+            ContentAnalyzer created = setPlaybackPollerFluxPollInterval(contentUnderstandingAsyncClient
+                .beginCreateAnalyzer(sourceAnalyzerId, createAnalyzer("Async common API compatibility analyzer"), true))
+                    .last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Async common API analyzer creation"))
+                    .block();
             assertNotNull(created);
             assertEquals(sourceAnalyzerId, created.getAnalyzerId());
 
@@ -141,8 +143,8 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
             assertEquals("Updated async common API compatibility analyzer", updated.getDescription());
             assertEquals(getServiceVersion().getVersion(), updated.getTags().get("compatibility"));
 
-            ContentAnalyzer copied
-                = contentUnderstandingAsyncClient.beginCopyAnalyzer(copiedAnalyzerId, sourceAnalyzerId)
+            ContentAnalyzer copied = setPlaybackPollerFluxPollInterval(
+                contentUnderstandingAsyncClient.beginCopyAnalyzer(copiedAnalyzerId, sourceAnalyzerId))
                     .last()
                     .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                         "Async common API analyzer copy"))
@@ -172,6 +174,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
                 "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/invoice.pdf");
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> urlPoller
                 = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", Collections.singletonList(input));
+            setPlaybackSyncPollerPollInterval(urlPoller);
             PollResponse<ContentAnalyzerAnalyzeOperationStatus> urlCompletion = urlPoller.waitForCompletion();
             AnalysisResult urlResult = requireSuccessfulResult(urlCompletion.getStatus(), urlPoller::getFinalResult,
                 "Common API URL analysis");
@@ -181,6 +184,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> binaryPoller
                 = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch",
                     PreviewSampleTestSupport.readSample("sample_invoice.pdf"));
+            setPlaybackSyncPollerPollInterval(binaryPoller);
             PollResponse<ContentAnalyzerAnalyzeOperationStatus> binaryCompletion = binaryPoller.waitForCompletion();
             AnalysisResult binaryResult = requireSuccessfulResult(binaryCompletion.getStatus(),
                 binaryPoller::getFinalResult, "Common API binary analysis");
@@ -206,6 +210,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
             PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> urlPoller
                 = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch",
                     Collections.singletonList(input));
+            setPlaybackPollerFluxPollInterval(urlPoller);
             AnalysisResult urlResult = urlPoller.last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Async common API URL analysis")
@@ -218,6 +223,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
             PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> binaryPoller
                 = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch",
                     PreviewSampleTestSupport.readSample("sample_invoice.pdf"));
+            setPlaybackPollerFluxPollInterval(binaryPoller);
             AnalysisResult binaryResult = binaryPoller.last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Async common API binary analysis")
@@ -286,6 +292,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
                 "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4");
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
                 = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", Collections.singletonList(input));
+            setPlaybackSyncPollerPollInterval(poller);
             PollResponse<ContentAnalyzerAnalyzeOperationStatus> completion = poller.waitForCompletion();
             AnalysisResult result
                 = requireSuccessfulResult(completion.getStatus(), poller::getFinalResult, "Common API video analysis");
@@ -322,6 +329,7 @@ abstract class ContentUnderstandingCommonApiTestBase extends ContentUnderstandin
                 "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4");
             PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller = contentUnderstandingAsyncClient
                 .beginAnalyze("prebuilt-videoSearch", Collections.singletonList(input));
+            setPlaybackPollerFluxPollInterval(poller);
             AnalysisResult result = poller.last()
                 .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
                     "Async common API video analysis")

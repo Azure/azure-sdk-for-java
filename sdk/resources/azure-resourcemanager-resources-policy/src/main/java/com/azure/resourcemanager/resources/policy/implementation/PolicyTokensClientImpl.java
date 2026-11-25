@@ -129,18 +129,7 @@ public final class PolicyTokensClientImpl implements PolicyTokensClient {
         return acquireWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Acquires a policy token.
-     * 
-     * This operation acquires a policy token in the given subscription for the given request body.
-     * 
-     * @param parameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy token response properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyTokenResponseInner> acquireWithResponse(PolicyTokenRequest parameters, Context context) {
         final String contentType = "application/json";
@@ -149,17 +138,7 @@ public final class PolicyTokensClientImpl implements PolicyTokensClient {
             this.client.getSubscriptionId(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Acquires a policy token.
-     * 
-     * This operation acquires a policy token in the given subscription for the given request body.
-     * 
-     * @param parameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy token response properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyTokenResponseInner acquire(PolicyTokenRequest parameters) {
         return acquireWithResponse(parameters, Context.NONE).getValue();
@@ -208,19 +187,7 @@ public final class PolicyTokensClientImpl implements PolicyTokensClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Acquires a policy token at management group level.
-     * 
-     * This operation acquires a policy token in the given management group for the given request body.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param parameters The policy token properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy token response properties along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyTokenResponseInner> acquireAtManagementGroupWithResponse(String managementGroupName,
         PolicyTokenRequest parameters, Context context) {
@@ -230,18 +197,7 @@ public final class PolicyTokensClientImpl implements PolicyTokensClient {
             this.client.getApiVersion(), contentType, accept, parameters, context);
     }
 
-    /**
-     * Acquires a policy token at management group level.
-     * 
-     * This operation acquires a policy token in the given management group for the given request body.
-     * 
-     * @param managementGroupName The name of the management group. The name is case insensitive.
-     * @param parameters The policy token properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy token response properties.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyTokenResponseInner acquireAtManagementGroup(String managementGroupName,
         PolicyTokenRequest parameters) {

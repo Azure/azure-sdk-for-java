@@ -213,11 +213,7 @@ public final class MigrationImpl implements Migration, Migration.Definition, Mig
     }
 
     public Migration create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMigrations()
-            .createWithResponse(resourceGroupName, serverName, migrationName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Migration create(Context context) {
@@ -240,11 +236,7 @@ public final class MigrationImpl implements Migration, Migration.Definition, Mig
     }
 
     public Migration apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMigrations()
-            .updateWithResponse(resourceGroupName, serverName, migrationName, updateParameters, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Migration apply(Context context) {
@@ -271,11 +263,7 @@ public final class MigrationImpl implements Migration, Migration.Definition, Mig
     }
 
     public Migration refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMigrations()
-            .getWithResponse(resourceGroupName, serverName, migrationName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Migration refresh(Context context) {

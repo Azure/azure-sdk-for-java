@@ -33,8 +33,8 @@ public final class BackupsImpl implements Backups {
 
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, BackupRequestResource parameters) {
-        this.serviceClient()
-            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
+        this.triggerWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters,
+            Context.NONE);
     }
 
     private BackupsClient serviceClient() {

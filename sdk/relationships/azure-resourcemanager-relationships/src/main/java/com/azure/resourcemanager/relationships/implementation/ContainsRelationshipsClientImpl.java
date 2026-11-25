@@ -193,11 +193,7 @@ public final class ContainsRelationshipsClientImpl implements ContainsRelationsh
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainsRelationshipInner> listSinglePage(String filter) {
-        final String accept = "application/json";
-        Response<ContainsRelationshipListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, Context.NONE);
     }
 
     /**
@@ -220,31 +216,14 @@ public final class ContainsRelationshipsClientImpl implements ContainsRelationsh
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ContainsRelationship resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainsRelationship list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainsRelationshipInner> list() {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(filter),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(filter, Context.NONE);
     }
 
-    /**
-     * List ContainsRelationship resources by subscription ID.
-     * 
-     * @param filter Filters the results by target resource type. Example: properties.metadata.targetType eq
-     * 'Microsoft.Compute/virtualMachines'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainsRelationship list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainsRelationshipInner> list(String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, context),
@@ -322,12 +301,7 @@ public final class ContainsRelationshipsClientImpl implements ContainsRelationsh
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainsRelationshipInner> listByResourceGroupSinglePage(String resourceGroupName,
         String filter) {
-        final String accept = "application/json";
-        Response<ContainsRelationshipListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, Context.NONE);
     }
 
     /**
@@ -352,34 +326,14 @@ public final class ContainsRelationshipsClientImpl implements ContainsRelationsh
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ContainsRelationship resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainsRelationship list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainsRelationshipInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, Context.NONE);
     }
 
-    /**
-     * List ContainsRelationship resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param filter Filters the results by target resource type. Example: properties.metadata.targetType eq
-     * 'Microsoft.Compute/virtualMachines'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ContainsRelationship list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainsRelationshipInner> listByResourceGroup(String resourceGroupName, String filter,
         Context context) {
@@ -419,11 +373,7 @@ public final class ContainsRelationshipsClientImpl implements ContainsRelationsh
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainsRelationshipInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainsRelationshipListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -478,11 +428,7 @@ public final class ContainsRelationshipsClientImpl implements ContainsRelationsh
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ContainsRelationshipInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainsRelationshipListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

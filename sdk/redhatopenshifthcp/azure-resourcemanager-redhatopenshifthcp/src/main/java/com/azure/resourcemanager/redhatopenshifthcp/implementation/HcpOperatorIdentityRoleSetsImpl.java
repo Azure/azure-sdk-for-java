@@ -28,9 +28,7 @@ public final class HcpOperatorIdentityRoleSetsImpl implements HcpOperatorIdentit
     }
 
     public PagedIterable<HcpOperatorIdentityRoleSet> list(String location) {
-        PagedIterable<HcpOperatorIdentityRoleSetInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new HcpOperatorIdentityRoleSetImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<HcpOperatorIdentityRoleSet> list(String location, Context context) {

@@ -229,20 +229,7 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves the specified FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a FlowProfile Azure resource, which defines a data replication scenario with a specific data
-     * classification and a set of configurable policy rules along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FlowProfileInner> getWithResponse(String resourceGroupName, String pipelineName,
         String flowProfileName, Context context) {
@@ -251,19 +238,7 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             resourceGroupName, pipelineName, flowProfileName, accept, context);
     }
 
-    /**
-     * Retrieves the specified FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a FlowProfile Azure resource, which defines a data replication scenario with a specific data
-     * classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowProfileInner get(String resourceGroupName, String pipelineName, String flowProfileName) {
         return getWithResponse(resourceGroupName, pipelineName, flowProfileName, Context.NONE).getValue();
@@ -313,11 +288,7 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String pipelineName,
         String flowProfileName, FlowProfileInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, flowProfileName, contentType, accept,
-            resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, pipelineName, flowProfileName, resource, Context.NONE);
     }
 
     /**
@@ -368,44 +339,14 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             FlowProfileInner.class, FlowProfileInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates a new FlowProfile or updates an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param resource The FlowProfile resource definition to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a FlowProfile Azure resource, which defines a data
-     * replication scenario with a specific data classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowProfileInner>, FlowProfileInner> beginCreateOrUpdate(String resourceGroupName,
         String pipelineName, String flowProfileName, FlowProfileInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, pipelineName, flowProfileName, resource);
-        return this.client.<FlowProfileInner, FlowProfileInner>getLroResult(response, FlowProfileInner.class,
-            FlowProfileInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, pipelineName, flowProfileName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new FlowProfile or updates an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param resource The FlowProfile resource definition to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a FlowProfile Azure resource, which defines a data
-     * replication scenario with a specific data classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowProfileInner>, FlowProfileInner> beginCreateOrUpdate(String resourceGroupName,
         String pipelineName, String flowProfileName, FlowProfileInner resource, Context context) {
@@ -436,46 +377,19 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a new FlowProfile or updates an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param resource The FlowProfile resource definition to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a FlowProfile Azure resource, which defines a data replication scenario with a specific data
-     * classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowProfileInner createOrUpdate(String resourceGroupName, String pipelineName, String flowProfileName,
         FlowProfileInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, pipelineName, flowProfileName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, pipelineName, flowProfileName, resource, Context.NONE);
     }
 
-    /**
-     * Creates a new FlowProfile or updates an existing one.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param resource The FlowProfile resource definition to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a FlowProfile Azure resource, which defines a data replication scenario with a specific data
-     * classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowProfileInner createOrUpdate(String resourceGroupName, String pipelineName, String flowProfileName,
         FlowProfileInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, pipelineName, flowProfileName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, pipelineName, flowProfileName, resource, context));
     }
 
     /**
@@ -522,11 +436,7 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String pipelineName,
         String flowProfileName, FlowProfilePatch properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, flowProfileName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, pipelineName, flowProfileName, properties, Context.NONE);
     }
 
     /**
@@ -577,44 +487,14 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             FlowProfileInner.class, FlowProfileInner.class, this.client.getContext());
     }
 
-    /**
-     * Applies partial updates to an existing FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param properties The FlowProfile patch definition containing the properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a FlowProfile Azure resource, which defines a data
-     * replication scenario with a specific data classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowProfileInner>, FlowProfileInner> beginUpdate(String resourceGroupName,
         String pipelineName, String flowProfileName, FlowProfilePatch properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, pipelineName, flowProfileName, properties);
-        return this.client.<FlowProfileInner, FlowProfileInner>getLroResult(response, FlowProfileInner.class,
-            FlowProfileInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, pipelineName, flowProfileName, properties, Context.NONE);
     }
 
-    /**
-     * Applies partial updates to an existing FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param properties The FlowProfile patch definition containing the properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of represents a FlowProfile Azure resource, which defines a data
-     * replication scenario with a specific data classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowProfileInner>, FlowProfileInner> beginUpdate(String resourceGroupName,
         String pipelineName, String flowProfileName, FlowProfilePatch properties, Context context) {
@@ -645,45 +525,19 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Applies partial updates to an existing FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param properties The FlowProfile patch definition containing the properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a FlowProfile Azure resource, which defines a data replication scenario with a specific data
-     * classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowProfileInner update(String resourceGroupName, String pipelineName, String flowProfileName,
         FlowProfilePatch properties) {
-        return beginUpdate(resourceGroupName, pipelineName, flowProfileName, properties).getFinalResult();
+        return update(resourceGroupName, pipelineName, flowProfileName, properties, Context.NONE);
     }
 
-    /**
-     * Applies partial updates to an existing FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param properties The FlowProfile patch definition containing the properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a FlowProfile Azure resource, which defines a data replication scenario with a specific data
-     * classification and a set of configurable policy rules.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FlowProfileInner update(String resourceGroupName, String pipelineName, String flowProfileName,
         FlowProfilePatch properties, Context context) {
-        return beginUpdate(resourceGroupName, pipelineName, flowProfileName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, pipelineName, flowProfileName, properties, context));
     }
 
     /**
@@ -722,8 +576,7 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String pipelineName,
         String flowProfileName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, pipelineName, flowProfileName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, pipelineName, flowProfileName, Context.NONE);
     }
 
     /**
@@ -767,38 +620,14 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String pipelineName,
         String flowProfileName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, pipelineName, flowProfileName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, pipelineName, flowProfileName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String pipelineName,
         String flowProfileName, Context context) {
@@ -824,37 +653,16 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String pipelineName, String flowProfileName) {
-        beginDelete(resourceGroupName, pipelineName, flowProfileName).getFinalResult();
+        delete(resourceGroupName, pipelineName, flowProfileName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified FlowProfile resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param flowProfileName The name of the FlowProfile resource to operate on. Must be 3 to 64 characters long and
-     * contain only alphanumeric characters or hyphens.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String pipelineName, String flowProfileName, Context context) {
-        beginDelete(resourceGroupName, pipelineName, flowProfileName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, pipelineName, flowProfileName, context));
     }
 
     /**
@@ -908,12 +716,7 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlowProfileInner> listByPipelineSinglePage(String resourceGroupName, String pipelineName) {
-        final String accept = "application/json";
-        Response<FlowProfileListResult> res
-            = service.listByPipelineSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, pipelineName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPipelineSinglePage(resourceGroupName, pipelineName, Context.NONE);
     }
 
     /**
@@ -938,33 +741,13 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all FlowProfiles under a given Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FlowProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FlowProfileInner> listByPipeline(String resourceGroupName, String pipelineName) {
-        return new PagedIterable<>(() -> listByPipelineSinglePage(resourceGroupName, pipelineName),
-            nextLink -> listByPipelineNextSinglePage(nextLink));
+        return listByPipeline(resourceGroupName, pipelineName, Context.NONE);
     }
 
-    /**
-     * Lists all FlowProfiles under a given Pipeline.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param pipelineName The name of the pipeline on which to operate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FlowProfile list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FlowProfileInner> listByPipeline(String resourceGroupName, String pipelineName,
         Context context) {
@@ -1003,11 +786,7 @@ public final class FlowProfilesClientImpl implements FlowProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FlowProfileInner> listByPipelineNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FlowProfileListResult> res
-            = service.listByPipelineNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByPipelineNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

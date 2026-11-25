@@ -187,18 +187,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified NSP configurations for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param nspConfigurationName The name of the NSP Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified NSP configurations for an account along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityPerimeterConfigurationInner> getWithResponse(String resourceGroupName,
         String accountName, String nspConfigurationName, Context context) {
@@ -207,17 +196,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             resourceGroupName, accountName, nspConfigurationName, accept, context);
     }
 
-    /**
-     * Gets the specified NSP configurations for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param nspConfigurationName The name of the NSP Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified NSP configurations for an account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterConfigurationInner get(String resourceGroupName, String accountName,
         String nspConfigurationName) {
@@ -278,12 +257,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listSinglePage(String resourceGroupName,
         String accountName) {
-        final String accept = "application/json";
-        Response<NetworkSecurityPerimeterConfigurationList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
@@ -308,34 +282,14 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of NSP configurations for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for an account as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> list(String resourceGroupName,
         String accountName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, Context.NONE);
     }
 
-    /**
-     * Gets a list of NSP configurations for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of NSP configurations for an account as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> list(String resourceGroupName, String accountName,
         Context context) {
@@ -379,10 +333,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reconcileWithResponse(String resourceGroupName, String accountName,
         String nspConfigurationName) {
-        final String accept = "application/json";
-        return service.reconcileSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, nspConfigurationName, accept,
-            Context.NONE);
+        return reconcileWithResponse(resourceGroupName, accountName, nspConfigurationName, Context.NONE);
     }
 
     /**
@@ -428,40 +379,15 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
                 NetworkSecurityPerimeterConfigurationInner.class, this.client.getContext());
     }
 
-    /**
-     * Reconcile the NSP configuration for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param nspConfigurationName The name of the NSP Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSP Configuration for an Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
         beginReconcile(String resourceGroupName, String accountName, String nspConfigurationName) {
-        Response<BinaryData> response = reconcileWithResponse(resourceGroupName, accountName, nspConfigurationName);
-        return this.client
-            .<NetworkSecurityPerimeterConfigurationInner, NetworkSecurityPerimeterConfigurationInner>getLroResult(
-                response, NetworkSecurityPerimeterConfigurationInner.class,
-                NetworkSecurityPerimeterConfigurationInner.class, Context.NONE);
+        return beginReconcile(resourceGroupName, accountName, nspConfigurationName, Context.NONE);
     }
 
-    /**
-     * Reconcile the NSP configuration for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param nspConfigurationName The name of the NSP Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of nSP Configuration for an Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
@@ -492,39 +418,19 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reconcile the NSP configuration for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param nspConfigurationName The name of the NSP Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSP Configuration for an Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterConfigurationInner reconcile(String resourceGroupName, String accountName,
         String nspConfigurationName) {
-        return beginReconcile(resourceGroupName, accountName, nspConfigurationName).getFinalResult();
+        return reconcile(resourceGroupName, accountName, nspConfigurationName, Context.NONE);
     }
 
-    /**
-     * Reconcile the NSP configuration for an account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param nspConfigurationName The name of the NSP Configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nSP Configuration for an Cognitive Services account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityPerimeterConfigurationInner reconcile(String resourceGroupName, String accountName,
         String nspConfigurationName, Context context) {
-        return beginReconcile(resourceGroupName, accountName, nspConfigurationName, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginReconcile(resourceGroupName, accountName, nspConfigurationName, context));
     }
 
     /**
@@ -558,11 +464,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkSecurityPerimeterConfigurationList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

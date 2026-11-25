@@ -21,7 +21,7 @@ public final class CapabilitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"clusterCapabilities\":{\"recommendedPostgreSqlVersion\":\"18\",\"supportedPostgreSqlVersions\":[{\"name\":\"18\",\"supportedVersionsToUpgrade\":[\"17\"]},{\"name\":\"17\",\"supportedVersionsToUpgrade\":[\"18\",\"18\",\"18\"]},{\"name\":\"18\",\"supportedVersionsToUpgrade\":[\"17\",\"17\"]}],\"supportedFeatures\":[{\"name\":\"sgumhjglikkxwsl\"},{\"name\":\"lbqpvuzlmvfelf\"}]},\"poolCapabilities\":{\"recommendedComputeProcessor\":\"Intel\",\"supportedProcessors\":[{\"name\":\"AMD\",\"supportedGenerations\":[{\"computeGeneration\":957829467,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]},{\"computeGeneration\":1827941579,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]}]},{\"name\":\"AMD\",\"supportedGenerations\":[{\"computeGeneration\":1534218395,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]},{\"computeGeneration\":879908926,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]}]},{\"name\":\"Intel\",\"supportedGenerations\":[{\"computeGeneration\":1802725249,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]}]},{\"name\":\"AMD\",\"supportedGenerations\":[{\"computeGeneration\":78326163,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]},{\"computeGeneration\":2126528324,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]},{\"computeGeneration\":490713776,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]}]}],\"supportedFeatures\":[{\"name\":\"saz\"},{\"name\":\"jjoqkagf\"},{\"name\":\"sxtta\"}]}},\"id\":\"zxnfaaz\",\"name\":\"xdtnkdmkqjjlw\",\"type\":\"envrkpyouaibrebq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"clusterCapabilities\":{\"recommendedPostgreSqlVersion\":\"17\",\"supportedPostgreSqlVersions\":[{\"name\":\"18\",\"supportedVersionsToUpgrade\":[\"18\"]}],\"supportedFeatures\":[{\"name\":\"emjdftul\"},{\"name\":\"ltducea\"},{\"name\":\"tmczuomejwcwwqi\"},{\"name\":\"knssxmojm\"}]},\"poolCapabilities\":{\"recommendedComputeProcessor\":\"Intel\",\"supportedProcessors\":[{\"name\":\"Intel\",\"supportedGenerations\":[{\"computeGeneration\":2108031583,\"recommendedComputeModelType\":\"Provisioned\",\"supportedComputeModels\":[]}]}],\"supportedFeatures\":[{\"name\":\"kwcf\"}]}},\"id\":\"ljyxgtczhe\",\"name\":\"dbsdshm\",\"type\":\"xmaehvbbxu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class CapabilitiesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Capability> response
-            = manager.capabilities().list("ronzmyhgfip", com.azure.core.util.Context.NONE);
+        PagedIterable<Capability> response = manager.capabilities().list("srhnjivo", com.azure.core.util.Context.NONE);
 
     }
 }

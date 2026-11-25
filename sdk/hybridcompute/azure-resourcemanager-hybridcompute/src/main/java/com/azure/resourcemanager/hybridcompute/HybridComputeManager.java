@@ -44,6 +44,7 @@ import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkResourc
 import com.azure.resourcemanager.hybridcompute.implementation.PrivateLinkScopesImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.hybridcompute.implementation.SettingsOperationsImpl;
+import com.azure.resourcemanager.hybridcompute.implementation.VmApplicationsImpl;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionMetadataV2s;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionMetadatas;
 import com.azure.resourcemanager.hybridcompute.models.ExtensionPublishers;
@@ -62,6 +63,7 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResources;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopes;
 import com.azure.resourcemanager.hybridcompute.models.ResourceProviders;
 import com.azure.resourcemanager.hybridcompute.models.SettingsOperations;
+import com.azure.resourcemanager.hybridcompute.models.VmApplications;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -89,6 +91,8 @@ public final class HybridComputeManager {
     private MachineExtensions machineExtensions;
 
     private MachineRunCommands machineRunCommands;
+
+    private VmApplications vmApplications;
 
     private Gateways gateways;
 
@@ -409,6 +413,18 @@ public final class HybridComputeManager {
             this.machineRunCommands = new MachineRunCommandsImpl(clientObject.getMachineRunCommands(), this);
         }
         return machineRunCommands;
+    }
+
+    /**
+     * Gets the resource collection API of VmApplications. It manages VmApplication.
+     * 
+     * @return Resource collection API of VmApplications.
+     */
+    public VmApplications vmApplications() {
+        if (this.vmApplications == null) {
+            this.vmApplications = new VmApplicationsImpl(clientObject.getVmApplications(), this);
+        }
+        return vmApplications;
     }
 
     /**

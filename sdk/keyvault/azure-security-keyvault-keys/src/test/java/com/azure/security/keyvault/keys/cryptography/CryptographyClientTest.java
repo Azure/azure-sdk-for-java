@@ -214,8 +214,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
 
         Assumptions.assumeTrue(runManagedHsmTest && attestationConfigured);
-        Assumptions.assumeTrue(serviceVersion.ordinal() >= CryptographyServiceVersion.V2026_01_01_PREVIEW.ordinal(),
-            "Secure wrap and unwrap require service version 2026-01-01-preview or newer.");
+        Assumptions.assumeTrue(serviceVersion.ordinal() >= CryptographyServiceVersion.V2026_04_01.ordinal(),
+            "Secure wrap and unwrap require service version 2026-04-01 or newer.");
 
         initializeKeyClient(httpClient);
 
@@ -230,7 +230,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         String keyName = testResourceNamer.randomName("secureWrapKey", 25);
         CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(keyName).setKeySize(2048)
             .setHardwareProtected(true)
-            .setKeyOperations(KeyOperation.SECURE_WRAP_KEY, KeyOperation.SECURE_UNWRAP_KEY)
+            .setKeyOperations(KeyOperation.fromString("secureWrapKey"), KeyOperation.fromString("secureUnwrapKey"))
             .setReleasePolicy(new KeyReleasePolicy(BinaryData.fromString(releasePolicyContents)));
 
         KeyVaultKey wrappingKey = client.createRsaKey(createRsaKeyOptions);

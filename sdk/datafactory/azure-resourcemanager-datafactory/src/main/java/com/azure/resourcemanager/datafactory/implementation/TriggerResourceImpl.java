@@ -70,12 +70,7 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public TriggerResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, triggerName, this.innerModel(), createIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TriggerResource create(Context context) {
@@ -100,12 +95,7 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public TriggerResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, triggerName, this.innerModel(), updateIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public TriggerResource apply(Context context) {
@@ -133,12 +123,7 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public TriggerResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getTriggers()
-            .getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TriggerResource refresh(Context context) {

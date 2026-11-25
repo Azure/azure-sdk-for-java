@@ -22,7 +22,7 @@ public final class MicrosoftEntraAuthenticationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Disabled\",\"provisioningState\":\"Provisioning\"},\"id\":\"nomdrkywuhpsv\",\"name\":\"uurutlwexxwlalni\",\"type\":\"xzsrzpge\"}";
+            = "{\"properties\":{\"state\":\"Enabled\",\"provisioningState\":\"Updating\"},\"id\":\"obgop\",\"name\":\"lhslnelxieixyn\",\"type\":\"lxecwcrojphslh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class MicrosoftEntraAuthenticationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MicrosoftEntraAuthentication response = manager.microsoftEntraAuthentications()
-            .getWithResponse("elawumu", "slzkwrrwoycqu", com.azure.core.util.Context.NONE)
+            .getWithResponse("dsxwaab", "mifrygznmma", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(AuthenticationState.DISABLED, response.properties().state());
+        Assertions.assertEquals(AuthenticationState.ENABLED, response.properties().state());
     }
 }

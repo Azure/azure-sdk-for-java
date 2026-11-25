@@ -14,11 +14,11 @@ public final class QuotaTierUpgradeEligibilityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTierUpgradeEligibilityInfo model = BinaryData.fromString(
-            "{\"nextTierName\":\"xieqv\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-06-16T21:34:02Z\",\"upgradeUnavailabilityReason\":\"ixqcahyhxalybxaw\"}")
+            "{\"nextTierName\":\"sjznvhx\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2021-03-22T23:48:10Z\",\"upgradeUnavailabilityReason\":\"aydhf\"}")
             .toObject(QuotaTierUpgradeEligibilityInfo.class);
-        Assertions.assertEquals("xieqv", model.nextTierName());
-        Assertions.assertEquals(UpgradeAvailabilityStatus.AVAILABLE, model.upgradeAvailabilityStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T21:34:02Z"), model.upgradeApplicableDate());
-        Assertions.assertEquals("ixqcahyhxalybxaw", model.upgradeUnavailabilityReason());
+        Assertions.assertEquals("sjznvhx", model.nextTierName());
+        Assertions.assertEquals(UpgradeAvailabilityStatus.NOT_AVAILABLE, model.upgradeAvailabilityStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-22T23:48:10Z"), model.upgradeApplicableDate());
+        Assertions.assertEquals("aydhf", model.upgradeUnavailabilityReason());
     }
 }
