@@ -49,7 +49,11 @@ workflow.
 
 ## Read-only boundary
 
-- Do not check out or execute PR code.
+- Do not execute arbitrary PR code. The workflow may build a same-repository
+  generated AutoPR only through the trusted
+  `Generate-ApiReviewArtifact.ps1` command to create an uncommitted API review
+  bundle. Never do so for fork, manually authored, label-only, or otherwise
+  untrusted PRs.
 - Do not modify, approve, merge, or comment on the PR.
 - Pin the head SHA and use it for every PR-content read.
 - Do not access a specification repository. When generated output is wrong,
@@ -63,18 +67,23 @@ workflow.
 3. **Prior state.** Read the latest workflow comment. Stop if it already covers
    the same head SHA. Classify prior concerns as carried forward, resolved, or
    no longer applicable.
-4. **Surface pass.** Review public clients, builders, methods, models, enums,
-   exceptions, and module exports.
-5. **Behavior pass.** Review paging, LRO, async, validation, authentication,
+4. **API snapshot.** When the workflow permits trusted generation, create and
+   read the pinned-head `api.md` and `api.metadata.yml` bundle before reviewing
+   the surface. Otherwise use the existing source-only path.
+5. **Surface pass.** Use `api.md` as the complete public API inventory, then
+   trace candidates to changed Java source. Review public clients, builders,
+   methods, models, enums, exceptions, and module exports. For parameter-count
+   rules, exclude client-only parameters and low-level protocol methods.
+6. **Behavior pass.** Review paging, LRO, async, validation, authentication,
    logging, pipeline, and tracing shapes that are visible in the change.
-6. **Package pass.** Review POMs, version files, CHANGELOG, README, samples,
+7. **Package pass.** Review POMs, version files, CHANGELOG, README, samples,
    tests, metadata, and generated-source ownership.
-7. **CI deduplication.** Do not repeat an exact issue already reported by a
+8. **CI deduplication.** Do not repeat an exact issue already reported by a
    deterministic check. A finding may still explain a distinct design problem
    or provide the repository-prescribed remediation.
-8. **Self-verification.** Re-fetch every citation at the pinned SHA, confirm it
+9. **Self-verification.** Re-fetch every citation at the pinned SHA, confirm it
    is introduced by the PR, apply all exceptions, and drop weak candidates.
-9. **Critic.** Dispatch the Data-Plane Review Critic exactly once using
+10. **Critic.** Dispatch the Data-Plane Review Critic exactly once using
    [`protocols/data-plane-review-critic.protocol.md`](protocols/data-plane-review-critic.protocol.md).
    End the dispatch with a complete `## Required response` skeleton populated
    with the actual session SHA, finding count, and one rule-and-citation row per
@@ -85,7 +94,7 @@ workflow.
    `PASS|DOWNGRADE|FAIL` verdicts. Do not normalize synonyms such as
    `Confirmed`. `FAIL` drops a finding and `DOWNGRADE` lowers it as directed. A
    malformed critique produces `noop`; there is no unattended override.
-10. **Report.** Emit one complete report or the no-findings form from the
+11. **Report.** Emit one complete report or the no-findings form from the
     skill. Do not post it.
 
 ## Failure behavior

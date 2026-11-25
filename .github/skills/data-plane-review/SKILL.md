@@ -42,9 +42,14 @@ scope, orchestration, verification, and output only.
    metadata, CHANGELOG, README, generated metadata, and generation
    configuration when present. Use unchanged files to verify existing
    documentation, samples, and tests; findings still require changed evidence.
-3. Build the changed public API picture before applying individual rules:
-   clients, builders, operations, models, exceptions, package metadata, and
-   documentation.
+3. Build the changed public API picture before applying individual rules.
+   When the workflow provides a generated API review bundle, read
+   `api.metadata.yml` and use `api.md` as the complete inventory of public
+   clients, builders, operations, models, exceptions, and module exports.
+   The snapshot is uncommitted review evidence generated from the pinned PR
+   head. It does not replace Java source for changed-line attribution,
+   JavaDoc, implementation behavior, or generated-source ownership. When no
+   bundle is available, retain the source-based inventory.
 4. Load the applicable rule references from the table above.
 5. Produce candidates only for changed evidence. Do not report legacy issues.
 6. Do not duplicate the exact output of a deterministic check. A distinct
@@ -93,12 +98,13 @@ Before dispatching the critic, confirm every candidate:
 
 1. cites exact evidence at the pinned SHA;
 2. was introduced by this PR;
-3. uses a rule defined in a loaded reference and no higher severity;
-4. satisfies every trigger and exception in the cited rule;
-5. is not the exact output of an existing deterministic check;
-6. states the correct form, not only what is wrong;
-7. does not require a hand edit to generated output;
-8. does not expose sensitive values.
+3. traces any `api.md` observation back to the affected Java source;
+4. uses a rule defined in a loaded reference and no higher severity;
+5. satisfies every trigger and exception in the cited rule;
+6. is not the exact output of an existing deterministic check;
+7. states the correct form, not only what is wrong;
+8. does not require a hand edit to generated output;
+9. does not expose sensitive values.
 
 ## Report
 

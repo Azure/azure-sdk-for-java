@@ -74,6 +74,8 @@ stimuli:
       - Each finding must cite changed evidence and give a concrete correct form.
 
   - name: too-many-service-parameters
+    tags:
+      rule: method-options
     environment:
       skills:
         - ".."
@@ -82,11 +84,17 @@ stimuli:
           dest: "github-responses/get-pull-request.json"
         - src: "fixtures/method-options.diff"
           dest: "pr-diff/011-WidgetClient.java.diff"
+        - src: "fixtures/method-options-api.md"
+          dest: "api-review/azure-contoso-widgets/api.md"
+        - src: "fixtures/method-options-api.metadata.yml"
+          dest: "api-review/azure-contoso-widgets/api.metadata.yml"
     prompt: >
       Use the data-plane-review skill to review the synthetic PR. GitHub
-      responses are materialized under github-responses and per-file patches
-      under pr-diff. Produce the source-backed candidate review; this findings
-      eval does not run the workflow critic.
+      responses are materialized under github-responses, per-file patches
+      under pr-diff, and the generated pinned-head API review bundle under
+      api-review/azure-contoso-widgets. Use api.md as the public API inventory
+      and the Java diff as the finding citation. Produce the source-backed
+      candidate review; this findings eval does not run the workflow critic.
     constraints:
       expect_skills:
         - data-plane-review
@@ -107,6 +115,41 @@ stimuli:
     rubric:
       - The newly added public service method has seven service parameters; Context is not counted.
       - DP-METHOD-02 must require a CreateWidgetOptions bag and remain a Warning.
+
+  - name: six-service-parameters-plus-context
+    tags:
+      rule: method-options
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/api-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/method-options-six.diff"
+          dest: "pr-diff/011-WidgetClient.java.diff"
+        - src: "fixtures/method-options-six-api.md"
+          dest: "api-review/azure-contoso-widgets/api.md"
+        - src: "fixtures/method-options-six-api.metadata.yml"
+          dest: "api-review/azure-contoso-widgets/api.metadata.yml"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses, per-file patches
+      under pr-diff, and the generated pinned-head API review bundle under
+      api-review/azure-contoso-widgets. Use api.md as the public API inventory.
+      Produce the source-backed candidate review; this findings eval does not
+      run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-not-matches
+        name: "client-only context excluded"
+        config:
+          pattern: "\\[DP-METHOD-02\\]"
+      - type: prompt
+    rubric:
+      - The method has exactly six service parameters plus Context.
+      - Context is client-only and must not trigger DP-METHOD-02.
 
   - name: async-method-name-has-suffix
     environment:

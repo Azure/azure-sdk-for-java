@@ -1,5 +1,10 @@
 {
   "entries": {
+    "actions/checkout@11d5960a326750d5838078e36cf38b85af677262": {
+      "repo": "actions/checkout",
+      "version": "11d5960a326750d5838078e36cf38b85af677262",
+      "sha": "11d5960a326750d5838078e36cf38b85af677262"
+    },
     "actions/checkout@v7.0.0": {
       "repo": "actions/checkout",
       "version": "v7.0.0",
